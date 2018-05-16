@@ -1,0 +1,10 @@
+#IDE
+.idea
+
+#Temporales
+~*
+
+#Proyecto
+dist/
+node_modules/
+src/assets/

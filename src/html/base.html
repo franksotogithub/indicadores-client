@@ -1,0 +1,11 @@
+<html>
+<head>
+    <link rel="stylesheet" href="{{ output.assets ~ output.folders.css ~ output.concat.asscss }}">
+    <link rel="stylesheet" href="{{ output.folders.css ~ output.concat.css }}">
+</head>
+<body>
+    {% block wrapper %}{% endblock %}
+    <script src="{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
+    <script src="{{ output.folders.js ~ output.concat.js }}"></script>
+</body>
+</html>
