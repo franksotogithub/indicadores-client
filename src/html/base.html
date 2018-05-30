@@ -1,11 +1,85 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
+    <title>Indicadores Online</title>
+    <meta charset="UTF-8">
+    <meta name="title" content="Indicadores Online">
+    <meta name="description" content="Resultado por indicadores del Censo 2017">
+
+    <!-- Fuentes -->
+    <link rel="stylesheet" href="assets/fonts/signika/stylesheet.css">
+    <link rel="stylesheet" href="assets/fonts/alegreyasans/alegreya.css">
+    <link rel="stylesheet" href="assets/fonts/opensans/stylesheet.css">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="assets/fonts/dripicons/webfont.css">
+    <link rel="stylesheet" href="assets/fonts/simplelineicons/simple-line-icons.css">
+
     <link rel="stylesheet" href="{{ output.assets ~ output.folders.css ~ output.concat.asscss }}">
     <link rel="stylesheet" href="{{ output.folders.css ~ output.concat.css }}">
+
 </head>
-<body>
+
+
+<body class="b_celestesuave">
+<div class="row">
+    <header class="b_azul f_blanco headerPrincipal">
+        <div class="col-1-2 secLogoTitulo">
+            <div>
+                <img src="img/logo_inei.png" />
+            </div>
+            <h1>PUBLICACIóN DE RESULTADOS CPV 2017</h1>
+            <div>
+                <img src="img/logo_censo.png" />
+            </div>
+
+        </div><!--
+             --><div class="col-1-2">
+        <div class="row">
+            <div class="col-6-10 tabHeader" >
+                <div>
+                    <button class="tabActivo"> Principales indicadores </button><!--
+                             --><button> Cuadros estadisticos</button>
+                </div>
+            </div><!--
+                     --><div class="col-4-10 barHerramientasHeader">
+            <div>
+                <div class="col-1-4 btnMapa" data-codevent="mapa">
+                    <div>
+                        <button data-icon="&#xe012;" class="b_azul f_blanco icon tooltip" title="Mostrar Mapa">  </button>
+                    </div>
+                </div><!--
+                             --><div class="col-1-4 btnIndicadores" data-codevent="indicadores">
+                <div>
+                    <button data-icon="&#xe051;" class="b_azul f_blanco icon tooltip" title="Mostrar Indicadores">  </button>
+                </div>
+            </div><!--
+                             --><div class="col-1-4 btnGraficos" data-codevent="graficos">
+                <div>
+                    <button data-icon="&#xe002;" class="b_azul f_blanco icon tooltip" title="Mostrar Gráficos y metadatos">  </button>
+                </div>
+            </div><!--
+                             --><div class="col-1-4">
+                <div>
+
+                    <button class="icon-share icons tooltip" title="Comparte lo que ves"></button>
+                </div>
+            </div><!--
+                             --><div class="col-1-4">
+                <button data-icon="&#xe03a;" class="b_azul f_blanco icon tooltip" title="Ayuda e información">  </button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+    </header>
+</div>
+<div class="row seccionPrincipal" >
     {% block wrapper %}{% endblock %}
-    <script src="{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
-    <script src="{{ output.folders.js ~ output.concat.js }}"></script>
+</div>
+
 </body>
+
+<script src="{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
+<script src="{{ output.folders.js ~ output.concat.js }}"></script>
 </html>

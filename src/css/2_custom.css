@@ -1,0 +1,409 @@
+/* Custom para sistema Online de indicadores censo 2017 DMK */
+
+/* hack TIpped */
+.tpd-content {
+    font-family: 'Alegreya-Sans', 'open_sansregular';
+}
+
+/* General */
+
+.col-35 { /* Columna espacio especial mapa */
+    width: 35%;
+}
+
+.headerPrincipal {
+    min-height: 70px;
+    max-height: 72px;
+}
+
+
+/* Header Principal */
+
+/* Logo y titulo */
+.secLogoTitulo div, h1 {
+    display: inline-block;
+    margin:0px;
+    padding:0px;
+    vertical-align: middle;
+}
+.secLogoTitulo img {
+    height: 50px;
+    padding: 7px 20px;
+}
+
+.secLogoTitulo h1 {
+    font-size: 22px;
+    font-family: 'signikaregular';
+    font-weight: normal;
+    padding: 0px 40px;
+    text-transform: uppercase;
+
+}
+
+/* Tabs del Header */
+.tabHeader button {
+    display: inline-block;
+    color: #FFFFFF;
+    background-color: #1B3C71;
+    font-family: 'signikaregular';
+    font-weight: normal;
+    font-size:18px;
+    padding: 0px 20px;
+    text-transform: uppercase;
+    height:70px;
+}
+
+.tabHeader button:hover {
+    color: #1B3C71;
+    background-color: #E6E6E6;
+    height: 70px;
+}
+
+.tabHeader button.tabActivo {
+
+    color: #1B3C71;
+    background-color: #E6E6E6;
+    height: 70px;
+}
+
+/* Barra de herramientas del Header */
+.barHerramientasHeader{ /* Fijando alto */
+    height: 70px;
+    vertical-align: top;
+}
+
+.barHerramientasHeader button{
+    background-color: #1B3C71;
+    color: #FFFFFF;
+    font-size: 28px;
+    vertical-align: top;
+    height: 70px;
+    padding: 0px;
+    width: 100%;
+}
+
+.barHerramientasHeader button:hover {
+    text-shadow: 3px 5px 7px #000;
+    margin-top: -5px;
+    background-color: #12284c;
+}
+
+
+.barHerramientasHeader div { /* alinear a la izquierda botones de herramientas */
+    text-align: right;
+    vertical-align: top;
+}
+
+div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los botones de ventanas minimizadas */
+    display: none;
+}
+
+.animacionbtn{
+    background-color:#1B3C71;
+    -webkit-animation-name: anmationBTN; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+    animation-name: animationBTN;
+    animation-duration: 0.6s;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes animationBTN {
+    0%   {background-color: #1B3C71;}
+    20%  {background-color: #216fb6;}
+    50%  {background-color: #1B3C71;}
+    70% {background-color: #216fb6;}
+    100%  {background-color: #1B3C71;}
+}
+
+/* Standard syntax */
+@keyframes animationBTN {
+    0%   {background-color: #1B3C71;}
+    20%  {background-color: #216fb6;}
+    50%  {background-color: #1B3C71;}
+    70% {background-color: #216fb6;}
+    100%  {background-color: #1B3C71;}
+
+}
+
+
+
+/* Seccion Principal */
+
+.seccionPrincipal {
+    text-align:center;
+}
+
+/* Ventanas */
+
+.ventanaMapa, .ventanaTabla, .ventanaGrafico {
+    vertical-align: top;
+
+}
+
+.ventanaMapa > section{
+    background-color: #FFFFFF; height: 850px;
+    margin: 10px 10px;
+
+}
+.ventanaTabla > section{
+    background-color: #FFFFFF; height: 850px;
+    margin: 10px 0px;
+}
+.ventanaGrafico > section {
+    background-color: #FFFFFF; height: 850px;
+    margin: 10px 10px;
+}
+
+/* Ventana Mapa */
+.ventanaMapa header{
+
+}
+.contennedorTituloVentana h2 {
+    border-left: #1B3C71 solid 5px;
+    margin: 0px;
+    font-family: 'signikaregular';
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: normal;
+    padding: 10px 0px;
+    text-align: left;
+    color: #1B3C71;
+}
+.contennedorTituloVentana h2 > span {
+    padding: 0px 12px;
+}
+
+
+.contenedorBotonesVentana {
+    text-align: right;
+}
+
+.contenedorBotonesVentana > button {
+    background-color:#E6E6E6;
+    color: #444444;
+    padding:10px 5px;
+}
+
+.contenedorBotonesVentana > button:nth-child(1), .contenedorBotonesVentana > button:nth-child(2){
+    color:#1B3C71;
+}
+
+.contenedorBotonesVentana > button:hover {
+
+    color: #D57008;
+    background-color: #FFF;
+}
+
+
+.contenedorBotonesVentana > button:last-child {
+    margin-right: 10px;
+}
+
+
+
+
+
+/* Responsive */
+
+
+@media screen and (min-width: 1740px) and (max-width: 1900px) {
+
+    /* Header Principal */
+
+   /* .secLogoTitulo h1 {
+        font-size: 18px;
+        font-family: 'signikaregular';
+        font-weight: normal;
+        padding: 0px 20px;
+        text-transform: uppercase;
+
+    }
+
+    .tabHeader button {
+        font-size: 14px;
+        padding: 0px 10px;
+    }
+
+    .barHerramientasHeader button {
+        font-size: 22px;
+    }
+*/
+    /* Ventanas */
+
+    .contennedorTituloVentana h2 {
+        font-size: 17px;
+    }
+    .contennedorTituloVentana h2 > span {
+        padding: 0px 8px;
+    }
+
+}
+
+
+@media screen and (min-width: 1500px) and (max-width: 1740px) {
+
+    /* Header Principal */
+    /*
+        .secLogoTitulo h1 {
+            font-size: 18px;
+            font-family: 'signikaregular';
+            font-weight: normal;
+            padding: 0px 20px;
+            text-transform: uppercase;
+
+        }
+
+        .tabHeader button {
+            font-size: 14px;
+            padding: 0px 10px;
+        }
+
+        .barHerramientasHeader button {
+            font-size: 22px;
+        }*/
+
+    .tabHeader button {
+        font-size: 15px;
+        padding: 0px 8px;
+    }
+
+
+    /* Ventanas */
+
+    .contennedorTituloVentana h2 {
+        font-size: 15px;
+    }
+    .contennedorTituloVentana h2 > span {
+        padding: 0px 8px;
+    }
+
+}
+
+@media screen and (min-width: 1370px) and (max-width: 1500px) {
+
+/* Header Principal */
+
+    .secLogoTitulo h1 {
+        font-size: 19px;
+        font-family: 'signikaregular';
+        font-weight: normal;
+        padding: 0px 20px;
+        text-transform: uppercase;
+
+    }
+
+
+    .barHerramientasHeader button {
+        font-size: 22px;
+    }
+
+    .tabHeader button {
+        font-size: 15px;
+        padding: 0px 10px;
+    }
+
+/* Ventanas */
+
+    .contennedorTituloVentana h2 {
+        font-size: 14px;
+    }
+    .contennedorTituloVentana h2 > span {
+        padding: 0px 8px;
+    }
+
+}
+
+/* Pantallas Laptops, netbooks, 12" */
+
+@media screen and (min-width: 1281px) and (max-width: 1370px) {
+
+    /* Header Principal */
+
+    .secLogoTitulo h1 {
+        font-size: 18px;
+        font-family: 'signikaregular';
+        font-weight: normal;
+        padding: 0px 20px;
+        text-transform: uppercase;
+
+    }
+
+    .tabHeader button {
+        font-size: 14px;
+        padding: 0px 10px;
+    }
+
+    .barHerramientasHeader button {
+        font-size: 22px;
+    }
+
+    /* Ventanas */
+
+    .contennedorTituloVentana h2 {
+        font-size: 13px;
+    }
+    .contennedorTituloVentana h2 > span {
+        padding: 0px 8px;
+    }
+
+    /* Botones de ventana */
+    .contenedorBotonesVentana > button:last-child {
+        margin-right: 7px;
+    }
+
+    .contenedorBotonesVentana > button {
+        padding: 10px 4px;
+    }
+
+}
+
+/* El ancho minimo soportado es 1280 */
+
+@media screen and (max-width: 1281px)  {
+
+    /* Contenedor principal */
+
+    body > div {
+        min-width: 1280px;
+    }
+
+    /* Header Principal */
+
+    .secLogoTitulo h1 {
+        font-size: 18px;
+        font-family: 'signikaregular';
+        font-weight: normal;
+        padding: 0px 20px;
+        text-transform: uppercase;
+
+    }
+
+    .tabHeader button {
+        font-size: 14px;
+        padding: 0px 10px;
+    }
+
+    .barHerramientasHeader button {
+        font-size: 22px;
+    }
+
+    /* Ventanas */
+
+    .contennedorTituloVentana h2 {
+        font-size: 13px;
+    }
+    .contennedorTituloVentana h2 > span {
+        padding: 0px 8px;
+    }
+
+    /* Botones de ventana */
+    .contenedorBotonesVentana > button:last-child {
+        margin-right: 7px;
+    }
+
+    .contenedorBotonesVentana > button {
+        padding: 10px 4px;
+    }
+}
+
+

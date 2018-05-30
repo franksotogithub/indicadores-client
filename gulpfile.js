@@ -29,7 +29,7 @@ var config = {
         },
 
         asscss: function () {
-            return []
+            return ['./src/assets/css/*.css']
         },
 
         assjs: function () {
