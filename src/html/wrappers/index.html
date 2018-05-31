@@ -14,6 +14,9 @@
             <button data-icon=">" title="Maximizar ventana" class="tooltip maximizar"></button>
         </div>
         </header>
+        <div class="contenidoMapa">
+            {% include 'indicadores/mapa.html' %}
+        </div>
     </section>
 </div><!--
          --><div class="col-35 ventanaTabla contenedorVentana" data-codevent="indicadores">
@@ -30,6 +33,9 @@
             <button data-icon=">" title="Maximizar ventana" class="tooltip maximizar" ></button>
         </div>
         </header>
+        <div class="contenidoCuadro">
+            {% include 'indicadores/cuadro.html' %}
+        </div>
     </section>
 </div><!--
          --><div class="col-1-4 ventanaGrafico contenedorVentana" data-codevent="graficos">
@@ -46,6 +52,7 @@
             <button data-icon=">" title="Maximizar ventana" class="tooltip maximizar" ></button>
         </div>
         </header>
+
     </section>
 </div>
 {% endblock %}
