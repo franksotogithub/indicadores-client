@@ -9,3 +9,4 @@ dist/
 node_modules/
 src/assets/
 _p*.*
+**/config.js

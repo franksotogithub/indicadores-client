@@ -19,7 +19,8 @@ var config = {
             return this.src + 'html/wrappers/*.html'
         },
         js:   function () {
-            return this.src + 'js/*.js'
+            return [this.src+'js/custom.js', this.src+'js/config.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
+                this.src+'js/utils/*.js', this.src+'js/events/*.js']//this.src + 'js/*.js'
         },
         css:  function () {
             return this.src + 'css/*.css'
