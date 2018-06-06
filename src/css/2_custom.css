@@ -99,7 +99,7 @@ div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los boton
 }
 
 .animacionbtn{
-    background-color:#1B3C71;
+    background-color:#12284c !important;
     -webkit-animation-name: anmationBTN; /* Safari 4.0 - 8.0 */
     -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
     animation-name: animationBTN;
@@ -112,7 +112,7 @@ div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los boton
     20%  {background-color: #216fb6;}
     50%  {background-color: #1B3C71;}
     70% {background-color: #216fb6;}
-    100%  {background-color: #1B3C71;}
+    100%  {background-color: #12284c;}
 }
 
 /* Standard syntax */
