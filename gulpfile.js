@@ -164,7 +164,7 @@ gulp.task('browser-sync', ['html', 'css', 'js'], function() {
     });
     gulp.watch(['./src/html/*.html', './src/html/**/*.html' ], ['html']);
     gulp.watch('./src/css/*.css', ['css']);
-    gulp.watch('./src/js/*.js', ['js']);
+    gulp.watch(config.source.js(), ['js']);
 });
 
 gulp.task('assets', ['asscss', 'assjs', 'fonts']);

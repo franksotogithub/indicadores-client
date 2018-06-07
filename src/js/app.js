@@ -1,7 +1,8 @@
-var App = (function () {
+var App = (function (scope, config) {
     var init = function () {
 
     };
+
     return {
         ambito: 'nacional',
         categoria: 'P01',
@@ -10,4 +11,4 @@ var App = (function () {
         /* Metodos */
         init: init
     }
-})();
+})(window, AppConfig());

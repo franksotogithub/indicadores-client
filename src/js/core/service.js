@@ -1,6 +1,6 @@
 var App = App || {};
 
-App.service = (function (parent) {
+App.service = (function (parent, config) {
 
     var callback = {
         defaultSuccess: function (data) {
@@ -97,7 +97,7 @@ App.service = (function (parent) {
 
             c++;
         });
-        var url = parent.config.urlServer + slug + query_url;
+        var url = config.urlServer + slug + query_url;
         return url;
     };
 
@@ -110,4 +110,4 @@ App.service = (function (parent) {
         getUrlServer: getUrlServer
     }
 
-})(App);
+})(App, AppConfig());
