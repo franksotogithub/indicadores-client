@@ -60,8 +60,8 @@ function reabrirVentanas(e) {
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").addClass("maximizar").removeClass("restaurar");
 
         /* Reiniciar tooltip  */
-        Tipped.init();
-        Tipped.create('.tooltip', {size: 'large'});
+        //Tipped.init();
+        //Tipped.create('.tooltip', {size: 'large'});
 
     }else if(contadorVentanas[0]==2){
         var ventanaOculta = 13 - parseInt(contadorVentanas[1])
@@ -121,8 +121,8 @@ function minimizarVentana(e) {
         console.log(vAbiertas);
 
         /* Reiniciar tooltip  */
-        Tipped.init();
-        Tipped.create('.tooltip', {size: 'large'});
+        //Tipped.init();
+        //Tipped.create('.tooltip', {size: 'large'});
 
 
     }else if(contadorVentanas[0]==3) {
@@ -187,8 +187,8 @@ function maximizarVentana(e){
     e.addClass("restaurar").removeClass("maximizar");
 
     /* Reiniciar tooltip  */
-    Tipped.init();
-    Tipped.create('.tooltip', {size: 'large'});
+    //Tipped.init();
+    //Tipped.create('.tooltip', {size: 'large'});
 }
 
 /* Restaurar Ventana */
@@ -231,8 +231,8 @@ function restaurarVentana(e) {
     e.attr("title", "Maximizar ventana");
     e.addClass("maximizar").removeClass("restaurar");
 
-     Tipped.init();
-     Tipped.create('.tooltip', {size: 'large'});
+     //Tipped.init();
+     //Tipped.create('.tooltip', {size: 'large'});
 }
 
 
@@ -240,7 +240,7 @@ function restaurarVentana(e) {
 $(document).ready(function() {
 
     /* Crea el tooltip */
-    Tipped.create('.tooltip', {size: 'large'});
+    //Tipped.create('.tooltip', {size: 'large'});
 
     $('.contenedorVentana').on('click','.minimizar', function() {
         minimizarVentana($(this));

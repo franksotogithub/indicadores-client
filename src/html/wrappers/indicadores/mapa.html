@@ -1,0 +1,104 @@
+<div id="viewDiv"></div>
+
+<div id="list-widgets">
+
+    <div id="widget-departamentos" class="widget-ubigeo">
+        DEPARTAMENTO
+    </div>
+    <div id="widget-provincias" class="widget-ubigeo">
+        PROVINCIA
+    </div>
+    <div id="widget-select-all">
+        <input type="checkbox" id="select-all"> Seleccionar todos
+    </div>
+</div>
+
+<div id="widget-select-layer">
+    <select id="select-layer">
+        <option selected value="0">
+            Vista Departamental
+        </option>
+        <option value="1">
+            Vista Provincial
+        </option>
+        <option value="2">
+            Vista Distrital
+        </option>
+    </select>
+
+</div>
+
+<div id="popup-modificable" > <p></p></div>
+<div id="list-maps">
+
+</div>
+
+<style>
+    #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 800px;
+        width: 100%;
+    }
+
+    .esri-legend {
+        background-color: whitesmoke;
+        color: darkslategray;
+    }
+
+
+    .esri-popup{
+        opacity:0.7;
+    }
+
+    #widget-peru {
+        background-color: white;
+        border-radius: 8px;
+        padding: 8px;
+        opacity: 0.7;
+        margin-right: 5px;
+    }
+
+    .widget-ubigeo {
+        background-color: white;
+        border-radius: 8px;
+        padding: 8px;
+        opacity: 0.7;
+        margin-right: 5px;
+    }
+
+
+    #widget-select-all {
+        background-color: white;
+        border-radius: 8px;
+        padding: 8px;
+        opacity: 0.7;
+        margin-right: 5px;
+
+    }
+    #list-widgets{
+        display: flex;
+        flex-wrap: nowrap;
+        margin-left: 5px;
+        margin-right: 5px;
+        border: hidden;
+        box-shadow: none;
+    }
+
+
+    .img{
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        z-index: 1;
+    }
+
+    .overviewDiv {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        z-index: 1;
+    }
+
+</style>
