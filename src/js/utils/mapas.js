@@ -26,6 +26,93 @@ App.utils.mapas = (function (parent, config) {
     var color_4="#54b6a7";
     var color_5="#3E857A";
 
+    var lods = [
+        {
+            "level": 0,
+            "scale": 591657527
+        },
+
+        {   "level": 1,
+            "scale": 295828763
+        },
+
+        {   "level": 2,
+            "scale": 147914381
+        },
+
+        {   "level": 3,
+            "scale": 73957190
+        },
+        {   "level": 4,
+            "scale": 14000000
+            //"scale": 36978595
+        },
+
+        {   "level": 5,
+            "scale": 12000000
+            //"scale": 18489297
+        },
+        {
+            "level": 6,
+            "scale": 10000000
+        },
+
+        {
+            "level": 7,
+            "scale": 5000000
+            //"scale": 4622324
+        },
+
+        {
+            "level": 8,
+            "scale": 2311162
+        },
+
+        {
+            "level": 9,
+            "scale": 1155581
+        },
+        {
+            "level": 10,
+            "scale": 577790
+        },
+
+        {
+            "level": 11,
+            "scale": 288895
+        },
+        {
+            "level": 12,
+            "scale": 144447
+        },
+        {
+            "level": 13,
+            "scale": 72223
+        },
+        {
+            "level": 14,
+            "scale": 36111
+        },
+        {
+            "level": 15,
+            "scale": 18055
+        },
+        {
+            "level": 16,
+            "scale": 9027
+        },
+
+        {
+            "level": 17,
+            "scale": 4513
+        },
+        {
+            "level": 18,
+            "scale": 2256
+        },
+
+    ];
+
     var classBreakinfos=undefined;
 
     var sources=undefined;
@@ -328,7 +415,8 @@ App.utils.mapas = (function (parent, config) {
             container: "viewDiv",
             map: map,
             center: [-75.000, -9.500],
-            scale : 14000000,
+            zoom : 6,
+
         });
         //view.scale = 24000;
         identifyTask = new IdentifyTask(url_map);
@@ -396,6 +484,7 @@ App.utils.mapas = (function (parent, config) {
         view.ui.add("list-maps", "bottom-right");
         view.ui.add("widget-select-layer", "top-right");
         view.ui.remove("zoom");
+        view.constraints.lods=lods;
 
         var changeIndex=function(newIndex) {
             if(newIndex<historic_features.length)
@@ -428,8 +517,14 @@ App.utils.mapas = (function (parent, config) {
             query.where = definitionExpression;
             return layer.queryExtent(query)
                 .then(function(response) {
+                    //
+
                     view.goTo(response.extent);
+                    console.log(view.zoom);
+
                 });
+
+            //
         };
 
         var cleanVars=function(){
@@ -510,6 +605,7 @@ App.utils.mapas = (function (parent, config) {
             changeLayer(index);
             definitionExpression_gloabal=list_maps[indexMap].where;
             updateMap(definitionExpression_gloabal,index);
+
         }
 
         var changeLayer=function(index){
@@ -688,6 +784,19 @@ App.utils.mapas = (function (parent, config) {
         view.popup.on("trigger-action", function(event) {
             openFeature();
         });
+
+        /*view.onzoom= function () {
+            console.log("zoom out finished");
+        }*/
+
+
+        view.when(function () {
+            console.log(view.constraints.effectiveLODS);
+        })
+
+
+
+
 
         changeLayer(0);
     };
