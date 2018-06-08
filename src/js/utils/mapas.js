@@ -1,5 +1,4 @@
 App.utils.mapas = (function (parent, config) {
-
     var indexLayer=0;
     var url_map=config.urlMap.poblacion;
     var url_dep=url_map+'/0';
@@ -170,7 +169,7 @@ App.utils.mapas = (function (parent, config) {
 
     var renderBack=function() {
         var renderer = {
-            type: "unique-value",  // autocasts as new UniqueValueRenderer()
+            type: "unique-value",
             field: "OBJECTID",
             defaultSymbol: {
                 type: "simple-fill",
@@ -179,7 +178,7 @@ App.utils.mapas = (function (parent, config) {
                     width: 1,
                     color: "white"
                 }
-            },  // used to visualize all features not matching specified types
+            },
 
         };
 
@@ -188,21 +187,32 @@ App.utils.mapas = (function (parent, config) {
 
     var getMaps = function(){
         return [
-            {id:1 , codigos:[
+            {id:1 ,
+                codigos:[
                 '150138',
                 '151011',
                 '150302',
                 '150303',
-            ] ,indexLayer:2,imagen:"callao.jpg"},
-            {id:2 , codigos:[
+                ],
+                where:"CCDD='07'",
+                indexLayer:2,
+                imagen:"callao.jpg"},
+            {id:2 ,
+                codigos:[
                 '0101',
                 '0102',
-            ] ,indexLayer:1,imagen:"lima_metro.jpg"},
+            ] ,
+                where:"CCDD='15' AND CCPP='01' ",
+                indexLayer:2,
+                imagen:"lima_metro.jpg"},
             {id:3 , codigos:[
                 '01',
                 '02',
                 '03',
-            ] ,indexLayer:0,imagen:"lima_provincias.jpg"},
+                 ] ,
+                where:"CCDD='15' AND CCPP<>'01' ",
+                indexLayer:1,
+                imagen:"lima_provincias.jpg"},
 
         ];
     }
@@ -318,8 +328,9 @@ App.utils.mapas = (function (parent, config) {
             container: "viewDiv",
             map: map,
             center: [-75.000, -9.500],
-            zoom: 6
+            scale : 12000000,
         });
+        //view.scale = 24000;
         identifyTask = new IdentifyTask(url_map);
         identifyParams = new IdentifyParameters();
         identifyParams.tolerance = 3;
@@ -359,17 +370,16 @@ App.utils.mapas = (function (parent, config) {
             newImg.setAttribute("src",'/img/'+map.imagen);
             newImg.classList.add("overviewDiv");
             newImg.setAttribute("id","map_"+index);
-
             document.getElementById("list-maps").appendChild(newImg);
             newImg.addEventListener("click",function (event) {
                 selectedMap(index);
             });
-
         });
         legend = new Legend({
             view: view,
             layerInfos: [{
                 layer: layer,
+                title:'POBLACION',
             }],
 
         });
@@ -385,25 +395,32 @@ App.utils.mapas = (function (parent, config) {
         view.ui.add("list-widgets", "top-left");
         view.ui.add("list-maps", "bottom-right");
         view.ui.add("widget-select-layer", "top-right");
+        view.ui.remove("zoom");
 
         var changeIndex=function(newIndex) {
-            indexLayer=newIndex;
-            identifyParams.layerIds = [newIndex];
-            legend = new Legend({
-                view: view,
-                layerInfos: [{
-                    layer: historic_features[newIndex].layer,
-                }],
-            });
-
-            layers_inicial.forEach(function (layer) {
-                layer.sublayers.forEach(function (sublayer) {
-                    if(parseInt(sublayer.id)=== parseInt(newIndex))
-                    {sublayer.visible=true;}
-                    else
-                    {sublayer.visible=false;}
+            if(newIndex<historic_features.length)
+            {   indexLayer=newIndex;
+                identifyParams.layerIds = [newIndex];
+                legend = new Legend({
+                    view: view,
+                    layerInfos: [{
+                        layer: historic_features[newIndex].layer,
+                    }],
                 });
-            });
+
+                layers_inicial.forEach(function (layer) {
+                    layer.sublayers.forEach(function (sublayer) {
+                        if(parseInt(sublayer.id)=== parseInt(newIndex))
+                        {sublayer.visible=true;}
+                        else
+                        {sublayer.visible=false;}
+                    });
+                });
+
+            }
+            else
+            {console.log('index no existe');}
+
         }
 
         var zoomToLayer=function(view,layer,definitionExpression) {
@@ -415,14 +432,14 @@ App.utils.mapas = (function (parent, config) {
                 });
         };
 
-        var cleanVars=function(index){
+        var cleanVars=function(){
             select_features=[];
-            var tam=len(historic_features);
-            for(var i=tam;i>index;i--){
-                historic_feature[i].nombres=[];
-                historic_feature[i].select_features=[];
-            }
-
+            historic_features.forEach(function (f) {
+                f.nombres=[];
+                f.select_features=[];
+            })
+            view.graphics.removeAll();
+            view.popup.close();
         }
 
         var getDefinitionExpresion=function(array_codigos,index){
@@ -451,6 +468,7 @@ App.utils.mapas = (function (parent, config) {
             return definitionExpression;
         }
 /*---->fijate aqui*/
+
         var selectedFeature=function(graphic,event){
             if (graphic){
                 var codigo=graphic.attributes.CODIGO;
@@ -489,13 +507,13 @@ App.utils.mapas = (function (parent, config) {
 
         var selectedMap=function(indexMap) {
             var index=list_maps[indexMap].indexLayer;
-            var codigos=list_maps[indexMap].codigos;
             changeLayer(index);
-            definitionExpression_gloabal=getDefinitionExpresionByCodigos(codigos);
+            definitionExpression_gloabal=list_maps[indexMap].where;
             updateMap(definitionExpression_gloabal,index);
         }
 
         var changeLayer=function(index){
+            cleanVars();
             changeIndex(index);
             definitionExpression_gloabal="1=1";
 
@@ -619,8 +637,8 @@ App.utils.mapas = (function (parent, config) {
         });
 
         document.getElementById("select-layer").addEventListener("change", function(){
-            //console.log(this.value);
-            changeLayer(this.value);
+            var index = parseInt(this.value);
+            changeLayer(index);
         });
 
         document.getElementById("select-all").addEventListener("click", function(){
@@ -631,14 +649,7 @@ App.utils.mapas = (function (parent, config) {
         searchWidget.on("select-result", function(event){
             var feature=event.result.feature;
             var index= event.sourceIndex;
-            select_features=[];
-            historic_features[0].nombres=[];
-            historic_features[0].select_features=[];
-            historic_features[1].nombres=[];
-            historic_features[1].select_features=[];
-            historic_features[2].nombres=[];
-            historic_features[2].select_features=[];
-            view.graphics.removeAll();
+            cleanVars();
 
             if(index==1){
 
