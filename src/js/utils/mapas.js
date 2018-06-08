@@ -328,7 +328,7 @@ App.utils.mapas = (function (parent, config) {
             container: "viewDiv",
             map: map,
             center: [-75.000, -9.500],
-            scale : 12000000,
+            scale : 14000000,
         });
         //view.scale = 24000;
         identifyTask = new IdentifyTask(url_map);
