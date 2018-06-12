@@ -201,6 +201,13 @@ div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los boton
 
 
 
+/* ventana Mapa */
+
+div.contenidoMapa{
+    text-align: left;
+}
+
+
 
 
 /* Responsive */
@@ -208,26 +215,7 @@ div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los boton
 
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 
-    /* Header Principal */
 
-   /* .secLogoTitulo h1 {
-        font-size: 18px;
-        font-family: 'signikaregular';
-        font-weight: normal;
-        padding: 0px 20px;
-        text-transform: uppercase;
-
-    }
-
-    .tabHeader button {
-        font-size: 14px;
-        padding: 0px 10px;
-    }
-
-    .barHerramientasHeader button {
-        font-size: 22px;
-    }
-*/
     /* Ventanas */
 
     .contennedorTituloVentana h2 {

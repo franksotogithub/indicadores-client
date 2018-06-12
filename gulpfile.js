@@ -19,7 +19,7 @@ var config = {
             return this.src + 'html/wrappers/*.html'
         },
         js:   function () {
-            return [this.src+'js/ui/*.js', this.src+'js/config.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
+            return [ this.src+'js/ui/*.js', this.src+'js/config.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
                 this.src+'js/utils/*.js', this.src+'js/events/*.js']//this.src + 'js/*.js'
         },
         css:  function () {
