@@ -3,7 +3,31 @@
 var vAbiertas;
 var ultimaMinimizada;
 
+
 /* los valores seran los siguientes : v1 = 1; v2=5; v3 = 7  */
+
+
+
+/* Alto de ventanas automaticos */
+
+function altoVentanas() {
+    var alto = $(window).height();
+
+    alto = alto - 135;
+    $(".contenidoMapa").css("height",alto+"px");
+    $(".contenidoCuadro").css("height",alto+"px");
+    $(".contenidoGrafico").css("height",alto+"px");
+
+
+
+}
+
+altoVentanas();
+
+$(window).resize(function () {
+    altoVentanas();
+});
+
 
 /* Comprobar Ventanas abiertas */
 

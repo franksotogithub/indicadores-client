@@ -1,3 +1,5 @@
+
+
 App.utils.mapas = (function (parent, config) {
     var indexLayer=0;
     var url_map=config.urlMap.poblacion;
@@ -304,6 +306,17 @@ App.utils.mapas = (function (parent, config) {
         ];
     }
 
+    var zoomGlobal = function () {
+        /* zomm Global */
+        var zoom;
+        var tamW = $(window).height();
+        if(tamW > 900){zoom=6;}
+        else if(tamW <= 899 && tamW >= 715 ){zoom=5;}
+        else if(tamW <= 714){zoom=4;}
+        console.log(zoom);
+        return zoom;
+    }
+
     var requireEvents = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate) {
         list_maps=getMaps();
         classBreakinfos=getClassBreakinfos();
@@ -415,7 +428,7 @@ App.utils.mapas = (function (parent, config) {
             container: "viewDiv",
             map: map,
             center: [-75.000, -9.500],
-            zoom : 6,
+            zoom : zoomGlobal(),
 
         });
         //view.scale = 24000;

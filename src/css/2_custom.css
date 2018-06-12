@@ -141,16 +141,16 @@ div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los boton
 }
 
 .ventanaMapa > section{
-    background-color: #FFFFFF; height: 850px;
+    background-color: #FFFFFF;
     margin: 10px 10px;
 
 }
 .ventanaTabla > section{
-    background-color: #FFFFFF; height: 850px;
+    background-color: #FFFFFF;
     margin: 10px 0px;
 }
 .ventanaGrafico > section {
-    background-color: #FFFFFF; height: 850px;
+    background-color: #FFFFFF;
     margin: 10px 10px;
 }
 
