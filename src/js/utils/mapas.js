@@ -2,7 +2,8 @@
 
 App.utils.mapas = (function (parent, config) {
     var indexLayer=0;
-    var url_map=config.urlMap.poblacion;
+    var url_map=config.map_config.poblacion.urlMap;
+    var cod_tematico=config.map_config.poblacion.cod_tematico_default;
     var url_dep=url_map+'/0';
     var url_prov=url_map+'/1';
     var url_dist=url_map+'/2';
@@ -62,7 +63,6 @@ App.utils.mapas = (function (parent, config) {
         {
             "level": 7,
             "scale": 5000000
-            //"scale": 4622324
         },
 
         {
@@ -72,11 +72,13 @@ App.utils.mapas = (function (parent, config) {
 
         {
             "level": 9,
-            "scale": 1155581
+            "scale": 1600000
+            //"scale": 1155581
         },
         {
             "level": 10,
-            "scale": 577790
+            "scale": 650000,
+            //"scale": 577790
         },
 
         {
@@ -141,7 +143,6 @@ App.utils.mapas = (function (parent, config) {
                             minValue: 0,
                             maxValue: 109554,
                         },
-
                         {
                             minValue: 109555,
                             maxValue: 499999,
@@ -159,7 +160,8 @@ App.utils.mapas = (function (parent, config) {
                             maxValue: 4999999,
                             label: "De 1,000,000 a 4,999,999",
                             symbol: createSymbol(color_4)
-                        },{
+                        },
+                             {
                             minValue: 5000000,
                             maxValue: 8445211,
                             label: "De 5,000,000 a 8,445,211",
@@ -231,8 +233,6 @@ App.utils.mapas = (function (parent, config) {
                     symbol: createSymbol(color_5)
                 },
 
-
-
             ],
             },
         };
@@ -277,28 +277,16 @@ App.utils.mapas = (function (parent, config) {
     var getMaps = function(){
         return [
             {id:1 ,
-                codigos:[
-                '150138',
-                '151011',
-                '150302',
-                '150303',
-                ],
+
                 where:"CCDD='07'",
                 indexLayer:2,
                 imagen:"callao.jpg"},
             {id:2 ,
-                codigos:[
-                '0101',
-                '0102',
-            ] ,
+
                 where:"CCDD='15' AND CCPP='01' ",
                 indexLayer:2,
                 imagen:"lima_metro.jpg"},
-            {id:3 , codigos:[
-                '01',
-                '02',
-                '03',
-                 ] ,
+            {id:3 ,
                 where:"CCDD='15' AND CCPP<>'01' ",
                 indexLayer:1,
                 imagen:"lima_provincias.jpg"},
@@ -330,7 +318,7 @@ App.utils.mapas = (function (parent, config) {
                 visible: true,
                 labelsVisible: true,
                 outFields:["*"],
-                renderer:renderizado(classBreakinfos["poblacion"]["indicador"],classBreakinfos["poblacion"]["dep"]),
+                renderer:renderizado(cod_tematico,classBreakinfos["poblacion"]["dep"]),
                 /*popupTemplate: {
                     title: " {CODIGO} {NOMBDEP}",
                     content: "{CODIGO} {NOMBDEP}.",
@@ -342,7 +330,7 @@ App.utils.mapas = (function (parent, config) {
                 visible: false,
                 labelsVisible: true,
                 outFields:["*"],
-                renderer:renderizado(classBreakinfos["poblacion"]["indicador"],classBreakinfos["poblacion"]["prov"]),
+                renderer:renderizado(cod_tematico,classBreakinfos["poblacion"]["prov"]),
                 /*popupTemplate: {
                     title: " {CODIGO} {NOMBPROV}",
                     content: "{CODIGO} {NOMBPROV}.",
@@ -357,7 +345,7 @@ App.utils.mapas = (function (parent, config) {
                 visible: false,
                 labelsVisible: true,
 
-                renderer:renderizado(classBreakinfos["poblacion"]["indicador"],classBreakinfos["poblacion"]["dist"]),
+                renderer:renderizado(cod_tematico,classBreakinfos["poblacion"]["dist"]),
                 /*popupTemplate: {
                     title: " {CODIGO} {NOMBDIST}",
                     content: "{CODIGO} {NOMBDIST}.",
@@ -398,7 +386,7 @@ App.utils.mapas = (function (parent, config) {
 
         departamentoLyr = new FeatureLayer({
             url: url_dep,
-            renderer: renderizado(classBreakinfos["poblacion"]["indicador"],classBreakinfos["poblacion"]["dep"]),
+            renderer: renderizado(cod_tematico,classBreakinfos["poblacion"]["dep"]),
             opacity:opacity,
             id:"dep",
             outFields:["*"],
@@ -406,14 +394,14 @@ App.utils.mapas = (function (parent, config) {
         });
         provinciaLyr = new FeatureLayer({
             url: url_prov,
-            renderer: renderizado(classBreakinfos["poblacion"]["indicador"],classBreakinfos["poblacion"]["prov"]),
+            renderer: renderizado(cod_tematico,classBreakinfos["poblacion"]["prov"]),
             opacity:opacity,
             outFields:["*"],
             title:'PROVINCIAS',
         });
         distritoLyr = new FeatureLayer({
             url: url_dist,
-            renderer: renderizado(classBreakinfos["poblacion"]["indicador"],classBreakinfos["poblacion"]["dist"]),
+            renderer: renderizado(cod_tematico,classBreakinfos["poblacion"]["dist"]),
             opacity:opacity,
             outFields:["*"],
             title:'DISTRITOS',
@@ -424,6 +412,7 @@ App.utils.mapas = (function (parent, config) {
             basemap: "gray",
             layers: layers_inicial,
         });
+
         view = new MapView({
             container: "viewDiv",
             map: map,
@@ -487,7 +476,13 @@ App.utils.mapas = (function (parent, config) {
         searchWidget = new Search({
             view: view,
             sources:sources,
+            activeSourceIndex:0,
+            popupOpenOnSelect :false,
+
+            //activeSource:false
         });
+
+
         view.ui.add(legend, "bottom-left");
         view.ui.add(searchWidget, {
             position: "top-left",
@@ -499,6 +494,7 @@ App.utils.mapas = (function (parent, config) {
         view.ui.remove("zoom");
         view.constraints.lods=lods;
 
+        console.log('sources-->',searchWidget.sources);
         var changeIndex=function(newIndex) {
             if(newIndex<historic_features.length)
             {   indexLayer=newIndex;
@@ -803,8 +799,11 @@ App.utils.mapas = (function (parent, config) {
         }*/
 
 
+
         view.when(function () {
-            console.log(view.constraints.effectiveLODS);
+            var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
+            xsearch.css('display','none');
+
         })
 
 
