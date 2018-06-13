@@ -395,3 +395,23 @@ div.contenidoMapa{
 }
 
 
+@media print and (color) {
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+@media print {
+    header.headerPrincipal {
+        display: none;
+    }
+    .ventanaMapa {
+        display: block;
+        height: 800px !important;
+    }
+
+}
+
+
+
