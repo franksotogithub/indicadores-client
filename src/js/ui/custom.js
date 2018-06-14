@@ -408,5 +408,11 @@ $(document).ready(function() {
         imprimirVentana($(this));
     });
 
+    /* BOton abrir o ocualtar miniMapas */
+    $('.contenedorVentana').on('click','.botonDesplegarMapas', function() {
+        $( ".esri-ui-bottom-right" ).toggleClass("subirMiniMap");
+    });
+
+
 
 });
