@@ -86,13 +86,23 @@ App.service = (function (parent, config) {
         var query_url = '',
         c = 1;
 
-        console.log(parent.ambito);
+        var crearQuery = function (key, value) {
+            if (Array.isArray(value)) {
+                var query_url = [];
+                for (var i=0; i<value.length; i++) {
+                    query_url.push(key + '='+value[i]);
+                }
+                return query_url.join('&');
+            }else {
+                return key + '='+value;
+            }
+        };
 
         $.each(args, function (i,v) {
             if (c == 1) {
-                query_url += '?' + i + '='+v;
+                query_url += '?' + crearQuery(i,v);
             }else {
-                query_url += '&' + i + '='+v;
+                query_url += '&' + crearQuery(i,v);
             }
 
             c++;

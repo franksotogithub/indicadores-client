@@ -1,10 +1,9 @@
 App.service.cuadros = (function (parent, config) {
 
-    var getNacional = function (callback) {
+    var getIndicadores = function (ubigeos, callback) {
         parent.get({
-            url: parent.getUrlServer('indicadores/'),
+            url: parent.getUrlServer('indicadores/tabla/', {"u": ubigeos}),
             success: function (data) {
-                this.nacional = data;
                 callback(data);
             },
 
@@ -15,7 +14,6 @@ App.service.cuadros = (function (parent, config) {
     };
 
     return {
-        nacional: undefined,
-        getNacional: getNacional
+        getIndicadores: getIndicadores
     }
 })(App.service, AppConfig());
