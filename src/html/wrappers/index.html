@@ -1,6 +1,6 @@
 {% extends "../base.html" %}
 {% block wrapper %}
-<div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapa" data-cod="1">
+<div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapa" data-cod="1" >
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
@@ -8,18 +8,18 @@
                     Mapa temático</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana ">
-            <button data-icon="&#xe038;" title="Imprimir" class="tooltip"></button>
+            <button data-icon="&#xe038;" title="Imprimir" class="tooltip imprimir"></button>
             <button data-icon=":" title="Descargar" class="tooltip"></button>
             <button data-icon="&#xe024;" title="Minimizar" class="tooltip minimizar"></button>
             <button data-icon=">" title="Maximizar ventana" class="tooltip maximizar"></button>
         </div>
         </header>
-        <div class="contenidoMapa">
+        <div class="contenidoMapa" >
             {% include 'indicadores/mapa.html' %}
         </div>
     </section>
 </div><!--
-         --><div class="col-35 ventanaTabla contenedorVentana" data-codevent="indicadores" data-cod="5">
+         --><div class="col-35 ventanaTabla contenedorVentana" data-codevent="indicadores" data-cod="5" id="area">
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
@@ -27,7 +27,7 @@
                     Indicadores</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana" >
-            <button data-icon="&#xe038;" title="Imprimir" class="tooltip"></button>
+            <button data-icon="&#xe038;" title="Imprimir" class="tooltip imprimir"></button>
             <button data-icon=":" title="Descargar" class="tooltip"></button>
             <button data-icon="&#xe024;" title="Minimizar" class="tooltip minimizar"></button>
             <button data-icon=">" title="Maximizar ventana" class="tooltip maximizar" ></button>
@@ -46,12 +46,15 @@
                     Graficos y metadatos</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana">
-            <button data-icon="&#xe038;" title="Imprimir" class="tooltip"></button>
+            <button data-icon="&#xe038;" title="Imprimir" class="tooltip imprimir"></button>
             <button data-icon=":" title="Descargar" class="tooltip "></button>
             <button data-icon="&#xe024;" title="Minimizar" class="tooltip minimizar"></button>
             <button data-icon=">" title="Maximizar ventana" class="tooltip maximizar" ></button>
         </div>
         </header>
+        <div class="contenidoGrafico">
+            {% include 'indicadores/cuadro.html' %}
+        </div>
 
     </section>
 </div>

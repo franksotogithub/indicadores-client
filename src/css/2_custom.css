@@ -141,16 +141,16 @@ div.btnMapa , div.btnIndicadores , div.btnGraficos { /* Inicia ocultos los boton
 }
 
 .ventanaMapa > section{
-    background-color: #FFFFFF; height: 850px;
+    background-color: #FFFFFF;
     margin: 10px 10px;
 
 }
 .ventanaTabla > section{
-    background-color: #FFFFFF; height: 850px;
+    background-color: #FFFFFF;
     margin: 10px 0px;
 }
 .ventanaGrafico > section {
-    background-color: #FFFFFF; height: 850px;
+    background-color: #FFFFFF;
     margin: 10px 10px;
 }
 
@@ -393,5 +393,25 @@ div.contenidoMapa{
         padding: 10px 4px;
     }
 }
+
+
+@media print and (color) {
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+@media print {
+    header.headerPrincipal {
+        display: none;
+    }
+    .ventanaMapa {
+        display: block;
+        height: 800px !important;
+    }
+
+}
+
 
 
