@@ -1,0 +1,33 @@
+.graficoWidget-top {
+    padding: 5px 10px;
+    border: 1px solid #c7c6c6;
+    width: 25%;
+    display: inline-block;
+    margin: 2px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #555555;
+    font-family: "signikaregular";
+    height: 58px;
+    vertical-align: middle;
+}
+
+.graficoWidget-top span.hombre {
+    font-size: 20px;
+    color: #d57008;
+}
+.hombre {
+    color: #d57008;
+}
+.graficoWidget-top span.mujer {
+    font-size: 20px;
+    color: #990000;
+}
+.mujer {
+
+    color: #990000;
+}
+
+.pobWidText{
+    color: #408fb5;
+}
