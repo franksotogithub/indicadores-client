@@ -169,9 +169,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
         if(tam_ventana1 <= 800){
-            totalVentana = (tam_ventana1 - 200);
+            totalVentana = (tam_ventana1 - 280);
         } else{
-            totalVentana=(tam_ventana1 - 220);
+            totalVentana=(tam_ventana1 - 280);
         }
 
         console.log(">>> tamano ventana", totalVentana);

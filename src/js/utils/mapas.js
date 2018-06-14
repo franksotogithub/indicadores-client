@@ -201,10 +201,10 @@ App.utils.mapas = (function (parent, config,service) {
         /* zomm Global */
         var zoom;
         var tamW = $(window).height();
-        if(tamW > 900){zoom=6;}
-        else if(tamW <= 899 && tamW >= 715 ){zoom=5;}
-        else if(tamW <= 714){zoom=4;}
-        console.log(zoom);
+        if(tamW >= 900){zoom=6;
+        }else if(tamW <= 899 && tamW >= 715 ){zoom=5;
+        }else if(tamW <= 714){zoom=4;}
+        console.log(tamW+" Es el ZOom");
         return zoom;
     }
 

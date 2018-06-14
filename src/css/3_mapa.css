@@ -59,8 +59,9 @@
     width: 747px;
     max-width: 200% !important;
     left:-14px;
-
     bottom: -166px !important;
+    display: none;
+    transition:all 500ms;
 }
 
 .subirMiniMap {
