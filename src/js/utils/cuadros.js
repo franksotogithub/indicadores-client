@@ -1,14 +1,4 @@
 App.utils.cuadros = (function (config, appData, parent, service) {
-    var cabecera = [
-        {
-            "titulo": "Orden",
-            "rowspan": "2"
-        },
-        {
-            "titulo": "VARIABLE / INDICADOR",
-            "rowspan": "2"
-        }
-    ];
 
     var init = function (callback) {
         this.altoVentana = altoTabla();
@@ -62,6 +52,18 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var cabeceraUigeos = function (ubigeos) {
+        var cabecera = [
+            {
+                "titulo": "Orden",
+                "rowspan": "2"
+            },
+            {
+                "titulo": "VARIABLE / INDICADOR",
+                "rowspan": "2"
+            }
+        ];
+
+
         for (var i=0;i<ubigeos.length;i++) {
             cabecera.push(cabeceraTemplate(ubigeos[i]));
         }
@@ -70,10 +72,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var crearTabla= function (table, data, columns, _this) {
-        if (_this.tblIndicadores !== undefined) {
-            _this.tblIndicadores.destroy();
-            _this.tblIndicadores.clear();
-        }
+
 
         var scrollY = _this.altoVentana.toString() + 'px';
 
@@ -133,6 +132,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var crearTablaUigeos = function (ubigeos) {
+
+        if (this.tblIndicadores !== undefined) {
+            this.tblIndicadores.destroy();
+            this.tblIndicadores.clear().draw();
+        }
+
         var callback = function () {
             cabeceraUigeos(ubigeos);
 

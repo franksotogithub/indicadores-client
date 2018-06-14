@@ -492,6 +492,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     select_features.push(codigo);
                     historic_features[indexLayer].nombres.push(nombre);
+
                 }
                 else{
                     view.popup.close();
@@ -505,8 +506,9 @@ App.utils.mapas = (function (parent, config,service) {
                 layer.findSublayerById(parseInt(indexLayer)).definitionExpression=definitionExpression_gloabal;
 
                 /***aqui se debe llamar a ola funcion q renderiza la tabla****/
+                parent.cuadros.crearTablaUigeos(select_features);
             }
-        }
+        };
 
         var selectedMap=function(indexMap) {
             var index=list_maps[indexMap].indexLayer;
