@@ -17,6 +17,7 @@
             "esri/tasks/support/IdentifyParameters",
             "dojo/_base/array",
             "esri/PopupTemplate",
+            "esri/widgets/Print",
             "dojo/domReady!"
         ], utils.mapas.requireEvents);
     })(App.service,App.utils);

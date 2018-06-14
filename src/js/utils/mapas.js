@@ -1,12 +1,14 @@
 
 
-App.utils.mapas = (function (parent, config) {
+App.utils.mapas = (function (parent, config,service) {
     var indexLayer=0;
-    var url_map=config.map_config.poblacion.urlMap;
-    var cod_tematico=config.map_config.poblacion.cod_tematico_default;
-    var url_dep=url_map+'/0';
-    var url_prov=url_map+'/1';
-    var url_dist=url_map+'/2';
+
+    var url_dep;
+    var url_prov;
+    var url_dist;
+    var url_map= undefined;
+    var cod_tematico=undefined;
+
     var identifyTask;
     var identifyParams;
     var legend;
@@ -117,7 +119,9 @@ App.utils.mapas = (function (parent, config) {
 
     ];
 
-    var classBreakinfos=undefined;
+    var cod_map='POB';
+    var url_map=config.map_config[cod_map].urlMap;
+    var cod_tematico=config.map_config[cod_map].cod_tematico_default;
 
     var sources=undefined;
 
@@ -135,109 +139,8 @@ App.utils.mapas = (function (parent, config) {
         };
     };
 
-    var getClassBreakinfos = function () {
-        return {"poblacion" :
-                    {  "indicador":"P010100",
-                         "dep" : [
-                        {
-                            minValue: 0,
-                            maxValue: 109554,
-                        },
-                        {
-                            minValue: 109555,
-                            maxValue: 499999,
-                            label: "De 109 555 a 499 999 ",
-                            symbol: createSymbol(color_2)
-                        },
-                        {
-                            minValue: 500000,
-                            maxValue: 999999,
-                            label: "De 500 000 a 999 999  ",
-                            symbol: createSymbol(color_3)
-                        },
-                        {
-                            minValue: 1000000,
-                            maxValue: 4999999,
-                            label: "De 1,000,000 a 4,999,999",
-                            symbol: createSymbol(color_4)
-                        },
-                             {
-                            minValue: 5000000,
-                            maxValue: 8445211,
-                            label: "De 5,000,000 a 8,445,211",
-                            symbol: createSymbol(color_5)
-                        }
-            ],
-                "prov": [
-                        {
-                            minValue: 0,
-                            maxValue: 0,
-                        },
 
-                        {
-                            minValue: 0,
-                            maxValue: 29999,
-                            label: "De 0 a 29999",
-                            symbol: createSymbol(color_2)
-                        },
-                        {
-                            minValue: 30000,
-                            maxValue: 56999,
-                            label: "De 30000 a 56999 ",
-                            symbol: createSymbol(color_3)
-                        },
-                        {
-                            minValue: 56999,
-                            maxValue: 112999,
-                            label: "De 56999 a 112999 ",
-                            symbol: createSymbol(color_4)
-                        },
-                        {
-                            minValue: 113000,
-                            maxValue: 7605740,
-                            label: "De 113000 a 7605740 ",
-                            symbol: createSymbol(color_5)
-                        },
-
-
-            ],
-                "dist": [
-                {
-                    minValue: 0,
-                    maxValue: 0,
-                },
-
-                {
-                    minValue: 0,
-                    maxValue: 1999,
-                    label: "De 0 a 1999",
-                    symbol: createSymbol(color_2)
-                },
-
-                {
-                    minValue: 2000,
-                    maxValue: 4199,
-                    label: "De 2000 a 4199",
-                    symbol: createSymbol(color_3)
-                },
-                {
-                    minValue: 4200,
-                    maxValue: 9999,
-                    label: "De 4200 a 9999",
-                    symbol: createSymbol(color_4)
-                },
-                {
-                    minValue: 9999,
-                    maxValue: 898443,
-                    label: "De 9999 a 898443",
-                    symbol: createSymbol(color_5)
-                },
-
-            ],
-            },
-        };
-    }
-
+    var classBreakinfos=undefined;
     var renderizado = function(indicador,classBreakinfo){
         var renderer = {
             type: "class-breaks",
@@ -305,9 +208,13 @@ App.utils.mapas = (function (parent, config) {
         return zoom;
     }
 
-    var requireEvents = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate) {
-        list_maps=getMaps();
-        classBreakinfos=getClassBreakinfos();
+    var crearMapa = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,data) {
+
+        classBreakinfos= data;
+        url_dep=url_map+'/0';
+        url_prov=url_map+'/1';
+        url_dist=url_map+'/2';
+
         layer = new MapImageLayer({
             url: url_map,
             opacity:0.8,
@@ -318,11 +225,8 @@ App.utils.mapas = (function (parent, config) {
                 visible: true,
                 labelsVisible: true,
                 outFields:["*"],
-                renderer:renderizado(cod_tematico,classBreakinfos["poblacion"]["dep"]),
-                /*popupTemplate: {
-                    title: " {CODIGO} {NOMBDEP}",
-                    content: "{CODIGO} {NOMBDEP}.",
-                },*/
+                renderer:renderizado(cod_tematico,classBreakinfos["0"]),
+
 
             }, {
                 id: 1,
@@ -330,12 +234,8 @@ App.utils.mapas = (function (parent, config) {
                 visible: false,
                 labelsVisible: true,
                 outFields:["*"],
-                renderer:renderizado(cod_tematico,classBreakinfos["poblacion"]["prov"]),
-                /*popupTemplate: {
-                    title: " {CODIGO} {NOMBPROV}",
-                    content: "{CODIGO} {NOMBPROV}.",
-                },
-                */
+                renderer:renderizado(cod_tematico,classBreakinfos["1"]),
+
 
 
             }, {
@@ -344,12 +244,7 @@ App.utils.mapas = (function (parent, config) {
                 outFields:["*"],
                 visible: false,
                 labelsVisible: true,
-
-                renderer:renderizado(cod_tematico,classBreakinfos["poblacion"]["dist"]),
-                /*popupTemplate: {
-                    title: " {CODIGO} {NOMBDIST}",
-                    content: "{CODIGO} {NOMBDIST}.",
-                },*/
+                renderer:renderizado(cod_tematico,classBreakinfos["2"]),
 
             }]
         });
@@ -384,9 +279,10 @@ App.utils.mapas = (function (parent, config) {
         });
         layers_inicial = [layer_back,layer];
 
+
         departamentoLyr = new FeatureLayer({
             url: url_dep,
-            renderer: renderizado(cod_tematico,classBreakinfos["poblacion"]["dep"]),
+            renderer: renderizado(cod_tematico,classBreakinfos["0"]),
             opacity:opacity,
             id:"dep",
             outFields:["*"],
@@ -394,14 +290,14 @@ App.utils.mapas = (function (parent, config) {
         });
         provinciaLyr = new FeatureLayer({
             url: url_prov,
-            renderer: renderizado(cod_tematico,classBreakinfos["poblacion"]["prov"]),
+            renderer: renderizado(cod_tematico,classBreakinfos["1"]),
             opacity:opacity,
             outFields:["*"],
             title:'PROVINCIAS',
         });
         distritoLyr = new FeatureLayer({
             url: url_dist,
-            renderer: renderizado(cod_tematico,classBreakinfos["poblacion"]["dist"]),
+            renderer: renderizado(cod_tematico,classBreakinfos["2"]),
             opacity:opacity,
             outFields:["*"],
             title:'DISTRITOS',
@@ -409,7 +305,7 @@ App.utils.mapas = (function (parent, config) {
         });
 
         map = new Map({
-            basemap: "gray",
+            //basemap: "gray",
             layers: layers_inicial,
         });
 
@@ -494,7 +390,10 @@ App.utils.mapas = (function (parent, config) {
         view.ui.remove("zoom");
         view.constraints.lods=lods;
 
-        console.log('sources-->',searchWidget.sources);
+
+
+
+        //console.log('sources-->',searchWidget.sources);
         var changeIndex=function(newIndex) {
             if(newIndex<historic_features.length)
             {   indexLayer=newIndex;
@@ -571,7 +470,7 @@ App.utils.mapas = (function (parent, config) {
             });
             return definitionExpression;
         }
-/*---->fijate aqui*/
+        /*---->fijate aqui*/
 
         var selectedFeature=function(graphic,event){
             if (graphic){
@@ -804,13 +703,42 @@ App.utils.mapas = (function (parent, config) {
             var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
             xsearch.css('display','none');
 
-        })
+            var print = new Print({
+                view: view,
+                printServiceUrl: config.utils.print
+            });
+            view.ui.add(print, "top-right");
 
-
-
-
+        });
 
         changeLayer(0);
+    }
+
+    var requireEvents = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print) {
+        list_maps=getMaps();
+        //var cod_map='POB';
+        //var url_map=config.map_config[cod_map].urlMap;
+        //var cod_tematico=config.map_config[cod_map].cod_tematico_default;
+        service.mapas.getLegenda(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,cod_map,cod_tematico,function (
+            Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,data) {
+            console.log('data-->',data);
+            crearMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,data);
+        });
+
+        //classBreakinfos=getClassBreakinfos(cod_map,cod_tematico);
+
+
+        /*var getClassBreakinfos = function (cod_map,cod_tematico) {
+
+            service.mapas.getLegenda(cod_map,cod_tematico,function (data) {
+
+            });
+
+        }*/
+
+
+
+
     };
 
     return {
@@ -818,4 +746,4 @@ App.utils.mapas = (function (parent, config) {
     }
 
 
-})(App.utils, AppConfig() );
+})(App.utils, AppConfig() ,App.service );
