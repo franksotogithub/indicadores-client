@@ -1,4 +1,4 @@
-App.utils.graficos = (function (parent, config) {
+App.utils.graficos = (function (parent, service, config, appdata) {
 
 
 
@@ -225,14 +225,18 @@ App.utils.graficos = (function (parent, config) {
     };
 
 
+    var crearMinimizado = function (ubigeos, ambito) {
+        if (ambito == 'P01') {
+            // Edad
+            service.graficos.gePoblacionEdad(ubigeos, graf_persona_edad);
 
+            console.log("appdata", appdata.titulo["U150125"]);
+        }
+    }
 
     return {
-        graf_persona_edad: graf_persona_edad,
-        graf_barra_ubigeo : graf_barra_ubigeo,
-
-        nacional: undefined
+        crearMinimizado: crearMinimizado
     }
 
 
-})(App, AppConfig());
+})(App.utils, App.service, AppConfig(), Appdata());

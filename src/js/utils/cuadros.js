@@ -12,7 +12,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var init = function (callback) {
         this.altoVentana = altoTabla();
-        crearTablaUigeos(['00', '01', '02', '03', '04', '05']);
+        crearTablaUigeos(['00']);
     };
 
     var crearCabecera = function (cabecera) {

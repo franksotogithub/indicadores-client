@@ -1,26 +1,41 @@
 App.service.graficos = (function (parent, config) {
 
 
-    var get_info_ubi = function () {
+    var gePoblacionEdad = function (ubigeos, callback) {
+        console.log(parent.getUrlServer('/grafico/poblacion/', {"u": ubigeos}));
+        /*
+        parent.get({
+            url: parent.getUrlServer('/grafico/poblacion/', {"u": ubigeos}),
+            success: function (data) {
+                // Adaptar la data al servicio de highchart
 
-        var ubigeo = $('#cmb_ubi').val();
-        console.log(ubigeo);
+                [
+                    {"codigo": "00-15", "hombre": 752, "mujeres": 578}
+                ]
 
-        $.ajax({
-            url: 'https://reqres.in/api/users'+ubigeo,
-            success: function(respuesta) {
-
-                utils.graficos.graf_persona_edad(respuesta);
+                var datagrafico = [[752, 578],[228,316],[ 418, 325]];
+                if (callback !== undefined) {
+                    callback(datagrafico);
+                }
             },
-            error: function() {
-                console.log("No se ha podido obtener la información");
+            error: function (obj, status, otherr) {
+
             }
-        });
+        })
+        */
+
+        if (callback !== undefined) {
+            callback( [[752, 578],[228,316],[ 418, 325]]);
+        }
+
 
     };
 
+
+
+
     return{
-        get_info_ubi:get_info_ubi
+        gePoblacionEdad: gePoblacionEdad
     }
 
 })(App.service, AppConfig());
