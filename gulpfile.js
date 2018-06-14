@@ -19,8 +19,8 @@ var config = {
             return this.src + 'html/wrappers/*.html'
         },
         js:   function () {
-            return [ this.src+'js/ui/*.js', this.src+'js/config.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
-                this.src+'js/utils/*.js', this.src+'js/events/*.js']//this.src + 'js/*.js'
+            return [ this.src+'js/ui/*.js', this.src+'js/config.js', this.src+'js/data.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
+                this.src+'js/utils/*.js', this.src+'js/events/*.js']
         },
         css:  function () {
             return this.src + 'css/*.css'
@@ -30,13 +30,16 @@ var config = {
         },
 
         asscss: function () {
-            return ['./src/assets/css/*.css']
+            return ['./src/assets/css/*.css', './src/assets/libs/**/css/*.css']
         },
 
         assjs: function () {
-            return ['./src/assets/js/*.js']
+            return ['./src/assets/js/*.js', './src/assets/libs/js/*.js']
         },
 
+        assimg: function () {
+            return ['./src/assets/libs/img/*', './src/assets/libs/images/*']
+        },
         fonts: function () {
             return ['./src/assets/fonts/**']
         }
@@ -151,6 +154,11 @@ gulp.task('assjs', function () {
         .pipe(gulp.dest(config.output.assjs()))
 });
 
+gulp.task('assimg', function () {
+    gulp.src(config.source.assimg(), {base:'./src/assets/libs/'})
+        .pipe(gulp.dest('dist/assets'));
+});
+
 gulp.task('fonts', function () {
     return gulp.src(config.source.fonts())
     .pipe(gulp.dest('dist/assets/fonts'))
@@ -167,6 +175,6 @@ gulp.task('browser-sync', ['html', 'css', 'js'], function() {
     gulp.watch(config.source.js(), ['js']);
 });
 
-gulp.task('assets', ['asscss', 'assjs', 'fonts']);
+gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg']);
 
-gulp.task('default', ['html', 'css', 'js', 'img', 'assets', 'browser-sync']);
+gulp.task('default', ['html', 'css', 'js', 'img', 'assets', 'assimg', 'browser-sync']);

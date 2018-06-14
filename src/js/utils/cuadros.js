@@ -1,4 +1,20 @@
-App.utils.cuadros = (function (parent, service, config) {
+App.utils.cuadros = (function (config, appData, parent, service) {
+    var cabecera = [
+        {
+            "titulo": "Orden",
+            "rowspan": "2"
+        },
+        {
+            "titulo": "VARIABLE / INDICADOR",
+            "rowspan": "2"
+        }
+    ];
+
+    var init = function (callback) {
+        this.altoVentana = altoTabla();
+        crearTablaUigeos(['00', '01', '02', '03', '04', '05']);
+    };
+
     var crearCabecera = function (cabecera) {
         var thead = '<tr>';
         var childrens = [];
@@ -27,42 +43,142 @@ App.utils.cuadros = (function (parent, service, config) {
 
         $("#tblindicadores thead").html(thead);
 
-        service.cuadros.getNacional(function (data) {
-
-        });
     };
 
-    var cabecera = [
-        {
-            "titulo": "VARIABLE / INDICADOR",
-            "rowspan": "2"
-        }
-    ];
+    var cabeceraTemplate = function (ubigeo) {
+        return {
+            "titulo": (appData.titulo.hasOwnProperty('U'+ubigeo)) ? appData.titulo['U'+ubigeo] : '',
+            "colspan": "2",
+            "children": [
+                {
+                    "titulo": "Absoluto"
+                },
 
-    var cabeceraTemplate = {
-        "titulo": "{0}",
-        "colspan": "2",
-        "children": [
-            {
-                "titulo": "Absoluto"
-            },
-
-            {
-                "titulo": "%"
-            }
-        ]
+                {
+                    "titulo": "%"
+                }
+            ]
+        };
     };
 
     var cabeceraUigeos = function (ubigeos) {
         for (var i=0;i<ubigeos.length;i++) {
-            cabeceraTemplate.titulo = "Nombre";
-            cabecera.push(cabeceraTemplate);
+            cabecera.push(cabeceraTemplate(ubigeos[i]));
         }
 
         crearCabecera(cabecera);
     };
+
+    var crearTabla= function (table, data, columns, _this) {
+        if (_this.tblIndicadores !== undefined) {
+            _this.tblIndicadores.destroy();
+            _this.tblIndicadores.clear();
+        }
+
+        var scrollY = _this.altoVentana.toString() + 'px';
+
+        _this.tblIndicadores = $(table).DataTable({
+            data: data,
+            order: [[0, 'asc']],
+            columnDefs: [
+                {
+                    targets: 0,
+                    
+                    render: function (data, type, row) {
+                        var orden = '';
+                        if (appData.tituloIndicadores.hasOwnProperty(data)){
+                            var v = appData.tituloIndicadores[data];
+                            orden = v.orden;
+                        }
+                        return orden;
+                    }
+                },
+
+                {
+                    targets: 1,
+                    "createdCell": function (td, cellData, rowData, row, col) {
+                        if (appData.tituloIndicadores.hasOwnProperty(data)){
+                            var v = appData.tituloIndicadores[data];
+                            if (v.cod_nivel_tematico == 2) {
+                                $(td).addClass('td_tit');
+                            }
+                        }
+                    },
+
+                    render: function (data, type, row) {
+                        var titulo = '';
+                        if (appData.tituloIndicadores.hasOwnProperty(data)){
+                            var v = appData.tituloIndicadores[data];
+                            titulo = (v.cod_nivel_tematico == 2) ? v.subcategoria : v.indicador;
+                        }
+                        return titulo;
+                    }
+                }
+            ],
+            createdRow: function (row, data, dataIndex) {},
+            paging: false,
+            info: false,
+            columns: columns,
+            ordering: false,
+            searching: false,
+            scrollX:   true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 2
+            },
+            scrollY: scrollY
+        });
+
+        _this.tblIndicadores.fixedColumns().relayout();
+    };
+
+    var crearTablaUigeos = function (ubigeos) {
+        var callback = function () {
+            cabeceraUigeos(ubigeos);
+
+            var columns = [
+                {"data": "cod_tematico", visible: false},
+                {"data": "cod_tematico"}
+            ];
+
+            for (var i=0; i<ubigeos.length; i++) {
+                var v = ubigeos[i];
+                columns.push({"data": "valor_"+v});
+                columns.push({"data": "porcentaje_"+v})
+            }
+
+            // Crear tabla
+            service.cuadros.getIndicadores(ubigeos, function (data) {
+                crearTabla('#tblindicadores', data["P01"], columns, parent.cuadros);
+            });
+        };
+        // Crear cabecera
+        if (ubigeos.length > 1) {
+            minimizarVentana($(".ventanaGrafico .minimizar"), callback)
+        }else {
+            callback();
+        }
+    };
+
+    var altoTabla = function () {
+        var tam_ventana1 = $(window).height();
+        var totalVentana = 0;
+        if(tam_ventana1 <= 800){
+            totalVentana = (tam_ventana1 - 200);
+        } else{
+            totalVentana=(tam_ventana1 - 220);
+        }
+
+        console.log(">>> tamano ventana", totalVentana);
+
+        return totalVentana;
+    };
+
     return {
-        cabeceraUigeos: cabeceraUigeos,
-        nacional: undefined
+        init: init,
+        tblIndicadores: undefined,
+        altoVentana: 600,
+        crearTablaUigeos: crearTablaUigeos,
+        tablaIndicadores: undefined
     }
-})(App.utils, App.service, AppConfig());
+})(AppConfig(), Appdata(), App.utils, App.service);
