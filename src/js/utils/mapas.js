@@ -305,7 +305,7 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
         map = new Map({
-            //basemap: "gray",
+            basemap: "gray",
             layers: layers_inicial,
         });
 
@@ -707,7 +707,7 @@ App.utils.mapas = (function (parent, config,service) {
                 view: view,
                 printServiceUrl: config.utils.print
             });
-            view.ui.add(print, "top-right");
+            //view.ui.add(print, "top-right");
 
         });
 

@@ -222,7 +222,7 @@ function reabrirVentanas(e) {
 
 
 /* MInimizar Ventana */
-function minimizarVentana(e) {
+function minimizarVentana(e, callback) {
     ventanasAbiertas();
     var contadorVentanas = vAbiertas;
     var a = e.closest(".contenedorVentana").attr("data-codevent");
@@ -234,8 +234,8 @@ function minimizarVentana(e) {
     if (contadorVentanas[0] == 1) {
         console.log("solo hay una ventana abierta");
 
-
-    } else if(contadorVentanas[0]==2){
+    }
+    else if(contadorVentanas[0]==2){
 
         var  reconocida = contadorVentanas[1] - parseInt(b.attr("data-cod"));
 
@@ -247,6 +247,9 @@ function minimizarVentana(e) {
 
         e.closest(".contenedorVentana").fadeOut(function(){
             adaptarVentanas(a,b);
+            if (callback !== undefined) {
+                callback();
+            }
         });
 
         $(".barHerramientasHeader .col-1-4").each(function(){ /* Evalua que icono correponde msotrar como minimizado */
@@ -268,10 +271,14 @@ function minimizarVentana(e) {
         //Tipped.create('.tooltip', {size: 'large'});
 
 
-    }else if(contadorVentanas[0]==3) {
+    }
+    else if(contadorVentanas[0]==3) {
 
         e.closest(".contenedorVentana").fadeOut(function(){
             adaptarVentanas(a,b);
+            if (callback !== undefined) {
+                callback();
+            }
         });
 
         $(".barHerramientasHeader .col-1-4").each(function(){ /* Evalua que icono correponde msotrar como minimizado */
@@ -283,6 +290,8 @@ function minimizarVentana(e) {
             }
         });
     }
+
+
 }
 
 /* Maximizar Ventana */
