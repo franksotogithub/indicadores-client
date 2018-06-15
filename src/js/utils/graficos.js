@@ -202,7 +202,33 @@ App.utils.graficos = (function (parent, service, config, appdata) {
             useHTML: true
         },
         plotOptions: {
+
+            bar: {
+                pointPadding: -0.2,
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+
+                    distance: 20,
+                    style: {
+                        fontWeight: 'bold',
+                    }
+                },
+                pointPadding: 0.1,
+                borderWidth: 0
+            },
+
             column: {
+
+                dataLabels: {
+                    enabled: true,
+                    distance: -30,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white'
+                    }
+                },
+
                 pointPadding: 0.1,
                 borderWidth: 0
             }
@@ -225,17 +251,46 @@ App.utils.graficos = (function (parent, service, config, appdata) {
     };
 
 
-    var crearMinimizado = function (ubigeos, ambito) {
-        if (ambito == 'P01') {
-            // Edad
-            service.graficos.gePoblacionEdad(ubigeos, graf_persona_edad);
+    var crearMinimizado = function (ubigeos) {
 
-            console.log("appdata", appdata.titulo["U150125"]);
+        console.log( 'cantidad data' +ubigeos.length);
+
+        var ubigeo ='';
+        var lista_ubi = []
+
+        if(ubigeos.length >1 ){
+            var combo = '';
+            ubigeos.reverse().forEach(function (i) {
+                combo += '<option value="'+i[0]+'">'+ i[1] +'</option>';  // acumulara en el combo los ubigeos seleccionados
+                lista_ubi.push({'u': i[0]});
+            });
+            $("#cmb_ubi").html(combo);
+
+            ubigeo = $('#cmb_ubi').val();
         }
-    }
+        else{
+            $("#cmb_ubi").html('');
+            $("#cmb_ubi").css("display", "none");
+            ubigeo = ubigeos[0][0];
+            lista_ubi = {'u': ubigeos[0][0]};
+
+        }
+
+        console.log('captura ubigeo ---' + ubigeo);
+        service.graficos.gePoblacionEdad(ubigeo, 'P01', graf_persona_edad); //mostrara los graficos del ubigeo
+
+
+
+        service.graficos.gePoblacionInd(lista_ubi,'P01',graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
+
+    };
+    // llena el combre de graficos en caso se selecions mas de 1
+
 
     return {
-        crearMinimizado: crearMinimizado
+        crearMinimizado: crearMinimizado,
+        graf_barra_ubigeo: graf_barra_ubigeo,
+        graf_persona_edad:graf_persona_edad
     }
 
 
