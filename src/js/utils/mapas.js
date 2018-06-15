@@ -201,10 +201,10 @@ App.utils.mapas = (function (parent, config,service) {
         /* zomm Global */
         var zoom;
         var tamW = $(window).height();
-        if(tamW > 900){zoom=6;}
-        else if(tamW <= 899 && tamW >= 715 ){zoom=5;}
-        else if(tamW <= 714){zoom=4;}
-        console.log(zoom);
+        if(tamW >= 900){zoom=6;
+        }else if(tamW <= 899 && tamW >= 715 ){zoom=5;
+        }else if(tamW <= 714){zoom=4;}
+        console.log(tamW+" Es el ZOom");
         return zoom;
     }
 
@@ -492,6 +492,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     select_features.push(codigo);
                     historic_features[indexLayer].nombres.push(nombre);
+
                 }
                 else{
                     view.popup.close();
@@ -505,8 +506,9 @@ App.utils.mapas = (function (parent, config,service) {
                 layer.findSublayerById(parseInt(indexLayer)).definitionExpression=definitionExpression_gloabal;
 
                 /***aqui se debe llamar a ola funcion q renderiza la tabla****/
+                parent.cuadros.crearTablaUigeos(select_features);
             }
-        }
+        };
 
         var selectedMap=function(indexMap) {
             var index=list_maps[indexMap].indexLayer;

@@ -422,6 +422,23 @@ $(document).ready(function() {
         $( ".esri-ui-bottom-right" ).toggleClass("subirMiniMap");
     });
 
+    $(".buttonFlotanteBusqueda").click(function(){
+        $(".buttonFlotanteBusqueda").toggleClass("ocultaBus");
+        $(".contenedorInputTablaB").toggleClass("ocultaBus");
+
+    });
+
+    $('.contenedorVentana').on('click','button.tablaTabButton', function() {
+        $(this).siblings("button").removeClass("btnTabTabla-activo");
+        $(this).addClass("btnTabTabla-activo");
+    });
+
+
+
+
+
+
+
 
 
 });
