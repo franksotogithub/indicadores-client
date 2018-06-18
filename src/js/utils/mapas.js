@@ -1,6 +1,6 @@
 
 
-App.utils.mapas = (function (parent, config,service) {
+App.utils.mapas = (function (parent, config,service, appdata) {
     var indexLayer=0;
 
     var url_dep;
@@ -472,6 +472,14 @@ App.utils.mapas = (function (parent, config,service) {
         }
         /*---->fijate aqui*/
 
+        var popupTemplate = function (ubigeo, callback) {
+            var html = '<div>{0}</div>';
+            if (callback !== undefined) {
+                html = callback(ubigeo, html);
+            }
+            return html;
+        };
+
         var selectedFeature=function(graphic,event){
             if (graphic){
                 var codigo=graphic.attributes.CODIGO;
@@ -483,10 +491,11 @@ App.utils.mapas = (function (parent, config,service) {
 
                 var index_graphic=select_features.indexOf(codigo);
                 if (index_graphic==-1 || select_features.length==0) {
+
                     popup=view.popup.open({
-                            title:codigo,
+                            title: appdata.titulo["U"+codigo],
                             location:event.mapPoint,
-                            content:codigo
+                            content: popupTemplate(codigo)
                         }
                     );
 
@@ -506,6 +515,7 @@ App.utils.mapas = (function (parent, config,service) {
                 layer.findSublayerById(parseInt(indexLayer)).definitionExpression=definitionExpression_gloabal;
 
                 /***aqui se debe llamar a ola funcion q renderiza la tabla****/
+                console.log(select_features);
                 parent.cuadros.crearTablaUigeos(select_features);
             }
         };
@@ -748,4 +758,4 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-})(App.utils, AppConfig() ,App.service );
+})(App.utils, AppConfig() ,App.service , Appdata());
