@@ -5,16 +5,14 @@ App.service.graficos = (function (parent, config) {
 
 
         parent.get({
-            url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo),//, {"u": ubigeos}
+            url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
                 var arreglodata = [];
 
-
-                console.log('esta es la ' )
                 data.forEach(function (i) {
 
                     arreglodata.push( [(i).hombre, (i).mujer]  );
-                })
+                });
 
                 console.log(arreglodata)
 

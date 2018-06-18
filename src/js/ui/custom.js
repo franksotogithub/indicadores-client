@@ -391,8 +391,7 @@ function restaurarVentana(e) {
 
 $(document).ready(function() {
 
-    /* Crea el tooltip */
-    //Tipped.create('.tooltip', {size: 'large'});
+
 
 
     $('.contenedorVentana').on('click','.minimizar', function() {
@@ -439,6 +438,6 @@ $(document).ready(function() {
 
 
 
-
-
+    /* Crea el tooltip */
+    tippy('[title]')
 });

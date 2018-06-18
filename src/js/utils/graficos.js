@@ -258,22 +258,26 @@ App.utils.graficos = (function (parent, service, config, appdata) {
         var ubigeo ='';
         var lista_ubi = []
 
-        if(ubigeos.length >1 ){
+        var cant = ubigeos.length;
+
+        if(cant > 1 ){
             var combo = '';
             ubigeos.reverse().forEach(function (i) {
                 combo += '<option value="'+i[0]+'">'+ i[1] +'</option>';  // acumulara en el combo los ubigeos seleccionados
                 lista_ubi.push({'u': i[0]});
             });
             $("#cmb_ubi").html(combo);
-
+            $("#cmb_ubi").css("display", "block");
             ubigeo = $('#cmb_ubi').val();
+            console.log( 'MAS DE 1 data' );
+
         }
         else{
             $("#cmb_ubi").html('');
             $("#cmb_ubi").css("display", "none");
             ubigeo = ubigeos[0][0];
             lista_ubi = {'u': ubigeos[0][0]};
-
+            console.log( 'SOLO 1 data' );
         }
 
         console.log('captura ubigeo ---' + ubigeo);

@@ -56,12 +56,14 @@
 }
 
 .esri-ui-bottom-right{
-    width: 747px;
+    width: 100%;
     max-width: 200% !important;
-    left:-14px;
+    right:-15px !important;
     bottom: -166px !important;
     display: none;
     transition:all 500ms;
+    padding: 0px 15px;
+    background-color: #FFFFFF;
 }
 
 .subirMiniMap {
@@ -96,7 +98,7 @@
     position: absolute;
     height: 15px;
     right: 0;
-    background-color: #FFFFFF;
+    background-color: #ffc372;
     padding: 9px 14px;
     font-family: 'Alegreya-Sans', 'open_sansregular';
     border-radius: 7px;

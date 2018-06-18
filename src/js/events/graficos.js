@@ -1,7 +1,7 @@
 (function (service, utils) {
     $(document).ready(function (e) {
 
-        utils.graficos.crearMinimizado([['15', 'LIMA'],['12', 'ayacucho'],['11', 'ICA'],['01', 'AMAZONAS']]);
+        //utils.graficos.crearMinimizado([['15', 'LIMA'],['12', 'ayacucho'],['11', 'ICA'],['01', 'AMAZONAS']]);
 
         //utils.graficos.creargraficoComboUbi([['15', 'LIMA']]);
 

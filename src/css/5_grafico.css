@@ -31,3 +31,74 @@
 .pobWidText{
     color: #408fb5;
 }
+
+.widgetGraficos {
+    height:200px;
+}
+
+.widgetMetadatos {
+    border-top: #D0E6F0 solid 10px;
+    font-family: "signikaregular";
+    padding: 10px;
+    text-align: right;
+}
+
+.widgetMetadatos h1 {
+    text-align: right;
+    display: inline-block;
+    color: #1b3c71;
+    border-bottom: 2px solid #1b3c71;
+    font-size: 18px;
+    font-weight: normal;
+    padding-bottom: 4px;
+}
+
+.referenciaMetadato {
+    font-family: 'open_sansregular';
+    font-size: 11px;
+    color: #2b2b2b;
+    display: block;
+    text-align: right;
+    padding-top: 10px;
+}
+
+.contenidoMetadato {
+    background-color: #E6E6E6;
+    font-family: "open_sansregular";
+    margin-top: 10px;
+}
+
+.contenidoMetadato h3 {
+    color:#FFFFFF;
+    font-family: "signikaregular";
+    font-size: 14px;
+    font-weight: normal;
+    display: inline-block;
+    margin: 0px;
+    padding: 5px 8px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.contenidoMetadato p{
+    font-family: 'open_sansregular';
+    font-weight: normal;
+    font-size: 12px;
+    display: block;
+    text-align: justify;
+    padding: 8px;
+    margin: 0px;
+}
+
+/* Colores para metadato */
+.contenidoMetadato.pm1 h3 {background-color: #60947D;}
+.contenidoMetadato.pm1 p {color: #60947D;}
+
+.contenidoMetadato.pm2 h3 {background-color: #B67437;}
+.contenidoMetadato.pm2 p {color: #B67437;}
+
+.contenidoMetadato.pm3 h3 {background-color: #A0505F;}
+.contenidoMetadato.pm3 p {color: #A0505F;}
+
+.contenidoMetadato.pm4 h3 {background-color: #217B93;}
+.contenidoMetadato.pm4 p {color: #217B93;}
