@@ -15,8 +15,13 @@
     <link rel="stylesheet" href="assets/fonts/simplelineicons/simple-line-icons.css">
 
     <link rel="stylesheet" href="{{ output.assets ~ output.folders.css ~ output.concat.asscss }}">
+    <!-- libs -->
+    <link rel="stylesheet" href="{{ output.assets ~ 'datatable/css/jquery.dataTables.css' }}">
+    <link rel="stylesheet" href="{{ output.assets ~ 'datatable/css/fixedColumns.dataTables.css' }}">
+
+    <!-- custom -->
     <link rel="stylesheet" href="{{ output.folders.css ~ output.concat.css }}">
-    <link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
+    <link rel="stylesheet" href="{{ output.assets ~ 'arcgis/4.7/esri/css/main.css' }}">
 
 
 </head>
@@ -81,12 +86,15 @@
 </div>
 
 </body>
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-
 <script src="{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
-<script src="https://js.arcgis.com/4.7/"></script>
+
+<!-- libs -->
+<script src="{{ output.assets ~ 'datatable/js/jquery.dataTables.js' }}"></script>
+<script src="{{ output.assets ~ 'datatable/js/dataTables.fixedColumns.js' }}"></script>
+<script src="{{ output.assets ~ 'highcharts/highcharts.js' }}"></script>
+<script src="{{ output.assets ~ 'highcharts/modules/exporting.js' }}"></script>
+<script src="{{ output.assets ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
+
 <script src="{{ output.folders.js ~ output.concat.js }}"></script>
 
 </html>

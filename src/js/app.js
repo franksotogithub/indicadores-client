@@ -1,4 +1,5 @@
-var App = (function (scope, config) {
+var App;
+App = (function (scope, config) {
     var init = function () {
 
     };

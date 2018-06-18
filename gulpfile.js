@@ -30,15 +30,19 @@ var config = {
         },
 
         asscss: function () {
-            return ['./src/assets/css/*.css', './src/assets/libs/**/css/*.css']
+            return ['./src/assets/css/*.css']
         },
 
         assjs: function () {
-            return ['./src/assets/js/*.js', './src/assets/libs/js/*.js']
+            return ['./src/assets/js/*.js']
         },
 
         assimg: function () {
-            return ['./src/assets/libs/img/*', './src/assets/libs/images/*']
+            return ['./src/assets/img/*', './src/assets/images/*']
+        },
+
+        asslibs: function () {
+            return ['./src/assets/libs/**']
         },
         fonts: function () {
             return ['./src/assets/fonts/**']
@@ -141,7 +145,7 @@ gulp.task('img', function () {
 gulp.task('asscss', function () {
     return gulp.src(config.source.asscss())
         .pipe(concat(config.output.concat.asscss))
-        .pipe(csso())
+        //.pipe(csso())
         .pipe(gulp.dest(config.output.asscss()))
 });
 
@@ -164,6 +168,11 @@ gulp.task('fonts', function () {
     .pipe(gulp.dest('dist/assets/fonts'))
 });
 
+gulp.task('asslibs', function () {
+    return gulp.src(config.source.asslibs())
+        .pipe(gulp.dest('dist/assets'))
+});
+
 gulp.task('browser-sync', ['html', 'css', 'js'], function() {
     browserSync({
         server: {
@@ -175,6 +184,6 @@ gulp.task('browser-sync', ['html', 'css', 'js'], function() {
     gulp.watch(config.source.js(), ['js']);
 });
 
-gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg']);
+gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg', 'asslibs']);
 
-gulp.task('default', ['html', 'css', 'js', 'img', 'assets', 'assimg', 'browser-sync']);
+gulp.task('default', ['html', 'css', 'js', 'img', 'assets', 'browser-sync']);

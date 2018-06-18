@@ -12,11 +12,18 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             var v = cabecera[i];
             var rowspan = (v.rowspan !== undefined) ? ' rowspan="'+v.rowspan+'"' : '';
             var colspan = (v.colspan !== undefined) ? ' colspan="'+v.colspan+'"' : '';
-            var th = '<th'+rowspan+colspan+'>'+v.titulo+'</th>';
+            var clase = '';
+            if (v.codigo == '01') {
+                clase = ' thorden';
+            }else if (v.codigo == '02') {
+                clase = ' thindicador';
+            }
+
+            var th = '<th'+rowspan+colspan+clase+'>'+v.titulo+'</th>';
+
             thead += th;
 
             if (v.children !== undefined) {
-                console.log("zquiii", v.children);
                 childrens = childrens.concat(v.children);
             }
         }
@@ -32,6 +39,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
 
         $("#tblindicadores thead").html(thead);
+        $("#tblindicadores thead").hide();
+        $("#tblindicadores tbody").html("");
 
     };
 
@@ -54,10 +63,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var cabeceraUigeos = function (ubigeos) {
         var cabecera = [
             {
+                "codigo": "01",
                 "titulo": "Orden",
                 "rowspan": "2"
             },
             {
+                "codigo": "02",
                 "titulo": "VARIABLE / INDICADOR",
                 "rowspan": "2"
             }
@@ -72,10 +83,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var crearTabla= function (table, data, columns, _this) {
-
-
+        $(".theadindicadores").show();
         var scrollY = _this.altoVentana.toString() + 'px';
-
         _this.tblIndicadores = $(table).DataTable({
             data: data,
             order: [[0, 'asc']],
@@ -125,17 +134,20 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             fixedColumns: {
                 leftColumns: 2
             },
-            scrollY: scrollY
+            scrollY: scrollY,
+            processing: true,
+            serverSide: false
         });
+
 
         _this.tblIndicadores.fixedColumns().relayout();
     };
 
     var crearTablaUigeos = function (ubigeos) {
-
+        $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
-            this.tblIndicadores.clear().draw();
+            //this.tblIndicadores.clear().draw();
         }
 
         var callback = function () {
@@ -154,9 +166,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
             // Crear tabla
             service.cuadros.getIndicadores(ubigeos, function (data) {
+                $("#loadindicadores").hide();
                 crearTabla('#tblindicadores', data["P01"], columns, parent.cuadros);
             });
         };
+
         // Crear cabecera
         if (ubigeos.length > 1) {
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)

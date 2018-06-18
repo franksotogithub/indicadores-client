@@ -106,8 +106,7 @@ App.utils.graficos = (function (parent, service, config, appdata) {
         }]
         });
 
-
-    Highcharts.chart('grafico_2', {
+        Highcharts.chart('grafico_2', {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: 0,
@@ -149,6 +148,7 @@ App.utils.graficos = (function (parent, service, config, appdata) {
                             ]
         }]
     });
+
     };
 
     var
