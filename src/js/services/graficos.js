@@ -58,7 +58,8 @@ App.service.graficos = (function (parent, config) {
 
     return{
         gePoblacionEdad: gePoblacionEdad,
-        gePoblacionInd: gePoblacionInd
+        gePoblacionInd: gePoblacionInd,
+        gePoblacionEdad2: gePoblacionEdad2,
     }
 
 })(App.service, AppConfig());
