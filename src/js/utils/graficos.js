@@ -151,7 +151,9 @@ App.utils.graficos = (function (parent, service, config, appdata) {
     });
     };
 
-    var graf_barra_ubigeo = function(data){
+    var
+
+        graf_barra_ubigeo = function(data){
 
         var arreglo_nombre = [];
         var arreglo_ind1 = [];
@@ -188,7 +190,7 @@ App.utils.graficos = (function (parent, service, config, appdata) {
             crosshair: true
         },
         yAxis: {
-            min: 0,
+            min: 1,
             title: {
                 text: 'Cant. (miles)'
             }
@@ -203,50 +205,40 @@ App.utils.graficos = (function (parent, service, config, appdata) {
         },
         plotOptions: {
 
+
             bar: {
-                pointPadding: -0.2,
-                borderWidth: 0,
                 dataLabels: {
-                    enabled: true,
-
-                    distance: 20,
-                    style: {
-                        fontWeight: 'bold',
-                    }
-                },
-                pointPadding: 0.1,
-                borderWidth: 0
-            },
-
-            column: {
-
-                dataLabels: {
-                    enabled: true,
-                    distance: -30,
-                    style: {
-                        fontWeight: 'bold',
-                        color: 'white'
-                    }
-                },
-
-                pointPadding: 0.1,
-                borderWidth: 0
+                    enabled: true
+                }
             }
         },
-        series: [{
-            name: 'educacion',
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+
+        series: [{ maxPointWidth: 50,
+            name: 'Hombre',
             data: arreglo_ind1
                // [165,565]
 
         }, {
-            name: 'economia',
+            name: 'Mujer',
             data: arreglo_ind2
                // [1465,545]
-        }, {
-            name: 'cultura',
-            data: arreglo_ind3
+        }//, {
+         //   name: 'cultura',
+        //    data: arreglo_ind3
                 //[65,65]
-        }]
+        //}
+        ]
     });
     };
 
@@ -289,6 +281,9 @@ App.utils.graficos = (function (parent, service, config, appdata) {
 
     };
     // llena el combre de graficos en caso se selecions mas de 1
+
+
+
 
 
     return {

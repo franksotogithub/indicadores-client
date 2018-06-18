@@ -7,9 +7,14 @@
 
 
         //utils.graficos.graf_persona_edad([[752, 578],[228,316],[ 418, 325]]);
-        ///utils.graficos.graf_barra_ubigeo([ ['Lima', 515, 311, 216],['Callao', 154, 41, 66]]);
+        //utils.graficos.graf_barra_ubigeo([ ['Lima', 515, 311, 216],['Callao', 154, 41, 66]]);
 
         service.graficos.gePoblacionEdad('00', 'P01', utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
+
+        service.graficos.gePoblacionInd('00', 'P01', utils.graficos.graf_barra_ubigeo);//mostrara los graficos de barra
+
+
+
 
 
     });
