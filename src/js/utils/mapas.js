@@ -557,7 +557,7 @@ App.utils.mapas = (function (parent, config,service) {
             popup=view.popup.open({
                     title:title,
                     location:event.mapPoint,
-                    content:createContentPopup(codigo)
+                    content:createContentPopup(codigo,cod_map)
                 }
             );
         }
