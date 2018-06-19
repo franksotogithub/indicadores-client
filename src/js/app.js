@@ -4,29 +4,61 @@ App = (function (scope, config) {
 
     };
 
+    var _hasUtils = function (_this, callback, options) {
+        var utils = ['mapas', 'cuadros', 'graficos'];
+        for (var i=0;i<utils.length;i++) {
+            console.log(_this.utils[utils[i]]);
+            if (_this.utils[utils[i]].hasOwnProperty(callback)) {
+                console.log("ingresa", utils[i])
+                _this.utils[utils[i]][callback](options);
+            }
+        }
+    };
+
     var uiMaxCallback = function (ventana) {
-        if (App.utils.mapas.uiMaxCallback!==undefined) {
-            App.utils.mapas.uiMaxCallback();
+        if (this.uiMax.hasOwnProperty(ventana)) {
+            this.uiMax[ventana] = true;
         }
+        _hasUtils(this, 'uiMaxCallback', {"ventana": ventana})
+    };
 
-        if (App.utils.cuadros.uiMaxCallback!==undefined) {
-            App.utils.cuadros.uiMaxCallback();
+    var uiNormalCallback = function (ventana) {
+        if (this.uiMax.hasOwnProperty(ventana)) {
+            this.uiMax[ventana] = false;
         }
-
-        if (App.utils.graficos.uiMaxCallback!==undefined) {
-            App.utils.graficos.uiMaxCallback();
-        }
+        _hasUtils(this, 'uiNormalCallback', {"ventana": ventana})
 
     };
 
+    var uiMax = {
+        "mapas": false,
+        "cuadros": false,
+        "graficos": false
+    };
 
+    var mapasChangeEvent = function (ubigeo, historico) {
+        _hasUtils(this, 'mapasChangeEvent', {"ubigeo": ubigeo, "historico": historico})
+    };
+
+    var categoriaChangeEvent = function (categoria) {
+        this.categoria = categoria;
+        _hasUtils(this, 'categoriaChangeEvent', {"categoria": categoria})
+    };
+
+    var indicadorChangeEvent = function (indicador) {
+        _hasUtils(this, 'indicadorChangeEvent', {"indicador": indicador})
+    };
 
     return {
         ambito: 'nacional',
         categoria: 'P01',
         ubigeo: '00',
+        uiMax: uiMax,
+        init: init,
         uiMaxCallback: uiMaxCallback,
-        /* Metodos */
-        init: init
+        uiNormalCallback: uiNormalCallback,
+        mapasChangeEvent: mapasChangeEvent,
+        categoriaChangeEvent: categoriaChangeEvent,
+        indicadorChangeEvent: indicadorChangeEvent
     }
 })(window, AppConfig());

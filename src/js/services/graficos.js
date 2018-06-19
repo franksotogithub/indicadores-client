@@ -81,19 +81,12 @@ App.service.graficos = (function (parent, config) {
             success: function (data) {
                 var arreglodata_barra = []
 
-                var ind1 = []
-                var ind2 = []
 
-                var no_repetidos = [];
-                var ubigeo = [];
-
-
+                /*
+                var ind1 = [];
+                var ind2 = [];
 
                 data.forEach(function (i) {
-                      //ind2.push([(i).ubigeo, (i).indicador, (i).valor]);
-
-                    //no_repetidos.push((i).indicador);
-                    //ubigeo.push((i).ubigeo);
                     if ((i).indicador=='Hombres'){
                         ind1.push([(i).ubigeo,(i).cod_tematico,  (i).indicador, (i).valor]);
                     }
@@ -104,11 +97,69 @@ App.service.graficos = (function (parent, config) {
 
                 ind1.sort();
                 ind2.sort();
-                console.log(no_repetidos);
-                console.log(ubigeo);
+
+                ind1.forEach(function (x){
+                                    ind2.forEach(function (y){
+                                        if (x[0] == y[0]){
+                                            arreglodata_barra.push([(x)[0],  (x)[3], (y)[3]]);
+                                        }
+                                    })
+                                });
+                      */
 
 
-                ubigeo.forEach(function (u) {
+                var ind = []
+
+                var valores = []
+
+                data.forEach(function (i) {
+
+                    ind.push(i.indicador)
+
+                });
+
+                ind.unique();
+
+                valores = data.groupBy("indicador");
+
+                var val = [];
+
+                var indexado = [];
+
+                var datajson = [];
+
+
+                ind.forEach(function (x, index) {
+                    var datavalor = [];
+
+                    val[index] = (valores[x]);
+
+                    val[index].forEach(function (val) {
+                      //  indexado[index]. add (val.valor)
+                        //console.log( index,   val)
+                        datavalor.push(val.valor)
+
+
+
+                    })
+
+                    console.log(datavalor);
+                    datajson.push ({data: datavalor})
+
+
+                });
+
+
+
+
+              console.log(datajson);
+
+
+
+               // console.log(ind);
+
+
+                /* ubigeo.forEach(function (u) {
 
                     no_repetidos.forEach(function (i) {
 
@@ -119,14 +170,8 @@ App.service.graficos = (function (parent, config) {
 
                 });
 
+*/
 
-                ind1.forEach(function (x){
-                    ind2.forEach(function (y){
-                        if (x[0] == y[0]){
-                            arreglodata_barra.push([(x)[0],  (x)[3], (y)[3]]);
-                        }
-                    })
-                });
 //
                 //console.log(arreglodata_barra);
 
