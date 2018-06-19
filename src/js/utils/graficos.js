@@ -193,12 +193,7 @@ App.utils.graficos = (function (parent, service, config, appdata) {
             }
         },
         tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} Ml</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
+            valueSuffix: ' millions'
         },
         plotOptions: {
 
@@ -239,6 +234,16 @@ App.utils.graficos = (function (parent, service, config, appdata) {
     });
     };
 
+
+    var uiMaxCallback = function () {
+
+        console.log(App.uiMax.graficos);
+    }
+
+
+    var uiNormalCallback = function () {
+        console.log(App.uiMax.graficos);
+    }
 
     var crearMinimizado = function (ubigeos) {
 
@@ -286,7 +291,9 @@ App.utils.graficos = (function (parent, service, config, appdata) {
     return {
         crearMinimizado: crearMinimizado,
         graf_barra_ubigeo: graf_barra_ubigeo,
-        graf_persona_edad:graf_persona_edad
+        graf_persona_edad:graf_persona_edad,
+        uiMaxCallback : uiMaxCallback,
+        uiNormalCallback : uiNormalCallback
     }
 
 
