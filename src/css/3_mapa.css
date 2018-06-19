@@ -47,6 +47,8 @@
 .esri-popup__main-container{
     color: #FFFFFF !important;
     background-color: rgba(27, 60, 113, 1) !important;
+    width: 200px !important;
+    max-height: 320px !important;
 }
 .esri-popup__pointer-direction {
     background-color: rgba(27, 60, 113, 1) !important;
@@ -213,11 +215,73 @@ div.esri-search__submit-button:focus {
 
 /* Widget poOver Mapa */
 
+
+.esri-popup__content {
+    overflow: hidden !important;
+}
+
 #mapaGrafico{
     display: block;
-    height: 220px;
-    width: 100%;
-    max-height: 220px;
+    height: 190px;
+    width: 300px;
     overflow: hidden;
+    margin-top: -30px;
+    margin-left: -60px;
 
 }
+.titPopoverMap {
+    display:block;
+    margin: 0px;
+}
+.titPopoverMap h3 {
+    display:block;
+    margin:0px !important;
+    text-align: center;
+    font-size: 16px;
+}
+.titPopoverMap p {
+    display:block;
+    margin:0px !important;
+    text-align: center;
+    font-size: 14px;
+}
+
+.pobGeneroPopoverMap {
+    display:block;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.22);
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.pobGeneroPopoverMapMan, .pobGeneroPopoverMapWoman {
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    font-weight: normal ;
+}
+
+.pobGeneroPopoverMapMan h3 {
+    color: #DD8D39;
+    font-size: 18px;
+    margin: 5px 0px !important;
+}
+
+.pobGeneroPopoverMapMan p {
+    color: #DD8D39;
+    font-size: 16px !important;
+    margin:0px !important;
+}
+
+.pobGeneroPopoverMapWoman h3 {
+    color: #F14950;
+    font-size: 18px !important;
+    margin: 5px 0px !important;
+}
+
+.pobGeneroPopoverMapWoman p {
+    color: #F14950;
+    font-size: 16px !important;
+    margin: 0px !important;
+}
+
