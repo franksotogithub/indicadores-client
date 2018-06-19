@@ -335,19 +335,23 @@ App.utils.mapas = (function (parent, config,service) {
         return content;
     }
 
+
     var uiMaxCallback =function () {
-        this.view_map.popup.close();
-        this.panelDiv.style.display='inline';
-        //console.log('uiMaxCallback');
+        var _this=parent.mapas;
+        _this.view_map.popup.close();
+        _this.panelDiv.style.display='inline';
+
+
     }
 
     var uiNormalCallback = function(){
-        this.view_map.popup.close();
-        this.panelDiv.style.display='none';
+        var _this=parent.mapas;
+        _this.panelDiv.style.display='none';
 
     }
 
     var crearMapa = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data) {
+        var _this=parent.mapas;
         classBreakinfos= data;
         url_dep=url_map+'/0';
         url_prov=url_map+'/1';
@@ -448,7 +452,7 @@ App.utils.mapas = (function (parent, config,service) {
             layers: layers_inicial,
         });
 
-        view = new MapView({
+        _this.view_map = new MapView({
             container: "viewDiv",
             map: map,
             center: [-75.000, -9.500],
@@ -462,9 +466,9 @@ App.utils.mapas = (function (parent, config,service) {
         identifyParams.returnGeometry = true;
         identifyParams.layerIds = [0];
         identifyParams.layerOption = "top";
-        identifyParams.width = this.view_map.width;
-        identifyParams.height = this.view_map.height;
-        this.historic_features=[
+        identifyParams.width = _this.view_map.width;
+        identifyParams.height = _this.view_map.height;
+        _this.historic_features=[
             {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep},
             {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov},
             {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist},
@@ -472,20 +476,20 @@ App.utils.mapas = (function (parent, config,service) {
 
         sources=[
             {
-                featureLayer: this.historic_features[0].layer,
+                featureLayer: _this.historic_features[0].layer,
                 searchFields: ["NOMBDEP"],
                 displayField: "LITERAL",
                 outFields:['*'],
             },
 
             {
-                featureLayer: this.historic_features[1].layer,
+                featureLayer: _this.historic_features[1].layer,
                 searchFields: ["NOMBDEP","NOMBPROV"],
                 displayField: "LITERAL",
                 outFields:['*'],
             },
             {
-                featureLayer: this.historic_features[2].layer,
+                featureLayer: _this.historic_features[2].layer,
                 searchFields: ["NOMBDEP","NOMBPROV","NOMBDIST"],
                 displayField: "LITERAL",
                 outFields:['*'],
@@ -504,7 +508,7 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
         legend = new Legend({
-            view: this.view_map,
+            view: _this.view_map,
             layerInfos: [{
                 layer: layer,
                 title:'POBLACION',
@@ -512,7 +516,7 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
         searchWidget = new Search({
-            view: this.view_map,
+            view: _this.view_map,
             sources:sources,
             activeSourceIndex:0,
             popupOpenOnSelect :false,
@@ -559,26 +563,26 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-        this.view_map.ui.add(legend, "bottom-left");
-        this.view_map.ui.add(searchWidget, {
+        _this.view_map.ui.add(legend, "bottom-left");
+        _this.view_map.ui.add(searchWidget, {
             position: "top-left",
             index: 2,
         });
-        this.view_map.ui.add("list-widgets", "top-left");
-        this.view_map.ui.add("list-maps", "bottom-right");
-        this.view_map.ui.add("widget-select-layer", "top-right");
-        this.view_map.ui.remove("zoom");
+        _this.view_map.ui.add("list-widgets", "top-left");
+        _this.view_map.ui.add("list-maps", "bottom-right");
+        _this.view_map.ui.add("widget-select-layer", "top-right");
+        _this.view_map.ui.remove("zoom");
 
-        this.view_map.constraints.lods=lods;
+        _this.view_map.constraints.lods=lods;
 
         var changeIndex=function(newIndex) {
-            if(newIndex<this.historic_features.length)
+            if(newIndex<_this.historic_features.length)
             {   indexLayer=newIndex;
                 identifyParams.layerIds = [newIndex];
                 legend = new Legend({
-                    view: this.view_map,
+                    view: _this.view_map,
                     layerInfos: [{
-                        layer: this.historic_features[newIndex].layer,
+                        layer: _this.historic_features[newIndex].layer,
                     }],
                 });
 
@@ -598,28 +602,26 @@ App.utils.mapas = (function (parent, config,service) {
         }
 
         var zoomToLayer=function(view,layer,definitionExpression) {
+
+            console.log('view-->',view);
+            console.log('layer-->',layer);
             var query = new Query();
             query.where = definitionExpression;
             return layer.queryExtent(query)
                 .then(function(response) {
-                    //
-
                     view.goTo(response.extent);
-                    console.log(view.zoom);
-
                 });
 
-            //
         };
 
         var cleanVars=function(){
-            this.select_ubigeos=[];
-            this.historic_features.forEach(function (f) {
+            _this.select_ubigeos=[];
+            _this.historic_features.forEach(function (f) {
                 f.nombres=[];
                 f.select_features=[];
             })
-            this.view_map.graphics.removeAll();
-            this.view_map.popup.close();
+            _this.view_map.graphics.removeAll();
+            _this.view_map.popup.close();
         }
 
         var getDefinitionExpresion=function(array_codigos,index){
@@ -649,21 +651,25 @@ App.utils.mapas = (function (parent, config,service) {
         }
 
         var createPopup=function(title,codigo,event){
-            popup=this.view_map.popup.open({
-                    title:title,
-                    location:event.mapPoint,
-                    content:createContentPopup(codigo,cod_map),
 
-                }
-            );
-            this.view_map.popup.dockOptions= {
-                buttonEnabled: false,
-            };
-            this.view_map.popup.dockEnabled=false;
+            //if(_this.panelDiv.style.display=='none')
+
+                popup=_this.view_map.popup.open({
+                        title:title,
+                        location:event.mapPoint,
+                        content:createContentPopup(codigo,cod_map),
+
+                    }
+                );
+                _this.view_map.popup.dockOptions= {
+                    buttonEnabled: false,
+                };
+                _this.view_map.popup.dockEnabled=false;
+
         }
 
         var updatePanel = function(ubigeo,cod_map,div) {
-            this.panelDiv.style.display="inline";
+            _this.panelDiv.style.display="inline";
             if (cod_map == 'POB') {
                 service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
             }
@@ -674,9 +680,9 @@ App.utils.mapas = (function (parent, config,service) {
 
         }
 
-        this.panelDiv = document.getElementById("panel");
-        this.panelDiv.style.display="none";
-        this.view_map.ui.add(this.panelDiv, {position: "top-right"});
+        _this.panelDiv = document.getElementById("panel");
+        _this.panelDiv.style.display="none";
+        _this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
 
         var selectedFeature=function(graphic,event){
             select_all.style.display="block";
@@ -686,35 +692,38 @@ App.utils.mapas = (function (parent, config,service) {
                 if(indexLayer==0){nombre=graphic.attributes.NOMBDEP;}
                 else if(indexLayer==1){nombre=graphic.attributes.NOMBPROV;}
                 else if(indexLayer==2){nombre=graphic.attributes.NOMBDIST;}
-                var index_graphic=this.select_ubigeos.indexOf(codigo);
+                var index_graphic=_this.select_ubigeos.indexOf(codigo);
 
-                if (index_graphic==-1 || this.select_ubigeos.length==0) {
+                if (index_graphic==-1 || _this.select_ubigeos.length==0) {
+
                     createPopup(nombre,codigo,event);
 
 
-                    this.select_ubigeos.push(codigo);
-                    this.historic_features[indexLayer].nombres.push(nombre);
+
+                    updatePanel(codigo,cod_map,_this.panelDiv);
+                    _this.select_ubigeos.push(codigo);
+                    _this.historic_features[indexLayer].nombres.push(nombre);
                 }
                 else{
-                    this.view_map.popup.close();
-                    this.select_ubigeos.splice(index_graphic, 1);
-                    this.historic_features[indexLayer].nombres.splice(index_graphic, 1);
+                    _this.view_map.popup.close();
+                    _this.select_ubigeos.splice(index_graphic, 1);
+                    _this.historic_features[indexLayer].nombres.splice(index_graphic, 1);
                 }
 
-                definitionExpression_gloabal=getDefinitionExpresionByCodigos(this.select_ubigeos);
-                this.historic_features[indexLayer].where=definitionExpression_gloabal;
-                this.historic_features[indexLayer].select_features=this.select_ubigeos;
+                definitionExpression_gloabal=getDefinitionExpresionByCodigos(_this.select_ubigeos);
+                _this.historic_features[indexLayer].where=definitionExpression_gloabal;
+                _this.historic_features[indexLayer].select_features=_this.select_ubigeos;
                 layer.findSublayerById(parseInt(indexLayer)).definitionExpression=definitionExpression_gloabal;
 
                 /***aqui se debe llamar a ola funcion q renderiza la tabla****/
 
                 var codigos_anteriores=[];
                 if (indexLayer==0) { codigos_anteriores=['00']}
-                else { codigos_anteriores=this.historic_features[indexLayer-1].select_features}
+                else { codigos_anteriores=_this.historic_features[indexLayer-1].select_features}
                 console.log('codigos_anteriores-->',codigos_anteriores);
-                App.mapasChangeEvent(this.select_ubigeos,codigos_anteriores);
+                App.mapasChangeEvent(_this.select_ubigeos,codigos_anteriores);
 
-                //parent.cuadros.crearTablaUigeos(this.select_ubigeos);
+                //parent.cuadros.crearTablaUigeos(_this.select_ubigeos);
             }
         };
 
@@ -734,28 +743,30 @@ App.utils.mapas = (function (parent, config,service) {
             cleanVars();
             changeIndex(index);
             definitionExpression_gloabal="1=1";
+
         }
 
         var openFeature=function(){
             if(indexLayer>=0 && indexLayer<=1 )
             {
-                definitionExpression_gloabal=getDefinitionExpresion(this.select_ubigeos,indexLayer);
+                definitionExpression_gloabal=getDefinitionExpresion(_this.select_ubigeos,indexLayer);
                 if (indexLayer==0) { definitionExpressiondep=definitionExpression_gloabal;  }
                 if (indexLayer==1) { definitionExpressionprov=definitionExpression_gloabal; }
                 setLabelWidgetUbigeos(indexLayer);
                 changeIndex(indexLayer+1);
                 updateMap(definitionExpression_gloabal,indexLayer);
-                this.select_ubigeos=[];
+                _this.select_ubigeos=[];
             }
-            this.view_map.popup.close();
+            _this.view_map.popup.close();
             select_all.style.display="none";
         }
 
 
         var selectFeaturesByQuery = function (query,index) {
             var queryCitiesTask = new QueryTask({
-                url: this.historic_features[index].url
+                url: _this.historic_features[index].url
             });
+
             var query = new Query({
                 where: query,
                 outFields: ["CODIGO"],
@@ -764,37 +775,35 @@ App.utils.mapas = (function (parent, config,service) {
             queryCitiesTask.execute(query).then(function(result){
                 var features=result.features;
                 features.forEach( function (feature) {
-                    this.select_ubigeos.push(feature.attributes.CODIGO);
+                    _this.select_ubigeos.push(feature.attributes.CODIGO);
                 });
 
-                //console.log('select_features-->',select_features);
-
-                parent.cuadros.crearTablaUigeos(this.select_ubigeos);
+                parent.cuadros.crearTablaUigeos(_this.select_ubigeos);
             });
         }
 
 
         var selectAllFeatures=function(checked){
-            this.select_ubigeos=[];
+            _this.select_ubigeos=[];
             if (checked) {
                 var where="1=1";
                 if (indexLayer==0){
                     where="1=1";
-                    this.historic_features[0].select_features=[];
-                    this.historic_features[1].select_features=[];
-                    this.historic_features[2].select_features=[];
+                    _this.historic_features[0].select_features=[];
+                    _this.historic_features[1].select_features=[];
+                    _this.historic_features[2].select_features=[];
                 }
                 else if(indexLayer==1){
 
-                    where=getDefinitionExpresion(this.historic_features[0].select_features,0);
-                    this.historic_features[1].select_features=[];
-                    this.historic_features[2].select_features=[];
+                    where=getDefinitionExpresion(_this.historic_features[0].select_features,0);
+                    _this.historic_features[1].select_features=[];
+                    _this.historic_features[2].select_features=[];
 
                 }
 
                 else if (indexLayer==2){
-                    where=getDefinitionExpresion(this.historic_features[1].select_features,1);
-                    this.historic_features[2].select_features=[];
+                    where=getDefinitionExpresion(_this.historic_features[1].select_features,1);
+                    _this.historic_features[2].select_features=[];
                 }
 
 
@@ -819,13 +828,13 @@ App.utils.mapas = (function (parent, config,service) {
             layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
             layer_back.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
             console.log(definitionExpression);
-            zoomToLayer(this.view_map,this.historic_features[parseInt(index)].layer,definitionExpression);
+            zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression);
 
         }
 
         var setLabelWidgetUbigeos = function(index) {
 
-            var nombres=this.historic_features[index].nombres;
+            var nombres=_this.historic_features[index].nombres;
 
             if(index==0) {
                 document.getElementById('widget-departamentos').style.display = "block";
@@ -856,27 +865,28 @@ App.utils.mapas = (function (parent, config,service) {
 
         }
 
+
         var selectWidget = function(index){
             changeIndex(index);
-            this.select_ubigeos=this.historic_features[index].select_features;
-            definitionExpression_gloabal=getDefinitionExpresionByCodigos(this.select_ubigeos);
+            _this.select_ubigeos=_this.historic_features[index].select_features;
+            definitionExpression_gloabal=getDefinitionExpresionByCodigos(_this.select_ubigeos);
 
             if (index==0) {
                 definitionExpression_back="1=1";
             }
             else {
                 var index_old=parseInt(index)-1;
-                definitionExpression_back=getDefinitionExpresion(this.historic_features[index_old].select_features,index_old);
+                definitionExpression_back=getDefinitionExpresion(_this.historic_features[index_old].select_features,index_old);
             }
 
             layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_gloabal;
             layer_back.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_back;
-            zoomToLayer(this.view_map,this.historic_features[parseInt(index)].layer,definitionExpression_back);
+            zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression_back);
         }
 
         var eventHandler=function (event){
             identifyParams.geometry = event.mapPoint;
-            identifyParams.mapExtent = this.view_map.extent;
+            identifyParams.mapExtent = _this.view_map.extent;
             identifyTask.execute(identifyParams).then( function (response) {
                 var results=response.results;
                 return arrayUtils.map(results, function(result) {
@@ -896,6 +906,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         document.getElementById('widget-nacional').addEventListener("click", function(){
             changeLayer(0);
+            zoomToLayer(_this.view_map,_this.historic_features[0].layer,"1=1");
         });
 
         document.getElementById("widget-departamentos").addEventListener("click", function(){
@@ -924,15 +935,15 @@ App.utils.mapas = (function (parent, config,service) {
 
             if(index==1){
 
-                this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                _this.historic_features[0].select_features.push(feature.attributes.CCDD);
             }
 
             if(index==2){
-                this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                this.historic_features[0].select_features.push(feature.attributes.CCDD);
-                this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
-                this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                _this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
+                _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
             }
 
 
@@ -945,27 +956,27 @@ App.utils.mapas = (function (parent, config,service) {
                 openFeature();
             }
 
-            console.log('features select-->',this.select_ubigeos);
+            console.log('features select-->',_this.select_ubigeos);
 
         });
 
-        this.view_map.on("click", eventHandler);
+        _this.view_map.on("click", eventHandler);
 
-        this.view_map.on('double-click',function (event) {
+        _this.view_map.on('double-click',function (event) {
             openFeature();
         });
 
-        this.view_map.popup.on("trigger-action", function(event) {
+        _this.view_map.popup.on("trigger-action", function(event) {
             openFeature();
         });
 
 
-        this.view_map.when(function () {
+        _this.view_map.when(function () {
             var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
             xsearch.css('display','none');
 
             var print = new Print({
-                view: this.view_map,
+                view: _this.view_map,
                 printServiceUrl: config.utils.print
             });
             //view.ui.add(print, "top-right");
@@ -997,7 +1008,8 @@ App.utils.mapas = (function (parent, config,service) {
         historic_features: historic_features,
         select_ubigeos: select_ubigeos,
         uiMaxCallback : uiMaxCallback,
-        view_map: view_map
+        view_map: view_map,
+        panelDiv: panelDiv
     }
 
 
