@@ -21,7 +21,7 @@ App.utils.mapas = (function (parent, config,service) {
     var provinciaLyr=undefined;
     var distritoLyr=undefined;
     var map=undefined;
-    var view= undefined;
+    var view_map= undefined;
     var select_ubigeos=[];
     var definitionExpression_gloabal="1=1";
     var opacity=0.8;
@@ -128,6 +128,8 @@ App.utils.mapas = (function (parent, config,service) {
 
     var searchWidget=undefined;
 
+    var panelDiv=undefined;
+
     var createSymbol = function(color) {
         return {
             type: "simple-fill",
@@ -141,6 +143,7 @@ App.utils.mapas = (function (parent, config,service) {
     };
 
     var classBreakinfos=undefined;
+
     var renderizado = function(indicador,classBreakinfo){
         var renderer = {
             type: "class-breaks",
@@ -227,7 +230,8 @@ App.utils.mapas = (function (parent, config,service) {
                 backgroundColor: 'transparent',
                 plotBackgroundColor: null,
                 plotBorderWidth: 0,
-                plotShadow: false
+                plotShadow: false,
+                width: 200,
             },
             credits: {
                 enabled: false
@@ -265,7 +269,6 @@ App.utils.mapas = (function (parent, config,service) {
                 name: 'porcentaje',
                 innerSize: '50%',
                 data: [
-
                     {
                         name: 'Hombres',
                         y: t_edad_h ,
@@ -323,29 +326,32 @@ App.utils.mapas = (function (parent, config,service) {
 
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
-
         content.appendChild(bloque2);
-
-
-        //bloque2.style.width = "200px";
-
-        //////se generan los graficos
         if (cod_map=='POB')
         {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
 
         else if (cod_map=='EDU')
         {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
-
         return content;
     }
 
-    var crearMapa = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data) {
+    var uiMaxCallback =function () {
+        this.view_map.popup.close();
+        this.panelDiv.style.display='inline';
+        //console.log('uiMaxCallback');
+    }
 
+    var uiNormalCallback = function(){
+        this.view_map.popup.close();
+        this.panelDiv.style.display='none';
+
+    }
+
+    var crearMapa = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data) {
         classBreakinfos= data;
         url_dep=url_map+'/0';
         url_prov=url_map+'/1';
         url_dist=url_map+'/2';
-
         layer = new MapImageLayer({
             url: url_map,
             opacity:0.8,
@@ -411,7 +417,6 @@ App.utils.mapas = (function (parent, config,service) {
         });
         layers_inicial = [layer_back,layer];
 
-
         departamentoLyr = new FeatureLayer({
             url: url_dep,
             renderer: renderizado(cod_tematico,classBreakinfos["0"]),
@@ -420,6 +425,7 @@ App.utils.mapas = (function (parent, config,service) {
             outFields:["*"],
             title:'DEPARTAMENTOS',
         });
+
         provinciaLyr = new FeatureLayer({
             url: url_prov,
             renderer: renderizado(cod_tematico,classBreakinfos["1"]),
@@ -427,6 +433,7 @@ App.utils.mapas = (function (parent, config,service) {
             outFields:["*"],
             title:'PROVINCIAS',
         });
+
         distritoLyr = new FeatureLayer({
             url: url_dist,
             renderer: renderizado(cod_tematico,classBreakinfos["2"]),
@@ -455,13 +462,14 @@ App.utils.mapas = (function (parent, config,service) {
         identifyParams.returnGeometry = true;
         identifyParams.layerIds = [0];
         identifyParams.layerOption = "top";
-        identifyParams.width = view.width;
-        identifyParams.height = view.height;
+        identifyParams.width = this.view_map.width;
+        identifyParams.height = this.view_map.height;
         this.historic_features=[
             {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep},
             {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov},
             {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist},
         ];
+
         sources=[
             {
                 featureLayer: this.historic_features[0].layer,
@@ -483,6 +491,7 @@ App.utils.mapas = (function (parent, config,service) {
                 outFields:['*'],
             }
         ];
+
         list_maps.forEach(function (map,index) {
             var newImg = document.createElement("img");
             newImg.setAttribute("src",'/img/'+map.imagen);
@@ -493,18 +502,17 @@ App.utils.mapas = (function (parent, config,service) {
                 selectedMap(index);
             });
         });
+
         legend = new Legend({
-            view: view,
+            view: this.view_map,
             layerInfos: [{
                 layer: layer,
                 title:'POBLACION',
             }],
-
         });
 
-
         searchWidget = new Search({
-            view: view,
+            view: this.view_map,
             sources:sources,
             activeSourceIndex:0,
             popupOpenOnSelect :false,
@@ -548,31 +556,27 @@ App.utils.mapas = (function (parent, config,service) {
 
         );*/
 
-        /*layerList.container.style = "height: 100%";*/
 
-        var panelDiv = document.getElementById("panel");
-        panelDiv.style = "height: 100%";
-        panelDiv.style.display="none";
 
-        view.ui.add(legend, "bottom-left");
-        view.ui.add(searchWidget, {
+
+        this.view_map.ui.add(legend, "bottom-left");
+        this.view_map.ui.add(searchWidget, {
             position: "top-left",
             index: 2,
         });
-        view.ui.add("list-widgets", "top-left");
-        view.ui.add("list-maps", "bottom-right");
-        view.ui.add("widget-select-layer", "top-right");
-        view.ui.remove("zoom");
-        view.ui.add(panelDiv, {position: "top-right"});
+        this.view_map.ui.add("list-widgets", "top-left");
+        this.view_map.ui.add("list-maps", "bottom-right");
+        this.view_map.ui.add("widget-select-layer", "top-right");
+        this.view_map.ui.remove("zoom");
 
-        view.constraints.lods=lods;
+        this.view_map.constraints.lods=lods;
 
         var changeIndex=function(newIndex) {
             if(newIndex<this.historic_features.length)
             {   indexLayer=newIndex;
                 identifyParams.layerIds = [newIndex];
                 legend = new Legend({
-                    view: view,
+                    view: this.view_map,
                     layerInfos: [{
                         layer: this.historic_features[newIndex].layer,
                     }],
@@ -614,8 +618,8 @@ App.utils.mapas = (function (parent, config,service) {
                 f.nombres=[];
                 f.select_features=[];
             })
-            view.graphics.removeAll();
-            view.popup.close();
+            this.view_map.graphics.removeAll();
+            this.view_map.popup.close();
         }
 
         var getDefinitionExpresion=function(array_codigos,index){
@@ -645,13 +649,34 @@ App.utils.mapas = (function (parent, config,service) {
         }
 
         var createPopup=function(title,codigo,event){
-            popup=view.popup.open({
+            popup=this.view_map.popup.open({
                     title:title,
                     location:event.mapPoint,
-                    content:createContentPopup(codigo,cod_map)
+                    content:createContentPopup(codigo,cod_map),
+
                 }
             );
+            this.view_map.popup.dockOptions= {
+                buttonEnabled: false,
+            };
+            this.view_map.popup.dockEnabled=false;
         }
+
+        var updatePanel = function(ubigeo,cod_map,div) {
+            this.panelDiv.style.display="inline";
+            if (cod_map == 'POB') {
+                service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
+            }
+
+            else if (cod_map == 'EDU') {
+                service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
+            }
+
+        }
+
+        this.panelDiv = document.getElementById("panel");
+        this.panelDiv.style.display="none";
+        this.view_map.ui.add(this.panelDiv, {position: "top-right"});
 
         var selectedFeature=function(graphic,event){
             select_all.style.display="block";
@@ -665,11 +690,13 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if (index_graphic==-1 || this.select_ubigeos.length==0) {
                     createPopup(nombre,codigo,event);
+
+
                     this.select_ubigeos.push(codigo);
                     this.historic_features[indexLayer].nombres.push(nombre);
                 }
                 else{
-                    view.popup.close();
+                    this.view_map.popup.close();
                     this.select_ubigeos.splice(index_graphic, 1);
                     this.historic_features[indexLayer].nombres.splice(index_graphic, 1);
                 }
@@ -681,7 +708,13 @@ App.utils.mapas = (function (parent, config,service) {
 
                 /***aqui se debe llamar a ola funcion q renderiza la tabla****/
 
-                parent.cuadros.crearTablaUigeos(this.select_ubigeos);
+                var codigos_anteriores=[];
+                if (indexLayer==0) { codigos_anteriores=['00']}
+                else { codigos_anteriores=this.historic_features[indexLayer-1].select_features}
+                console.log('codigos_anteriores-->',codigos_anteriores);
+                App.mapasChangeEvent(this.select_ubigeos,codigos_anteriores);
+
+                //parent.cuadros.crearTablaUigeos(this.select_ubigeos);
             }
         };
 
@@ -714,7 +747,7 @@ App.utils.mapas = (function (parent, config,service) {
                 updateMap(definitionExpression_gloabal,indexLayer);
                 this.select_ubigeos=[];
             }
-            view.popup.close();
+            this.view_map.popup.close();
             select_all.style.display="none";
         }
 
@@ -786,7 +819,7 @@ App.utils.mapas = (function (parent, config,service) {
             layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
             layer_back.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
             console.log(definitionExpression);
-            zoomToLayer(view,this.historic_features[parseInt(index)].layer,definitionExpression);
+            zoomToLayer(this.view_map,this.historic_features[parseInt(index)].layer,definitionExpression);
 
         }
 
@@ -838,12 +871,12 @@ App.utils.mapas = (function (parent, config,service) {
 
             layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_gloabal;
             layer_back.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_back;
-            zoomToLayer(view,this.historic_features[parseInt(index)].layer,definitionExpression_back);
+            zoomToLayer(this.view_map,this.historic_features[parseInt(index)].layer,definitionExpression_back);
         }
 
         var eventHandler=function (event){
             identifyParams.geometry = event.mapPoint;
-            identifyParams.mapExtent = view.extent;
+            identifyParams.mapExtent = this.view_map.extent;
             identifyTask.execute(identifyParams).then( function (response) {
                 var results=response.results;
                 return arrayUtils.map(results, function(result) {
@@ -916,23 +949,23 @@ App.utils.mapas = (function (parent, config,service) {
 
         });
 
-        view.on("click", eventHandler);
+        this.view_map.on("click", eventHandler);
 
-        view.on('double-click',function (event) {
+        this.view_map.on('double-click',function (event) {
             openFeature();
         });
 
-        view.popup.on("trigger-action", function(event) {
+        this.view_map.popup.on("trigger-action", function(event) {
             openFeature();
         });
 
 
-        view.when(function () {
+        this.view_map.when(function () {
             var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
             xsearch.css('display','none');
 
             var print = new Print({
-                view: view,
+                view: this.view_map,
                 printServiceUrl: config.utils.print
             });
             //view.ui.add(print, "top-right");
@@ -940,6 +973,8 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
         changeLayer(0);
+
+
     }
 
     var  cambiarMapa = function(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico){
@@ -953,14 +988,16 @@ App.utils.mapas = (function (parent, config,service) {
     var requireEvents = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList) {
         list_maps=getMaps();
         cambiarMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico);
-
-
     };
+
+
 
     return {
         requireEvents: requireEvents,
         historic_features: historic_features,
         select_ubigeos: select_ubigeos,
+        uiMaxCallback : uiMaxCallback,
+        view_map: view_map
     }
 
 
