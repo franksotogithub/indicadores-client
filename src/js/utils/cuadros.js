@@ -255,6 +255,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $("#loadindicadores").hide();
     };
 
+    var uiMaxCallback = function (options) {
+        console.log("maximizar", options);
+    };
+
+    var mapasChangeEvent = function (options) {
+        console.log("mapasChangeEvent", options);
+        this.crearTablaUigeos(options.ubigeo);
+    };
 
     return {
         init: init,
@@ -262,6 +270,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         tablaIndicadores: undefined,
         tablaColumns: [],
         crearTablaUigeos: crearTablaUigeos,
-        crearTablaCategoria: crearTablaCategoria
+        crearTablaCategoria: crearTablaCategoria,
+        uiMaxCallback: uiMaxCallback,
+        mapasChangeEvent: mapasChangeEvent
     }
 })(AppConfig(), Appdata(), App.utils, App.service);
