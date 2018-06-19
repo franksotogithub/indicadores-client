@@ -1,13 +1,16 @@
 App.utils.cuadros = (function (config, appData, parent, service) {
+    /** Atributos privados **/
 
+    /** Constructores **/
     var init = function (callback) {
-        this.altoTabla = getAltoTabla();
-        CrearTabsCategorias(appData.categorias);
-        crearTablaUigeos(['00']);
-
+        _crearTabsCategorias(appData.categorias);
+        this.crearTablaUigeos(['00']);
     };
 
-    var CrearTabsCategorias = function (datos) {
+    /** Metodos privados **/
+
+    // Metodos UI
+    var _crearTabsCategorias = function (datos) {
         var tabsTemplate = function (dato) {
             var clase='';
             if (dato.esActivo) {
@@ -21,12 +24,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             html += tabsTemplate(datos[i]);
         }
 
-        console.log(html);
-
         $("#tabsCategoria").html(html);
     };
 
-    var cabeceraTemplate = function (ubigeo) {
+    var _cabeceraTemplate = function (ubigeo) {
         return {
             "titulo": (appData.titulo.hasOwnProperty('U'+ubigeo)) ? appData.titulo['U'+ubigeo] : '',
             "colspan": "2",
@@ -42,7 +43,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         };
     };
 
-    var crearCabecera = function (cabecera) {
+    var _crearCabecera = function (cabecera) {
         var thead = '<tr>';
         var childrens = [];
         for (var i=0; i<cabecera.length;i++) {
@@ -81,7 +82,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     };
 
-    var cabeceraUigeos = function (ubigeos) {
+    var _cabeceraUigeos = function (ubigeos) {
         var cabecera = [
             {
                 "codigo": "01",
@@ -94,19 +95,16 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 "rowspan": "2"
             }
         ];
-
-
         for (var i=0;i<ubigeos.length;i++) {
-            cabecera.push(cabeceraTemplate(ubigeos[i]));
+            cabecera.push(_cabeceraTemplate(ubigeos[i]));
         }
-
-        crearCabecera(cabecera);
+        _crearCabecera(cabecera);
     };
 
-    var crearTabla= function (table, data, columns, _this) {
+    var _crearTabla= function (table, data, columns) {
         $(".theadindicadores").show();
-        var scrollY = _this.altoTabla.toString() + 'px';
-        _this.tblIndicadores = $(table).DataTable({
+
+        return $(table).DataTable({
             data: data,
             order: [[0, 'asc']],
             columnDefs: [
@@ -155,14 +153,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             fixedColumns: {
                 leftColumns: 2
             },
-            scrollY: scrollY,
+            scrollY: _getAltoTabla('px'),
             processing: true,
             serverSide: false
         });
-        _this.tblIndicadores.fixedColumns().relayout();
     };
 
-    var getAltoTabla = function () {
+    var _getAltoTabla = function (px) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
         if(tam_ventana1 <= 800){
@@ -170,38 +167,65 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         } else{
             totalVentana=(tam_ventana1 - 280);
         }
-
-        console.log(">>> tamano ventana", totalVentana);
-
-        return totalVentana;
-    };
-
-    var crearTablaUigeos = function (ubigeos) {
-
-        $("#loadindicadores").show();
-        if (this.tblIndicadores !== undefined) {
-            this.tblIndicadores.destroy();
-            //this.tblIndicadores.clear().draw();
+        if (px == 'px') {
+            totalVentana = totalVentana.toString() + 'px';
         }
 
+        return totalVentana;
+
+    };
+
+    var _destruirTabla = function (_this) {
+        if (_this.tblIndicadores !== undefined) {
+            _this.tblIndicadores.destroy();
+            //this.tblIndicadores.clear().draw();
+        }
+    };
+
+    var _cargandoTabla = function () {
+        $("#loadindicadores").show();
+    };
+
+    var _getTalaColumn = function (ubigeos) {
+        var columns = [
+            {"data": "cod_tematico", visible: false},
+            {"data": "cod_tematico"}
+        ];
+        for (var i=0; i<ubigeos.length; i++) {
+            var v = ubigeos[i];
+            columns.push({"data": "valor_"+v});
+            columns.push({"data": "porcentaje_"+v})
+        }
+
+        return columns;
+    };
+
+    /* publicos */
+    var crearTablaUigeos = function (ubigeos) {
+        /*
+            UI
+            ----
+            1. Cargando
+         */
+
+        var _this = this;
+
+        _cargandoTabla();
+        _destruirTabla(this);
+
         var callback = function () {
-            cabeceraUigeos(ubigeos);
+            // Crear cabecera de la tabla segun los ubigeos indicadors
+            _cabeceraUigeos(ubigeos);
 
-            var columns = [
-                {"data": "cod_tematico", visible: false},
-                {"data": "cod_tematico"}
-            ];
+            // Crear Estructura Json para renderizado de la tabla
 
-            for (var i=0; i<ubigeos.length; i++) {
-                var v = ubigeos[i];
-                columns.push({"data": "valor_"+v});
-                columns.push({"data": "porcentaje_"+v})
-            }
+            _this.tablaColumns = _getTalaColumn(ubigeos);
 
-            // Crear tabla
-            service.cuadros.getIndicadores(ubigeos, function (data) {
+            // Instanciar el servicio
+            service.cuadros.getIndicadores(ubigeos, function () {
+                _this.tblIndicadores = _crearTabla('#tblindicadores', service.cuadros.indicadores[App.categoria], _this.tablaColumns);
+                _this.tblIndicadores.fixedColumns().relayout();
                 $("#loadindicadores").hide();
-                crearTabla('#tblindicadores', data[App.categoria], columns, parent.cuadros);
             });
         };
 
@@ -213,15 +237,31 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
     };
 
-    var tablaCategoria = function () {
-        console.log();
+    var crearTablaCategoria = function (categoria) {
+        App.categoria = categoria;
+        $("#loadindicadores").show();
+        if (this.tblIndicadores !== undefined) {
+            this.tblIndicadores.destroy();
+            //this.tblIndicadores.clear().draw();
+        }
+        this.tblIndicadores = _crearTabla(
+            '#tblindicadores',
+            service.cuadros.indicadores[App.categoria],
+            this.tablaColumns,
+            parent.cuadros
+        );
+
+        this.tblIndicadores.fixedColumns().relayout();
+        $("#loadindicadores").hide();
     };
+
 
     return {
         init: init,
         tblIndicadores: undefined,
-        altoTabla: 600,
+        tablaIndicadores: undefined,
+        tablaColumns: [],
         crearTablaUigeos: crearTablaUigeos,
-        tablaIndicadores: undefined
+        crearTablaCategoria: crearTablaCategoria
     }
 })(AppConfig(), Appdata(), App.utils, App.service);

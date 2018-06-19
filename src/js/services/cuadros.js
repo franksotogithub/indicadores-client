@@ -1,11 +1,12 @@
 App.service.cuadros = (function (parent, config) {
-    var _this = this;
+
     var getIndicadores = function (ubigeos, callback) {
+        var _this = this;
         parent.get({
             url: parent.getUrlServer('indicadores/tabla/', {"u": ubigeos}),
             success: function (data) {
-                _this = data;
-                callback(data);
+                _this.indicadores = data;
+                callback();
             },
 
             error: function (obj, status, otherr) {

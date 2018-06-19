@@ -3,7 +3,8 @@
         utils.cuadros.init(function () {});
 
         $("#tabsCategoria").on('click', '.tablaTabButton', function (e) {
-            App.categoria = $.trim($(this).attr('data-categoria'));
+            var categoria = $.trim($(this).attr('data-categoria'));
+            utils.cuadros.crearTablaCategoria(categoria);
         });
     });
 

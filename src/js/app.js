@@ -4,7 +4,7 @@ App = (function (scope, config) {
 
     };
 
-    var uiMaxCallback = function () {
+    var uiMaxCallback = function (ventana) {
         if (App.utils.mapas.uiMaxCallback!==undefined) {
             App.utils.mapas.uiMaxCallback();
         }
@@ -16,6 +16,7 @@ App = (function (scope, config) {
         if (App.utils.graficos.uiMaxCallback!==undefined) {
             App.utils.graficos.uiMaxCallback();
         }
+
     };
 
 

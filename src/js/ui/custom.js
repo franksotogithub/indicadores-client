@@ -100,9 +100,9 @@ function restaurarImpresion(e) {
         //console.log("como llegue aqui?  " + restaurarVent);
     }else if(restaurarVent ==3) {
 
-        if (dataCodevent == "mapa") {
+        if (dataCodevent == "mapas") {
             ventana.addClass("col-4-10").removeClass("col-1-1");
-        } else if (dataCodevent == "indicadores") {
+        } else if (dataCodevent == "cuadros") {
             ventana.addClass("col-35").removeClass("col-1-1");
         } else if (dataCodevent == "graficos") {
             ventana.addClass("col-1-4").removeClass("col-1-1");
@@ -299,12 +299,12 @@ function minimizarVentana(e, callback) {
 function maximizarVentana(e, callback){
     ventanasAbiertas();
     var contadorVentanas = vAbiertas;
+    var ventana = e.closest(".contenedorVentana");
+    var codevent = $(ventana).attr('data-codevent');
     if(contadorVentanas[0]==1){
 
     }else if(contadorVentanas[0]==2){
-
-
-        var ventanaReconocida =  contadorVentanas[1] - parseInt(e.closest(".contenedorVentana").attr("data-cod"));
+        var ventanaReconocida =  contadorVentanas[1] - parseInt(ventana.attr("data-cod"));
         ventanaReconocida = $(".barHerramientasHeader [data-codi="+ventanaReconocida+"]");
 
         ventanaReconocida.css("display","inline-block");
@@ -314,7 +314,7 @@ function maximizarVentana(e, callback){
     }else if(contadorVentanas[0]==3){
 
         //console.log(contadorVentanas[1]);
-        var ventanaReconocida =  contadorVentanas[1] - parseInt(e.closest(".contenedorVentana").attr("data-cod"));
+        var ventanaReconocida =  contadorVentanas[1] - parseInt(ventana.attr("data-cod"));
 
         if( ventanaReconocida == 6){
             $(".barHerramientasHeader [data-codi=1]").css("display","inline-block").find("button").addClass("animacionbtn");
@@ -343,7 +343,7 @@ function maximizarVentana(e, callback){
     //Tipped.create('.tooltip', {size: 'large'});
 
     if (App.uiMaxCallback!==undefined){
-        App.uiMaxCallback();
+        App.uiMaxCallback(codevent);
     }
 
     if (callback !== undefined) {
@@ -375,9 +375,9 @@ function restaurarVentana(e) {
         //console.log("como llegue aqui?  " + restaurarVent);
     }else if(restaurarVent ==3) {
 
-        if (dataCodevent == "mapa") {
+        if (dataCodevent == "mapas") {
             ventana.addClass("col-4-10").removeClass("col-1-1");
-        } else if (dataCodevent == "indicadores") {
+        } else if (dataCodevent == "cuadros") {
             ventana.addClass("col-35").removeClass("col-1-1");
         } else if (dataCodevent == "graficos") {
             ventana.addClass("col-1-4").removeClass("col-1-1");
