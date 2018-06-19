@@ -249,15 +249,15 @@ App.utils.mapas = (function (parent, config,service) {
             plotOptions: {
                 pie: {
                     dataLabels: {
-
+                        enabled: true,
                         x:0,
-                        y:70
+                        y: 50,
                     },
                     startAngle: -90,
                     endAngle: 90,
                     center: ['50%', '65%'],
                     borderWidth: 6,
-                    borderColor: 'rgba(27, 60, 113, 0.9)'
+                    borderColor: 'rgba(27, 60, 113, 0.9)',
                 }
             },
             series: [{
@@ -270,15 +270,13 @@ App.utils.mapas = (function (parent, config,service) {
                         name: 'Hombres',
                         y: t_edad_h ,
                         dataLabels: {
-                            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                            format: '{point.name}<br>{point.percentage:.1f} %',
                             borderWidth: 0,
                             distance: -8, // Individual distance
                             style: {
                                 textShadow: null,
                                 textOutline: 0,
-                                color:"#FFFFFF",
-                                textAlign:"center"
-
+                                color:"#FFFFFF"
                             }
 
                         }
@@ -288,14 +286,14 @@ App.utils.mapas = (function (parent, config,service) {
                         name: 'Mujeres',
                         y: t_edad_m ,
                         dataLabels: {
-                            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                            format: '{point.name}<br>{point.percentage:.1f} %',
                             borderWidth: 0,
                             distance: -8, // Individual distance
                             style: {
                                 textShadow: null,
                                 textOutline: 0,
                                 color:"#FFFFFF",
-                                textAlign:"center"
+
                             }
                         }
 
@@ -311,13 +309,17 @@ App.utils.mapas = (function (parent, config,service) {
         var bloque1 = document.createElement("div");
         var bloque2 = document.createElement("div");
         var bloque3 = document.createElement("div");
+        var contenidoPopoverBloque1 = '<div class="titPopoverMap"><h3>876542</h3><p>Población Censada</p> </div> ' +
+            '<div class="pobGeneroPopoverMap"><div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
+            '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
 
         ////////se declaran ids a los bloques
         bloque1.setAttribute("id","resumen");
         bloque2.setAttribute("id","mapaGrafico");
         bloque3.setAttribute("id","tabla");
 
-        //bloque1.appendChild();
+
+        bloque1.innerHTML=contenidoPopoverBloque1;
 
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
