@@ -300,7 +300,7 @@ function maximizarVentana(e, callback){
     ventanasAbiertas();
     var contadorVentanas = vAbiertas;
     var ventana = e.closest(".contenedorVentana");
-    var codevent = $(ventana).attr('data-codevent');
+    var dataCodevent = $(ventana).attr('data-codevent');
     if(contadorVentanas[0]==1){
 
     }else if(contadorVentanas[0]==2){
@@ -343,7 +343,7 @@ function maximizarVentana(e, callback){
     //Tipped.create('.tooltip', {size: 'large'});
 
     if (App.uiMaxCallback!==undefined){
-        App.uiMaxCallback(codevent);
+        App.uiMaxCallback(dataCodevent);
     }
 
     if (callback !== undefined) {
@@ -352,7 +352,7 @@ function maximizarVentana(e, callback){
 }
 
 /* Restaurar Ventana */
-function restaurarVentana(e) {
+function restaurarVentana(e, callback) {
     console.log("Estoy resturando");
     //var contadorVentanas = ventanasAbiertas();
     var restaurarVent = vAbiertas[0];
@@ -390,6 +390,14 @@ function restaurarVentana(e) {
     e.attr("data-icon", ">");
     e.attr("title", "Maximizar ventana");
     e.addClass("maximizar").removeClass("restaurar");
+
+    if (App.uiNormalCallback!==undefined){
+        App.uiNormalCallback(dataCodevent);
+    }
+
+    if (callback !== undefined) {
+        callback();
+    }
 
      //Tipped.init();
      //Tipped.create('.tooltip', {size: 'large'});
