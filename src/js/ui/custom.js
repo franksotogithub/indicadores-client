@@ -223,6 +223,7 @@ function reabrirVentanas(e) {
 
 /* MInimizar Ventana */
 function minimizarVentana(e, callback) {
+    console.log("Estoy Minimizando");
     ventanasAbiertas();
     var contadorVentanas = vAbiertas;
     var a = e.closest(".contenedorVentana").attr("data-codevent");
@@ -259,6 +260,7 @@ function minimizarVentana(e, callback) {
                 $(this ).css("display","inline-block");
                 $(this ).find("button").addClass("animacionbtn");
                 $(this ).find("button").addClass("animacionbtn").css("background-color","#12284c");
+                console.log("Encontrado boton minimizado");
             }
         });
 
@@ -266,14 +268,11 @@ function minimizarVentana(e, callback) {
         ultimaMinimizada = parseInt( b.attr("data-cod"));
         console.log(vAbiertas);
 
-        /* Reiniciar tooltip  */
-        //Tipped.init();
-        //Tipped.create('.tooltip', {size: 'large'});
 
 
     }
     else if(contadorVentanas[0]==3) {
-
+        console.log("hay 3 ventnas abiertas y estoy minimizando");
         e.closest(".contenedorVentana").fadeOut(function(){
             adaptarVentanas(a,b);
             if (callback !== undefined) {
@@ -283,6 +282,8 @@ function minimizarVentana(e, callback) {
 
         $(".barHerramientasHeader .col-1-4").each(function(){ /* Evalua que icono correponde msotrar como minimizado */
             var c = $(this).attr("data-codevent");
+
+            console.log(a);
 
             if (a==c){ /* Comparamos si coinciden los data-codevent */
                 $(this ).css("display","inline-block");
@@ -399,8 +400,6 @@ function restaurarVentana(e, callback) {
         callback();
     }
 
-     //Tipped.init();
-     //Tipped.create('.tooltip', {size: 'large'});
 }
 
 
