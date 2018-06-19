@@ -46,10 +46,10 @@
 
 .esri-popup__main-container{
     color: #FFFFFF !important;
-    background-color: rgba(27, 60, 113, 0.9) !important;
+    background-color: rgba(27, 60, 113, 1) !important;
 }
 .esri-popup__pointer-direction {
-    background-color: rgba(27, 60, 113, 0.9) !important;
+    background-color: rgba(27, 60, 113, 1) !important;
 }
 .esri-popup__icon {
     color: #FFFFFF !important;
@@ -201,7 +201,23 @@ div.esri-search__submit-button:focus {
 #list-widgets {
     margin: 0px;
 }
+#list-widgets > div {
+    cursor:pointer;
+    font-family: "signikaregular";
+}
 
 #select-layer:focus {
     outline: none;
+}
+
+
+/* Widget poOver Mapa */
+
+#mapaGrafico{
+    display: block;
+    height: 220px;
+    width: 100%;
+    max-height: 220px;
+    overflow: hidden;
+
 }

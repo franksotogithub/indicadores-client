@@ -224,35 +224,40 @@ App.utils.mapas = (function (parent, config,service) {
 
         Highcharts.chart(div, {
             chart: {
+                backgroundColor: 'transparent',
                 plotBackgroundColor: null,
                 plotBorderWidth: 0,
-                plotShadow: false,
-                width: 300
+                plotShadow: false
+            },
+            credits: {
+                enabled: false
             },
             title: {
-                text: 'Total<br>Personas<br>2017',
+                text: '',
                 align: 'center',
                 verticalAlign: 'middle',
                 y: 0
             },
+            colors: ['#25DFA1', '#16C9D5'],
             tooltip: {
                 pointFormat:
                     'Cant Total: <b>{point.y:.1f}</b> '
             },
+            exporting: {
+                enabled: false
+            },
             plotOptions: {
                 pie: {
                     dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                        distance: -30,
-                        style: {
-                            fontWeight: 'bold',
-                            color: 'white'
-                        }
+
+                        x:0,
+                        y:70
                     },
                     startAngle: -90,
                     endAngle: 90,
-                    center: ['50%', '65%']
+                    center: ['50%', '65%'],
+                    borderWidth: 6,
+                    borderColor: 'rgba(27, 60, 113, 0.9)'
                 }
             },
             series: [{
@@ -260,8 +265,41 @@ App.utils.mapas = (function (parent, config,service) {
                 name: 'porcentaje',
                 innerSize: '50%',
                 data: [
-                    ['Hombres', t_edad_h],
-                    ['Mujeres', t_edad_m]
+
+                    {
+                        name: 'Hombres',
+                        y: t_edad_h ,
+                        dataLabels: {
+                            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                            borderWidth: 0,
+                            distance: -8, // Individual distance
+                            style: {
+                                textShadow: null,
+                                textOutline: 0,
+                                color:"#FFFFFF",
+                                textAlign:"center"
+
+                            }
+
+                        }
+
+                    },
+                    {
+                        name: 'Mujeres',
+                        y: t_edad_m ,
+                        dataLabels: {
+                            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                            borderWidth: 0,
+                            distance: -8, // Individual distance
+                            style: {
+                                textShadow: null,
+                                textOutline: 0,
+                                color:"#FFFFFF",
+                                textAlign:"center"
+                            }
+                        }
+
+                    }
                 ]
             }]
         });
@@ -276,12 +314,18 @@ App.utils.mapas = (function (parent, config,service) {
 
         ////////se declaran ids a los bloques
         bloque1.setAttribute("id","resumen");
-        bloque2.setAttribute("id","grafico");
+        bloque2.setAttribute("id","mapaGrafico");
         bloque3.setAttribute("id","tabla");
 
+        //bloque1.appendChild();
+
         ////////se agrega los bloques al content
+        content.appendChild(bloque1);
+
         content.appendChild(bloque2);
-        bloque2.style.width = "200px";
+
+
+        //bloque2.style.width = "200px";
 
         //////se generan los graficos
         if (cod_map=='POB')
