@@ -10,3 +10,4 @@ node_modules/
 src/assets/
 _p*.*
 **/config.js
+npm-debug.log

@@ -1,8 +1,45 @@
 App.utils.cuadros = (function (config, appData, parent, service) {
 
     var init = function (callback) {
-        this.altoVentana = altoTabla();
+        this.altoTabla = getAltoTabla();
+        CrearTabsCategorias(appData.categorias);
         crearTablaUigeos(['00']);
+
+    };
+
+    var CrearTabsCategorias = function (datos) {
+        var tabsTemplate = function (dato) {
+            var clase='';
+            if (dato.esActivo) {
+                clase = ' btnTabTabla-activo';
+            }
+            return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'">'+dato.titulo+'</button>';
+        };
+
+        var html = '';
+        for (var i=0;i<datos.length;i++) {
+            html += tabsTemplate(datos[i]);
+        }
+
+        console.log(html);
+
+        $("#tabsCategoria").html(html);
+    };
+
+    var cabeceraTemplate = function (ubigeo) {
+        return {
+            "titulo": (appData.titulo.hasOwnProperty('U'+ubigeo)) ? appData.titulo['U'+ubigeo] : '',
+            "colspan": "2",
+            "children": [
+                {
+                    "titulo": "Absoluto"
+                },
+
+                {
+                    "titulo": "%"
+                }
+            ]
+        };
     };
 
     var crearCabecera = function (cabecera) {
@@ -44,22 +81,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     };
 
-    var cabeceraTemplate = function (ubigeo) {
-        return {
-            "titulo": (appData.titulo.hasOwnProperty('U'+ubigeo)) ? appData.titulo['U'+ubigeo] : '',
-            "colspan": "2",
-            "children": [
-                {
-                    "titulo": "Absoluto"
-                },
-
-                {
-                    "titulo": "%"
-                }
-            ]
-        };
-    };
-
     var cabeceraUigeos = function (ubigeos) {
         var cabecera = [
             {
@@ -84,7 +105,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var crearTabla= function (table, data, columns, _this) {
         $(".theadindicadores").show();
-        var scrollY = _this.altoVentana.toString() + 'px';
+        var scrollY = _this.altoTabla.toString() + 'px';
         _this.tblIndicadores = $(table).DataTable({
             data: data,
             order: [[0, 'asc']],
@@ -138,12 +159,25 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             processing: true,
             serverSide: false
         });
-
-
         _this.tblIndicadores.fixedColumns().relayout();
     };
 
+    var getAltoTabla = function () {
+        var tam_ventana1 = $(window).height();
+        var totalVentana = 0;
+        if(tam_ventana1 <= 800){
+            totalVentana = (tam_ventana1 - 280);
+        } else{
+            totalVentana=(tam_ventana1 - 280);
+        }
+
+        console.log(">>> tamano ventana", totalVentana);
+
+        return totalVentana;
+    };
+
     var crearTablaUigeos = function (ubigeos) {
+
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
@@ -167,7 +201,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             // Crear tabla
             service.cuadros.getIndicadores(ubigeos, function (data) {
                 $("#loadindicadores").hide();
-                crearTabla('#tblindicadores', data["P01"], columns, parent.cuadros);
+                crearTabla('#tblindicadores', data[App.categoria], columns, parent.cuadros);
             });
         };
 
@@ -179,24 +213,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
     };
 
-    var altoTabla = function () {
-        var tam_ventana1 = $(window).height();
-        var totalVentana = 0;
-        if(tam_ventana1 <= 800){
-            totalVentana = (tam_ventana1 - 280);
-        } else{
-            totalVentana=(tam_ventana1 - 280);
-        }
-
-        console.log(">>> tamano ventana", totalVentana);
-
-        return totalVentana;
+    var tablaCategoria = function () {
+        console.log();
     };
 
     return {
         init: init,
         tblIndicadores: undefined,
-        altoVentana: 600,
+        altoTabla: 600,
         crearTablaUigeos: crearTablaUigeos,
         tablaIndicadores: undefined
     }

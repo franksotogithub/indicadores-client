@@ -9,7 +9,7 @@ App.utils.mapas = (function (parent, config,service) {
     var url_map= undefined;
     var cod_tematico=undefined;
     var select_features_tablas_graficos;
-
+    var layerList = undefined;
     var identifyTask;
     var identifyParams;
     var legend;
@@ -22,7 +22,7 @@ App.utils.mapas = (function (parent, config,service) {
     var distritoLyr=undefined;
     var map=undefined;
     var view= undefined;
-    var select_features=[];
+    var select_ubigeos=[];
     var definitionExpression_gloabal="1=1";
     var opacity=0.8;
     var historic_features=undefined;
@@ -337,7 +337,7 @@ App.utils.mapas = (function (parent, config,service) {
         return content;
     }
 
-    var crearMapa = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,data) {
+    var crearMapa = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data) {
 
         classBreakinfos= data;
         url_dep=url_map+'/0';
@@ -375,7 +375,8 @@ App.utils.mapas = (function (parent, config,service) {
                 labelsVisible: true,
                 renderer:renderizado(cod_tematico,classBreakinfos["2"]),
 
-            }]
+            }],
+            title: 'LayerPredominate'
         });
         layer_back= new MapImageLayer({
             url: url_map,
@@ -445,7 +446,7 @@ App.utils.mapas = (function (parent, config,service) {
             zoom : zoomGlobal(),
 
         });
-        //view.scale = 24000;
+
         identifyTask = new IdentifyTask(url_map);
         identifyParams = new IdentifyParameters();
         identifyParams.tolerance = 3;
@@ -454,27 +455,27 @@ App.utils.mapas = (function (parent, config,service) {
         identifyParams.layerOption = "top";
         identifyParams.width = view.width;
         identifyParams.height = view.height;
-        historic_features=[
+        this.historic_features=[
             {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep},
             {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov},
             {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist},
         ];
         sources=[
             {
-                featureLayer: historic_features[0].layer,
+                featureLayer: this.historic_features[0].layer,
                 searchFields: ["NOMBDEP"],
                 displayField: "LITERAL",
                 outFields:['*'],
             },
 
             {
-                featureLayer: historic_features[1].layer,
+                featureLayer: this.historic_features[1].layer,
                 searchFields: ["NOMBDEP","NOMBPROV"],
                 displayField: "LITERAL",
                 outFields:['*'],
             },
             {
-                featureLayer: historic_features[2].layer,
+                featureLayer: this.historic_features[2].layer,
                 searchFields: ["NOMBDEP","NOMBPROV","NOMBDIST"],
                 displayField: "LITERAL",
                 outFields:['*'],
@@ -498,6 +499,8 @@ App.utils.mapas = (function (parent, config,service) {
             }],
 
         });
+
+
         searchWidget = new Search({
             view: view,
             sources:sources,
@@ -507,6 +510,47 @@ App.utils.mapas = (function (parent, config,service) {
             //activeSource:false
         });
 
+        /*layerList = new LayerList(
+            {   view:view,
+                container: document.createElement("div"),
+                listItemCreatedFunction: function(event) {
+                    const item = event.item;
+                    console.log('item-->',item);
+                    console.log('item.title-->',item.title);
+                    // add the pie chart to the Predominance layer list item panel
+                    if (item.title === 'LayerPredominate') {
+                        item.panel = {
+                            content: [
+                                [
+                                    "<b>Educational attainment</b> refers to the highest level of education that an individual has completed. ",
+                                    "This chart categorizes the population living within the current ",
+                                    "view extent by their educational attainment."
+                                ].join(""),
+
+                                document.createElement("canvas"),
+
+                                [
+                                    "Notice that while one attainment level appears to dominate certain regions, it doesn't ",
+                                    "necessarily mean it represents the majority of the population. In fact, as ",
+                                    "you explore most areas, you will find the predominant educational attainment makes up ",
+                                    "just a fraction of the population due to the number of categories considered."
+                                ].join("")
+                            ],
+                            className: "esri-icon-pie-chart",
+                            open: item.visible
+                        };
+                    }
+                    else{ item.panel={open:false}}
+                }
+            }
+
+        );*/
+
+        /*layerList.container.style = "height: 100%";*/
+
+        var panelDiv = document.getElementById("panel");
+        panelDiv.style = "height: 100%";
+        panelDiv.style.display="none";
 
         view.ui.add(legend, "bottom-left");
         view.ui.add(searchWidget, {
@@ -517,17 +561,18 @@ App.utils.mapas = (function (parent, config,service) {
         view.ui.add("list-maps", "bottom-right");
         view.ui.add("widget-select-layer", "top-right");
         view.ui.remove("zoom");
+        view.ui.add(panelDiv, {position: "top-right"});
+
         view.constraints.lods=lods;
 
-
         var changeIndex=function(newIndex) {
-            if(newIndex<historic_features.length)
+            if(newIndex<this.historic_features.length)
             {   indexLayer=newIndex;
                 identifyParams.layerIds = [newIndex];
                 legend = new Legend({
                     view: view,
                     layerInfos: [{
-                        layer: historic_features[newIndex].layer,
+                        layer: this.historic_features[newIndex].layer,
                     }],
                 });
 
@@ -562,8 +607,8 @@ App.utils.mapas = (function (parent, config,service) {
         };
 
         var cleanVars=function(){
-            select_features=[];
-            historic_features.forEach(function (f) {
+            this.select_ubigeos=[];
+            this.historic_features.forEach(function (f) {
                 f.nombres=[];
                 f.select_features=[];
             })
@@ -614,39 +659,27 @@ App.utils.mapas = (function (parent, config,service) {
                 if(indexLayer==0){nombre=graphic.attributes.NOMBDEP;}
                 else if(indexLayer==1){nombre=graphic.attributes.NOMBPROV;}
                 else if(indexLayer==2){nombre=graphic.attributes.NOMBDIST;}
-                var index_graphic=select_features.indexOf(codigo);
+                var index_graphic=this.select_ubigeos.indexOf(codigo);
 
-                console.log(index_graphic);
-
-
-                if (index_graphic==-1 || select_features.length==0) {
-                    /*popup=view.popup.open({
-                            title:codigo,
-                            location:event.mapPoint,
-                            content:codigo
-                        }
-                    );*/
-
+                if (index_graphic==-1 || this.select_ubigeos.length==0) {
                     createPopup(nombre,codigo,event);
-
-                    select_features.push(codigo);
-                    historic_features[indexLayer].nombres.push(nombre);
-
+                    this.select_ubigeos.push(codigo);
+                    this.historic_features[indexLayer].nombres.push(nombre);
                 }
                 else{
                     view.popup.close();
-                    select_features.splice(index_graphic, 1);
-                    historic_features[indexLayer].nombres.splice(index_graphic, 1);
+                    this.select_ubigeos.splice(index_graphic, 1);
+                    this.historic_features[indexLayer].nombres.splice(index_graphic, 1);
                 }
 
-                definitionExpression_gloabal=getDefinitionExpresionByCodigos(select_features);
-                historic_features[indexLayer].where=definitionExpression_gloabal;
-                historic_features[indexLayer].select_features=select_features;
+                definitionExpression_gloabal=getDefinitionExpresionByCodigos(this.select_ubigeos);
+                this.historic_features[indexLayer].where=definitionExpression_gloabal;
+                this.historic_features[indexLayer].select_features=this.select_ubigeos;
                 layer.findSublayerById(parseInt(indexLayer)).definitionExpression=definitionExpression_gloabal;
 
                 /***aqui se debe llamar a ola funcion q renderiza la tabla****/
 
-                parent.cuadros.crearTablaUigeos(select_features);
+                parent.cuadros.crearTablaUigeos(this.select_ubigeos);
             }
         };
 
@@ -654,8 +687,11 @@ App.utils.mapas = (function (parent, config,service) {
             select_all.style.display="block";
             var index=list_maps[indexMap].indexLayer;
             changeLayer(index);
+
             definitionExpression_gloabal=list_maps[indexMap].where;
             updateMap(definitionExpression_gloabal,index);
+
+            //select_features=selectFeaturesByQuery(definitionExpression_gloabal,index);
 
         }
 
@@ -668,13 +704,13 @@ App.utils.mapas = (function (parent, config,service) {
         var openFeature=function(){
             if(indexLayer>=0 && indexLayer<=1 )
             {
-                definitionExpression_gloabal=getDefinitionExpresion(select_features,indexLayer);
+                definitionExpression_gloabal=getDefinitionExpresion(this.select_ubigeos,indexLayer);
                 if (indexLayer==0) { definitionExpressiondep=definitionExpression_gloabal;  }
                 if (indexLayer==1) { definitionExpressionprov=definitionExpression_gloabal; }
                 setLabelWidgetUbigeos(indexLayer);
                 changeIndex(indexLayer+1);
                 updateMap(definitionExpression_gloabal,indexLayer);
-                select_features=[];
+                this.select_ubigeos=[];
             }
             view.popup.close();
             select_all.style.display="none";
@@ -683,7 +719,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         var selectFeaturesByQuery = function (query,index) {
             var queryCitiesTask = new QueryTask({
-                url: historic_features[index].url
+                url: this.historic_features[index].url
             });
             var query = new Query({
                 where: query,
@@ -693,37 +729,37 @@ App.utils.mapas = (function (parent, config,service) {
             queryCitiesTask.execute(query).then(function(result){
                 var features=result.features;
                 features.forEach( function (feature) {
-                    select_features.push(feature.attributes.CODIGO);
+                    this.select_ubigeos.push(feature.attributes.CODIGO);
                 });
 
-                console.log('select_features-->',select_features);
+                //console.log('select_features-->',select_features);
 
-                parent.cuadros.crearTablaUigeos(select_features);
+                parent.cuadros.crearTablaUigeos(this.select_ubigeos);
             });
         }
 
 
         var selectAllFeatures=function(checked){
-            select_features=[];
+            this.select_ubigeos=[];
             if (checked) {
                 var where="1=1";
                 if (indexLayer==0){
                     where="1=1";
-                    historic_features[0].select_features=[];
-                    historic_features[1].select_features=[];
-                    historic_features[2].select_features=[];
+                    this.historic_features[0].select_features=[];
+                    this.historic_features[1].select_features=[];
+                    this.historic_features[2].select_features=[];
                 }
                 else if(indexLayer==1){
 
-                    where=getDefinitionExpresion(historic_features[0].select_features,0);
-                    historic_features[1].select_features=[];
-                    historic_features[2].select_features=[];
+                    where=getDefinitionExpresion(this.historic_features[0].select_features,0);
+                    this.historic_features[1].select_features=[];
+                    this.historic_features[2].select_features=[];
 
                 }
 
                 else if (indexLayer==2){
-                    where=getDefinitionExpresion(historic_features[1].select_features,1);
-                    historic_features[2].select_features=[];
+                    where=getDefinitionExpresion(this.historic_features[1].select_features,1);
+                    this.historic_features[2].select_features=[];
                 }
 
 
@@ -748,12 +784,13 @@ App.utils.mapas = (function (parent, config,service) {
             layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
             layer_back.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
             console.log(definitionExpression);
-            zoomToLayer(view,historic_features[parseInt(index)].layer,definitionExpression);
+            zoomToLayer(view,this.historic_features[parseInt(index)].layer,definitionExpression);
+
         }
 
         var setLabelWidgetUbigeos = function(index) {
 
-            var nombres=historic_features[index].nombres;
+            var nombres=this.historic_features[index].nombres;
 
             if(index==0) {
                 document.getElementById('widget-departamentos').style.display = "block";
@@ -786,20 +823,20 @@ App.utils.mapas = (function (parent, config,service) {
 
         var selectWidget = function(index){
             changeIndex(index);
-            select_features=historic_features[index].select_features;
-            definitionExpression_gloabal=getDefinitionExpresionByCodigos(select_features);
+            this.select_ubigeos=this.historic_features[index].select_features;
+            definitionExpression_gloabal=getDefinitionExpresionByCodigos(this.select_ubigeos);
 
             if (index==0) {
                 definitionExpression_back="1=1";
             }
             else {
                 var index_old=parseInt(index)-1;
-                definitionExpression_back=getDefinitionExpresion(historic_features[index_old].select_features,index_old);
+                definitionExpression_back=getDefinitionExpresion(this.historic_features[index_old].select_features,index_old);
             }
 
             layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_gloabal;
             layer_back.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_back;
-            zoomToLayer(view,historic_features[parseInt(index)].layer,definitionExpression_back);
+            zoomToLayer(view,this.historic_features[parseInt(index)].layer,definitionExpression_back);
         }
 
         var eventHandler=function (event){
@@ -852,15 +889,15 @@ App.utils.mapas = (function (parent, config,service) {
 
             if(index==1){
 
-                historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                historic_features[0].select_features.push(feature.attributes.CCDD);
+                this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                this.historic_features[0].select_features.push(feature.attributes.CCDD);
             }
 
             if(index==2){
-                historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                historic_features[0].select_features.push(feature.attributes.CCDD);
-                historic_features[1].nombres.push(feature.attributes.NOMBPROV);
-                historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
+                this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
             }
 
 
@@ -873,7 +910,7 @@ App.utils.mapas = (function (parent, config,service) {
                 openFeature();
             }
 
-            console.log('features select-->',select_features);
+            console.log('features select-->',this.select_ubigeos);
 
         });
 
@@ -886,8 +923,6 @@ App.utils.mapas = (function (parent, config,service) {
         view.popup.on("trigger-action", function(event) {
             openFeature();
         });
-
-
 
 
         view.when(function () {
@@ -905,26 +940,25 @@ App.utils.mapas = (function (parent, config,service) {
         changeLayer(0);
     }
 
-    var  cambiarMapa = function(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,cod_map,cod_tematico){
-
-        service.mapas.getLegenda(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,cod_map,cod_tematico,
-            function (
-            Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,data)
-
-        {
-            crearMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,data);
-        });
+    var  cambiarMapa = function(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico){
+        service.mapas.getLegenda(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico,
+            function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data)
+                {
+                    crearMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data);
+                });
     }
 
-    var requireEvents = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask) {
+    var requireEvents = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList) {
         list_maps=getMaps();
-        cambiarMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,cod_map,cod_tematico);
+        cambiarMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico);
 
 
     };
 
     return {
         requireEvents: requireEvents,
+        historic_features: historic_features,
+        select_ubigeos: select_ubigeos,
     }
 
 
