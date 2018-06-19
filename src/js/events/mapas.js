@@ -19,7 +19,7 @@
             "esri/PopupTemplate",
             "esri/widgets/Print",
             "esri/tasks/QueryTask",
-
+            "esri/widgets/LayerList",
             "dojo/domReady!"
         ], utils.mapas.requireEvents);
     })(App.service,App.utils);

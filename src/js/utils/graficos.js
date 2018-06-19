@@ -163,12 +163,9 @@ App.utils.graficos = (function (parent, service, config, appdata) {
         data.forEach(function (i) {
 
             arreglo_nombre.push(i[0]);
-
             arreglo_ind1.push(i[1]);
             arreglo_ind2.push(i[2]);
             arreglo_ind3.push(i[3]);
-
-
         });
 
 
