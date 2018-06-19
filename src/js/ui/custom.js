@@ -296,9 +296,8 @@ function minimizarVentana(e, callback) {
 
 /* Maximizar Ventana */
 
-function maximizarVentana(e){
+function maximizarVentana(e, callback){
     ventanasAbiertas();
-    console.log("Estoy maximizando");
     var contadorVentanas = vAbiertas;
     if(contadorVentanas[0]==1){
 
@@ -331,9 +330,10 @@ function maximizarVentana(e){
         }
 
     }
-    e.closest(".contenedorVentana").siblings(".contenedorVentana").fadeOut(function () { /* Selecionar los hermanos de la ventana maximizada y ocultarlas */
+    e.closest(".contenedorVentana").siblings(".contenedorVentana").fadeOut(function () {
+        /* Selecionar los hermanos de la ventana maximizada y ocultarlas */
           e.closest(".contenedorVentana").removeClass("col-4-10 col-35 col-1-4 col-1-2 ").addClass("col-1-1").css("display","block");
-        });
+    });
     e.attr("data-icon","4");
     e.attr("title","Restaurar ventana");
     e.addClass("restaurar").removeClass("maximizar");
@@ -341,6 +341,14 @@ function maximizarVentana(e){
     /* Reiniciar tooltip  */
     //Tipped.init();
     //Tipped.create('.tooltip', {size: 'large'});
+
+    if (App.uiMaxCallback!==undefined){
+        App.uiMaxCallback();
+    }
+
+    if (callback !== undefined) {
+        callback();
+    }
 }
 
 /* Restaurar Ventana */
