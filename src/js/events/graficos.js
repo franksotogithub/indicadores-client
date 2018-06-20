@@ -14,9 +14,6 @@
         service.graficos.gePoblacionInd('00', 'P01', utils.graficos.graf_barra_ubigeo);//mostrara los graficos de barra
 
 
-
-
-
     });
 
     $('#cmb_ubi').change(function () {
