@@ -17,6 +17,8 @@ App.utils.mapas = (function (parent, config,service) {
 
     var cod_tematico=undefined;
 
+    var cod_map=undefined;
+
     var select_features_tablas_graficos;
 
     var layerList = undefined;
@@ -145,11 +147,11 @@ App.utils.mapas = (function (parent, config,service) {
 
     ];
 
-    var cod_map='P01';
 
-    var url_map=config.map_config[cod_map].urlMap;
 
-    var cod_tematico=config.map_config[cod_map].cod_tematico_default;
+    //var url_map=config.map_config[cod_map].urlMap;
+
+    //var cod_tematico=config.map_config[cod_map].cod_tematico_default;
 
     var sources=undefined;
 
@@ -354,10 +356,10 @@ App.utils.mapas = (function (parent, config,service) {
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
         content.appendChild(bloque2);
-        if (cod_map=='POB')
+        if (cod_map=='P01')
         {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
 
-        else if (cod_map=='EDU')
+        else if (cod_map=='P02')
         {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
         return content;
     }
@@ -379,7 +381,7 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-    var crearMapa = function (data) {
+    var crearMapa = function (classBreak,cod_map,cod_tematico,url) {
         require([
             "esri/Map",
             "esri/views/MapView",
@@ -405,7 +407,8 @@ App.utils.mapas = (function (parent, config,service) {
         {
             list_maps=getAccesDirectMaps();
             var _this=parent.mapas;
-            classBreakinfos= data;
+            classBreakinfos= classBreak;
+            url_map=url;
             url_dep=url_map+'/0';
             url_prov=url_map+'/1';
             url_dist=url_map+'/2';
@@ -704,7 +707,7 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var createPopup=function(title,codigo,event){
-                _this.view_map.popup.visible=!(_this.maximizado)
+
                 popup=_this.view_map.popup.open({
                         title:title,
                         location:event.mapPoint,
@@ -716,6 +719,7 @@ App.utils.mapas = (function (parent, config,service) {
                     buttonEnabled: false,
                 };
                 _this.view_map.popup.dockEnabled=false;
+                _this.view_map.popup.visible=!(_this.maximizado);
             }
 
             var updatePanel = function(ubigeo,cod_map,div) {
@@ -1056,11 +1060,10 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
-    var cambiarMapa = function(cod_map,cod_tematico){
-        service.mapas.getLegenda(cod_map,cod_tematico, function (data)
+    var cambiarMapa = function(cod_map,cod_tematico,url){
+        service.mapas.getLegenda(cod_map,cod_tematico, url,function (data,cod_map,cod_tematico,url)
             {
-
-                crearMapa(data);
+               crearMapa(data,cod_map,cod_tematico,url);
             });
     }
 
@@ -1069,9 +1072,14 @@ App.utils.mapas = (function (parent, config,service) {
     };
 
     var categoriaChangeEvent = function (options) {
-        console.log(options);
-        //var cod_map=options.
-        //service.mapas.getMapas()
+        var cod_mapa=options.categoria;
+        service.mapas.getMapa('P01',function (data) {
+            console.log('data-->',data);
+            var cod_tematico=data.cod_tematico_default;
+            var url= data.url;
+            cambiarMapa(cod_mapa,cod_tematico,url);
+        });
+
     }
 
 

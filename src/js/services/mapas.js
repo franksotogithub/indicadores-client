@@ -17,11 +17,11 @@ App.service.mapas = (function (parent, config) {
         });
     };
     */
-    var getLegenda = function (map,indicador,callback) {
+    var getLegenda = function (map,indicador,url,callback) {
         parent.get({
             url: parent.getUrlServer('mapa/legendas/obtener-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
             success: function (data) {
-                callback(data);
+                callback(data,map,indicador,url);
             },
 
             error: function (obj, status, otherr) {
@@ -42,7 +42,7 @@ App.service.mapas = (function (parent, config) {
         });
     }
 
-    var getMapa = function (cod_map){
+    var getMapa = function (cod_map,callback){
         parent.get({
             url: parent.getUrlServer('mapa/mapas/'+cod_map+'/'),
             success: function (data) {
