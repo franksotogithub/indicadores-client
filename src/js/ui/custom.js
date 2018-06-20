@@ -196,11 +196,17 @@ function reabrirVentanas(e) {
     if(contadorVentanas[0]==1){
 
         var ventanaMini =  e.closest("[data-codi]").attr("data-codi");
+        var ventanaReconocidaUl =  $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").attr("data-codevent");
+
         e.removeClass("animacionbtn").closest("[data-codi]").hide();
         $(".contenedorVentana[data-cod="+ventanaMini+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").attr("data-icon", ">").attr("title", "Maximizar ventana");
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").addClass("maximizar").removeClass("restaurar");
+
+        if (App.uiNormalCallback !== undefined) {
+            App.uiNormalCallback(ventanaReconocidaUl);
+        }
 
         /* Reiniciar tooltip  */
         //Tipped.init();
@@ -241,15 +247,19 @@ function minimizarVentana(e, callback) {
         var  reconocida = contadorVentanas[1] - parseInt(b.attr("data-cod"));
 
         var ventanaUltima = $(".contenedorVentana[data-cod='"+reconocida+"']").find(".maximizar");
+        var nombreVentanaUl = $(".contenedorVentana[data-cod='"+reconocida+"']").attr("data-codevent");
         ventanaUltima.attr("data-icon","4");
         ventanaUltima.attr("title","Restaurar ventana");
         ventanaUltima.addClass("restaurar").removeClass("maximizar");
-
 
         e.closest(".contenedorVentana").fadeOut(function(){
             adaptarVentanas(a,b);
             if (callback !== undefined) {
                 callback();
+            }
+
+            if (App.uiMaxCallback !== undefined) {
+                App.uiMaxCallback(nombreVentanaUl);
             }
         });
 

@@ -1,62 +1,40 @@
-App.utils.graficos = (function (parent, service, config, appdata) {
+App.utils.graficos = (function (parent, service, config, appData) {
 
+    var grafico_1
+    var grafico_2
+    var grafico_3
 
 
     var graf_persona_edad = function (data) {
 
-        var edad_h = [];
-        var edad_m = [];
-        var t_edad_h = 0;
-        var t_edad_m = 0;
-
-
-        data.forEach(function (i) {
-            edad_h.push(-i[0]);
-            edad_m.push(i[1]);
-
-            t_edad_h += i[0];
-            t_edad_m += i[1];
-
-        });
-
-        var categories = [
-            '0-14', '15-64', '65+'
-        ];
-
-        Highcharts.chart('grafico_1', {
+        grafico_1 =   Highcharts.chart('grafico_1', {
             chart: {
                 type: 'bar'
             },
             title: {
-                text: 'POBLACION 2017'
+                text: data.nom_ubigeo
             },
 
             xAxis: [{
+                allowDecimals: false,
+
                 title: {
                     text: null
                 },
-                categories: categories,
+                categories: data.categoria,
                 reversed: false,
-                labels: {
-                    step: 1
-                }
-            }, { // mirror axis on right side
-                opposite: true,
-                reversed: false,
-                categories: categories,
-                linkedTo: 0,
-                labels: {
-                    step: 1
-                }
+
             }],
             yAxis: {
+                allowDecimals: false,
                 title: {
                     text: null
                 },
                 labels: {
                     formatter: function () {
-                        return Math.abs(this.value) ;
-                    }
+                        return Highcharts.numberFormat(Math.abs(this.value),0)
+                    },
+                    overflow: 'justify'
                 }
             },
 
@@ -65,17 +43,16 @@ App.utils.graficos = (function (parent, service, config, appdata) {
                     stacking: 'normal'
                 },
                 bar: {
+                    allowDecimals: false,
+
                     pointPadding: -0.2,
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
-
-
                             formatter: function () {
-                                return  Highcharts.numberFormat(Math.abs(this.point.y),1);
-                            }
-                        ,
-                        distance: -20,
+                                return  Highcharts.numberFormat(Math.abs(this.point.y),0);
+                            },
+                        distance: 20,
                         style: {
                             fontWeight: 'bold',
                             color: 'white'
@@ -91,29 +68,19 @@ App.utils.graficos = (function (parent, service, config, appdata) {
                 }
             },
 
-            series: //data
-            [{
-            name: 'Hombres',
-            data:  edad_h
-                //-452, -578, -228
+            series: data.data
 
-
-        }, {
-            name: 'Mujeres',
-            data:  edad_m
-             //   400, 458, 325
-
-        }]
         });
 
-        Highcharts.chart('grafico_2', {
+        grafico_2 =  Highcharts.chart('grafico_2', {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: 0,
             plotShadow: false
+
         },
         title: {
-            text: 'Total<br>Personas<br>2017',
+            text: 'Total<br>Personas',
             align: 'center',
             verticalAlign: 'middle',
             y: 0
@@ -142,36 +109,16 @@ App.utils.graficos = (function (parent, service, config, appdata) {
             type: 'pie',
             name: 'porcentaje',
             innerSize: '50%',
-            data: [
-                ['Hombres', t_edad_h],
-                ['Mujeres', t_edad_m]
-                            ]
+            data: data.total
         }]
     });
 
     };
 
-    var
 
         graf_barra_ubigeo = function(data){
 
-        var arreglo_nombre = [];
-        var arreglo_ind1 = [];
-        var arreglo_ind2 = [];
-        var arreglo_ind3 = [];
-
-        console.log(data);
-
-        data.forEach(function (i) {
-
-            arreglo_nombre.push(i[0]);
-            arreglo_ind1.push(i[1]);
-            arreglo_ind2.push(i[2]);
-            arreglo_ind3.push(i[3]);
-        });
-
-
-    Highcharts.chart('grafico_3', {
+            grafico_3 =  Highcharts.chart('grafico_3', {
         chart: {
             type: 'bar'
         },
@@ -180,23 +127,25 @@ App.utils.graficos = (function (parent, service, config, appdata) {
         },
 
         xAxis: {
-            categories:
-            arreglo_nombre
-               // ['lima','callao']
+            categories: data.ubigeo, // ["AMAZONAS", "ÁNCASH", "APURÍMAC", "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CALLAO", "CUSCO", "HUANCAVELICA", "HUÁNUCO", "ICA", "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LIMA", "LORETO", "MADRE DE DIOS", "MOQUEGUA", "PASCO", "PIURA", "PUNO", "SAN MARTIN", "TACNA", "TUMBES", "UCAYALI"],
+
+            title: {
+                text: null
+            }
             ,
             crosshair: true
         },
         yAxis: {
-            min: 1,
+            allowDecimals: false,
+            min: 0,
             title: {
                 text: 'Cant. (miles)'
             }
         },
         tooltip: {
-            valueSuffix: ' millions'
+            valueSuffix: ''
         },
         plotOptions: {
-
 
             bar: {
                 dataLabels: {
@@ -215,35 +164,11 @@ App.utils.graficos = (function (parent, service, config, appdata) {
             backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
             shadow: true
         },
-
-        series: [{ maxPointWidth: 50,
-            name: 'Hombre',
-            data: arreglo_ind1
-               // [165,565]
-
-        }, {
-            name: 'Mujer',
-            data: arreglo_ind2
-               // [1465,545]
-        }//, {
-         //   name: 'cultura',
-        //    data: arreglo_ind3
-                //[65,65]
-        //}
-        ]
+        series: data.son
     });
     };
 
 
-    var uiMaxCallback = function () {
-
-        console.log(App.uiMax.graficos);
-    }
-
-
-    var uiNormalCallback = function () {
-        console.log(App.uiMax.graficos);
-    }
 
     var crearMinimizado = function (ubigeos) {
 
@@ -261,28 +186,102 @@ App.utils.graficos = (function (parent, service, config, appdata) {
                 lista_ubi.push({'u': i[0]});
             });
             $("#cmb_ubi").html(combo);
-            $("#cmb_ubi").css("display", "block");
+            $("#cmb_ubigeo").css("display", "block");
             ubigeo = $('#cmb_ubi').val();
             console.log( 'MAS DE 1 data' );
 
         }
         else{
             $("#cmb_ubi").html('');
-            $("#cmb_ubi").css("display", "none");
+            $("#cmb_ubigeo").css("display", "none");
             ubigeo = ubigeos[0][0];
             lista_ubi = {'u': ubigeos[0][0]};
             console.log( 'SOLO 1 data' );
         }
 
-        console.log('captura ubigeo ---' + ubigeo);
-        service.graficos.gePoblacionEdad(ubigeo, 'P01', graf_persona_edad); //mostrara los graficos del ubigeo
+        self.cant_select = cant;
+
+        service.graficos.gePoblacionEdad(ubigeo,cant, 'P01', graf_persona_edad); //mostrara los graficos del ubigeo
 
 
 
         service.graficos.gePoblacionInd(lista_ubi,'P01',graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
 
     };
-    // llena el combre de graficos en caso se selecions mas de 1
+
+    var uiMaxCallback = function (option) {
+
+        console.log(App.uiMax.graficos);
+        $("#grafico_2").css("display", "block");
+        $("#grafico_3").css("display", "block");
+
+        $("#primer_g").addClass('col-4-10');
+        $("#primer_g_2").addClass('col-5-10');
+
+
+        $(".widgetMetadatos").css("display", "none");
+
+
+            $("#grafico_1").css("width", "600px");
+            $("#grafico_2").css("width", "600px");
+            $("#grafico_3").css("width", "860px");
+            $("#grafico_1").css("height", "300px");
+            $("#grafico_2").css("height", "400px");
+            $("#grafico_3").css("height", "700px");
+
+            grafico_1.setSize(null, null);
+            grafico_2.setSize(null, null);
+            grafico_3.setSize(null, null);
+
+
+
+
+    };
+
+
+    var uiNormalCallback = function (option) {
+        console.log(App.uiMax.graficos);
+        $("#grafico_1").css("width", "auto");
+        $("#grafico_1").css("height", "auto");
+
+
+        $("#grafico_2").css("display", "none");
+        $("#grafico_3").css("display", "none");
+
+        $("#primer_g").removeClass('col-4-10');
+        $("#primer_g_2").removeClass('col-5-10');
+
+        $(".widgetMetadatos").css("display", "block");
+
+        grafico_1.setSize(null, null);
+
+    }
+
+
+
+
+    var mapasChangeEvent = function (option) {
+        console.log(option.ubigeo)
+
+        var ubigeo = [];
+
+        var arreglo = [];
+
+        ubigeo = option.ubigeo
+
+        ubigeo.forEach(function (x) {
+            arreglo.push([x,appData.titulo['U'+x]])
+        });
+
+        crearMinimizado(arreglo);
+
+    };
+
+    var categoriaChangeEvent = function (options) {
+        console.log('catego graficos', options.categoria);
+    };
+
+
 
 
 
@@ -293,7 +292,9 @@ App.utils.graficos = (function (parent, service, config, appdata) {
         graf_barra_ubigeo: graf_barra_ubigeo,
         graf_persona_edad:graf_persona_edad,
         uiMaxCallback : uiMaxCallback,
-        uiNormalCallback : uiNormalCallback
+        uiNormalCallback : uiNormalCallback,
+        mapasChangeEvent:mapasChangeEvent,
+        categoriaChangeEvent:categoriaChangeEvent
     }
 
 

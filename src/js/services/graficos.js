@@ -1,37 +1,61 @@
-App.service.graficos = (function (parent, config) {
+App.service.graficos = (function (parent, config, appData) {
 
 
-    var gePoblacionEdad = function (ubigeo, categoria, callback) {
-
+    var gePoblacionEdad = function (ubigeo, n, categoria, callback) {
 
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
                 var arreglodata = [];
+                //console.log(appData.titulo['U01'])
 
                 data.forEach(function (i) {
-                    if (i.cod_tematico == 'P010201') {
-                        arreglodata.push( [(i).hombre, (i).mujer]  );
-                    }
-
+                        arreglodata.push( [(i).cod_tematico, (i).indicador , Math.round((i).hombre) , Math.round ((i).mujer) ] );
                 });
-                data.forEach(function (i) {
-                    if (i.cod_tematico == 'P010202') {
-                        arreglodata.push( [(i).hombre, (i).mujer]  );
-                    }
+                arreglodata.sort();
 
+                var json = [];
+
+                var h = [];
+                var m = [];
+
+                var h_t = 0;
+                var m_t = 0;
+
+                var ind = [];
+                arreglodata.forEach(function (x) {
+                    ind.push(x[1])
+                    h.push(-x[2])
+                    m.push(x[3])
+                    h_t += x[2]
+                    m_t += x[3]
                 });
-                data.forEach(function (i) {
-                    if (i.cod_tematico == 'P010203') {
-                        arreglodata.push( [(i).hombre, (i).mujer]  );
+               var  nom_ubigeo;
 
-                    }
-                });
+                if (ubigeo == '00'){
+                    nom_ubigeo = 'PERU'
+                }else {
+                    nom_ubigeo = 'INFO. ' + appData.titulo['U'+ubigeo]
+                }
 
-                console.log(arreglodata)
+                if (n > 1){
+                    nom_ubigeo = null
+                }
 
+
+                json =   {categoria : ind,
+                    data: [{name: 'Hombres', data: h}, {name: 'Mujeres', data: m}],
+                    total: [['Hombres', h_t], [ 'Mujeres', m_t]],
+                    nom_ubigeo: nom_ubigeo
+                };
+
+                document.getElementById("id_w_t").innerHTML = h_t + m_t;
+                document.getElementById("id_w_h").innerHTML = h_t;
+                document.getElementById("id_w_m").innerHTML = m_t;
+
+                console.log(json)
                 if (callback !== undefined) {
-                    callback(arreglodata);
+                    callback(json);
                 }
             },
             error: function (obj, status, otherr) {
@@ -40,15 +64,7 @@ App.service.graficos = (function (parent, config) {
         })
 
 
-        /*if (callback !== undefined) {
-            callback( [[752, 578],[228,316],[ 418, 325]]);
-        }else {
-            console.log('no muestraaaaaaaaaaaaaa')
-        }*/
-
-
     };
-
 
     Array.prototype.groupBy = function(prop) {
         return this.reduce(function(groups, item) {
@@ -57,7 +73,7 @@ App.service.graficos = (function (parent, config) {
             groups[val].push(item)
             return groups
         }, {})
-    }
+    };
 
 
     Array.prototype.unique = function(){
@@ -69,118 +85,50 @@ App.service.graficos = (function (parent, config) {
                 }
             }
         }
-    }
+    };
 
 
 
     var gePoblacionInd = function (ubigeos, categoria, callback) {
 
-
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/barras/'),//, {"u": ubigeos}
             success: function (data) {
-                var arreglodata_barra = []
-
-
-                /*
-                var ind1 = [];
-                var ind2 = [];
-
-                data.forEach(function (i) {
-                    if ((i).indicador=='Hombres'){
-                        ind1.push([(i).ubigeo,(i).cod_tematico,  (i).indicador, (i).valor]);
-                    }
-                    else if ((i).indicador=='Mujeres'){
-                        ind2.push([(i).ubigeo,(i).cod_tematico,  (i).indicador, (i).valor]);
-                    }
-                });
-
-                ind1.sort();
-                ind2.sort();
-
-                ind1.forEach(function (x){
-                                    ind2.forEach(function (y){
-                                        if (x[0] == y[0]){
-                                            arreglodata_barra.push([(x)[0],  (x)[3], (y)[3]]);
-                                        }
-                                    })
-                                });
-                      */
-
 
                 var ind = []
-
                 var valores = []
-
                 data.forEach(function (i) {
-
                     ind.push(i.indicador)
-
+                    valores.push([(i).ubigeo,(i).cod_tematico,  (i).indicador, Math.round ((i).valor)])
                 });
 
                 ind.unique();
-
-                valores = data.groupBy("indicador");
-
-                var val = [];
-
-                var indexado = [];
-
-                var datajson = [];
+                ind.sort();
+                valores.sort()
 
 
-                ind.forEach(function (x, index) {
+                var son = []
+                var Json = []
+                var ubigeos = []
+
+                ind.forEach(function (x) {
                     var datavalor = [];
+                    valores.forEach(function (y) {
+                        if (y[2] == x){
+                            datavalor.push(y[3])
+                            ubigeos.push(appData.titulo['U'+y[0]])
+                        }
 
-                    val[index] = (valores[x]);
-
-                    val[index].forEach(function (val) {
-                      //  indexado[index]. add (val.valor)
-                        //console.log( index,   val)
-                        datavalor.push(val.valor)
-
-
-
-                    })
-
-                    console.log(datavalor);
-                    datajson.push ({data: datavalor})
-
+                    });
+                    son.push({data:datavalor , name: x   })
 
                 });
+                ubigeos.unique()
+                Json= {ubigeo: ubigeos, son: son }
 
-
-
-
-              console.log(datajson);
-
-
-
-               // console.log(ind);
-
-
-                /* ubigeo.forEach(function (u) {
-
-                    no_repetidos.forEach(function (i) {
-
-                        ind2.forEach()
-                        ind2.push([(u).ubigeo, (i).indicador, (i).valor]);
-
-                    })
-
-                });
-
-*/
-
-//
-                //console.log(arreglodata_barra);
-
-                 var resu = data.groupBy("indicador","ubigeo");
-
-                //console.log(resu);
 
                 if (callback !== undefined) {
-                    callback(arreglodata_barra);
+                    callback(Json);
                 }
             },
             error: function (obj, status, otherr) {
@@ -188,14 +136,7 @@ App.service.graficos = (function (parent, config) {
             }
         })
 
-
-
-
     };
-
-
-
-
 
 
     return{
@@ -203,4 +144,4 @@ App.service.graficos = (function (parent, config) {
         gePoblacionInd: gePoblacionInd,
     }
 
-})(App.service, AppConfig());
+})(App.service, AppConfig(), Appdata());

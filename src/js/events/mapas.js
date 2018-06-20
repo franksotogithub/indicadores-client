@@ -1,25 +1,11 @@
 
-    (function (service,utils) {
-        require([
-            "esri/Map",
-            "esri/views/MapView",
-            "esri/layers/MapImageLayer",
-            "esri/layers/FeatureLayer",
-            "esri/widgets/Legend",
-            "esri/widgets/Popup",
-            "dojo/dom",
-            "dojo/dom-construct",
-            "esri/Graphic",
-            "esri/widgets/Search",
-            "esri/tasks/Locator",
-            "esri/tasks/support/Query",
-            "esri/tasks/IdentifyTask",
-            "esri/tasks/support/IdentifyParameters",
-            "dojo/_base/array",
-            "esri/PopupTemplate",
-            "esri/widgets/Print",
-            "esri/tasks/QueryTask",
-            "esri/widgets/LayerList",
-            "dojo/domReady!"
-        ], utils.mapas.requireEvents);
-    })(App.service,App.utils);
+    (function (service,utils,config) {
+        var cod_mapa='P01';
+        service.mapas.getMapa(cod_mapa,function (data) {
+            var cod_tematico=data.cod_tematico_default;
+            var url= data.url;
+            utils.mapas.cambiarMapa(cod_mapa,cod_tematico,url);
+        });
+
+
+    })(App.service,App.utils,AppConfig());

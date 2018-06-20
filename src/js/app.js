@@ -9,7 +9,6 @@ App = (function (scope, config) {
         for (var i=0;i<utils.length;i++) {
             console.log(_this.utils[utils[i]]);
             if (_this.utils[utils[i]].hasOwnProperty(callback)) {
-                console.log("ingresa", utils[i])
                 _this.utils[utils[i]][callback](options);
             }
         }
