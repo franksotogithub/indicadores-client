@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="{{ output.assets ~ 'arcgis/4.7/esri/css/main.css' }}">
 
 
+
+
 </head>
 
 
@@ -52,27 +54,27 @@
             <div>
                 <div class="col-1-4 btnMapa" data-codevent="mapas" data-codi="1">
                     <div>
-                        <button data-icon="&#xe012;" class="btnReabrir b_azul f_blanco icon tooltip" title="Mostrar Mapa">  </button>
+                        <button data-icon="&#xe012;" class="btnReabrir b_azul f_blanco icon tooltip" data-title="Mostrar Mapa">  </button>
                     </div>
                 </div><!--
                              --><div class="col-1-4 btnIndicadores" data-codevent="cuadros" data-codi="5">
                 <div>
-                    <button data-icon="&#xe051;" class="btnReabrir b_azul f_blanco icon tooltip" title="Mostrar Indicadores">  </button>
+                    <button data-icon="&#xe051;" class="btnReabrir b_azul f_blanco icon tooltip" data-title="Mostrar Indicadores">  </button>
                 </div>
             </div><!--
                              --><div class="col-1-4 btnGraficos" data-codevent="graficos" data-codi="7">
                 <div>
-                    <button data-icon="&#xe002;" class=" btnReabrir b_azul f_blanco icon tooltip" title="Mostrar Gráficos y metadatos">  </button>
+                    <button data-icon="&#xe002;" class=" btnReabrir b_azul f_blanco icon tooltip" data-title="Mostrar Gráficos y metadatos">  </button>
                 </div>
             </div><!--
                              --><div class="col-1-4">
                 <div>
 
-                    <button class="icon-share icons tooltip" title="Comparte lo que ves"></button>
+                    <button class="icon-share icons tooltip" data-title="Comparte lo que ves"></button>
                 </div>
             </div><!--
                              --><div class="col-1-4">
-                <button data-icon="&#xe03a;" class="b_azul f_blanco icon tooltip" title="Ayuda e información">  </button>
+                <button data-icon="&#xe03a;" class="b_azul f_blanco icon tooltip" data-title="Ayuda e información">  </button>
             </div>
             </div>
         </div>
@@ -96,5 +98,6 @@
 <script src="{{ output.assets ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
 
 <script src="{{ output.folders.js ~ output.concat.js }}"></script>
+
 
 </html>
