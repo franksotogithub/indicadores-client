@@ -1,6 +1,8 @@
 
 
 App.utils.mapas = (function (parent, config,service) {
+    var listMapas = undefined;
+
     var indexLayer=0;
 
     var select_all=document.getElementById("widget-select-all");
@@ -377,9 +379,7 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-
     var crearMapa = function (data) {
-
         require([
             "esri/Map",
             "esri/views/MapView",
@@ -1054,20 +1054,7 @@ App.utils.mapas = (function (parent, config,service) {
             custom_widgets(0);
         });
 
-
     }
-
-
-
-    /*
-    var  cambiarMapa = function(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico){
-        service.mapas.getLegenda(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,cod_map,cod_tematico,
-            function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data)
-                {
-                    crearMapa(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,data);
-                });
-    }*/
-
 
     var cambiarMapa = function(cod_map,cod_tematico){
         service.mapas.getLegenda(cod_map,cod_tematico, function (data)
@@ -1077,16 +1064,18 @@ App.utils.mapas = (function (parent, config,service) {
             });
     }
 
-
     var requireEvents = function () {
         cambiarMapa(cod_map,cod_tematico);
     };
 
     var categoriaChangeEvent = function (options) {
 
-        //var categoria= options.categoria;
     }
 
+    var listarMapas= function () {
+        var _this=parent.mapas;
+        _this.listMapas=service.mapas.getMapas();
+    }
 
     return {
         requireEvents: requireEvents,
@@ -1099,7 +1088,10 @@ App.utils.mapas = (function (parent, config,service) {
         panelDiv: panelDiv,
         categoriaChangeEvent: categoriaChangeEvent,
         crearMapa :crearMapa,
-        cambiarMapa:cambiarMapa
+        cambiarMapa:cambiarMapa,
+        listMapas : listMapas
     }
+
+
 
 })(App.utils, AppConfig() ,App.service );

@@ -19,7 +19,7 @@ App.service.mapas = (function (parent, config) {
     */
     var getLegenda = function (map,indicador,callback) {
         parent.get({
-            url: parent.getUrlServer('mapa/legendas/listar-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
+            url: parent.getUrlServer('mapa/legendas/obtener-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
             success: function (data) {
                 callback(data);
             },
@@ -39,7 +39,19 @@ App.service.mapas = (function (parent, config) {
             error: function (obj, status, otherr) {
                 parent.responseError(obj, "No existe datos");
             }
-        })
+        });
+    }
+
+    var getMapa = function (cod_map){
+        parent.get({
+            url: parent.getUrlServer('mapa/mapas/'+cod_map+'/'),
+            success: function (data) {
+                callback(data);
+            },
+            error: function (obj, status, otherr) {
+                parent.responseError(obj, "No existe datos");
+            }
+        });
     }
 
     var getDataGrafico = function (ubigeo,categoria,div ,callback) {
