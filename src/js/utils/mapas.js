@@ -380,7 +380,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
-
     var crearMapa = function (classBreak,cod_map,cod_tematico,url) {
         require([
             "esri/Map",
@@ -552,12 +551,16 @@ App.utils.mapas = (function (parent, config,service) {
                 }
             ];
 
+
+            var div_list_maps=document.getElementById("div-list-maps");
+            div_list_maps.innerHTML='';
+
             list_maps.forEach(function (map,index) {
                 var newImg = document.createElement("img");
                 newImg.setAttribute("src",'/img/'+map.imagen);
                 newImg.classList.add("overviewDiv");
                 newImg.setAttribute("id","map_"+index);
-                document.getElementById("list-maps").appendChild(newImg);
+                div_list_maps.appendChild(newImg);
                 newImg.addEventListener("click",function (event) {
                     selectedMap(index);
                 });
@@ -579,45 +582,6 @@ App.utils.mapas = (function (parent, config,service) {
 
                 //activeSource:false
             });
-
-            /*layerList = new LayerList(
-                {   view:view,
-                    container: document.createElement("div"),
-                    listItemCreatedFunction: function(event) {
-                        const item = event.item;
-                        console.log('item-->',item);
-                        console.log('item.title-->',item.title);
-                        // add the pie chart to the Predominance layer list item panel
-                        if (item.title === 'LayerPredominate') {
-                            item.panel = {
-                                content: [
-                                    [
-                                        "<b>Educational attainment</b> refers to the highest level of education that an individual has completed. ",
-                                        "This chart categorizes the population living within the current ",
-                                        "view extent by their educational attainment."
-                                    ].join(""),
-
-                                    document.createElement("canvas"),
-
-                                    [
-                                        "Notice that while one attainment level appears to dominate certain regions, it doesn't ",
-                                        "necessarily mean it represents the majority of the population. In fact, as ",
-                                        "you explore most areas, you will find the predominant educational attainment makes up ",
-                                        "just a fraction of the population due to the number of categories considered."
-                                    ].join("")
-                                ],
-                                className: "esri-icon-pie-chart",
-                                open: item.visible
-                            };
-                        }
-                        else{ item.panel={open:false}}
-                    }
-                }
-
-            );*/
-
-
-
 
             _this.view_map.ui.add(legend, "bottom-left");
             _this.view_map.ui.add(searchWidget, {
@@ -732,13 +696,14 @@ App.utils.mapas = (function (parent, config,service) {
                 }
 
 
-                if (cod_map == 'POB') {
+                if (cod_map == 'P01') {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
                 }
 
-                else if (cod_map == 'EDU') {
+                else if (cod_map == 'P01') {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
                 }
+
 
             }
 
@@ -1073,15 +1038,13 @@ App.utils.mapas = (function (parent, config,service) {
 
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;
-        service.mapas.getMapa('P01',function (data) {
-            console.log('data-->',data);
+        service.mapas.getMapa(cod_mapa,function (data) {
             var cod_tematico=data.cod_tematico_default;
             var url= data.url;
             cambiarMapa(cod_mapa,cod_tematico,url);
         });
 
     }
-
 
 
     return {
