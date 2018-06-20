@@ -457,12 +457,25 @@ $(document).ready(function() {
         $(this).addClass("btnTabTabla-activo");
     });
 
+    $(".tooltip").hover(function () {
+        var textTool = $(this).text();
+        var titleTool = $(this).attr("data-title");
+
+        $(this).html(  textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
+    }, function () {
+        $(this).find( "span" ).remove();
+    });
 
 
+    $(".popover").hover(function () {
+        //var textTool = $(this).text();
+        var titleTool = $(this).attr("data-popover");
 
+        $(this).append( "<span class='popovertext'> <div class='popoverTitulo'>Resumen  </div>" + titleTool + "</span>");
+    }, function () {
+        $(this).find( "span" ).remove();
+    });
+    
+    
 
-
-
-    /* Crea el tooltip */
-    tippy('[title]')
 });

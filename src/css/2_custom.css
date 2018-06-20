@@ -1,8 +1,101 @@
 /* Custom para sistema Online de indicadores censo 2017 DMK */
 
-/* hack TIpped */
-.tippy-tooltip {
-    font-family: 'Alegreya-Sans', 'open_sansregular' !important;
+/* body */
+body {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Tooltip DMK */
+.tooltip {
+    position: relative;
+
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    max-width: 80px;
+    width: 80px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin: 0 auto;
+    left:-33px;
+    font-family: "signikaregular";
+    font-size: 13px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+
+/* POopover */
+.popover {
+    position: relative !important;
+
+}
+
+.popoverTitulo {
+    color: #12284c;
+    font-size: 15px;
+    border-bottom: #12284c solid 1px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    display: block;
+    text-align: left;
+    font-weight: normal;
+}
+
+.popover .popovertext {
+    visibility: hidden;
+    max-width: 180px;
+    width:180px;
+
+    max-height: 80px;
+    height: 80px;
+    background-color: white;
+    color: #666666;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    top: -100px;
+    left: 0px;
+    margin: 0 auto;
+    display: block;
+
+    font-family: "signikaregular";
+    font-size: 14px;
+    box-shadow: #666666 0px 0px 6px;
+}
+
+td.popover:hover {
+    color: white !important;
+    background-color: #408fb5 !important;
+    cursor: pointer;
+}
+
+.popover:hover .popovertext {
+    visibility: visible;
 }
 
 /* General */
