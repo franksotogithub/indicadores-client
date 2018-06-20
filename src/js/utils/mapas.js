@@ -145,7 +145,7 @@ App.utils.mapas = (function (parent, config,service) {
 
     ];
 
-    var cod_map='POB';
+    var cod_map='P01';
 
     var url_map=config.map_config[cod_map].urlMap;
 
@@ -1069,13 +1069,12 @@ App.utils.mapas = (function (parent, config,service) {
     };
 
     var categoriaChangeEvent = function (options) {
-
+        console.log(options);
+        //var cod_map=options.
+        //service.mapas.getMapas()
     }
 
-    var listarMapas= function () {
-        var _this=parent.mapas;
-        _this.listMapas=service.mapas.getMapas();
-    }
+
 
     return {
         requireEvents: requireEvents,

@@ -76,6 +76,7 @@ App.service.mapas = (function (parent, config) {
         legenda: undefined,
         getLegenda: getLegenda,
         getMapas: getMapas,
+        getMapa: getMapa,
         getDataGrafico: getDataGrafico,
     }
 
