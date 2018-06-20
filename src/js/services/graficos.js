@@ -1,18 +1,16 @@
 App.service.graficos = (function (parent, config, appData) {
 
 
-    var gePoblacionEdad = function (ubigeo, categoria, callback) {
+    var gePoblacionEdad = function (ubigeo, n, categoria, callback) {
 
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
                 var arreglodata = [];
-                var arreglo = [];
-
                 //console.log(appData.titulo['U01'])
 
                 data.forEach(function (i) {
-                        arreglodata.push( [(i).cod_tematico, (i).indicador ,(i).hombre, (i).mujer ] );
+                        arreglodata.push( [(i).cod_tematico, (i).indicador , Math.round((i).hombre) , Math.round ((i).mujer) ] );
                 });
                 arreglodata.sort();
 
@@ -32,14 +30,30 @@ App.service.graficos = (function (parent, config, appData) {
                     h_t += x[2]
                     m_t += x[3]
                 });
+               var  nom_ubigeo;
 
+                if (ubigeo == '00'){
+                    nom_ubigeo = 'PERU'
+                }else {
+                    nom_ubigeo = 'INFO. ' + appData.titulo['U'+ubigeo]
+                }
+
+                if (n > 1){
+                    nom_ubigeo = null
+                }
 
 
                 json =   {categoria : ind,
                     data: [{name: 'Hombres', data: h}, {name: 'Mujeres', data: m}],
-                    total: [['Hombres', h_t], [ 'Mujeres', m_t]]
+                    total: [['Hombres', h_t], [ 'Mujeres', m_t]],
+                    nom_ubigeo: nom_ubigeo
                 };
-                //console.log(json)
+
+                document.getElementById("id_w_t").innerHTML = h_t + m_t;
+                document.getElementById("id_w_h").innerHTML = h_t;
+                document.getElementById("id_w_m").innerHTML = m_t;
+
+                console.log(json)
                 if (callback !== undefined) {
                     callback(json);
                 }
@@ -85,7 +99,7 @@ App.service.graficos = (function (parent, config, appData) {
                 var valores = []
                 data.forEach(function (i) {
                     ind.push(i.indicador)
-                    valores.push([(i).ubigeo,(i).cod_tematico,  (i).indicador, (i).valor])
+                    valores.push([(i).ubigeo,(i).cod_tematico,  (i).indicador, Math.round ((i).valor)])
                 });
 
                 ind.unique();

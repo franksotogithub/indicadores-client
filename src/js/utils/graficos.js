@@ -1,34 +1,29 @@
 App.utils.graficos = (function (parent, service, config, appData) {
 
+    var grafico_1
+    var grafico_2
+    var grafico_3
 
 
     var graf_persona_edad = function (data) {
 
-        Highcharts.chart('grafico_1', {
+        grafico_1 =   Highcharts.chart('grafico_1', {
             chart: {
                 type: 'bar'
             },
             title: {
-                text: 'POBLACION 2017'
+                text: data.nom_ubigeo
             },
 
             xAxis: [{
+                allowDecimals: false,
+
                 title: {
                     text: null
                 },
                 categories: data.categoria,
                 reversed: false,
-                labels: {
-                    step: 1
-                }
-            }, { // mirror axis on right side
-                opposite: true,
-                reversed: false,
-                categories: data.categoria,
-                linkedTo: 0,
-                labels: {
-                    step: 1
-                }
+
             }],
             yAxis: {
                 allowDecimals: false,
@@ -37,8 +32,9 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 },
                 labels: {
                     formatter: function () {
-                        return Math.abs(this.value) ;
-                    }
+                        return Highcharts.numberFormat(Math.abs(this.value),0)
+                    },
+                    overflow: 'justify'
                 }
             },
 
@@ -53,13 +49,10 @@ App.utils.graficos = (function (parent, service, config, appData) {
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
-
-
                             formatter: function () {
-                                return  Highcharts.numberFormat(Math.abs(this.point.y),1);
-                            }
-                        ,
-                        distance: -20,
+                                return  Highcharts.numberFormat(Math.abs(this.point.y),0);
+                            },
+                        distance: 20,
                         style: {
                             fontWeight: 'bold',
                             color: 'white'
@@ -79,7 +72,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         });
 
-        Highcharts.chart('grafico_2', {
+        grafico_2 =  Highcharts.chart('grafico_2', {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: 0,
@@ -87,7 +80,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         },
         title: {
-            text: 'Total<br>Personas<br>2017',
+            text: 'Total<br>Personas',
             align: 'center',
             verticalAlign: 'middle',
             y: 0
@@ -125,7 +118,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         graf_barra_ubigeo = function(data){
 
-    Highcharts.chart('grafico_3', {
+            grafico_3 =  Highcharts.chart('grafico_3', {
         chart: {
             type: 'bar'
         },
@@ -144,13 +137,13 @@ App.utils.graficos = (function (parent, service, config, appData) {
         },
         yAxis: {
             allowDecimals: false,
-            min: 1,
+            min: 0,
             title: {
                 text: 'Cant. (miles)'
             }
         },
         tooltip: {
-            valueSuffix: ' millions'
+            valueSuffix: ''
         },
         plotOptions: {
 
@@ -206,7 +199,9 @@ App.utils.graficos = (function (parent, service, config, appData) {
             console.log( 'SOLO 1 data' );
         }
 
-        service.graficos.gePoblacionEdad(ubigeo, 'P01', graf_persona_edad); //mostrara los graficos del ubigeo
+        self.cant_select = cant;
+
+        service.graficos.gePoblacionEdad(ubigeo,cant, 'P01', graf_persona_edad); //mostrara los graficos del ubigeo
 
 
 
@@ -220,16 +215,48 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $("#grafico_2").css("display", "block");
         $("#grafico_3").css("display", "block");
 
+        $("#primer_g").addClass('col-4-10');
+        $("#primer_g_2").addClass('col-5-10');
 
-    }
+
+        $(".widgetMetadatos").css("display", "none");
+
+
+            $("#grafico_1").css("width", "600px");
+            $("#grafico_2").css("width", "600px");
+            $("#grafico_3").css("width", "860px");
+            $("#grafico_1").css("height", "300px");
+            $("#grafico_2").css("height", "400px");
+            $("#grafico_3").css("height", "700px");
+
+            grafico_1.setSize(null, null);
+            grafico_2.setSize(null, null);
+            grafico_3.setSize(null, null);
+
+
+
+
+    };
 
 
     var uiNormalCallback = function (option) {
         console.log(App.uiMax.graficos);
+        $("#grafico_1").css("width", "auto");
+        $("#grafico_1").css("height", "auto");
+
 
         $("#grafico_2").css("display", "none");
         $("#grafico_3").css("display", "none");
+
+        $("#primer_g").removeClass('col-4-10');
+        $("#primer_g_2").removeClass('col-5-10');
+
+        $(".widgetMetadatos").css("display", "block");
+
+        grafico_1.setSize(null, null);
+
     }
+
 
 
 
@@ -248,7 +275,10 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         crearMinimizado(arreglo);
 
+    };
 
+    var categoriaChangeEvent = function (options) {
+        console.log('catego graficos', options.categoria);
     };
 
 
@@ -263,7 +293,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
         graf_persona_edad:graf_persona_edad,
         uiMaxCallback : uiMaxCallback,
         uiNormalCallback : uiNormalCallback,
-        mapasChangeEvent:mapasChangeEvent
+        mapasChangeEvent:mapasChangeEvent,
+        categoriaChangeEvent:categoriaChangeEvent
     }
 
 
