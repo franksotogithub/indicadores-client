@@ -4,7 +4,7 @@
 
         $("#tabsCategoria").on('click', '.tablaTabButton', function (e) {
             var categoria = $.trim($(this).attr('data-categoria'));
-            utils.cuadros.crearTablaCategoria(categoria);
+            App.categoriaChangeEvent(categoria);
         });
     });
 

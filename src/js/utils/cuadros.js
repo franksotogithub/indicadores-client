@@ -207,7 +207,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             ----
             1. Cargando
          */
-
+        console.log("renderizando tabla");
         var _this = this;
 
         _cargandoTabla();
@@ -223,6 +223,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
             // Instanciar el servicio
             service.cuadros.getIndicadores(ubigeos, function () {
+                console.log("temrina servicio");
                 _this.tblIndicadores = _crearTabla('#tblindicadores', service.cuadros.indicadores[App.categoria], _this.tablaColumns);
                 _this.tblIndicadores.fixedColumns().relayout();
                 $("#loadindicadores").hide();
@@ -230,7 +231,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         };
 
         // Crear cabecera
-        if (ubigeos.length > 1) {
+        if (ubigeos.length > 1 && !this.expardirVentana) {
+            this.expardirVentana = true;
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)
         }else {
             callback();
@@ -256,12 +258,19 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiMaxCallback = function (options) {
-        console.log("maximizar", options);
+        this.tblIndicadores.fixedColumns().relayout();
     };
 
     var mapasChangeEvent = function (options) {
-        console.log("mapasChangeEvent", options);
         this.crearTablaUigeos(options.ubigeo);
+    };
+
+    var uiNormalCallback = function (options) {
+        this.tblIndicadores.fixedColumns().relayout();
+    };
+
+    var categoriaChangeEvent = function (options) {
+        this.crearTablaCategoria(options.categoria);
     };
 
     return {
@@ -269,9 +278,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         tblIndicadores: undefined,
         tablaIndicadores: undefined,
         tablaColumns: [],
+        expardirVentana: false,
         crearTablaUigeos: crearTablaUigeos,
         crearTablaCategoria: crearTablaCategoria,
         uiMaxCallback: uiMaxCallback,
-        mapasChangeEvent: mapasChangeEvent
+        mapasChangeEvent: mapasChangeEvent,
+        uiNormalCallback: uiNormalCallback,
+        categoriaChangeEvent: categoriaChangeEvent
     }
 })(AppConfig(), Appdata(), App.utils, App.service);
