@@ -5,9 +5,9 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var grafico_3
 
 
-    var graf_persona_edad = function (data) {
+    var graf_persona_edad = function (data,div1, div2) {
 
-        grafico_1 =   Highcharts.chart('grafico_1', {
+        grafico_1 =   Highcharts.chart(div1, {
             chart: {
                 type: 'bar'
             },
@@ -52,7 +52,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
                             formatter: function () {
                                 return  Highcharts.numberFormat(Math.abs(this.point.y),0);
                             },
-                        distance: 20,
+                        distance: -20,
                         style: {
                             fontWeight: 'bold',
                             color: 'white'
@@ -72,7 +72,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         });
 
-        grafico_2 =  Highcharts.chart('grafico_2', {
+        grafico_2 =  Highcharts.chart(div2, {
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: 0,
@@ -170,7 +170,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
 
-    var crearMinimizado = function (ubigeos) {
+    var crearMinimizado = function (ubigeos , div_grag1,div_grag2) {
 
         console.log( 'cantidad data' +ubigeos.length);
 
@@ -186,7 +186,10 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 lista_ubi.push({'u': i[0]});
             });
             $("#cmb_ubi").html(combo);
+            $("#cmb_ubi_m").html(combo);
             $("#cmb_ubigeo").css("display", "block");
+            $("#cmb_ubigeo_m").css("display", "block");
+
             ubigeo = $('#cmb_ubi').val();
             console.log( 'MAS DE 1 data' );
 
@@ -194,6 +197,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
         else{
             $("#cmb_ubi").html('');
             $("#cmb_ubigeo").css("display", "none");
+            $("#cmb_ubigeo_m").css("display", "none");
+
             ubigeo = ubigeos[0][0];
             lista_ubi = {'u': ubigeos[0][0]};
             console.log( 'SOLO 1 data' );
@@ -201,9 +206,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         self.cant_select = cant;
 
-        service.graficos.gePoblacionEdad(ubigeo,cant, 'P01', graf_persona_edad); //mostrara los graficos del ubigeo
-
-
+        service.graficos.gePoblacionEdad(ubigeo,cant, 'P01',div_grag1,div_grag2, graf_persona_edad); //mostrara los graficos del ubigeo
 
         service.graficos.gePoblacionInd(lista_ubi,'P01',graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
 
@@ -211,7 +214,17 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
     var uiMaxCallback = function (option) {
 
+        self.div_grag1='grafico_1_m';
+        self.div_grag2='grafico_2_m';
+
+        graf_persona_edad(self.json,self.div_grag1, self.div_grag2 )
+
         console.log(App.uiMax.graficos);
+
+        $("#primer_g_1").css("display", "none");
+        $("#primer_g_2_1").css("display", "block");
+
+
         $("#grafico_2").css("display", "block");
         $("#grafico_3").css("display", "block");
 
@@ -220,13 +233,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
         $(".widgetMetadatos").css("display", "none");
+        $(".graficoWidget-top").css("display", "none");
 
 
-            $("#grafico_1").css("width", "600px");
-            $("#grafico_2").css("width", "600px");
+
+            $("#grafico_1_m").css("width", "600px");
+            $("#grafico_2_m").css("width", "600px");
             $("#grafico_3").css("width", "860px");
-            $("#grafico_1").css("height", "300px");
-            $("#grafico_2").css("height", "400px");
+            $("#grafico_1_m").css("height", "300px");
+            $("#grafico_2_m").css("height", "400px");
             $("#grafico_3").css("height", "700px");
 
             grafico_1.setSize(null, null);
@@ -241,6 +256,11 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
     var uiNormalCallback = function (option) {
         console.log(App.uiMax.graficos);
+        self.div_grag1='grafico_1';
+        self.div_grag2='grafico_2';
+
+        graf_persona_edad(self.json,self.div_grag1, self.div_grag2 )
+
         $("#grafico_1").css("width", "auto");
         $("#grafico_1").css("height", "auto");
 
@@ -250,9 +270,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         $("#primer_g").removeClass('col-4-10');
         $("#primer_g_2").removeClass('col-5-10');
+        $("#primer_g_2_1").css("display", "none");
+        $("#primer_g_1").css("display", "block");
+
+
+
+
 
         $(".widgetMetadatos").css("display", "block");
-
+        $(".graficoWidget-top").css("display", "block");
         grafico_1.setSize(null, null);
 
     }
@@ -273,9 +299,11 @@ App.utils.graficos = (function (parent, service, config, appData) {
             arreglo.push([x,appData.titulo['U'+x]])
         });
 
-        crearMinimizado(arreglo);
+        crearMinimizado(arreglo, self.div_grag1, self.div_grag2);
 
     };
+
+
 
     var categoriaChangeEvent = function (options) {
         console.log('catego graficos', options.categoria);
