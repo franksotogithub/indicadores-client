@@ -273,8 +273,7 @@ App.utils.mapas = (function (parent, config,service) {
             },
             colors: ['#25DFA1', '#16C9D5'],
             tooltip: {
-                pointFormat:
-                    'Cant Total: <b>{point.y:.1f}</b> '
+                enabled:false
             },
             exporting: {
                 enabled: false
@@ -297,6 +296,7 @@ App.utils.mapas = (function (parent, config,service) {
                 type: 'pie',
                 name: 'porcentaje',
                 innerSize: '50%',
+                animation: false,
                 data: [
                     {
                         name: 'Hombres',
