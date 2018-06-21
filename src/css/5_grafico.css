@@ -33,7 +33,7 @@
 }
 
 .widgetGraficos {
-    height:200px;
+    max-height:260px;
 }
 
 .widgetMetadatos {
@@ -89,6 +89,47 @@
     padding: 8px;
     margin: 0px;
 }
+
+/* Slider Graficos */
+
+.sliderDiv {
+
+    height: 220px;
+    max-height: 220px;
+    display: block;
+    overflow: hidden;
+}
+
+.controlSliderGrafico {
+    display: block;
+}
+.botonesControlGrafico {
+    display:block;
+    padding-bottom: 10px;
+}
+
+.botonesControlGrafico button {
+    display: inline-block;
+    color: #FFFFFF;
+    background-color: #ffc372;
+    padding:7px 12px;
+    margin: 0px 5px;
+    border:#ffffff solid 3px;
+
+}
+
+.botonesControlGrafico button.btnActiveSlider {
+    box-shadow: #845003 0px 0px 3px;
+
+}
+
+
+
+.graficoElementSlider {
+    height: 220px;
+    display: block;
+}
+
 
 /* Colores para metadato */
 .contenidoMetadato.pm1 h3 {background-color: #60947D;}
