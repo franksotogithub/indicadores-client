@@ -285,3 +285,23 @@ div.esri-search__submit-button:focus {
     margin: 0px !important;
 }
 
+
+.mapaPanelMaximizado {
+    display: block;
+    background-color: white;
+    padding: 10px;
+}
+
+.tablaPanel {
+    display: block;
+    padding: 10px;
+    background-color: #7b7b7b;
+    height: 40px;
+
+}
+
+.tablaPanel > div{
+    border: 2px solid #333333;
+    margin: 5px;
+    height: 100%;
+}

@@ -414,7 +414,7 @@ function restaurarVentana(e, callback) {
 
  function sliderGraph (){
 
-
+    $(".botonesControlGrafico").html("");
     $(".sliderDiv div.graficoElementSlider").each(function (index) {
 
         if(index==0){
