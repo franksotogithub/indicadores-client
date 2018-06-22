@@ -149,6 +149,76 @@ button.ocultaBus{
     text-align: left;
 }
 
+.cuadroMinimizado {
+    display: inline-block;
+    vertical-align: top;
+
+}
+.busquedaMaximizadaCuadro {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+}
+
+.busquedaMaximizadaCuadro h2 {
+    color: white;
+    font-family: "signikaregular";
+    text-align: left;
+    padding: 10px 20px;
+    background-color: #1b3c71;
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0px ;
+}
+.busquedaMaximizadaCuadro button {
+    background-color: #ffc372;
+    padding: 7px 12px;
+    border-radius:5px;
+    margin: 5px;
+    display: inline-block;
+    font-family: "signikaregular";
+}
+
+.busquedaMaximizadaCuadro button:hover {
+    background-color:#b67437;
+    color:white;
+}
+
+
+.mtop-20{
+    margin-top: 25px !important;
+}
+.mtop-10 {
+    margin-top:10px;
+}
+.mright-20 {
+    margin-right:20px !important;
+}
+.contentInputGbuscar {
+    display: block;
+    padding: 0px 15px;
+    background-color: #e6e6e6;
+    position: relative;
+    height: 38px;
+    padding-right: 35px;
+    margin-bottom: 10px;
+}
+.icoInputSearch {
+    right:10px;
+    top: 8px;
+    position: absolute;
+    font-size: 20px;
+}
+.busquedaMaximizadaCuadro input{
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    padding:10px 0px;
+    outline: none;
+}
+
+
 
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 

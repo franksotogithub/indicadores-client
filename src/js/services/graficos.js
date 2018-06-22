@@ -1,8 +1,9 @@
 App.service.graficos = (function (parent, config, appData) {
 
 
-    var gePoblacionEdad = function (ubigeo, n, categoria, callback) {
+    var gePoblacionEdad = function (ubigeo, n, categoria, div1, div2, callback) {
 
+        console.log(div1, div2)
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
@@ -14,7 +15,7 @@ App.service.graficos = (function (parent, config, appData) {
                 });
                 arreglodata.sort();
 
-                var json = [];
+                self.json = [];
 
                 var h = [];
                 var m = [];
@@ -53,9 +54,9 @@ App.service.graficos = (function (parent, config, appData) {
                 document.getElementById("id_w_h").innerHTML = h_t;
                 document.getElementById("id_w_m").innerHTML = m_t;
 
-                console.log(json)
+                console.log(self.json)
                 if (callback !== undefined) {
-                    callback(json);
+                    callback(self.json,div1, div2 );
                 }
             },
             error: function (obj, status, otherr) {

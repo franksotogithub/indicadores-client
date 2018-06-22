@@ -67,7 +67,7 @@ function maximizarImpresion(e){
     });
     e.closest(".contenedorVentana").css("width","1100px");
     e.parent().children(".maximizar").attr("data-icon","4");
-    e.parent().children(".maximizar").attr("title","Restaurar ventana");
+    e.parent().children(".maximizar").attr("data-title","Restaurar ventana");
     e.parent().children(".maximizar").addClass("restaurar").removeClass("maximizar");
 
 
@@ -115,7 +115,7 @@ function restaurarImpresion(e) {
     e.closest(".contenedorVentana").attr("style","");
     e.closest(".contenedorVentana").css("display","inline-block");
     e.parent().children(".restaurar").attr("data-icon", ">");
-    e.parent().children(".restaurar").attr("title", "Maximizar ventana");
+    e.parent().children(".restaurar").attr("data-title", "Maximizar ventana");
     e.parent().children(".restaurar").addClass("maximizar").removeClass("restaurar");
 
     //Tipped.init();
@@ -201,7 +201,7 @@ function reabrirVentanas(e) {
         e.removeClass("animacionbtn").closest("[data-codi]").hide();
         $(".contenedorVentana[data-cod="+ventanaMini+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
-        $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").attr("data-icon", ">").attr("title", "Maximizar ventana");
+        $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").attr("data-icon", ">").attr("data-title", "Maximizar ventana");
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").addClass("maximizar").removeClass("restaurar");
 
         if (App.uiNormalCallback !== undefined) {
@@ -249,7 +249,7 @@ function minimizarVentana(e, callback) {
         var ventanaUltima = $(".contenedorVentana[data-cod='"+reconocida+"']").find(".maximizar");
         var nombreVentanaUl = $(".contenedorVentana[data-cod='"+reconocida+"']").attr("data-codevent");
         ventanaUltima.attr("data-icon","4");
-        ventanaUltima.attr("title","Restaurar ventana");
+        ventanaUltima.attr("data-title","Restaurar ventana");
         ventanaUltima.addClass("restaurar").removeClass("maximizar");
 
         e.closest(".contenedorVentana").fadeOut(function(){
@@ -346,7 +346,7 @@ function maximizarVentana(e, callback){
           e.closest(".contenedorVentana").removeClass("col-4-10 col-35 col-1-4 col-1-2 ").addClass("col-1-1").css("display","block");
     });
     e.attr("data-icon","4");
-    e.attr("title","Restaurar ventana");
+    e.attr("data-title","Restaurar ventana");
     e.addClass("restaurar").removeClass("maximizar");
 
     /* Reiniciar tooltip  */
@@ -399,7 +399,7 @@ function restaurarVentana(e, callback) {
         $(".barHerramientasHeader [data-codi]").hide().find("button").removeClass("animacionbtn");
     }
     e.attr("data-icon", ">");
-    e.attr("title", "Maximizar ventana");
+    e.attr("data-title", "Maximizar ventana");
     e.addClass("maximizar").removeClass("restaurar");
 
     if (App.uiNormalCallback!==undefined){
@@ -412,6 +412,21 @@ function restaurarVentana(e, callback) {
 
 }
 
+ function sliderGraph (){
+
+
+    $(".sliderDiv div.graficoElementSlider").each(function (index) {
+
+        if(index==0){
+            $(".botonesControlGrafico").append('<button class="btnActiveSlider" data-slider="'+(index+1)+'"> </button>');
+            $(this).attr("data-slider",(index+1));
+
+        }else {
+            $(".botonesControlGrafico").append('<button data-slider="'+(index+1)+'"> </button>');
+            $(this).attr("data-slider",(index+1));
+        }
+    })    
+ }
 
 
 $(document).ready(function() {
@@ -475,7 +490,19 @@ $(document).ready(function() {
     }, function () {
         $(this).find( "span" ).remove();
     });
-    
-    
+
+
+    sliderGraph ();
+
+    $('.botonesControlGrafico').on('click','button', function() {
+        var slider = $(this).attr("data-slider");
+        $(this).siblings("button").removeClass("btnActiveSlider");
+        $(this).addClass("btnActiveSlider");
+
+        $(".sliderDiv [data-slider="+slider+"]").siblings("div").fadeOut();
+        $(".sliderDiv [data-slider="+slider+"]").fadeIn();
+
+    });
+
 
 });
