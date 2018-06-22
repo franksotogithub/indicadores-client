@@ -176,12 +176,23 @@ button.ocultaBus{
     border-radius:5px;
     margin: 5px;
     display: inline-block;
+    font-family: "signikaregular";
 }
+
+.busquedaMaximizadaCuadro button:hover {
+    background-color:#b67437;
+    color:white;
+}
+
+
 .mtop-20{
     margin-top: 25px !important;
 }
 .mtop-10 {
     margin-top:10px;
+}
+.mright-20 {
+    margin-right:20px !important;
 }
 .contentInputGbuscar {
     display: block;
