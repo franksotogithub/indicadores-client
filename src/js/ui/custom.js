@@ -470,6 +470,7 @@ $(document).ready(function() {
     $('.contenedorVentana').on('click','button.tablaTabButton', function() {
         $(this).siblings("button").removeClass("btnTabTabla-activo");
         $(this).addClass("btnTabTabla-activo");
+
     });
 
     $(".tooltip").hover(function () {

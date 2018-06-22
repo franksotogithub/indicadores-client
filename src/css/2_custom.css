@@ -44,7 +44,16 @@ body {
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
+
 }
+
+.tooltip.ayudaInformacion .tooltiptext, .tooltip.miniTop .tooltiptext  {
+    left:0px;
+}
+
+
+
+
 
 
 /* POopover */
