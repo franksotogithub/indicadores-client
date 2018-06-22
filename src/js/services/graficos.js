@@ -109,7 +109,7 @@ App.service.graficos = (function (parent, config, appData) {
 
 
                 var son = []
-                var Json = []
+                self.Json2 = []
                 var ubigeos = []
 
                 ind.forEach(function (x) {
@@ -125,11 +125,11 @@ App.service.graficos = (function (parent, config, appData) {
 
                 });
                 ubigeos.unique()
-                Json= {ubigeo: ubigeos, son: son }
+                self.Json2 = {ubigeo: ubigeos, son: son }
 
-
+                console.log('muestraaaaaa', self.Json2)
                 if (callback !== undefined) {
-                    callback(Json);
+                    callback(self.Json2 );
                 }
             },
             error: function (obj, status, otherr) {
