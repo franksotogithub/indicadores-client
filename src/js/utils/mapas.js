@@ -704,10 +704,10 @@ App.utils.mapas = (function (parent, config,service) {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
                 }
 
-
             }
 
             _this.panelDiv = document.getElementById("panel");
+             var panelDivGrafico= document.getElementById("mapaGraficoPanel");
             _this.panelDiv.style.display="none";
             _this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
 
@@ -724,7 +724,7 @@ App.utils.mapas = (function (parent, config,service) {
                     if (index_graphic==-1 || _this.select_ubigeos.length==0) {
 
                         createPopup(nombre,codigo,event);
-                        updatePanel(codigo,cod_map,_this.panelDiv);
+                        updatePanel(codigo,cod_map,panelDivGrafico);
                         _this.select_ubigeos.push(codigo);
                         _this.historic_features[indexLayer].nombres.push(nombre);
                     }
@@ -1016,6 +1016,9 @@ App.utils.mapas = (function (parent, config,service) {
                     view: _this.view_map,
                     printServiceUrl: config.utils.print
                 });
+
+                _this.view_map.ui.add(print,'top-right');
+                console.log('print-->',print);
 
             });
 
