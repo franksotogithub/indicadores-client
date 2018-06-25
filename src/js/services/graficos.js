@@ -33,7 +33,6 @@ self.cant_select = 0;
         }, {})
     };
 
-
     Array.prototype.unique = function(){
         for(var i = 0; i < this.length; i++){
             for(var j = i + 1; j < this.length; j++){
@@ -46,9 +45,7 @@ self.cant_select = 0;
     };
 
 
-
     var gePoblacionInd = function (ubigeos, callback) {
-
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/barras/'),//, {"u": ubigeos}
             success: function (data) {
