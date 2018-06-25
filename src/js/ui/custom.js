@@ -431,9 +431,6 @@ function restaurarVentana(e, callback) {
 
 $(document).ready(function() {
 
-
-
-
     $('.contenedorVentana').on('click','.minimizar', function() {
         minimizarVentana($(this));
     });
@@ -484,9 +481,7 @@ $(document).ready(function() {
 
 
     $(".popover").hover(function () {
-        //var textTool = $(this).text();
         var titleTool = $(this).attr("data-popover");
-
         $(this).append( "<span class='popovertext'> <div class='popoverTitulo'>Resumen  </div>" + titleTool + "</span>");
     }, function () {
         $(this).find( "span" ).remove();
@@ -502,6 +497,17 @@ $(document).ready(function() {
 
         $(".sliderDiv [data-slider="+slider+"]").siblings("div").fadeOut();
         $(".sliderDiv [data-slider="+slider+"]").fadeIn();
+
+    });
+
+    $('.contenedorVentana').on('click','.descargarMapa', function() {
+        App.utils.mapas.descargarMapaEvent(function (resp,error) {
+
+            /**aqui pones la descarga*/
+            window.open(resp.url);
+
+        });
+
 
     });
 

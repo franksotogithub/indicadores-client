@@ -23,6 +23,10 @@ App.utils.mapas = (function (parent, config,service) {
 
     var layerList = undefined;
 
+    var opc_select = undefined;  //select --> layer seleccionanado / unselect --> layer deseleccionado
+
+    var labels_expression=undefined;
+
     var identifyTask;
 
     var identifyParams;
@@ -147,8 +151,13 @@ App.utils.mapas = (function (parent, config,service) {
 
     ];
 
+    var cant_mini_maps=1;
 
+    var cantMaxMiniMaps=10;
 
+    var labelClass=undefined;
+
+    //var list_mini_maps=undefined;
     //var url_map=config.map_config[cod_map].urlMap;
 
     //var cod_tematico=config.map_config[cod_map].cod_tematico_default;
@@ -158,6 +167,8 @@ App.utils.mapas = (function (parent, config,service) {
     var searchWidget=undefined;
 
     var panelDiv=undefined;
+
+    var panelDivGrafico =undefined;
 
     var createSymbol = function(color) {
         return {
@@ -364,20 +375,202 @@ App.utils.mapas = (function (parent, config,service) {
         return content;
     }
 
+    var visibilityAllChildDiv=function(div,visibility){
+          if (div.hasChildNodes()) {
+            var children = div.childNodes;
+            console.log('children-->',children);
+            for(var c=0; c < children.length; c++) {
+                if(children[c].style) {
+
+                    children[c].style.visibility = visibility;
+                }
+            }
+        }
+        div.style.visibility = visibility;
+    }
+
+
+    var visibilityAllMapsChildDiv=function(div,visibility){
+        var _this=parent.mapas;
+        if (div.hasChildNodes()) {
+            var children = div.childNodes;
+
+            for(var c=0; c < _this.cant_mini_maps; c++) {
+                if(children[c].style) {
+                    children[c].style.visibility = visibility;
+                }
+            }
+        }
+        div.style.visibility = visibility;
+
+    }
+
+
     var uiMaxCallback =function () {
         var _this=parent.mapas;
+        var list_mini_maps=document.getElementById("listMiniMaps");
         _this.maximizado=true;
-        _this.panelDiv.style.display='inline';
+        visibilityAllChildDiv(_this.panelDiv,'visible');
+        visibilityAllMapsChildDiv(list_mini_maps,'visible');
         _this.view_map.popup.close();
     }
 
     var uiNormalCallback = function(){
         var _this=parent.mapas;
+        var list_mini_maps=document.getElementById("listMiniMaps");
         _this.maximizado=false;
-        _this.panelDiv.style.display='none';
+        visibilityAllChildDiv(_this.panelDiv,'hidden');
+        visibilityAllChildDiv(list_mini_maps,'hidden');
+        if(_this.opc_select=="select")
         _this.view_map.popup.visible=true;
-        //console.log('vuelve a la normalidad');
 
+    }
+
+
+    var descargarMapaEvent = function(callback){
+        require([
+
+            "esri/tasks/PrintTask",
+            "esri/tasks/support/PrintTemplate",
+            "esri/tasks/support/PrintParameters",
+
+            "dojo/domReady!"
+        ],function (PrintTask,PrintTemplate,PrintParameters){
+            var _this=parent.mapas;
+            var printTask = new PrintTask({
+                url: config.utils.print,
+            });
+
+            var template = new PrintTemplate({
+                format: "pdf",
+                exportOptions: {
+                    dpi: 300
+                },
+                layout: "a4-portrait",
+                layoutOptions: {
+                    titleText: "Warren Wilson College Trees",
+                    authorText: "Sam"
+                }
+            });
+
+            var params = new PrintParameters({
+                view: _this.view_map,
+                template: template
+            });
+
+            var resp={}
+            printTask.execute(params).then(function(resolvedVal){
+                var url_pdf=resolvedVal.url;
+
+                resp['success']=true;
+                resp['url']=url_pdf;
+
+                console.log('url_pdf-->',url_pdf);
+                return callback(resp);
+            }, function(error){
+                resp['success']=false;
+                resp['error']=error;
+                return callback(resp);
+
+            });
+
+        });
+
+    }
+
+
+    var crearMinimapa= function(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,classBreakinfos,cod_map,cod_tematico,url,index,where,div){
+
+        var _this=parent.mapas;
+
+        var miniSublayer = new FeatureLayer({
+            url: url+'/'+index,
+            definitionExpression : where,
+        })
+
+        var miniLayer = new MapImageLayer({
+            url:url,
+            sublayers: [{
+                renderer: renderizado(cod_tematico,classBreakinfos[index+""]),
+                opacity:opacity,
+                id:parseInt(index),
+                outFields:["*"],
+                definitionExpression : where,
+                labelsVisible: true,
+            }]
+
+        });
+
+        var miniMap = new Map({
+            layers: miniLayer,
+        });
+
+        var miniView = new MapView({
+            container: div,
+            map: miniMap,
+            center: [-75.000, -9.500],
+        });
+
+        miniView.ui.components = [];
+
+        miniLayer.when(function(){
+            miniSublayer.queryExtent()
+                .then(function(response) {
+                    miniView.goTo(response.extent);
+                });
+
+        });
+
+        /*miniLayer.when(function () {
+            console.log( 'miniLayer-->',miniLayer);
+            return miniLayer.queryExtent()
+        }).then(function (response) {
+            console.log('response-->',response);
+            miniView.goTo(response.extent);
+        })*/
+
+
+
+        /*
+        miniLayer.then(function () {
+            miniLayer.queryExtent(where)
+                .then(function(response) {
+                    miniView.goTo(response.extent);
+                });
+        });
+        */
+
+        /*require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/MapImageLayer",
+            "esri/layers/FeatureLayer",
+            "dojo/domReady!"],function (Map, MapView, MapImageLayer,FeatureLayer) {
+
+            var miniLayer = new FeatureLayer({
+                url: url+'/'+index,
+                renderer: renderizado(cod_tematico,classBreakinfos[index+""]),
+                opacity:opacity,
+                id:"minimap_"+index,
+                //outFields:["*"],
+            });
+
+            var miniMap = new Map({
+                basemap: "gray",
+                layers: layers_inicial,
+            });
+
+            var miniView = new MapView({
+                    container: "viewDivMiniMap",
+                    map: miniMap,
+                    constraints: {
+                    rotationEnabled: false
+                    },
+                    center: [-75.000, -9.500],
+             });
+
+            miniView.ui.components = [];
+        });*/
     }
 
     var crearMapa = function (classBreak,cod_map,cod_tematico,url) {
@@ -401,16 +594,45 @@ App.utils.mapas = (function (parent, config,service) {
             "esri/widgets/Print",
             "esri/tasks/QueryTask",
             "esri/widgets/LayerList",
+            "esri/tasks/PrintTask",
+            "esri/tasks/support/PrintTemplate",
+            "esri/tasks/support/PrintParameters",
+            "esri/layers/support/LabelClass",
             "dojo/domReady!"
-        ],function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList)
+        ],function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask,
+                    IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,LayerList,PrintTask,PrintTemplate,PrintParameters,LabelClass)
         {
-            list_maps=getAccesDirectMaps();
+
             var _this=parent.mapas;
+            var list_mini_maps=document.getElementById("listMiniMaps");
+            _this.panelDivGrafico= document.getElementById("mapaGraficoPanel");
+            //var mapaGraficoPanel=document.getElementById("mapaGraficoPanel");
+            list_maps=getAccesDirectMaps();
             classBreakinfos= classBreak;
             url_map=url;
             url_dep=url_map+'/0';
             url_prov=url_map+'/1';
             url_dist=url_map+'/2';
+
+            _this.panelDiv = document.getElementById("panel");
+            _this.panelDiv.style.visibility="hidden";
+
+            /*var labelsexpression=
+                "$feature.NAME"
+            */
+            /*
+            const statesLabelClass = new LabelClass({
+                 labelExpressionInfo: { expression: "$feature.NAME" },
+                 symbol: {
+                     type: "text",  // autocasts as new TextSymbol()
+                     color: "black",
+                     haloSize: 1,
+                     haloColor: "white"
+                 }
+             });
+             */
+
+
             layer = new MapImageLayer({
                 url: url_map,
                 opacity:0.8,
@@ -524,9 +746,9 @@ App.utils.mapas = (function (parent, config,service) {
             identifyParams.width = _this.view_map.width;
             identifyParams.height = _this.view_map.height;
             _this.historic_features=[
-                {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep},
-                {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov},
-                {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist},
+                {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep ,label:'$feature.NOMBDEP'},
+                {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov,label:'$feature.NOMBPROV'},
+                {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist,label:'$feature.NOMBDIST'},
             ];
 
             sources=[
@@ -565,6 +787,16 @@ App.utils.mapas = (function (parent, config,service) {
                     selectedMap(index);
                 });
             });
+
+
+            for (i=1 ; i<=cantMaxMiniMaps; i++)
+            {   var newDiv = document.createElement("div");
+                newDiv.classList.add("miniMap");
+                newDiv.setAttribute("id","divMiniMap_" +i);
+                newDiv.style.visibility = "hidden";
+                list_mini_maps.appendChild(newDiv);
+            }
+
 
             legend = new Legend({
                 view: _this.view_map,
@@ -622,9 +854,6 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var zoomToLayer=function(view,layer,definitionExpression) {
-
-                console.log('view-->',view);
-                console.log('layer-->',layer);
                 var query = new Query();
                 query.where = definitionExpression;
                 return layer.queryExtent(query)
@@ -633,6 +862,8 @@ App.utils.mapas = (function (parent, config,service) {
                     });
 
             };
+
+
 
             var cleanVars=function(){
                 _this.select_ubigeos=[];
@@ -649,6 +880,7 @@ App.utils.mapas = (function (parent, config,service) {
                 var num_features=array_codigos.length;
                 if (index==0) { definitionExpression="CCDD IN (";}
                 else if (index==1) { definitionExpression=" CCDD+CCPP IN (";}
+                else if (index==2) {definitionExpression=" CCDD+CCPP+CCDI IN (";}
 
                 array_codigos.forEach(function(select_feature) {
                     num_features--;
@@ -686,15 +918,13 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.view_map.popup.visible=!(_this.maximizado);
             }
 
-            var updatePanel = function(ubigeo,cod_map,div) {
-
+            var updateBloqueGrafico = function (ubigeo,cod_map,index) {
                 if(_this.maximizado){
-                    _this.panelDiv.style.display="inline";
+                    _this.panelDivGrafico.style.display="inline";
                 }
                 else {
-                    _this.panelDiv.style.display="none";
+                    _this.panelDivGrafico.style.display="none";
                 }
-
 
                 if (cod_map == 'P01') {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
@@ -704,11 +934,45 @@ App.utils.mapas = (function (parent, config,service) {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
                 }
 
+
             }
 
-            _this.panelDiv = document.getElementById("panel");
-             var panelDivGrafico= document.getElementById("mapaGraficoPanel");
-            _this.panelDiv.style.display="none";
+
+            var updateBloqueMiniMapa = function (ubigeo,cod_map,index) {
+                if(index<2){
+                    var stringIndex=String(index+1);
+                }
+                else {
+                    var stringIndex=String(index);
+                }
+                var where=getDefinitionExpresion([ubigeo],index);
+
+                if(_this.cant_mini_maps<=cantMaxMiniMaps)
+                {
+                    var idMiniMap="divMiniMap_"+_this.cant_mini_maps;
+                    var divMiniMap = document.getElementById(idMiniMap);
+                    if(_this.maximizado==true)
+                    {divMiniMap.style.visibility = "visible";}
+                    crearMinimapa(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,classBreak,cod_map,cod_tematico,url,stringIndex,where,idMiniMap);
+                    _this.cant_mini_maps++;
+                }
+            }
+
+
+            var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
+                if (cod_map == 'P01') {
+                    service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
+                }
+
+                else if (cod_map == 'P01') {
+                    service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
+                }
+
+                updateBloqueMiniMapa(ubigeo,cod_map,index);
+
+            }
+
+
             _this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
 
             var selectedFeature=function(graphic,event){
@@ -723,12 +987,14 @@ App.utils.mapas = (function (parent, config,service) {
 
                     if (index_graphic==-1 || _this.select_ubigeos.length==0) {
 
+                        _this.opc_select="select";
                         createPopup(nombre,codigo,event);
-                        updatePanel(codigo,cod_map,panelDivGrafico);
+                        updatePanel(codigo,cod_map,panelDivGrafico,indexLayer);
                         _this.select_ubigeos.push(codigo);
                         _this.historic_features[indexLayer].nombres.push(nombre);
                     }
                     else{
+                        _this.opc_select="unselect";
                         _this.view_map.popup.close();
                         _this.select_ubigeos.splice(index_graphic, 1);
                         _this.historic_features[indexLayer].nombres.splice(index_graphic, 1);
@@ -744,9 +1010,7 @@ App.utils.mapas = (function (parent, config,service) {
                     var codigos_anteriores=[];
                     if (indexLayer==0) { codigos_anteriores=['00']}
                     else { codigos_anteriores=_this.historic_features[indexLayer-1].select_features}
-                    console.log('codigos_anteriores-->',codigos_anteriores);
                     App.mapasChangeEvent(_this.select_ubigeos,codigos_anteriores);
-
 
                 }
             };
@@ -757,7 +1021,6 @@ App.utils.mapas = (function (parent, config,service) {
                 changeLayer(index);
                 definitionExpression_gloabal=list_maps[indexMap].where;
                 updateMap(definitionExpression_gloabal,index);
-
             }
 
             var changeLayer=function(index){
@@ -849,6 +1112,8 @@ App.utils.mapas = (function (parent, config,service) {
                 zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression);
 
             }
+
+
 
             var setLabelWidgetUbigeos = function(index) {
 
@@ -1008,17 +1273,18 @@ App.utils.mapas = (function (parent, config,service) {
                 openFeature();
             });
 
+
+
             _this.view_map.when(function () {
                 var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
                 xsearch.css('display','none');
 
-                var print = new Print({
-                    view: _this.view_map,
-                    printServiceUrl: config.utils.print
+               /* printTask.execute(params).then(function(resolvedVal){
+                    var url_pdf=resolvedVal.url;
+                }, function(error){
+                    console.error('printerror-->',error);
                 });
-
-                _this.view_map.ui.add(print,'top-right');
-                console.log('print-->',print);
+            */
 
             });
 
@@ -1027,6 +1293,8 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
     }
+
+
 
     var cambiarMapa = function(cod_map,cod_tematico,url){
         service.mapas.getLegenda(cod_map,cod_tematico, url,function (data,cod_map,cod_tematico,url)
@@ -1062,7 +1330,11 @@ App.utils.mapas = (function (parent, config,service) {
         categoriaChangeEvent: categoriaChangeEvent,
         crearMapa :crearMapa,
         cambiarMapa:cambiarMapa,
-        listMapas : listMapas
+        listMapas : listMapas,
+        cant_mini_maps:cant_mini_maps,
+        opc_select:opc_select,
+        descargarMapaEvent:descargarMapaEvent,
+        panelDivGrafico:panelDivGrafico
     }
 
 
