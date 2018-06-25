@@ -154,10 +154,10 @@ button.ocultaBus{
     vertical-align: top;
 
 }
-.busquedaMaximizadaCuadro {
-    display: inline-block;
+div.busquedaMaximizadaCuadro {
     vertical-align: top;
     text-align: left;
+    display: none;
 }
 
 .busquedaMaximizadaCuadro h2 {
@@ -184,6 +184,9 @@ button.ocultaBus{
     color:white;
 }
 
+.CuadroActivoBusqueda {
+    display: inline-block !important;
+}
 
 .mtop-20{
     margin-top: 25px !important;
