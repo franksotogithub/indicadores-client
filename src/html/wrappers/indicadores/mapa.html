@@ -55,10 +55,9 @@
             </div>
 </div>
 
-<div id="panel" class="mapaPanelMaximizado">
+<div id="panel">
     <div id="contentPanel">
         <div id="resumenPanel">
-
             <div class="row">
                 <div class="graficoWidget-top">
                     <div> Población Censada</div>
@@ -92,16 +91,35 @@
                 </div>
             </div>
 
+
         </div>
-        <div id="mapaGraficoPanel"></div>
-        <div id="tablaPanel">
-            <div></div>
-            <div></div>
-            <div></div>
+        <div id="mapaGraficoPanel" style="display: none"></div>
+        <div id="listMiniMaps">  <!--se cambio de id antes tablaPanel-->
+
         </div>
     </div>
 
 </div>
+
+<style>
+    .miniMap {
+
+        width:150px;
+        height:150px;
+        border: 1px solid black;
+
+    }
+
+
+    /*#listMiniMaps {
+
+        width:150px;
+        height:150px;
+        border: 1px solid black;
+
+    }
+*/
+</style>
 
 
 

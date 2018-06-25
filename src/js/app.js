@@ -48,6 +48,15 @@ App = (function (scope, config) {
         _hasUtils(this, 'indicadorChangeEvent', {"indicador": indicador})
     };
 
+    var descargarMapaEvent = function () {
+        if (this.utils.mapas.descargarMapaEvent !== undefined) {
+            return this.utils.mapas.descargarMapaEvent();
+        }else {
+            console.log("no existe el metodo en descargarMapaEvent");
+            return null;
+        }
+    };
+
     return {
         ambito: 'nacional',
         categoria: 'P01',
@@ -58,6 +67,7 @@ App = (function (scope, config) {
         uiNormalCallback: uiNormalCallback,
         mapasChangeEvent: mapasChangeEvent,
         categoriaChangeEvent: categoriaChangeEvent,
-        indicadorChangeEvent: indicadorChangeEvent
+        indicadorChangeEvent: indicadorChangeEvent,
+        descargarMapaEvent: descargarMapaEvent
     }
 })(window, AppConfig());
