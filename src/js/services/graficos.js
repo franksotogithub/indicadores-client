@@ -1,62 +1,19 @@
 App.service.graficos = (function (parent, config, appData) {
 
+self.data_grafico = [];
+self.ubigeo_select = '';
+self.cant_select = 0;
 
-    var gePoblacionEdad = function (ubigeo, n, categoria, div1, div2, callback) {
+    var gePoblacionEdad = function (ubigeo,  callback) {
 
-        console.log(div1, div2)
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
-                var arreglodata = [];
-                //console.log(appData.titulo['U01'])
+                self.data_grafico = data;
+                self.ubigeo_select = ubigeo;
 
-                data.forEach(function (i) {
-                        arreglodata.push( [(i).cod_tematico, (i).indicador , Math.round((i).hombre) , Math.round ((i).mujer) ] );
-                });
-                arreglodata.sort();
-
-                self.json = [];
-
-                var h = [];
-                var m = [];
-
-                var h_t = 0;
-                var m_t = 0;
-
-                var ind = [];
-                arreglodata.forEach(function (x) {
-                    ind.push(x[1])
-                    h.push(-x[2])
-                    m.push(x[3])
-                    h_t += x[2]
-                    m_t += x[3]
-                });
-               var  nom_ubigeo;
-
-                if (ubigeo == '00'){
-                    nom_ubigeo = 'PERU'
-                }else {
-                    nom_ubigeo = 'INFO. ' + appData.titulo['U'+ubigeo]
-                }
-
-                if (n > 1){
-                    nom_ubigeo = null
-                }
-
-
-                json =   {categoria : ind,
-                    data: [{name: 'Hombres', data: h}, {name: 'Mujeres', data: m}],
-                    total: [['Hombres', h_t], [ 'Mujeres', m_t]],
-                    nom_ubigeo: nom_ubigeo
-                };
-
-                document.getElementById("id_w_t").innerHTML = h_t + m_t;
-                document.getElementById("id_w_h").innerHTML = h_t;
-                document.getElementById("id_w_m").innerHTML = m_t;
-
-                console.log(self.json)
                 if (callback !== undefined) {
-                    callback(self.json,div1, div2 );
+                    callback(self.data_grafico );
                 }
             },
             error: function (obj, status, otherr) {
@@ -90,7 +47,7 @@ App.service.graficos = (function (parent, config, appData) {
 
 
 
-    var gePoblacionInd = function (ubigeos, categoria, callback) {
+    var gePoblacionInd = function (ubigeos, callback) {
 
         parent.get({
             url: parent.getUrlServer('indicadores/graficos/poblacion/barras/'),//, {"u": ubigeos}
@@ -106,7 +63,6 @@ App.service.graficos = (function (parent, config, appData) {
                 ind.unique();
                 ind.sort();
                 valores.sort()
-
 
                 var son = []
                 self.Json2 = []
