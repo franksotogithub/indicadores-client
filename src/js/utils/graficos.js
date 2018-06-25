@@ -19,9 +19,9 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var grafico_c6_2;
 
 
-    var graf_persona_edad = function (data, div1, div2) {
+    var grafico_torta = function (data, div) {
 
-        grafico_1 = Highcharts.chart(div1, {
+        grafico_1 = Highcharts.chart(div, {
             chart: {
                 type: 'bar'
             },
@@ -85,8 +85,11 @@ App.utils.graficos = (function (parent, service, config, appData) {
             series: data.data
 
         });
+    };
 
-        grafico_2 = Highcharts.chart(div2, {
+    var graf_mediaLuna = function (data, div) {
+
+        grafico_2 = Highcharts.chart(div, {
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: 0,
@@ -127,59 +130,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
             }]
         });
 
-    };
-
-
-    graf_barra_ubigeo = function (data) {
-
-        grafico_3 = Highcharts.chart('grafico_3_max_c1', {
-            chart: {
-                type: 'bar'
-            },
-            title: {
-                text: 'INFORMACION'
-            },
-            xAxis: {
-                categories: data.ubigeo, // ["AMAZONAS", "ÁNCASH", "APURÍMAC", "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CALLAO", "CUSCO", "HUANCAVELICA", "HUÁNUCO", "ICA", "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LIMA", "LORETO", "MADRE DE DIOS", "MOQUEGUA", "PASCO", "PIURA", "PUNO", "SAN MARTIN", "TACNA", "TUMBES", "UCAYALI"],
-
-                title: {
-                    text: null
-                }
-                ,
-                crosshair: true
-            },
-            yAxis: {
-                allowDecimals: false,
-                min: 0,
-                title: {
-                    text: 'Cant. (miles)'
-                }
-            },
-            tooltip: {
-                valueSuffix: ''
-            },
-            plotOptions: {
-
-                bar: {
-                    dataLabels: {
-                        enabled: true
-                    }
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -40,
-                y: 80,
-                floating: true,
-                borderWidth: 1,
-                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-                shadow: true
-            },
-            series: data.son
-        });
-    };
+    }
 
     var graf_barra_vertical = function (div) {
         grafico_c2 = Highcharts.chart(div, {
@@ -237,7 +188,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         });
 
     }
-
 
     var graf_barra_vertical_2 = function (div) {
 
@@ -367,7 +317,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
     };
 
-
     var grafico_circular = function (div) {
         grafico_c6_2 = Highcharts.chart(div, {
             chart: {
@@ -407,6 +356,117 @@ App.utils.graficos = (function (parent, service, config, appData) {
     }
 
 
+
+    var graf_persona_edad = function (data) {
+
+        var arreglodata = [];
+        //console.log(appData.titulo['U01'])
+
+        data.forEach(function (i) {
+            arreglodata.push( [(i).cod_tematico, (i).indicador , Math.round((i).hombre) , Math.round ((i).mujer) ] );
+        });
+        arreglodata.sort();
+
+        var json = [], h = [], m = [];
+
+        var h_t = 0, m_t = 0;
+        var ind = [];
+        arreglodata.forEach(function (x) {
+            ind.push(x[1]);
+            h.push(-x[2]);
+            m.push(x[3]);
+            h_t += x[2];
+            m_t += x[3];
+        });
+        var  nom_ubigeo;
+
+        if (self.ubigeo_select == '00'){
+            nom_ubigeo = 'PERU'
+        }else {
+            nom_ubigeo = 'INFO. ' + appData.titulo['U'+self.ubigeo_select]
+        }
+
+        if (self.cant_select > 1){
+            nom_ubigeo = null
+        }
+
+
+        json =   {categoria : ind,
+            data: [{name: 'Hombres', data: h}, {name: 'Mujeres', data: m}],
+            total: [['Hombres', h_t], [ 'Mujeres', m_t]],
+            nom_ubigeo: nom_ubigeo
+        };
+
+        document.getElementById("id_w_t").innerHTML = h_t + m_t;
+        document.getElementById("id_w_h").innerHTML = h_t;
+        document.getElementById("id_w_m").innerHTML = m_t;
+
+
+        grafico_torta(json,self.div_grag1);
+        graf_mediaLuna(json,self.div_grag2 )
+
+    };
+
+
+    graf_barra_ubigeo = function (data) {
+
+        grafico_3 = Highcharts.chart('grafico_3_max_c1', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: null
+            },
+            xAxis: {
+                categories: data.ubigeo, // ["AMAZONAS", "ÁNCASH", "APURÍMAC", "AREQUIPA", "AYACUCHO", "CAJAMARCA", "CALLAO", "CUSCO", "HUANCAVELICA", "HUÁNUCO", "ICA", "JUNIN", "LA LIBERTAD", "LAMBAYEQUE", "LIMA", "LORETO", "MADRE DE DIOS", "MOQUEGUA", "PASCO", "PIURA", "PUNO", "SAN MARTIN", "TACNA", "TUMBES", "UCAYALI"],
+
+                title: {
+                    text: null
+                }
+                ,
+                crosshair: true
+            },
+            yAxis: {
+                allowDecimals: false,
+                min: 0,
+                title: {
+                    text: 'Cant. (miles)'
+                }
+            },
+            tooltip: {
+                allowDecimals: false,
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                shadow: true
+            },
+            series: data.son
+        });
+    };
+
+
+
     var graf_educacion = function (div1, div2) {
 
         graf_barra_vertical(div1);
@@ -415,7 +475,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
     };
 
-    var graf_salud = function (div1) {
+    var graf_salud = function (div1,div2) {
         grafico_c3 = Highcharts.chart(div1, {
             chart: {
                 plotBackgroundColor: null,
@@ -452,7 +512,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
             }]
         });
 
-        grafico_c3_2 = Highcharts.chart('grafico_2_c1', {
+        grafico_c3_2 = Highcharts.chart(div2, {
             chart: {
                 type: 'column'
             },
@@ -598,21 +658,14 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
     var crear_div_grafico = function () {
-        var div_grafico_base = '<div id="graf_min_c1" class="contendorSliderGrafico">' +
-            '<div id="cmb_ubigeo" style="display: none">' +
-                '<select id="cmb_ubi" name="cmb_ubi">' +
-                '</select>' +
-            '</div>' +
-            '<div class="sliderDiv">' +
+        var div_grafico_base ='';
+
+
+            div_grafico_base =
                 '<div id="grafico_1_c1" class="graficoElementSlider" ></div>' +
-                '<div id="grafico_2_c1" class="graficoElementSlider" ></div>' +
-            '</div>' +
-            '<div class="controlSliderGrafico">' +
-            '<div class="botonesControlGrafico">' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '<div id="graf_max_c1" class="grupomaximizado" style="display:none">' +
+                '<div id="grafico_2_c1" class="graficoElementSlider" ></div>' ;
+
+        var div_grafico_base_max =
             '<div class="row">' +
             '<div id="colunma_1_c1" class="col-4-10">' +
             '<div id="cmb_ubigeo_m" style="display: none">' +
@@ -620,17 +673,24 @@ App.utils.graficos = (function (parent, service, config, appData) {
             '</select>' +
             '</div>' +
             '<div id="grafico_1_max_c1"' + 'style="display:block; height: 400px; width: auto;"></div>' +
-            '<div id="grafico_2_max_c1"' + 'style=" display:block; height: 400px; width: auto;"></div>' +
             '</div>' +
             '<div id="colunma_2_c1" class="col-5-10">' +
-            '<div id="grafico_3_max_c1"' + 'style=" display:block; height: 900px; width: auto;">' +
             '</div>' +
+            '</div>' +
+            '<div class="row">' +
+            '<div id="colunma_1_c1" class="col-4-10">' +
+            '<div id="grafico_2_max_c1"' + 'style=" display:block; height: 480px; width: auto;"></div>' +
+            '</div>' +
+            '<div id="colunma_2_c1" class="col-5-10">' +
+            '<div id="grafico_3_max_c1"' + 'style=" display:block; height: 480px; width: auto;">' +
             '</div>' +
             '</div>' +
             '</div>';
 
 
-        $('#contenedor_P01').html(div_grafico_base);
+        $('.sliderDiv').html(div_grafico_base);
+        $('.grupomaximizado').html(div_grafico_base_max);
+
 
     };
 
@@ -655,7 +715,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
     };
 
-    var crearMinimizado = function (ubigeos, div_grag1, div_grag2) {
+    var crearMinimizado = function (ubigeos) {
 
         console.log('cantidad data' + ubigeos.length);
 
@@ -691,14 +751,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         self.cant_select = cant;
 
-        service.graficos.gePoblacionEdad(ubigeo, cant, 'P01', div_grag1, div_grag2, graf_persona_edad); //mostrara los graficos del ubigeo
-
-        service.graficos.gePoblacionInd(lista_ubi, 'P01', graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
+        service.graficos.gePoblacionEdad(ubigeo, graf_persona_edad); //mostrara los graficos del ubigeo
+        service.graficos.gePoblacionInd(lista_ubi, graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
 
     };
 
     var uiMaxCallback = function (option) {
-        $('#contenedor_P01').html('');
+        $('#sliderDiv').html('');
+        $('#grupomaximizado').html('');
+
         self.div_grag1 = 'grafico_1_max_c1';
         self.div_grag2 = 'grafico_2_max_c1';
         self.div_grag3 = 'grafico_3_max_c1';
@@ -710,13 +771,13 @@ App.utils.graficos = (function (parent, service, config, appData) {
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                graf_persona_edad(self.json, self.div_grag1, self.div_grag2);
+                graf_persona_edad(self.data_grafico);
                 graf_barra_ubigeo(self.Json2);
             }
             else if (self.categoria_select == 'P02') {
                 graf_educacion(self.div_grag1, self.div_grag3);
             } else if (self.categoria_select == 'P03') {
-                graf_salud(self.div_grag1);
+                graf_salud(self.div_grag1,self.div_grag2);
             } else if (self.categoria_select == 'P04') {
                 graf_economia(self.div_grag1, self.div_grag3);
             } else if (self.categoria_select == 'P05') {
@@ -730,7 +791,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         grafico_responsive(400, null, null);
 
 
-        graf_persona_edad(self.json, self.div_grag1, self.div_grag2)
         console.log(App.uiMax.graficos);
 
         $(".contendorSliderGrafico").css("display", "none");
@@ -749,18 +809,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
         self.div_grag1 = 'grafico_1_c1';
         self.div_grag2 = 'grafico_2_c1';
 
-        self.div_grag2 = 'grafico_3_c1';
+        self.div_grag3 = 'grafico_3_c1';
 
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                graf_persona_edad(self.json, self.div_grag1, self.div_grag2);
+                graf_persona_edad(self.data_grafico);
                 graf_barra_ubigeo(self.Json2);
             }
             else if (self.categoria_select == 'P02') {
                 graf_educacion(self.div_grag1, self.div_grag3);
             } else if (self.categoria_select == 'P03') {
-                graf_salud(self.div_grag1);
+                graf_salud(self.div_grag1,self.div_grag2);
             } else if (self.categoria_select == 'P04') {
                 graf_economia(self.div_grag1, self.div_grag3);
             } else if (self.categoria_select == 'P05') {
@@ -780,15 +840,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         sliderGraph();
 
-        $('.botonesControlGrafico').on('click', 'button', function () {
-            var slider = $(this).attr("data-slider");
-            $(this).siblings("button").removeClass("btnActiveSlider");
-            $(this).addClass("btnActiveSlider");
-
-            $(".sliderDiv [data-slider=" + slider + "]").siblings("div").fadeOut();
-            $(".sliderDiv [data-slider=" + slider + "]").fadeIn();
-
-        });
 
         grafico_responsive(300, 400, 230);
 
@@ -818,8 +869,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
         console.log('catego graficos', options.categoria);
 
 
-        $('#contenedor_P01').html('');
-
+        $('.sliderDiv').html('');
+        $('.grupomaximizado').html('');
 
         self.div_grag1 = 'grafico_1_c1';
 
@@ -827,13 +878,13 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         crear_div_grafico();
         if (options.categoria == 'P01') {
-            graf_persona_edad(self.json, self.div_grag1, self.div_grag2);
+            graf_persona_edad(self.data_grafico);
             graf_barra_ubigeo(self.Json2);
         }
         else if (options.categoria == 'P02') {
             graf_educacion(self.div_grag1, self.div_grag2);
         } else if (options.categoria == 'P03') {
-            graf_salud(self.div_grag1);
+            graf_salud(self.div_grag1,self.div_grag2);
         } else if (options.categoria == 'P04') {
             graf_economia(self.div_grag1, self.div_grag2);
         } else if (options.categoria == 'P05') {
@@ -845,23 +896,9 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         sliderGraph();
 
-        $('.botonesControlGrafico').on('click', 'button', function () {
-            var slider = $(this).attr("data-slider");
-            $(this).siblings("button").removeClass("btnActiveSlider");
-            $(this).addClass("btnActiveSlider");
-
-            $(".sliderDiv [data-slider=" + slider + "]").siblings("div").fadeOut();
-            $(".sliderDiv [data-slider=" + slider + "]").fadeIn();
-
-        });
-
-        grafico_responsive(200, 370, 230);
-
         self.categoria_select = options.categoria;
 
-
     };
-
 
     return {
         crearMinimizado: crearMinimizado,
