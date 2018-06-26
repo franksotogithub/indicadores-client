@@ -7,6 +7,7 @@
           self.div_grag2 ='grafico_2_c1';
         self.div_grag3 ='grafico_3_max_c1';
 
+        self.check_selected = [self.categoria_select];
 
 
         service.graficos.gePoblacionEdad('00' , utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
@@ -24,7 +25,13 @@
     $('#cmb_ubi').change(function () {
         var ubigeo = $('#cmb_ubi').val();
         service.graficos.gePoblacionEdad(ubigeo,  utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
-    })
+    });
+
+
+
+
+
+
     /*$('#cmb_ubi_m').change(function () {
         var ubigeo = $('#cmb_ubi_m').val();
         service.graficos.gePoblacionEdad(ubigeo, self.cant_select, self.div_grag1,self.div_grag2, utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
