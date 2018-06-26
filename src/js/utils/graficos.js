@@ -20,54 +20,174 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var grafico_c6_2;
 
 
+
+
+
+     /* COlores y posiscion para Piramide */
+
+    var perShapeGradient = {
+        x1: 0,
+        y1: 0,
+        x2: 1,
+        y2: 0
+    };
+
+    var colors = Highcharts.getOptions().colors;
+    colors = [{
+        linearGradient: perShapeGradient,
+        stops: [
+            [0, '#B34D00'],
+            [0.49, '#D57008'],
+            [0.50, '#FCAA50'],
+            [1,'#FFA426']
+
+        ]
+    }, {
+        linearGradient: perShapeGradient,
+        stops: [
+            [0, '#990000'],
+            [0.49, '#CC3335'],
+            [0.50, '#F84D50'],
+            [1,'#FF5050']
+        ]
+    }]
+
+
+
+    var directionPieGradient = {
+        x1: 0,
+        y1: 1,
+        x2: 0,
+        y2: 0
+    };
+    var colorsPie = Highcharts.getOptions().colors;
+    colorsPie = [{
+        linearGradient: directionPieGradient,
+        stops: [
+            [0, '#B34D00'],
+
+            [1,'#FFA426']
+
+        ]
+    }, {
+        linearGradient: directionPieGradient,
+        stops: [
+            [0, '#990000'],
+
+            [1,'#FF5050']
+        ]
+    }]
+
+
+
+    var directionPie2Gradient = {
+        x1: 0,
+        y1: 1,
+        x2: 0,
+        y2: 0
+    };
+    var colorsPie2 = Highcharts.getOptions().colors;
+    colorsPie2 = [{
+        linearGradient: directionPie2Gradient,
+        stops: [
+            [0, '#B34D00'],
+
+            [1,'#FFA426']
+
+        ]
+    }, {
+        linearGradient: directionPie2Gradient,
+        stops: [
+            [0, '#990000'],
+
+            [1,'#FF5050']
+        ]
+    }]
+
+
+    var directionPie3Gradient = {
+        x1: 0,
+        y1: 1,
+        x2: 0,
+        y2: 0
+    };
+    var colorsPie3 = Highcharts.getOptions().colors;
+    colorsPie3 = [{
+        linearGradient: directionPie3Gradient,
+        stops: [
+            [0, '#BC842C'],
+
+            [1,'#FBB03B']
+
+        ]
+    }, {
+        linearGradient: directionPie3Gradient,
+        stops: [
+            [0, '#1197A0'],
+
+            [1,'#16C9D5']
+        ]
+    }]
+
+
+
+    var directionBarraGradient = {
+        x1: 0,
+        y1: 1,
+        x2: 0,
+        y2: 0
+    };
+    var colorsBarra = Highcharts.getOptions().colors;
+    colorsBarra = [{
+        linearGradient: directionBarraGradient,
+        stops: [
+            [0, '#B5373C'],
+
+            [1,'#F14950']
+
+        ]
+    }, {
+        linearGradient: directionBarraGradient,
+        stops: [
+            [0, '#BC842C'],
+
+            [1,'#FBB03B']
+        ]
+    },{
+        linearGradient: directionBarraGradient,
+        stops: [
+            [0, '#1197A0'],
+
+            [1,'#16C9D5']
+        ]
+    },{
+        linearGradient: directionBarraGradient,
+        stops: [
+            [0, '#142D55'],
+
+            [1,'#1B3C71']
+        ]
+    }]
+
+
+
+
+
+
+
+
     var grafico_torta = function (data, div) {
 
-        var positionBackgroundGraph = {
-            x1: 0,
-            y1: 1,
-            x2: 0,
-            y2: 0
-        };
-        var backgroundColorGraph = [{
-            linearGradient: positionBackgroundGraph,
-                stops: [ //[ 0.35, '#7070B8' ], [0, '#D69999'],
-                    [0, '#E6E6E6'],
-                    [0.5, '#F1F1F1'],
-                    [1,'#FFFFFF']]
-            }];
 
-
-        var perShapeGradient = {
-            x1: 0,
-            y1: 0,
-            x2: 1,
-            y2: 0
-        };
-
-        var colors = Highcharts.getOptions().colors;
-        colors = [{
-            linearGradient: perShapeGradient,
-            stops: [
-                [0, '#B34D00'],
-                [0.49, '#D57008'],
-                [0.50, '#FCAA50'],
-                [1,'#FFA426']
-
-            ]
-        }, {
-            linearGradient: perShapeGradient,
-            stops: [
-                [0, '#990000'],
-                [0.49, '#CC3335'],
-                [0.50, '#F84D50'],
-                [1,'#FF5050']
-            ]
-        }]
 
         grafico_1 = Highcharts.chart(div, {
             chart: {
                 type: 'bar',
-                backgroundColor: backgroundColorGraph[0],
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
             },
             credits: {
                 enabled: false
@@ -150,10 +270,22 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         grafico_2 = Highcharts.chart(div, {
             chart: {
+
                 plotBackgroundColor: null,
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
                 plotBorderWidth: 0,
                 plotShadow: false
 
+            },
+            credits: {
+                enabled: false
+            },
+            exporting:{
+                enabled:false
             },
             title: {
                 text: 'Total<br>Personas',
@@ -169,13 +301,20 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 pie: {
                     dataLabels: {
                         enabled: true,
+                        x:0,
+                        y: 70,
                         format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                        distance: -30,
+                        distance: -10,
                         style: {
                             fontWeight: 'bold',
-                            color: 'white'
+                            color: '#333333',
+                            textShadow: null,
+                            textOutline: 0,
+                            fontSize: "14px"
+
                         }
                     },
+                    colors:[colorsPie[0],colorsPie[1]],
                     startAngle: -90,
                     endAngle: 90,
                     center: ['50%', '65%']
@@ -185,7 +324,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 type: 'pie',
                 name: 'porcentaje',
                 innerSize: '50%',
-                data: data.total
+                data: [data.total[0],data.total[1]]
             }]
         });
 
@@ -194,10 +333,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var graf_barra_vertical = function (div) {
         grafico_c2 = Highcharts.chart(div, {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
             },
             title: {
-                text: 'asistencia al sistema educativo '
+                text: 'Asistencia al sistema educativo '
             },
             subtitle: {
                 text: null,
@@ -231,18 +375,25 @@ App.utils.graficos = (function (parent, service, config, appData) {
             credits: {
                 enabled: false
             },
+            exporting: {
+                enabled: false
+            },
             series: [{
                 name: '3 a 5 años',
-                data: [107]
+                data: [107],
+                color:colorsBarra[0]
             }, {
                 name: '6 a 11 años',
-                data: [133]
+                data: [133],
+                color:colorsBarra[1]
             }, {
                 name: '12 a 16 años',
-                data: [814]
+                data: [814],
+                color:colorsBarra[2]
             }, {
                 name: '17 a 24 años',
-                data: [1216]
+                data: [1216],
+                color:colorsBarra[3]
             }]
         });
 
@@ -252,7 +403,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         grafico_c4_2 = Highcharts.chart(div, {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: 'Historic World Population by Region'
@@ -297,21 +459,23 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
                 shadow: true
             },
-            credits: {
-                enabled: false
-            },
+
             series: [{
                 name: 'Year 1800',
-                data: [107, 31, 635, 203, 2]
+                data: [107, 31, 635, 203, 2],
+                color:colorsBarra[0]
             }, {
                 name: 'Year 1900',
-                data: [133, 156, 947, 408, 6]
+                data: [133, 156, 947, 408, 6],
+                color:colorsBarra[1]
             }, {
                 name: 'Year 2000',
-                data: [814, 841, 3714, 727, 31]
+                data: [814, 841, 3714, 727, 31],
+                color:colorsBarra[2]
             }, {
                 name: 'Year 2016',
-                data: [1216, 1001, 4436, 738, 40]
+                data: [1216, 1001, 4436, 738, 40],
+                color:colorsBarra[3]
             }]
         });
 
@@ -320,7 +484,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var grafico_columna = function (div) {
         grafico_c6 = Highcharts.chart(div, {
             chart: {
-                type: 'column'
+                type: 'column',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: 'Servicios de informacion y comunicacion'
@@ -357,19 +532,23 @@ App.utils.graficos = (function (parent, service, config, appData) {
             },
             series: [{
                 name: 'televisor',
-                data: [49.9]
+                data: [49.9],
+                color:colorsBarra[0]
 
             }, {
                 name: 'internet',
-                data: [83.6]
+                data: [83.6],
+                color:colorsBarra[1]
 
             }, {
                 name: 'celulares',
-                data: [48.9]
+                data: [48.9],
+                color:colorsBarra[2]
 
             }, {
                 name: 'telefono',
-                data: [42.4]
+                data: [42.4],
+                color:colorsBarra[3]
 
             }]
         });
@@ -382,7 +561,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie'
+                type: 'pie',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: 'Poblacion con seguro'
@@ -405,10 +595,12 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 colorByPoint: true,
                 data: [{
                     name: 'Urbano',
-                    y: 8748430
+                    y: 8748430,
+                    color:colorsPie3[0]
                 }, {
                     name: 'Rural',
-                    y: 2850270
+                    y: 2850270,
+                    color:colorsPie3[1]
                 }]
             }]
         });
@@ -471,7 +663,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         grafico_3 = Highcharts.chart('grafico_3_max_c1', {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: null
@@ -540,7 +743,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie'
+                type: 'pie',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: 'Poblacion con seguro'
@@ -563,17 +777,30 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 colorByPoint: true,
                 data: [{
                     name: 'Urbano',
-                    y: 8748430
+                    y: 8748430,
+                    color: colorsPie3[0]
                 }, {
                     name: 'Rural',
-                    y: 2850270
+                    y: 2850270,
+                    color: colorsPie3[1]
                 }]
             }]
         });
 
         grafico_c3_2 = Highcharts.chart(div2, {
             chart: {
-                type: 'column'
+                type: 'column',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: 'Monthly Average Rainfall'
@@ -620,19 +847,23 @@ App.utils.graficos = (function (parent, service, config, appData) {
             },
             series: [{
                 name: 'Tokyo',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                color: colorsBarra[0]
 
             }, {
                 name: 'New York',
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                color: colorsBarra[1]
 
             }, {
                 name: 'London',
-                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
+                color: colorsBarra[2]
 
             }, {
                 name: 'Berlin',
-                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1],
+                color: colorsBarra[3]
 
             }]
         });
@@ -652,7 +883,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var graf_vivienda = function (div1, div2) {
         grafico_c5 = Highcharts.chart(div1, {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: 'Servicios Basicos'
@@ -692,10 +934,13 @@ App.utils.graficos = (function (parent, service, config, appData) {
             },
             series: [{
                 name: 'Viviendas con abastecimiento de agua',
-                data: [1027]
+                data: [1027],
+                color:colorsBarra[2],
+
             }, {
                 name: 'Viviendas con servicio higiénico',
-                data: [1334]
+                data: [1334],
+                color:colorsBarra[1]
             }]
         });
 

@@ -34,6 +34,14 @@
 
 .widgetGraficos {
     max-height:260px;
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 47%, rgba(230,230,230,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(241,241,241,1)), color-stop(100%, rgba(230,230,230,1)));
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 47%, rgba(230,230,230,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 47%, rgba(230,230,230,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 47%, rgba(230,230,230,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(241,241,241,1) 47%, rgba(230,230,230,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0 );
 }
 
 .widgetMetadatos {
@@ -102,7 +110,7 @@
 
 .controlSliderGrafico {
     display: block;
-    background-color: #e6e6e6;
+
 }
 .botonesControlGrafico {
     display:block;
@@ -223,3 +231,26 @@
 
 .contenidoMetadato.pm4 h3 {background-color: #217B93;}
 .contenidoMetadato.pm4 p {color: #217B93;}
+
+
+/* Responsive */
+
+@media screen and (max-width: 1600px)  {
+
+    .graficoWidget-top {
+
+        width: 24%;
+        display: inline-block;
+
+    }
+}
+
+@media screen and (max-width: 1450px)  {
+
+    .graficoWidget-top {
+
+        width: 22%;
+        display: inline-block;
+
+    }
+}
