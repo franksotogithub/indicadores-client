@@ -1002,8 +1002,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         });
 
 
-
-
         $('.sliderDiv').html(div_grafico_base);
         $('.grupomaximizado').html(div_grafico_base_max);
 
@@ -1011,33 +1009,10 @@ App.utils.graficos = (function (parent, service, config, appData) {
     };
 
 
-    var grafico_responsive = function (time, x, y) {
-
-        setTimeout(function () {
-
-            grafico_1.setSize(x, y);
-            grafico_2.setSize(x, y);
-            grafico_3.setSize(x, y);
-            //grafico_c2.setSize(x, y);
-            //grafico_c3.setSize(x, y);
-            grafico_c3_2.setSize(x, y);
-            grafico_c4_2.setSize(x, y);
-            grafico_c5.setSize(x, y);
-            grafico_c6.setSize(x, y);
-            grafico_c6_2.setSize(x, y);
-
-
-        }, time)
-
-    };
-
     var crearMinimizado = function (ubigeos) {
-
-        console.log('cantidad data' + ubigeos.length);
 
         var ubigeo = '';
         var lista_ubi = []
-
         var cant = ubigeos.length;
 
         if (cant > 1) {
@@ -1066,7 +1041,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         }
 
         self.cant_select = cant;
-
         service.graficos.gePoblacionEdad(ubigeo, graf_persona_edad); //mostrara los graficos del ubigeo
         service.graficos.gePoblacionInd(lista_ubi, graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
 
@@ -1105,20 +1079,13 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         }, 500);
 
-        //grafico_responsive(400, null, null);
-
 
         console.log(App.uiMax.graficos);
 
         $(".contendorSliderGrafico").css("display", "none");
         $(".grupomaximizado").css("display", "block");
-
-
         $("#contenedor_grafico").addClass('CuadroActivoBusqueda col-4-5');
-
-
         $(".busquedaMaximizadaCuadro").addClass('CuadroActivoBusqueda');
-
         $(".widgetMetadatos").css("display", "none");
         $("#id_graficoWidget_top").css("display", "none");
 
@@ -1129,7 +1096,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         console.log(App.uiMax.graficos);
         self.div_grag1 = 'grafico_1_c1';
         self.div_grag2 = 'grafico_2_c1';
-
         self.div_grag3 = 'grafico_3_c1';
 
         setTimeout(function () {
@@ -1150,46 +1116,37 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 graf_hogar(self.div_grag1, self.div_grag2);
             }
 
-        }, 500)
+        }, 500);
 
         $(".contendorSliderGrafico").css("display", "block");
         $(".grupomaximizado").css("display", "none");
         $("#contenedor_grafico").removeClass('CuadroActivoBusqueda col-4-5');
         $(".busquedaMaximizadaCuadro").removeClass('CuadroActivoBusqueda');
-
         $(".widgetMetadatos").css("display", "block");
         $("#id_graficoWidget_top").css("display", "block");
 
         sliderGraph();
         $(".check_cat").attr('checked', false);
 
-        //grafico_responsive(300, 400, 230);
-
     };
 
 
     var mapasChangeEvent = function (option) {
         console.log(option.ubigeo)
-
         var ubigeo = [];
-
         var arreglo = [];
-
         ubigeo = option.ubigeo
 
         ubigeo.forEach(function (x) {
             arreglo.push([x, appData.titulo['U' + x]])
         });
-
         crearMinimizado(arreglo, self.div_grag1, self.div_grag2);
-
     };
 
 
     var categoriaChangeEvent = function (options) {
 
         console.log('catego graficos', options.categoria);
-
         self.categoria_select = options.categoria;
         self.check_selected = [self.categoria_select];
 
@@ -1197,7 +1154,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $('.grupomaximizado').html('');
 
         self.div_grag1 = 'grafico_1_c1';
-
         self.div_grag2 = 'grafico_2_c1';
 
         crear_div_grafico();
@@ -1217,9 +1173,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
             graf_hogar(self.div_grag1, self.div_grag2);
         }
 
-
         sliderGraph();
-
 
     };
 
@@ -1229,13 +1183,9 @@ App.utils.graficos = (function (parent, service, config, appData) {
             self.check_selected.push($(this).val());
         });
 
-        //console.log(self.check_selected);
-
         $('.grupomaximizado').html('');
         crear_div_grafico();
-console.log(self.check_selected)
         self.check_selected.forEach(function (x) {
-
             console.log('se crea el grafico  ', x )
 
             self.div_grag1 = 'grafico_1_max_c1' ;
@@ -1266,8 +1216,6 @@ console.log(self.check_selected)
     });
 
 
-
-
     return {
         crearMinimizado: crearMinimizado,
         graf_barra_ubigeo: graf_barra_ubigeo,
@@ -1277,8 +1225,6 @@ console.log(self.check_selected)
         mapasChangeEvent: mapasChangeEvent,
         categoriaChangeEvent: categoriaChangeEvent,
         crear_div_grafico: crear_div_grafico
-
     }
-
 
 })(App.utils, App.service, AppConfig(), Appdata());
