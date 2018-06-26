@@ -216,7 +216,11 @@
 .contentCheckbox{
     padding-top:20px;
 }
-
+.graficoMaximizado {
+    display: inline-block !important;
+    max-height: 100%;
+    overflow: auto;
+}
 
 
 /* Colores para metadato */
