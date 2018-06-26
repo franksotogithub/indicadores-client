@@ -19,16 +19,6 @@
 
         sliderGraph ();
 
-
-       // utils.graficos.graf_educacion(self.div_grag1_c2,  self.div_grag3_c2);
-       // utils.graficos.graf_salud(self.div_grag1_c3);
-       // utils.graficos.graf_economia(self.div_grag1_c4,  self.div_grag3_c4);
-       // utils.graficos.graf_vivienda(self.div_grag1_c5,self.div_grag3_c5);
-       // utils.graficos.graf_hogar(self.div_grag1_c6,self.div_grag2_c6);
-
-
-
-
     });
 
     $('#cmb_ubi').change(function () {

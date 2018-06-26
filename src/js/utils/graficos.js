@@ -761,8 +761,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
             grafico_1.setSize(x, y);
             grafico_2.setSize(x, y);
             grafico_3.setSize(x, y);
-            grafico_c2.setSize(x, y);
-            grafico_c3.setSize(x, y);
+            //grafico_c2.setSize(x, y);
+            //grafico_c3.setSize(x, y);
             grafico_c3_2.setSize(x, y);
             grafico_c4_2.setSize(x, y);
             grafico_c5.setSize(x, y);
@@ -847,7 +847,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         }, 500)
 
-        grafico_responsive(400, null, null);
+        //grafico_responsive(400, null, null);
 
 
         console.log(App.uiMax.graficos);
@@ -856,12 +856,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $(".grupomaximizado").css("display", "block");
 
 
+        $("#contenedor_grafico").addClass('CuadroActivoBusqueda col-4-5');
+
+
+        $(".busquedaMaximizadaCuadro").addClass('CuadroActivoBusqueda');
+
         $(".widgetMetadatos").css("display", "none");
         $("#id_graficoWidget_top").css("display", "none");
 
-
     };
-
 
     var uiNormalCallback = function (option) {
         console.log(App.uiMax.graficos);
@@ -892,15 +895,14 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         $(".contendorSliderGrafico").css("display", "block");
         $(".grupomaximizado").css("display", "none");
-
+        $("#contenedor_grafico").removeClass('CuadroActivoBusqueda col-4-5');
+        $(".busquedaMaximizadaCuadro").removeClass('CuadroActivoBusqueda');
 
         $(".widgetMetadatos").css("display", "block");
         $("#id_graficoWidget_top").css("display", "block");
 
         sliderGraph();
-
-
-        grafico_responsive(300, 400, 230);
+        //grafico_responsive(300, 400, 230);
 
     };
 
