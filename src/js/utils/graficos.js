@@ -1,6 +1,7 @@
 App.utils.graficos = (function (parent, service, config, appData) {
 
     var grafico_1;
+
     var grafico_2;
     var grafico_3;
 
@@ -20,10 +21,42 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
     var grafico_torta = function (data, div) {
+    console.log(data.data[0].name);
+        var perShapeGradient = {
+            x1: 0,
+            y1: 0,
+            x2: 1,
+            y2: 0
+        };
+        var colors = Highcharts.getOptions().colors;
+        colors = [{
+            linearGradient: perShapeGradient,
+            stops: [
+                [0, '#B34D00'],
+                [0.49, '#D57008'],
+                [0.50, '#FCAA50'],
+                [1,'#FFA426']
+
+            ]
+        }, {
+            linearGradient: perShapeGradient,
+            stops: [
+                [0, '#990000'],
+                [0.49, '#CC3335'],
+                [0.50, '#F84D50'],
+                [1,'#FF5050']
+            ]
+        }]
 
         grafico_1 = Highcharts.chart(div, {
             chart: {
                 type: 'bar'
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
             },
             title: {
                 text: data.nom_ubigeo
@@ -82,7 +115,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 }
             },
 
-            series: data.data
+            series:[ {
+                name:data.data[0].name,
+                data:data.data[0].data,
+                color: colors[0]
+            },{
+                name:data.data[1].name,
+                data:data.data[1].data,
+                color: colors[1]
+            }]
 
         });
     };
