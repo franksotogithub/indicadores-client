@@ -658,7 +658,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
     graf_barra_ubigeo = function (data) {
-        console.log(data.son);
+
         grafico_3 = Highcharts.chart('grafico_3_max_c1P01', {
             chart: {
                 type: 'bar',
@@ -721,15 +721,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
                 shadow: true
             },
-            series:[{
-                name: data.son[0].name,
-                data: data.son[0].data,
-                color: colorsBarra[1]
-            },{
-                name: data.son[1].name,
-                data: data.son[1].data,
-                color: colorsBarra[0]
-            }]
+            series: data.son
         });
     };
 
@@ -1120,11 +1112,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         $(".contendorSliderGrafico").css("display", "none");
         $(".grupomaximizado").css("display", "block");
-
-
         $("#contenedor_grafico").addClass('graficoMaximizado col-4-5');
-
-
         $(".busquedaMaximizadaCuadro").addClass('CuadroActivoBusqueda');
 
         $(".widgetMetadatos").css("display", "none");
@@ -1162,7 +1150,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         $(".contendorSliderGrafico").css("display", "block");
         $(".grupomaximizado").css("display", "none");
-        $("#contenedor_grafico").removeClass('graficoMaximizado col-4-5');
+        $("#contenedor_grafico").removeClass('CuadroActivoBusqueda col-4-5');
         $(".busquedaMaximizadaCuadro").removeClass('CuadroActivoBusqueda');
 
         $(".widgetMetadatos").css("display", "block");
