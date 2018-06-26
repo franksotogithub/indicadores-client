@@ -4,7 +4,8 @@
         service.mapas.getMapa(cod_mapa,function (data) {
             var cod_tematico=data.cod_tematico_default;
             var url= data.url;
-            utils.mapas.cambiarMapa(cod_mapa,cod_tematico,url);
+            var titulo= data.descripcion;
+            utils.mapas.crearMapa(cod_mapa,cod_tematico,url,titulo);
         });
 
 
