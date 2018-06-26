@@ -21,13 +21,29 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
     var grafico_torta = function (data, div) {
-    console.log(data.data[0].name);
+
+        var positionBackgroundGraph = {
+            x1: 0,
+            y1: 1,
+            x2: 0,
+            y2: 0
+        };
+        var backgroundColorGraph = [{
+            linearGradient: positionBackgroundGraph,
+                stops: [ //[ 0.35, '#7070B8' ], [0, '#D69999'],
+                    [0, '#E6E6E6'],
+                    [0.5, '#F1F1F1'],
+                    [1,'#FFFFFF']]
+            }];
+
+
         var perShapeGradient = {
             x1: 0,
             y1: 0,
             x2: 1,
             y2: 0
         };
+
         var colors = Highcharts.getOptions().colors;
         colors = [{
             linearGradient: perShapeGradient,
@@ -50,7 +66,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         grafico_1 = Highcharts.chart(div, {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: backgroundColorGraph[0],
             },
             credits: {
                 enabled: false
@@ -78,6 +95,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
                     text: null
                 },
                 labels: {
+
                     formatter: function () {
                         return Highcharts.numberFormat(Math.abs(this.value), 0)
                     },
@@ -95,7 +113,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
                     pointPadding: -0.2,
                     borderWidth: 0,
                     dataLabels: {
-                        enabled: true,
+                        enabled: false,
                         formatter: function () {
                             return Highcharts.numberFormat(Math.abs(this.point.y), 0);
                         },

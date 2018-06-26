@@ -102,6 +102,7 @@
 
 .controlSliderGrafico {
     display: block;
+    background-color: #e6e6e6;
 }
 .botonesControlGrafico {
     display:block;
@@ -111,7 +112,7 @@
 .botonesControlGrafico button {
     display: inline-block;
     color: #FFFFFF;
-    background-color: #ffc372;
+    background-color: #CCCCCC;
     padding:7px 12px;
     margin: 0px 5px;
     border:#ffffff solid 3px;
@@ -119,7 +120,8 @@
 }
 
 .botonesControlGrafico button.btnActiveSlider {
-    box-shadow: #845003 0px 0px 3px;
+    box-shadow: #845003 0px 0px 5px;
+    background-color: #ffc372;
 
 }
 
