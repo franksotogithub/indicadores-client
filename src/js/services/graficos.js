@@ -13,7 +13,7 @@ self.cant_select = 0;
                 self.ubigeo_select = ubigeo;
 
                 if (callback !== undefined) {
-                    callback(self.data_grafico );
+                    callback(self.data_grafico,self.div_grag1,self.div_grag2 );
                 }
             },
             error: function (obj, status, otherr) {

@@ -414,9 +414,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
         });
     }
 
-
-
-    var graf_persona_edad = function (data) {
+    var graf_persona_edad = function (data, div1, div2) {
 
         var arreglodata = [];
         //console.log(appData.titulo['U01'])
@@ -461,15 +459,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
         document.getElementById("id_w_m").innerHTML = m_t;
 
 
-        grafico_torta(json,self.div_grag1);
-        graf_mediaLuna(json,self.div_grag2 )
+        grafico_torta(json,div1);
+        graf_mediaLuna(json,div2 )
 
     };
 
 
     graf_barra_ubigeo = function (data) {
 
-        grafico_3 = Highcharts.chart('grafico_3_max_c1', {
+        grafico_3 = Highcharts.chart('grafico_3_max_c1P01', {
             chart: {
                 type: 'bar'
             },
@@ -523,7 +521,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
             series: data.son
         });
     };
-
 
 
     var graf_educacion = function (div1, div2) {
@@ -643,9 +640,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var graf_economia = function (div1, div2) {
 
         grafico_columna(div1);
-
         graf_barra_vertical_2(div2);//grafico_3_c4
-
 
     };
 
@@ -699,7 +694,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
             }]
         });
 
-
         graf_barra_vertical(div2);
 
 
@@ -709,7 +703,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var graf_hogar = function (div1, div2) {
 
         grafico_columna(div1);
-
         grafico_circular(div2);
 
 
@@ -719,32 +712,51 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var crear_div_grafico = function () {
         var div_grafico_base ='';
 
-
             div_grafico_base =
                 '<div id="grafico_1_c1" class="graficoElementSlider" ></div>' +
                 '<div id="grafico_2_c1" class="graficoElementSlider" ></div>' ;
 
-        var div_grafico_base_max =
-            '<div class="row">' +
-            '<div id="colunma_1_c1" class="col-4-10">' +
-            '<div id="cmb_ubigeo_m" style="display: none">' +
-            '<select id="cmb_ubi_m" name="cmb_ubi">' +
-            '</select>' +
-            '</div>' +
-            '<div id="grafico_1_max_c1"' + 'style="display:block; height: 400px; width: auto;"></div>' +
-            '</div>' +
-            '<div id="colunma_2_c1" class="col-5-10">' +
-            '</div>' +
-            '</div>' +
-            '<div class="row">' +
-            '<div id="colunma_1_c1" class="col-4-10">' +
-            '<div id="grafico_2_max_c1"' + 'style=" display:block; height: 480px; width: auto;"></div>' +
-            '</div>' +
-            '<div id="colunma_2_c1" class="col-5-10">' +
-            '<div id="grafico_3_max_c1"' + 'style=" display:block; height: 480px; width: auto;">' +
-            '</div>' +
-            '</div>' +
-            '</div>';
+            var cat = self.check_selected;
+        var div_grafico_base_max = '';
+
+
+        cat.forEach(function (x) {
+            var titulo = '';
+            switch (x){
+                case 'P01': titulo = 'POBLACION';break;
+                case 'P02': titulo = 'EDUCACION';break;
+                case 'P03': titulo = 'SALUD';break;
+                case 'P04': titulo = 'ECONOMIA';break;
+                case 'P05': titulo = 'VIVIENDA';break;
+                case 'P06': titulo = 'HOGAR';break;
+            }
+
+            div_grafico_base_max += '<h3>'+titulo+'</h3>' +
+                '<div class="row">' +
+                '<div id="colunma_1_c1'+x+'" class="col-4-10">' +
+                '<div id="cmb_ubigeo_m'+x+'" style="display:none">' +
+                '<select id="cmb_ubi_m'+x+'" name="cmb_ubi">' +
+                '</select>' +
+                '</div>' +
+                '<div id="grafico_1_max_c1'+x+'" style="display:block; height: 400px; width: auto;"></div>' +
+                '</div>' +
+                '<div id="colunma_2_c1'+x+'" class="col-5-10">' +
+                '</div>' +
+                '</div>' +
+                '<div class="row">' +
+                '<div id="colunma_1_c1'+x+'" class="col-4-10">' +
+                '<div id="grafico_2_max_c1'+x+'" style=" display:block; height: 470px; width: auto;"></div>' +
+                '</div>' +
+                '<div id="colunma_2_c1'+x+'" class="col-5-10">' +
+                '<div id="grafico_3_max_c1'+x+'" style=" display:block; height: 470px; width: auto;">' +
+                '</div>' +
+                '</div>' +
+                '</div>'+
+                '<hr>' ;
+
+        });
+
+
 
 
         $('.sliderDiv').html(div_grafico_base);
@@ -819,33 +831,34 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $('#sliderDiv').html('');
         $('#grupomaximizado').html('');
 
-        self.div_grag1 = 'grafico_1_max_c1';
-        self.div_grag2 = 'grafico_2_max_c1';
-        self.div_grag3 = 'grafico_3_max_c1';
+        self.div_grag1 = 'grafico_1_max_c1' +self.categoria_select;
+        self.div_grag2 = 'grafico_2_max_c1'+ self.categoria_select;
+        self.div_grag3 = 'grafico_3_max_c1' + self.categoria_select;
 
         crear_div_grafico();
+
 
         console.log(self.categoria_select)
 
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                graf_persona_edad(self.data_grafico);
+                graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
                 graf_barra_ubigeo(self.Json2);
             }
             else if (self.categoria_select == 'P02') {
-                graf_educacion(self.div_grag1, self.div_grag3);
+                graf_educacion(self.div_grag1, self.div_grag2);
             } else if (self.categoria_select == 'P03') {
                 graf_salud(self.div_grag1,self.div_grag2);
             } else if (self.categoria_select == 'P04') {
-                graf_economia(self.div_grag1, self.div_grag3);
+                graf_economia(self.div_grag1, self.div_grag2);
             } else if (self.categoria_select == 'P05') {
                 graf_vivienda(self.div_grag1, self.div_grag3);
             } else if (self.categoria_select == 'P06') {
                 graf_hogar(self.div_grag1, self.div_grag2);
             }
 
-        }, 500)
+        }, 500);
 
         //grafico_responsive(400, null, null);
 
@@ -864,6 +877,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $(".widgetMetadatos").css("display", "none");
         $("#id_graficoWidget_top").css("display", "none");
 
+        $("#check_cat"+self.categoria_select).attr('checked', true);
     };
 
     var uiNormalCallback = function (option) {
@@ -876,15 +890,15 @@ App.utils.graficos = (function (parent, service, config, appData) {
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                graf_persona_edad(self.data_grafico);
+                graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
                 graf_barra_ubigeo(self.Json2);
             }
             else if (self.categoria_select == 'P02') {
-                graf_educacion(self.div_grag1, self.div_grag3);
+                graf_educacion(self.div_grag1, self.div_grag2);
             } else if (self.categoria_select == 'P03') {
                 graf_salud(self.div_grag1,self.div_grag2);
             } else if (self.categoria_select == 'P04') {
-                graf_economia(self.div_grag1, self.div_grag3);
+                graf_economia(self.div_grag1, self.div_grag2);
             } else if (self.categoria_select == 'P05') {
                 graf_vivienda(self.div_grag1, self.div_grag3);
             } else if (self.categoria_select == 'P06') {
@@ -902,6 +916,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $("#id_graficoWidget_top").css("display", "block");
 
         sliderGraph();
+        $(".check_cat").attr('checked', false);
+
         //grafico_responsive(300, 400, 230);
 
     };
@@ -929,6 +945,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         console.log('catego graficos', options.categoria);
 
+        self.categoria_select = options.categoria;
+        self.check_selected = [self.categoria_select];
 
         $('.sliderDiv').html('');
         $('.grupomaximizado').html('');
@@ -939,7 +957,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         crear_div_grafico();
         if (options.categoria == 'P01') {
-            graf_persona_edad(self.data_grafico);
+            graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
             graf_barra_ubigeo(self.Json2);
         }
         else if (options.categoria == 'P02') {
@@ -957,9 +975,53 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         sliderGraph();
 
-        self.categoria_select = options.categoria;
 
     };
+
+    $('.check_cat').click(function()  {
+        self.check_selected = [];
+        $(".check_cat:checked").each(function() {
+            self.check_selected.push($(this).val());
+        });
+
+        //console.log(self.check_selected);
+
+        $('.grupomaximizado').html('');
+        crear_div_grafico();
+console.log(self.check_selected)
+        self.check_selected.forEach(function (x) {
+
+            console.log('se crea el grafico  ', x )
+
+            self.div_grag1 = 'grafico_1_max_c1' ;
+            self.div_grag2 = 'grafico_2_max_c1';
+            self.div_grag3 = 'grafico_3_max_c1';
+
+            setTimeout(function () {
+
+                if (x == 'P01') {
+                    graf_persona_edad(self.data_grafico,self.div_grag1+x,self.div_grag2+x );
+                    graf_barra_ubigeo(self.Json2);
+                }
+                else if (x == 'P02') {
+                    graf_educacion(self.div_grag1+x, self.div_grag2+x);
+                } else if (x == 'P03') {
+                    graf_salud(self.div_grag1+x,self.div_grag2+x);
+                } else if (x == 'P04') {
+                    graf_economia(self.div_grag1+x, self.div_grag2+x);
+                } else if (x == 'P05') {
+                    graf_vivienda(self.div_grag1+x,  self.div_grag3+x);
+                } else if (x == 'P06') {
+                    graf_hogar(self.div_grag1+x, self.div_grag2+x);
+                }
+
+            }, 500)
+
+        });
+    });
+
+
+
 
     return {
         crearMinimizado: crearMinimizado,
@@ -969,11 +1031,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         uiNormalCallback: uiNormalCallback,
         mapasChangeEvent: mapasChangeEvent,
         categoriaChangeEvent: categoriaChangeEvent,
-        graf_educacion: graf_educacion,
-        graf_salud: graf_salud,
-        graf_economia: graf_economia,
-        graf_vivienda: graf_vivienda,
-        graf_hogar: graf_hogar,
         crear_div_grafico: crear_div_grafico
 
     }
