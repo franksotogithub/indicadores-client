@@ -1,14 +1,11 @@
 App.service.mapas = (function (parent, config) {
 
     /*
-
-    var getLegenda = function (Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,ListLayer,map,indicador,callback) {
+    var getLegenda = function (map,indicador,url,titulo,callback) {
         parent.get({
-            url: parent.getUrlServer('mapa/legendas/listar-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
+            url: parent.getUrlServer('mapa/legendas/obtener-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
             success: function (data) {
-
-                this.legenda = data;
-                callback(Map, MapView, MapImageLayer,FeatureLayer, Legend,Popup,dom,domConstruct,Graphic, Search , Locator , Query,IdentifyTask, IdentifyParameters,arrayUtils,PopupTemplate,Print,QueryTask,ListLayer,data);
+                callback(data,map,indicador,url,titulo);
             },
 
             error: function (obj, status, otherr) {
@@ -16,12 +13,14 @@ App.service.mapas = (function (parent, config) {
             }
         });
     };
-    */
-    var getLegenda = function (map,indicador,url,titulo,callback) {
+
+*/
+
+    var getLegenda = function (map,indicador,callback) {
         parent.get({
             url: parent.getUrlServer('mapa/legendas/obtener-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
             success: function (data) {
-                callback(data,map,indicador,url,titulo);
+                callback(data);
             },
 
             error: function (obj, status, otherr) {
