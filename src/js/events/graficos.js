@@ -6,6 +6,7 @@
           self.div_grag1 ='grafico_1_c1';
           self.div_grag2 ='grafico_2_c1';
         self.div_grag3 ='grafico_3_max_c1';
+        self.div_grag4 ='grafico_4_max_c1';
 
         self.check_selected = [self.categoria_select];
 

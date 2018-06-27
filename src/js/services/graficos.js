@@ -7,10 +7,12 @@ self.cant_select = 0;
     var gePoblacionEdad = function (ubigeo,  callback) {
 
         parent.get({
-            url: parent.getUrlServer('indicadores/graficos/poblacion/'+ubigeo+'/'),//, {"u": ubigeos}
+            url: parent.getUrlServer('graficos/crear/01/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
                 self.data_grafico = data;
                 self.ubigeo_select = ubigeo;
+
+                console.log(self.data_grafico)
 
                 if (callback !== undefined) {
                     callback(self.data_grafico,self.div_grag1,self.div_grag2 );
@@ -82,7 +84,7 @@ self.cant_select = 0;
 
                 console.log('muestraaaaaa', self.Json2)
                 if (callback !== undefined) {
-                    callback(self.Json2 );
+                    callback(self.Json2, self.div_grag4 );
                 }
             },
             error: function (obj, status, otherr) {
