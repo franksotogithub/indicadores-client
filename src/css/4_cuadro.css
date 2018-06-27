@@ -160,6 +160,10 @@ button.ocultaBus{
     vertical-align: top;
 
 }
+.contenedorTablaVentanaMaximizada{
+    display: inline-block;
+    vertical-align: top;
+}
 div.busquedaMaximizadaCuadro {
     vertical-align: top;
     text-align: left;

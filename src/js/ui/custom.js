@@ -7,6 +7,9 @@ var ultimaMinimizada;
 /* asignando altos dinamioos */
 var altoVentana = $(window.height);
 
+function altosAutomaticos(){
+    $('.widgetMetadatos').css({"height":(altoVentana-510)+"px",});
+}
 
 
 /* Imprimir Ventana */
