@@ -1114,7 +1114,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $(".grupomaximizado").css("display", "block");
 
 
-        $("#contenedor_grafico").addClass('CuadroActivoBusqueda col-4-5');
+        $("#contenedor_grafico").addClass('graficoMaximizado col-4-5');
 
 
         $(".busquedaMaximizadaCuadro").addClass('CuadroActivoBusqueda');
@@ -1154,7 +1154,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         $(".contendorSliderGrafico").css("display", "block");
         $(".grupomaximizado").css("display", "none");
-        $("#contenedor_grafico").removeClass('CuadroActivoBusqueda col-4-5');
+        $("#contenedor_grafico").removeClass('graficoMaximizado col-4-5');
         $(".busquedaMaximizadaCuadro").removeClass('CuadroActivoBusqueda');
 
         $(".widgetMetadatos").css("display", "block");

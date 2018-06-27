@@ -4,6 +4,10 @@ var vAbiertas;
 var ultimaMinimizada;
 
 
+/* asignando altos dinamioos */
+var altoVentana = $(window.height);
+
+
 
 /* Imprimir Ventana */
 
