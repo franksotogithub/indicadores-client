@@ -494,11 +494,15 @@ $(document).ready(function() {
 
     $(document).on('mouseover','.popover', function (e) {
         var titleTool = $(this).attr("data-popover");
-        $(this).append( "<span class='popovertext'> <div class='popoverTitulo'>Resumen  </div>" + titleTool + "</span>");
+
+        $('#contenedorPopover').css({'top':($(this).offset().top - 30)+'px','left':($(this).offset().left - 203)+'px'});
+        $('#contenedorPopover').append( "<span class='popovertext'>" + titleTool + "</span>");
+        console.log(titleTool);
+
     });
 
     $(document).on('mouseout','.popover', function (e) {
-        $(this).find( "span" ).remove();
+        $('#contenedorPopover').find( "span" ).remove();
     });
 
 
@@ -522,6 +526,11 @@ $(document).ready(function() {
 
         });
 
+
+    });
+
+    $('.contenedorBusquedaBotonesUbigeo').on('click','button', function() {
+        $(this).remove("button");
 
     });
 
