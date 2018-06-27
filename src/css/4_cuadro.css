@@ -151,7 +151,7 @@ button.ocultaBus{
 }
 
 .DTFC_LeftWrapper td.tituloIndicador {
-    font-weight: bold;
+    font-weight: bold !important;
     text-indent: 0px;
 }
 

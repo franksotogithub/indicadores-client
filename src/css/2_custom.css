@@ -53,12 +53,33 @@ body {
 
 
 
+/* Botones de busqeudas */
 
+button.ubigeoGenerado span{
+    background: #795548;
+    padding: 2px 6px;
+    vertical-align: inherit;
+    border-radius: 100%;
+    color: #ffedd5;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button.ubigeoGenerado:active{
+    box-shadow: rgba(0, 0, 0, 0.57) 0px 0px 14px inset;
+}
 
 
 /* POopover */
+#contenedorPopover {
+    position: absolute;
+    z-index: 999;
+}
+
+
 .popover {
-    position: relative !important;
+
 
 }
 
@@ -73,11 +94,9 @@ body {
     font-weight: normal;
 }
 
-.popover .popovertext {
-    visibility: hidden;
+.popovertext {
     max-width: 180px;
     width:180px;
-
     max-height: 80px;
     height: 80px;
     background-color: white;
@@ -87,25 +106,32 @@ body {
     padding: 10px;
     position: absolute;
     z-index: 1;
-    top: -100px;
-    left: 0px;
     margin: 0 auto;
     display: block;
 
     font-family: "signikaregular";
     font-size: 14px;
-    box-shadow: #666666 0px 0px 6px;
+    box-shadow: #666666 0px 0px 8px;
+}
+
+.popovertext::after {
+    content: "";
+    position: absolute;
+    bottom: 50%;
+    left: 100%;
+    margin-left: 0px;
+    border-width: 6px;
+    border-style: solid;
+    border-color:  transparent  transparent  transparent white;
 }
 
 td.popover:hover {
     color: white !important;
-    background-color: #408fb5 !important;
+    background-color: #4a6289 !important;
     cursor: pointer;
 }
 
-.popover:hover .popovertext {
-    visibility: visible;
-}
+
 
 /* General */
 
