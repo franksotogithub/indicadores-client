@@ -1,5 +1,12 @@
 var App;
 App = (function (scope, config) {
+
+    var uiMax = {
+        "mapas": false,
+        "cuadros": false,
+        "graficos": false
+    };
+
     var init = function () {
 
     };
@@ -27,12 +34,6 @@ App = (function (scope, config) {
         }
         _hasUtils(this, 'uiNormalCallback', {"ventana": ventana})
 
-    };
-
-    var uiMax = {
-        "mapas": false,
-        "cuadros": false,
-        "graficos": false
     };
 
     var mapasChangeEvent = function (ubigeo, historico) {

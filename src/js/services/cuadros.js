@@ -12,7 +12,7 @@ App.service.cuadros = (function (parent, config) {
             error: function (obj, status, otherr) {
                 parent.responseError(obj, "No existe datos a nivel Nacional");
             }
-        })
+        });
     };
 
     return {

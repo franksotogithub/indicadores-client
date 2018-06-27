@@ -122,6 +122,11 @@ function restaurarImpresion(e) {
     e.parent().children(".restaurar").attr("data-title", "Maximizar ventana");
     e.parent().children(".restaurar").addClass("maximizar").removeClass("restaurar");
 
+    console.log("aplica", 'uiNormalCallback');
+    if (App.uiNormalCallback !== undefined) {
+        App.uiNormalCallback("cuadros");
+    }
+
     //Tipped.init();
     //Tipped.create('.tooltip', {size: 'large'});
 }
@@ -484,10 +489,12 @@ $(document).ready(function() {
     });
 
 
-    $(".popover").hover(function () {
+    $(document).on('mouseover','.popover', function (e) {
         var titleTool = $(this).attr("data-popover");
         $(this).append( "<span class='popovertext'> <div class='popoverTitulo'>Resumen  </div>" + titleTool + "</span>");
-    }, function () {
+    });
+
+    $(document).on('mouseout','.popover', function (e) {
         $(this).find( "span" ).remove();
     });
 
