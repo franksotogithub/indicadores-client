@@ -611,24 +611,23 @@ App.utils.graficos = (function (parent, service, config, appData) {
         var arreglodata = [];
         //console.log(appData.titulo['U01'])
 
-        data.forEach(function (i) {
-            arreglodata.push( [(i).cod_tematico, (i).indicador , Math.round((i).hombre) , Math.round ((i).mujer) ] );
+        var json = []; var json2 = []; h = []; m = [];
+
+        data.G00002.forEach(function (i) {
+            arreglodata.push( [i.cod_indicador, i.descripcion , Math.round(i.valor) ] );
         });
         arreglodata.sort();
-
-        var json = [], h = [], m = [];
-
-        var h_t = 0, m_t = 0;
-        var ind = [];
         arreglodata.forEach(function (x) {
-            ind.push(x[1]);
-            h.push(-x[2]);
-            m.push(x[3]);
-            h_t += x[2];
-            m_t += x[3];
+            if(x[0]=='P900001' ||x[0]=='P900003'|| x[0]=='P900005' ){
+                h.push(-x[2]);
+            }else if(x[0]=='P900002' ||x[0]=='P900004'|| x[0]=='P900006' ){
+               m.push(x[2]);
+            }
         });
-        var  nom_ubigeo;
 
+        var ind = ['0-14', '15-64', '65+']
+
+        var  nom_ubigeo;
         if (self.ubigeo_select == '00'){
             nom_ubigeo = 'PERU'
         }else {
@@ -639,27 +638,42 @@ App.utils.graficos = (function (parent, service, config, appData) {
             nom_ubigeo = null
         }
 
-
         json =   {categoria : ind,
             data: [{name: 'Hombres', data: h}, {name: 'Mujeres', data: m}],
-            total: [['Hombres', h_t], [ 'Mujeres', m_t]],
             nom_ubigeo: nom_ubigeo
         };
 
+        var h_t = 0, m_t = 0;
+
+        data.G00001.forEach(function (i) {
+            if(i.cod_indicador == 'P010101'){
+                h_t =  Math.round(i.valor);
+            }
+            if (i.cod_indicador == 'P010102'){
+                m_t =  Math.round(i.valor);
+            }
+        });
+
+        json2 =   {
+            total: [['Hombres', h_t], [ 'Mujeres', m_t]]
+        };
+
+        /*
         document.getElementById("id_w_t").innerHTML = h_t + m_t;
         document.getElementById("id_w_h").innerHTML = h_t;
         document.getElementById("id_w_m").innerHTML = m_t;
+*/
 
+       grafico_torta(json,div1);
+       graf_mediaLuna(json2,div2 )
 
-        grafico_torta(json,div1);
-        graf_mediaLuna(json,div2 )
 
     };
 
 
-    graf_barra_ubigeo = function (data) {
+    graf_barra_ubigeo = function (data, div) {
 
-        grafico_3 = Highcharts.chart('grafico_3_max_c1P01', {
+        grafico_3 = Highcharts.chart(div, {
             chart: {
                 type: 'bar',
                 backgroundColor: {
@@ -726,15 +740,177 @@ App.utils.graficos = (function (parent, service, config, appData) {
     };
 
 
-    var graf_educacion = function (div1, div2) {
+    var graf_educacion = function (div1, div2,div3 , div4 ) {
 
         graf_barra_vertical(div1);
 
         graf_barra_vertical_2(div2); //grafico_3_c2
 
+        grafico_c3_2 = Highcharts.chart(div3, {
+            chart: {
+                type: 'column',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            title: {
+                text: 'Monthly Average Rainfall'
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                color: colorsBarra[0]
+
+            }, {
+                name: 'New York',
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                color: colorsBarra[1]
+
+            }, {
+                name: 'London',
+                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
+                color: colorsBarra[2]
+
+            }, {
+                name: 'Berlin',
+                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1],
+                color: colorsBarra[3]
+
+            }]
+        });
+        grafico_c3_2 = Highcharts.chart(div4, {
+            chart: {
+                type: 'column',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            title: {
+                text: 'Monthly Average Rainfall'
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                color: colorsBarra[0]
+
+            }, {
+                name: 'New York',
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                color: colorsBarra[1]
+
+            }, {
+                name: 'London',
+                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
+                color: colorsBarra[2]
+
+            }, {
+                name: 'Berlin',
+                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1],
+                color: colorsBarra[3]
+
+            }]
+        });
+
+
     };
 
-    var graf_salud = function (div1,div2) {
+    var graf_salud = function (div1,div2,div3) {
         grafico_c3 = Highcharts.chart(div1, {
             chart: {
                 plotBackgroundColor: null,
@@ -865,17 +1041,180 @@ App.utils.graficos = (function (parent, service, config, appData) {
             }]
         });
 
+        graf_barra_ubigeo(self.Json2, div3)
 
     };
 
-    var graf_economia = function (div1, div2) {
+    var graf_economia = function (div1, div2,div3, div4 ) {
 
         grafico_columna(div1);
         graf_barra_vertical_2(div2);//grafico_3_c4
 
+        grafico_c3_2 = Highcharts.chart(div3, {
+            chart: {
+                type: 'column',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            title: {
+                text: 'Monthly Average Rainfall'
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                color: colorsBarra[0]
+
+            }, {
+                name: 'New York',
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                color: colorsBarra[1]
+
+            }, {
+                name: 'London',
+                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
+                color: colorsBarra[2]
+
+            }, {
+                name: 'Berlin',
+                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1],
+                color: colorsBarra[3]
+
+            }]
+        });
+        grafico_c3_2 = Highcharts.chart(div4, {
+            chart: {
+                type: 'column',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
+            },
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            title: {
+                text: 'Monthly Average Rainfall'
+            },
+            subtitle: {
+                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Tokyo',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                color: colorsBarra[0]
+
+            }, {
+                name: 'New York',
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                color: colorsBarra[1]
+
+            }, {
+                name: 'London',
+                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
+                color: colorsBarra[2]
+
+            }, {
+                name: 'Berlin',
+                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1],
+                color: colorsBarra[3]
+
+            }]
+        });
+
+
     };
 
-    var graf_vivienda = function (div1, div2) {
+    var graf_vivienda = function (div1, div2,div3) {
         grafico_c5 = Highcharts.chart(div1, {
             chart: {
                 type: 'bar',
@@ -940,16 +1279,17 @@ App.utils.graficos = (function (parent, service, config, appData) {
         });
 
         graf_barra_vertical(div2);
+        graf_barra_ubigeo (self.Json2,div3)
 
 
     };
 
-
-    var graf_hogar = function (div1, div2) {
+    var graf_hogar = function (div1, div2,div3,div4) {
 
         grafico_columna(div1);
         grafico_circular(div2);
-
+        graf_barra_vertical(div3);
+        graf_barra_vertical_2(div4);
 
     };
 
@@ -986,6 +1326,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 '<div id="grafico_1_max_c1'+x+'" style="display:block; height: 400px; width: auto;"></div>' +
                 '</div>' +
                 '<div id="colunma_2_c1'+x+'" class="col-5-10">' +
+                '<div id="grafico_3_max_c1'+x+'" style=" display:block; height: 470px; width: auto;">' +
+                '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="row">' +
@@ -993,7 +1335,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 '<div id="grafico_2_max_c1'+x+'" style=" display:block; height: 470px; width: auto;"></div>' +
                 '</div>' +
                 '<div id="colunma_2_c1'+x+'" class="col-5-10">' +
-                '<div id="grafico_3_max_c1'+x+'" style=" display:block; height: 470px; width: auto;">' +
+                '<div id="grafico_4_max_c1'+x+'" style=" display:block; height: 470px; width: auto;">' +
                 '</div>' +
                 '</div>' +
                 '</div>'+
@@ -1079,6 +1421,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
         self.div_grag1 = 'grafico_1_max_c1' +self.categoria_select;
         self.div_grag2 = 'grafico_2_max_c1'+ self.categoria_select;
         self.div_grag3 = 'grafico_3_max_c1' + self.categoria_select;
+        self.div_grag4 = 'grafico_4_max_c1' + self.categoria_select;
+
 
         crear_div_grafico();
 
@@ -1089,18 +1433,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
             if (self.categoria_select == 'P01') {
                 graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
-                graf_barra_ubigeo(self.Json2);
+                graf_barra_ubigeo(self.Json2,self.div_grag4);
             }
             else if (self.categoria_select == 'P02') {
-                graf_educacion(self.div_grag1, self.div_grag2);
+                graf_educacion(self.div_grag1, self.div_grag2,self.div_grag3 ,self.div_grag4 );
             } else if (self.categoria_select == 'P03') {
-                graf_salud(self.div_grag1,self.div_grag2);
+                graf_salud(self.div_grag1,self.div_grag2,self.div_grag3);
             } else if (self.categoria_select == 'P04') {
-                graf_economia(self.div_grag1, self.div_grag2);
+                graf_economia(self.div_grag1, self.div_grag2,self.div_grag3 ,self.div_grag4 );
             } else if (self.categoria_select == 'P05') {
-                graf_vivienda(self.div_grag1, self.div_grag3);
+                graf_vivienda(self.div_grag1, self.div_grag3,self.div_grag3 );
             } else if (self.categoria_select == 'P06') {
-                graf_hogar(self.div_grag1, self.div_grag2);
+                graf_hogar(self.div_grag1, self.div_grag2,self.div_grag3 ,self.div_grag4);
             }
 
         }, 500);
@@ -1130,24 +1474,24 @@ App.utils.graficos = (function (parent, service, config, appData) {
         self.div_grag1 = 'grafico_1_c1';
         self.div_grag2 = 'grafico_2_c1';
 
-        self.div_grag3 = 'grafico_3_c1';
+        //self.div_grag3 = 'grafico_3_c1';
 
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
                 graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
-                graf_barra_ubigeo(self.Json2);
+               // graf_barra_ubigeo(self.Json2);
             }
             else if (self.categoria_select == 'P02') {
-                graf_educacion(self.div_grag1, self.div_grag2);
+                graf_educacion(self.div_grag1, self.div_grag2,self.div_grag3,self.div_grag4);
             } else if (self.categoria_select == 'P03') {
-                graf_salud(self.div_grag1,self.div_grag2);
+                graf_salud(self.div_grag1,self.div_grag2, self.div_grag3);
             } else if (self.categoria_select == 'P04') {
-                graf_economia(self.div_grag1, self.div_grag2);
+                graf_economia(self.div_grag1, self.div_grag2,self.div_grag3,self.div_grag4);
             } else if (self.categoria_select == 'P05') {
-                graf_vivienda(self.div_grag1, self.div_grag3);
+                graf_vivienda(self.div_grag1,self.div_grag2, self.div_grag3);
             } else if (self.categoria_select == 'P06') {
-                graf_hogar(self.div_grag1, self.div_grag2);
+                graf_hogar(self.div_grag1, self.div_grag2,self.div_grag3,self.div_grag4);
             }
 
         }, 500)
@@ -1203,18 +1547,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
         crear_div_grafico();
         if (options.categoria == 'P01') {
             graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
-            graf_barra_ubigeo(self.Json2);
+            //graf_barra_ubigeo(self.Json2,self.div_grag4);
         }
         else if (options.categoria == 'P02') {
-            graf_educacion(self.div_grag1, self.div_grag2);
+            graf_educacion(self.div_grag1, self.div_grag2,self.div_grag3+options.categoria, self.div_grag4+options.categoria);
         } else if (options.categoria == 'P03') {
-            graf_salud(self.div_grag1,self.div_grag2);
+            graf_salud(self.div_grag1,self.div_grag2,self.div_grag3+options.categoria);
         } else if (options.categoria == 'P04') {
-            graf_economia(self.div_grag1, self.div_grag2);
+            graf_economia(self.div_grag1, self.div_grag2,self.div_grag3+options.categoria, self.div_grag4+options.categoria);
         } else if (options.categoria == 'P05') {
-            graf_vivienda(self.div_grag1, self.div_grag2);
+            graf_vivienda(self.div_grag1, self.div_grag2,self.div_grag3+options.categoria);
         } else if (options.categoria == 'P06') {
-            graf_hogar(self.div_grag1, self.div_grag2);
+            graf_hogar(self.div_grag1, self.div_grag2,self.div_grag3+options.categoria, self.div_grag4+options.categoria);
         }
 
 
@@ -1241,23 +1585,24 @@ console.log(self.check_selected)
             self.div_grag1 = 'grafico_1_max_c1' ;
             self.div_grag2 = 'grafico_2_max_c1';
             self.div_grag3 = 'grafico_3_max_c1';
+            self.div_grag4 = 'grafico_4_max_c1';
 
             setTimeout(function () {
 
                 if (x == 'P01') {
                     graf_persona_edad(self.data_grafico,self.div_grag1+x,self.div_grag2+x );
-                    graf_barra_ubigeo(self.Json2);
+                    graf_barra_ubigeo(self.Json2,self.div_grag4+x);
                 }
                 else if (x == 'P02') {
-                    graf_educacion(self.div_grag1+x, self.div_grag2+x);
+                    graf_educacion(self.div_grag1+x, self.div_grag2+x,self.div_grag3+x, self.div_grag4+x);
                 } else if (x == 'P03') {
-                    graf_salud(self.div_grag1+x,self.div_grag2+x);
+                    graf_salud(self.div_grag1+x,self.div_grag2+x,self.div_grag3+x);
                 } else if (x == 'P04') {
-                    graf_economia(self.div_grag1+x, self.div_grag2+x);
+                    graf_economia(self.div_grag1+x, self.div_grag2+x,self.div_grag3+x, self.div_grag4+x);
                 } else if (x == 'P05') {
-                    graf_vivienda(self.div_grag1+x,  self.div_grag3+x);
+                    graf_vivienda(self.div_grag1+x, self.div_grag2+x,  self.div_grag3+x);
                 } else if (x == 'P06') {
-                    graf_hogar(self.div_grag1+x, self.div_grag2+x);
+                    graf_hogar(self.div_grag1+x, self.div_grag2+x,self.div_grag3+x, self.div_grag4+x);
                 }
 
             }, 500)
