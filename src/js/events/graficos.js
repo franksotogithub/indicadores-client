@@ -1,4 +1,4 @@
-(function (service, utils) {
+(function (service, utils,appData) {
     $(document).ready(function (e) {
 
 
@@ -11,9 +11,12 @@
         self.check_selected = [self.categoria_select];
 
 
-        service.graficos.gePoblacionEdad('00' , utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
+        service.graficos.getGraficoMin('00' , utils.graficos.graf_persona_edad,self.div_grag1 ,self.div_grag2); //mostrara los graficos del ubigeo
 
         service.graficos.gePoblacionInd('00', utils.graficos.graf_barra_ubigeo);//mostrara los graficos de barra
+
+
+        console.log(appData.titulo['U00']);
 
 
         utils.graficos.crear_div_grafico();
@@ -25,7 +28,7 @@
 
     $('#cmb_ubi').change(function () {
         var ubigeo = $('#cmb_ubi').val();
-        service.graficos.gePoblacionEdad(ubigeo,  utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
+        service.graficos.getGraficoMin(ubigeo,  utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
     });
 
 
@@ -35,8 +38,8 @@
 
     /*$('#cmb_ubi_m').change(function () {
         var ubigeo = $('#cmb_ubi_m').val();
-        service.graficos.gePoblacionEdad(ubigeo, self.cant_select, self.div_grag1,self.div_grag2, utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
+        service.graficos.getGraficoMin(ubigeo, self.cant_select, self.div_grag1,self.div_grag2, utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
     })
 
 */
-})(App.service, App.utils);
+})(App.service, App.utils,Appdata());

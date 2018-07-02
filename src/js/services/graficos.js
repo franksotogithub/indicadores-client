@@ -1,21 +1,23 @@
 App.service.graficos = (function (parent, config, appData) {
 
 self.data_grafico = [];
-self.ubigeo_select = '';
+self.ubigeo_select = '00';
 self.cant_select = 0;
 
-    var gePoblacionEdad = function (ubigeo,  callback) {
+    var getGraficoMin = function (ubigeo,  callback, div1, div2,div3) {
 
+        var cod_cat = self.categoria_select.substr(1,2);
+
+        console.log('<<<<<-<<<<', cod_cat);
         parent.get({
-            url: parent.getUrlServer('graficos/crear/01/'+ubigeo+'/'),//, {"u": ubigeos}
+            url: parent.getUrlServer('graficos/crear/'+cod_cat+'/'+ubigeo+'/'),//, {"u": ubigeos}
             success: function (data) {
                 self.data_grafico = data;
                 self.ubigeo_select = ubigeo;
-
                 console.log(self.data_grafico)
 
                 if (callback !== undefined) {
-                    callback(self.data_grafico,self.div_grag1,self.div_grag2 );
+                    callback(self.data_grafico, div1,div2,div3 );
                 }
             },
             error: function (obj, status, otherr) {
@@ -96,7 +98,7 @@ self.cant_select = 0;
 
 
     return{
-        gePoblacionEdad: gePoblacionEdad,
+        getGraficoMin: getGraficoMin,
         gePoblacionInd: gePoblacionInd,
     }
 
