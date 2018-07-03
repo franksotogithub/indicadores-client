@@ -479,28 +479,45 @@ App.utils.graficos = (function (parent, service, config, appData) {
         });
 
         Widget_top.sort()
-        //$("#id_graficoWidget_top").html('');
+        $("#id_graficoWidget_top").html('');
 
         var graficoWidget_top = '';
-        Widget_top.forEach(function (x) {
 
-            graficoWidget_top += '<div class="graficoWidget-top">' +
-                '<div>' +
-                '<span class=""></span>' +
-                '</div>' +
-                '<div>' +
-                '<div class="">' +
-                x[1] +
-                '</div>' +
-                '<div id="id_w_m" class="mujer">' +
-                x[2] +
-                '</div>' +
-                '</div>' +
-                '</div>';
+            graficoWidget_top += '<div class="graficoWidget-top">\n' +
+                '        <div>\n' +
+                '            <div> Población Censada</div>\n' +
+                '            <div id="id_w_t" class="pobWidText">'+Widget_top[0][2]+'</div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '    <div class="graficoWidget-top">\n' +
+                '        <div>\n' +
+                '            <span class="icon-user hombre"></span>\n' +
+                '        </div>\n' +
+                '        <div>\n' +
+                '            <div class="">\n' +
+                '                Hombres\n' +
+                '            </div>\n' +
+                '            <div id="id_w_h" class="hombre">\n' +
+                '              '+Widget_top[1][2]+'' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '    <div class="graficoWidget-top">\n' +
+                '        <div>\n' +
+                '            <span class="icon-user-female mujer "></span>\n' +
+                '        </div>\n' +
+                '        <div>\n' +
+                '            <div class="graficoTextWidget">\n' +
+                '                Mujeres\n' +
+                '            </div>\n' +
+                '            <div id="id_w_m" class="mujer">\n' +
+                '               '+Widget_top[2][2]+'' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>'
 
-        });
 
-        //$("#id_graficoWidget_top").html(graficoWidget_top);
+        $("#id_graficoWidget_top").html(graficoWidget_top);
 
 
        grafico_torta(json,div1);
@@ -610,7 +627,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
         data.G00010.forEach(function (x) {
             Widget_top.push([x.cod_indicador,x.descripcion,x.valor ]);
         });
-
+        Widget_top.sort();
         Widget_top.forEach(function (x) {
 
             graficoWidget_top += '<div class="graficoWidget-top">' +
@@ -937,8 +954,24 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         self.cant_select = cant;
 
-        service.graficos.getGraficoMin(ubigeo, graf_persona_edad); //mostrara los graficos del ubigeo
-        service.graficos.gePoblacionInd(lista_ubi, graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
+        if (self.categoria_select == 'P01') {
+            service.graficos.getGraficoMin(ubigeo , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+            ///service.graficos.gePoblacionInd('00', graf_barra_ubigeo);
+            //graf_barra_ubigeo(self.Json2,self.div_grag4);
+        }
+        else if (self.categoria_select == 'P02') {
+            service.graficos.getGraficoMin(ubigeo , graf_educacion, self.div_grag1);
+        } else if (self.categoria_select == 'P03') {
+            service.graficos.getGraficoMin(ubigeo , graf_salud,self.div_grag1);
+        } else if (self.categoria_select == 'P04') {
+            service.graficos.getGraficoMin(ubigeo, graf_economia,self.div_grag1);
+        } else if (self.categoria_select == 'P05') {
+            service.graficos.getGraficoMin(ubigeo , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+        } else if (self.categoria_select == 'P06') {
+            service.graficos.getGraficoMin(ubigeo , graf_hogar,self.div_grag1);
+        }
+
+
 
     };
 
@@ -960,19 +993,20 @@ App.utils.graficos = (function (parent, service, config, appData) {
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1 ,self.div_grag2);
-               graf_barra_ubigeo(self.Json2,self.div_grag4);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+                service.graficos.gePoblacionInd('00', graf_barra_ubigeo);
+                //graf_barra_ubigeo(self.Json2,self.div_grag4);
             }
             else if (self.categoria_select == 'P02') {
-                service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1);
             } else if (self.categoria_select == 'P03') {
-                service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1);
             } else if (self.categoria_select == 'P04') {
-                service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1);
             } else if (self.categoria_select == 'P05') {
-                service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
             } else if (self.categoria_select == 'P06') {
-                service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_hogar,self.div_grag1);
             }
 
         }, 500);
@@ -999,18 +1033,18 @@ App.utils.graficos = (function (parent, service, config, appData) {
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1 ,self.div_grag2);
             }
             else if (self.categoria_select == 'P02') {
-                service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1);
             } else if (self.categoria_select == 'P03') {
-                service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1);
             } else if (self.categoria_select == 'P04') {
-                service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1);
             } else if (self.categoria_select == 'P05') {
-                service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
             } else if (self.categoria_select == 'P06') {
-                service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select , graf_hogar,self.div_grag1);
             }
 
         }, 500)
@@ -1061,17 +1095,17 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         crear_div_grafico();
         if (options.categoria == 'P01') {
-            service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1 ,self.div_grag2);
         } else if (options.categoria == 'P02') {
-            service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1);
         } else if (options.categoria == 'P03') {
-            service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1);
         } else if (options.categoria == 'P04') {
-            service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1);
         } else if (options.categoria == 'P05') {
-            service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
         } else if (options.categoria == 'P06') {
-            service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_hogar,self.div_grag1);
         }
 
         sliderGraph();
@@ -1101,28 +1135,52 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
                 if (x == 'P01') {
                     self.categoria_select = 'p01'
-                    service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1+x ,self.div_grag2+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1+x ,self.div_grag2+x);
                     graf_barra_ubigeo(self.Json2,self.div_grag4+x);
                 }
                 else if (x == 'P02') {
                     self.categoria_select = 'p02'
-                    service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1+x);
                 } else if (x == 'P03') {
                     self.categoria_select = 'p03'
-                    service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1+x);
                 } else if (x == 'P04') {
                     self.categoria_select = 'p04'
-                    service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1+x);
                 } else if (x == 'P05') {
                     self.categoria_select = 'p05'
-                    service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1+x, self.div_grag2+x,self.div_grag5+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1+x, self.div_grag2+x,self.div_grag5+x);
                 } else if (x == 'P06') {
                     self.categoria_select = 'p06'
-                    service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_hogar,self.div_grag1+x);
                 }
             }, 500)
         });
     });
+
+
+    $('#cmb_ubi').change(function () {
+        var ubigeo = $('#cmb_ubi').val();
+
+        if (self.categoria_select == 'P01') {
+            service.graficos.getGraficoMin(ubigeo , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+            ///service.graficos.gePoblacionInd('00', graf_barra_ubigeo);
+            //graf_barra_ubigeo(self.Json2,self.div_grag4);
+        }
+        else if (self.categoria_select == 'P02') {
+            service.graficos.getGraficoMin(ubigeo , graf_educacion, self.div_grag1);
+        } else if (self.categoria_select == 'P03') {
+            service.graficos.getGraficoMin(ubigeo , graf_salud,self.div_grag1);
+        } else if (self.categoria_select == 'P04') {
+            service.graficos.getGraficoMin(ubigeo, graf_economia,self.div_grag1);
+        } else if (self.categoria_select == 'P05') {
+            service.graficos.getGraficoMin(ubigeo , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+        } else if (self.categoria_select == 'P06') {
+            service.graficos.getGraficoMin(ubigeo , graf_hogar,self.div_grag1);
+        }
+
+        });
+
 
     return {
         crearMinimizado: crearMinimizado,

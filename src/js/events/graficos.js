@@ -28,14 +28,15 @@
 
     });
 
+    /*
     $('#cmb_ubi').change(function () {
         var ubigeo = $('#cmb_ubi').val();
-        service.graficos.getGraficoMin(ubigeo,  utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
+        service.graficos.getGraficoMin(ubigeo,  utils.graficos.graf_persona_edad,self.div_grag1 ,self.div_grag2); //mostrara los graficos del ubigeo
     });
 
 
 
-
+*/
 
 
     /*$('#cmb_ubi_m').change(function () {
