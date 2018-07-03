@@ -63,6 +63,8 @@ App.service.mapas = (function (parent, config) {
                     arreglodata.push( [(i).hombre, (i).mujer]  );
                 });
                 if (callback !== undefined) {
+                    console.log('aqui div-->',div);
+                    console.log('aqui arreglo data-->',arreglodata);
                     callback(div,arreglodata);
                 }
             },
