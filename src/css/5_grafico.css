@@ -70,10 +70,17 @@
     padding-top: 10px;
 }
 
+.contenedorMetadatos {
+    margin-top: 10px;
+}
 .contenidoMetadato {
     background-color: #E6E6E6;
     font-family: "open_sansregular";
     margin-top: 10px;
+}
+
+.contenidoMetadato:first-child {
+    margin-top: 0px;
 }
 
 .contenidoMetadato h3 {
@@ -243,6 +250,10 @@
 
 
 /* Formulas */
+
+.eq-c {
+    padding: 10px;
+}
 
 .fraction {
     display: inline-block;

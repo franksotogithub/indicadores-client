@@ -287,24 +287,36 @@ div.esri-search__submit-button:focus {
 }
 
 
+
+/* Maximizado */
+#panel {
+    width:460px;
+    background-color : white;
+}
+
 .mapaPanelMaximizado {
     display: block;
     background-color: white;
     padding: 10px;
 }
 
-#tablaPanel {
+#listMiniMaps {
     display: block;
     padding: 10px;
-    background-color: #efefef;
-    height: 40px;
+    height: auto;
+    text-align: center;
 
 }
 
-#tablaPanel > div{
+#listMiniMaps > div{
     display: inline-block;
     border: 2px solid #1b3c71;
     margin: 0px 5px;
-    height: 40px;
-    width: 60px;
+    height: 120px;
+    width: 120px;
+    visibility: hidden;
+}
+
+#resumenPanel > .row  {
+    text-align: center;
 }

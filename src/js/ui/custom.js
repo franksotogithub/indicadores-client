@@ -5,11 +5,29 @@ var ultimaMinimizada;
 
 
 /* asignando altos dinamioos */
-var altoVentana = $(window.height);
+var altoVentana = $(window).height();
 
 function altosAutomaticos(){
-    $('.widgetMetadatos').css({"height":(altoVentana-510)+"px",});
+    $('.contenedorMetadatos').css({"height":(altoVentana-572)+"px", "overflow":"auto"});
 }
+
+/* Exportar graficos */
+
+function exportarGrafico() {
+
+    $(".sliderDiv > div").each(function(){
+        if($(this).is(":visible")){
+
+            var chart = $(this).highcharts();
+            chart.exportChart({
+                type: 'application/pdf',
+                filename: 'graficoExportado'
+            });
+        }
+    });
+
+}
+
 
 
 /* Imprimir Ventana */
@@ -533,6 +551,16 @@ $(document).ready(function() {
         $(this).remove("button");
 
     });
+
+    altosAutomaticos();
+
+
+    $('.contenedorVentana').on('click','.descargarGrafico', function() {
+
+        exportarGrafico()
+
+    });
+
 
 
 });
