@@ -507,6 +507,7 @@ $(document).ready(function() {
         $(this).html(  textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
     }, function () {
         $(this).find( "span" ).remove();
+
     });
 
 
@@ -560,6 +561,12 @@ $(document).ready(function() {
         exportarGrafico()
 
     });
+
+
+    $(".dropDownMenu").parent().click(function () {
+        $('.dropDownMenu').toggle("slow");
+    });
+
 
 
 
