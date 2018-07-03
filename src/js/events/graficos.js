@@ -1,7 +1,9 @@
 (function (service, utils,appData) {
     $(document).ready(function (e) {
 
-
+        self.data_grafico = [];
+        self.ubigeo_select = '00';
+        self.cant_select = 0;
         self.categoria_select = 'P01';
           self.div_grag1 ='grafico_1_c1';
           self.div_grag2 ='grafico_2_c1';
@@ -13,7 +15,7 @@
 
         service.graficos.getGraficoMin('00' , utils.graficos.graf_persona_edad,self.div_grag1 ,self.div_grag2); //mostrara los graficos del ubigeo
 
-        service.graficos.gePoblacionInd('00', utils.graficos.graf_barra_ubigeo);//mostrara los graficos de barra
+        //service.graficos.gePoblacionInd('00', utils.graficos.graf_barra_ubigeo);//mostrara los graficos de barra
 
 
         console.log(appData.titulo['U00']);
@@ -26,14 +28,15 @@
 
     });
 
+    /*
     $('#cmb_ubi').change(function () {
         var ubigeo = $('#cmb_ubi').val();
-        service.graficos.getGraficoMin(ubigeo,  utils.graficos.graf_persona_edad); //mostrara los graficos del ubigeo
+        service.graficos.getGraficoMin(ubigeo,  utils.graficos.graf_persona_edad,self.div_grag1 ,self.div_grag2); //mostrara los graficos del ubigeo
     });
 
 
 
-
+*/
 
 
     /*$('#cmb_ubi_m').change(function () {

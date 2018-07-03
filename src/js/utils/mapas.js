@@ -263,6 +263,7 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var grafPopupPop=function (div,data) {
+        console.log('crear div grafico-->',div)
         var edad_h = [];
         var edad_m = [];
         var t_edad_h=0;
@@ -377,9 +378,15 @@ App.utils.mapas = (function (parent, config,service) {
 
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
+
+        console.log('bloque2-->',bloque2);
+        console.log('cod_map-->',cod_map);
         content.appendChild(bloque2);
         if (cod_map=='P01')
-        {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
+        {   console.log('aqui');
+            service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);
+
+        }
 
         else if (cod_map=='P02')
         {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
@@ -903,10 +910,12 @@ App.utils.mapas = (function (parent, config,service) {
 
             var createPopup=function(title,codigo,event){
 
+
                 popup=_this.view_map.popup.open({
                         title:title,
                         location:event.mapPoint,
-                        content:createContentPopup(codigo,_this.cod_map),
+
+                       content:createContentPopup(codigo,_this.datosMap.codMap),
 
                     }
                 );
@@ -960,7 +969,7 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
-                //updateBloqueGrafico(ubigeo,cod_map,div_grafico);
+                updateBloqueGrafico(ubigeo,cod_map,div_grafico);
                 updateBloqueMiniMapa(ubigeo,cod_map,index);
             }
 

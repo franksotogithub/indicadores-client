@@ -1,26 +1,10 @@
 App.utils.graficos = (function (parent, service, config, appData) {
 
     var grafico_1;
-
     var grafico_2;
     var grafico_3;
-
-
     var grafico_c2;
-    var grafico_c2_2;
-
-
-    var grafico_c3;
-    var grafico_c3_2;
-    var grafico_c4;
-    var grafico_c4_2;
-    var grafico_c5;
-    var grafico_c5_2;
-    var grafico_c6;
     var grafico_c6_2;
-
-
-
 
 
      /* COlores y posiscion para Piramide */
@@ -177,8 +161,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
 
     var grafico_torta = function (data, div) {
-
-
 
         grafico_1 = Highcharts.chart(div, {
             chart: {
@@ -384,80 +366,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
     };
 
 
-    var grafico_columna = function (div) {
-        grafico_c6 = Highcharts.chart(div, {
-            chart: {
-                type: 'column',
-                backgroundColor: {
-                    style: {
-                        backgroundColor: 'transparent'
-                    }
-                },
-            },
-            credits: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            title: {
-                text: 'Servicios de informacion y comunicacion'
-            },
-            subtitle: {
-                text: 'Source: WorldClimate.com'
-            },
-            xAxis: {
-                categories: [
-                    'nacional',
-
-                ],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Rainfall (mm)'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'televisor',
-                data: [49.9],
-                color:colorsBarra[0]
-
-            }, {
-                name: 'internet',
-                data: [83.6],
-                color:colorsBarra[1]
-
-            }, {
-                name: 'celulares',
-                data: [48.9],
-                color:colorsBarra[2]
-
-            }, {
-                name: 'telefono',
-                data: [42.4],
-                color:colorsBarra[3]
-
-            }]
-        });
-
-    };
-
     var grafico_circular = function (data,div) {
         grafico_c6_2 = Highcharts.chart(div, {
             chart: {
@@ -571,31 +479,45 @@ App.utils.graficos = (function (parent, service, config, appData) {
         });
 
         Widget_top.sort()
-        //$("#id_graficoWidget_top").html('');
+        $("#id_graficoWidget_top").html('');
 
         var graficoWidget_top = '';
-        Widget_top.forEach(function (x) {
 
-            graficoWidget_top += '<div class="graficoWidget-top">' +
-                '<div>' +
-                '<span class=""></span>' +
-                '</div>' +
-                '<div>' +
-                '<div class="">' +
-                x[1] +
-                '</div>' +
-                '<div id="id_w_m" class="mujer">' +
-                x[2] +
-                '</div>' +
-                '</div>' +
-                '</div>';
+            graficoWidget_top += '<div class="graficoWidget-top">\n' +
+                '        <div>\n' +
+                '            <div> Población Censada</div>\n' +
+                '            <div id="id_w_t" class="pobWidText">'+Widget_top[0][2]+'</div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '    <div class="graficoWidget-top">\n' +
+                '        <div>\n' +
+                '            <span class="icon-user hombre"></span>\n' +
+                '        </div>\n' +
+                '        <div>\n' +
+                '            <div class="">\n' +
+                '                Hombres\n' +
+                '            </div>\n' +
+                '            <div id="id_w_h" class="hombre">\n' +
+                '              '+Widget_top[1][2]+'' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>\n' +
+                '    <div class="graficoWidget-top">\n' +
+                '        <div>\n' +
+                '            <span class="icon-user-female mujer "></span>\n' +
+                '        </div>\n' +
+                '        <div>\n' +
+                '            <div class="graficoTextWidget">\n' +
+                '                Mujeres\n' +
+                '            </div>\n' +
+                '            <div id="id_w_m" class="mujer">\n' +
+                '               '+Widget_top[2][2]+'' +
+                '            </div>\n' +
+                '        </div>\n' +
+                '    </div>'
 
-        });
 
-
-        //$("#id_graficoWidget_top").html(graficoWidget_top);
-
-
+        $("#id_graficoWidget_top").html(graficoWidget_top);
 
 
        grafico_torta(json,div1);
@@ -697,88 +619,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         console.log(json);
         //console.log(appData.titulo['U'+self.ubigeo_select]);
         graf_barra_vertical(json,div1);
-       /* grafico_c3_2 = Highcharts.chart(div2, {
-            chart: {
-                type: 'column',
-                backgroundColor: {
-                    style: {
-                        backgroundColor: 'transparent'
-                    }
-                },
-            },
-            credits: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            title: {
-                text: 'Monthly Average Rainfall'
-            },
-            subtitle: {
-                text: 'Source: WorldClimate.com'
-            },
-            xAxis: {
-                categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
-                ],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Rainfall (mm)'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Tokyo',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-                color: colorsBarra[0]
-
-            }, {
-                name: 'New York',
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
-                color: colorsBarra[1]
-
-            }, {
-                name: 'London',
-                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
-                color: colorsBarra[2]
-
-            }, {
-                name: 'Berlin',
-                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1],
-                color: colorsBarra[3]
-
-            }]
-        });
-
-*/
 
         $("#id_graficoWidget_top").html('');
 
@@ -787,7 +627,7 @@ App.utils.graficos = (function (parent, service, config, appData) {
         data.G00010.forEach(function (x) {
             Widget_top.push([x.cod_indicador,x.descripcion,x.valor ]);
         });
-
+        Widget_top.sort();
         Widget_top.forEach(function (x) {
 
             graficoWidget_top += '<div class="graficoWidget-top">' +
@@ -830,8 +670,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         grafico_circular(json, div1)
         $("#id_graficoWidget_top").html('');
-
-        //graf_barra_ubigeo(self.Json2, div2)
 
     };
 
@@ -881,9 +719,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
                 '</div>';
 
         $("#id_graficoWidget_top").html(graficoWidget_top);
-
-
-
 
     };
 
@@ -972,9 +807,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         $("#id_graficoWidget_top").html(graficoWidget_top);
 
 
-        //graf_barra_ubigeo (self.Json2,div3)
-
-
     };
 
     var graf_hogar = function (data, div1) {
@@ -996,8 +828,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
         json = {data :arr_viv1 , title: 'Servicio de información y comunicación' ,  titulo: appData.titulo['U'+self.ubigeo_select] }
 
 
-
-
         graf_barra_vertical(json, div1);
         $("#id_graficoWidget_top").html('');
         //graf_barra_ubigeo(self.Json2, div2)
@@ -1009,11 +839,11 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         var  div_grafico_base = '<div id="grafico_1_c1" class="graficoElementSlider" ></div>';
          if (self.categoria_select == 'P01'){
-             div_grafico_base +=    '<div id="grafico_2_c1" class="graficoElementSlider" ></div>' ;
+             div_grafico_base +=    '<div id="grafico_2_c1" class="graficoElementSlider" style="display: none"></div>' ;
 
          }else  if (self.categoria_select == 'P05'){
-             div_grafico_base +=   '<div id="grafico_2_c1" class="graficoElementSlider" ></div>' +
-             '<div id="grafico_5_c1" class="graficoElementSlider" ></div>' ;
+             div_grafico_base +=   '<div id="grafico_2_c1" class="graficoElementSlider" style="display: none" ></div>' +
+             '<div id="grafico_5_c1" class="graficoElementSlider" style="display: none" ></div>' ;
         }
 
 
@@ -1124,8 +954,24 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         self.cant_select = cant;
 
-        service.graficos.getGraficoMin(ubigeo, graf_persona_edad); //mostrara los graficos del ubigeo
-        service.graficos.gePoblacionInd(lista_ubi, graf_barra_ubigeo); //mostrara los graficos de barra del ubigeo
+        if (self.categoria_select == 'P01') {
+            service.graficos.getGraficoMin(ubigeo , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+            ///service.graficos.gePoblacionInd('00', graf_barra_ubigeo);
+            //graf_barra_ubigeo(self.Json2,self.div_grag4);
+        }
+        else if (self.categoria_select == 'P02') {
+            service.graficos.getGraficoMin(ubigeo , graf_educacion, self.div_grag1);
+        } else if (self.categoria_select == 'P03') {
+            service.graficos.getGraficoMin(ubigeo , graf_salud,self.div_grag1);
+        } else if (self.categoria_select == 'P04') {
+            service.graficos.getGraficoMin(ubigeo, graf_economia,self.div_grag1);
+        } else if (self.categoria_select == 'P05') {
+            service.graficos.getGraficoMin(ubigeo , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+        } else if (self.categoria_select == 'P06') {
+            service.graficos.getGraficoMin(ubigeo , graf_hogar,self.div_grag1);
+        }
+
+
 
     };
 
@@ -1140,35 +986,27 @@ App.utils.graficos = (function (parent, service, config, appData) {
         self.div_grag5 = 'grafico_5_max_c1' + self.categoria_select;
         self.div_grag6 = 'grafico_6_max_c1' + self.categoria_select;
 
-
         crear_div_grafico();
-
 
         console.log(self.categoria_select)
 
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-
-                service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1 ,self.div_grag2);
-                //graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
-               graf_barra_ubigeo(self.Json2,self.div_grag4);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+                service.graficos.gePoblacionInd('00', graf_barra_ubigeo);
+                //graf_barra_ubigeo(self.Json2,self.div_grag4);
             }
             else if (self.categoria_select == 'P02') {
-                service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1);
-                //graf_educacion(self.div_grag1,self.div_grag3 );
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1);
             } else if (self.categoria_select == 'P03') {
-                service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1);
-                //graf_salud(self.div_grag1,self.div_grag3);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1);
             } else if (self.categoria_select == 'P04') {
-                service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1);
-                //graf_economia(self.div_grag1, self.div_grag3);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1);
             } else if (self.categoria_select == 'P05') {
-                service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
-                //graf_vivienda(self.div_grag1, self.div_grag3,self.div_grag5 );
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
             } else if (self.categoria_select == 'P06') {
-                service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1);
-                //graf_hogar(self.div_grag1, self.div_grag3);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_hogar,self.div_grag1);
             }
 
         }, 500);
@@ -1178,13 +1016,8 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         $(".contendorSliderGrafico").css("display", "none");
         $(".grupomaximizado").css("display", "block");
-
-
         $("#contenedor_grafico").addClass('graficoMaximizado col-4-5');
-
-
         $(".busquedaMaximizadaCuadro").addClass('CuadroActivoBusqueda');
-
         $(".widgetMetadatos").css("display", "none");
         $("#id_graficoWidget_top").css("display", "none");
 
@@ -1197,25 +1030,21 @@ App.utils.graficos = (function (parent, service, config, appData) {
         self.div_grag2 = 'grafico_2_c1';
         self.div_grag5 = 'grafico_5_c1';
 
-
-        //self.div_grag3 = 'grafico_3_c1';
-
         setTimeout(function () {
 
             if (self.categoria_select == 'P01') {
-                service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1 ,self.div_grag2);
-               // graf_barra_ubigeo(self.Json2);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1 ,self.div_grag2);
             }
             else if (self.categoria_select == 'P02') {
-                service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1);
             } else if (self.categoria_select == 'P03') {
-                service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1);
             } else if (self.categoria_select == 'P04') {
-                service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1);
             } else if (self.categoria_select == 'P05') {
-                service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+                service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
             } else if (self.categoria_select == 'P06') {
-                service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1);
+                service.graficos.getGraficoMin(self.ubigeo_select , graf_hogar,self.div_grag1);
             }
 
         }, 500)
@@ -1229,8 +1058,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         sliderGraph();
         $(".check_cat").attr('checked', false);
-
-        //grafico_responsive(300, 400, 230);
 
     };
 
@@ -1254,7 +1081,6 @@ App.utils.graficos = (function (parent, service, config, appData) {
     var categoriaChangeEvent = function (options) {
 
         console.log('catego graficos', options.categoria);
-
         self.categoria_select = options.categoria;
         self.check_selected = [self.categoria_select];
 
@@ -1267,36 +1093,22 @@ App.utils.graficos = (function (parent, service, config, appData) {
         self.div_grag3 = 'grafico_3_max_c1' ;
         self.div_grag4 = 'grafico_4_max_c1' ;
 
-        //service.graficos.getGraficoMin('00' , utils.graficos.graf_persona_edad);
         crear_div_grafico();
         if (options.categoria == 'P01') {
-            service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1 ,self.div_grag2);
-            //graf_persona_edad(self.data_grafico,self.div_grag1,self.div_grag2);
-            //graf_barra_ubigeo(self.Json2,self.div_grag4);
-        }
-        else if (options.categoria == 'P02') {
-            service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1);
-            //graf_educacion(self.data_grafico,self.div_grag1,self.div_grag3+options.categoria);
-
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+        } else if (options.categoria == 'P02') {
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1);
         } else if (options.categoria == 'P03') {
-            service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1);
-            //graf_salud(self.data_grafico,self.div_grag1,self.div_grag3+options.categoria);
-
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1);
         } else if (options.categoria == 'P04') {
-            service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1);
-            //graf_economia(self.data_grafico,self.div_grag1, self.div_grag3+options.categoria);
-
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1);
         } else if (options.categoria == 'P05') {
-            service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
-            //graf_vivienda(self.data_grafico,self.div_grag1, self.div_grag2,self.div_grag5);
-
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
         } else if (options.categoria == 'P06') {
-            service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1);
-            //graf_hogar(self.data_grafico,self.div_grag1,self.div_grag3+options.categoria);
+            service.graficos.getGraficoMin(self.ubigeo_select  , graf_hogar,self.div_grag1);
         }
 
         sliderGraph();
-
 
     };
 
@@ -1306,15 +1118,12 @@ App.utils.graficos = (function (parent, service, config, appData) {
             self.check_selected.push($(this).val());
         });
 
-        //console.log(self.check_selected);
-
         $('.grupomaximizado').html('');
         crear_div_grafico();
 
         self.check_selected.forEach(function (x) {
 
             console.log('se crea el grafico  ', x )
-
             self.div_grag1 = 'grafico_1_max_c1' ;
             self.div_grag2 = 'grafico_2_max_c1';
             self.div_grag3 = 'grafico_3_max_c1';
@@ -1326,38 +1135,51 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
                 if (x == 'P01') {
                     self.categoria_select = 'p01'
-                    service.graficos.getGraficoMin('00' , graf_persona_edad,self.div_grag1+x ,self.div_grag2+x);
-                    //graf_persona_edad(self.data_grafico,self.div_grag1+x,self.div_grag2+x );
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_persona_edad,self.div_grag1+x ,self.div_grag2+x);
                     graf_barra_ubigeo(self.Json2,self.div_grag4+x);
                 }
                 else if (x == 'P02') {
                     self.categoria_select = 'p02'
-                    service.graficos.getGraficoMin('00' , graf_educacion, self.div_grag1+x);
-                    //graf_educacion(self.div_grag1+x, self.div_grag3+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_educacion, self.div_grag1+x);
                 } else if (x == 'P03') {
                     self.categoria_select = 'p03'
-                    service.graficos.getGraficoMin('00' , graf_salud,self.div_grag1+x);
-                    //graf_salud(self.div_grag1+x,self.div_grag3+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_salud,self.div_grag1+x);
                 } else if (x == 'P04') {
                     self.categoria_select = 'p04'
-                    service.graficos.getGraficoMin('00' , graf_economia,self.div_grag1+x);
-                    //graf_economia(self.div_grag1+x,self.div_grag3+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_economia,self.div_grag1+x);
                 } else if (x == 'P05') {
                     self.categoria_select = 'p05'
-                    service.graficos.getGraficoMin('00' , graf_vivienda,self.div_grag1+x, self.div_grag2+x,self.div_grag5+x);
-                    /// graf_vivienda(self.div_grag1+x, self.div_grag2+x,  self.div_grag5+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_vivienda,self.div_grag1+x, self.div_grag2+x,self.div_grag5+x);
                 } else if (x == 'P06') {
                     self.categoria_select = 'p06'
-                    service.graficos.getGraficoMin('00' , graf_hogar,self.div_grag1+x);
-                    //graf_hogar(self.div_grag1+x, self.div_grag3+x);
+                    service.graficos.getGraficoMin(self.ubigeo_select  , graf_hogar,self.div_grag1+x);
                 }
-
             }, 500)
-
         });
     });
 
 
+    $('#cmb_ubi').change(function () {
+        var ubigeo = $('#cmb_ubi').val();
+
+        if (self.categoria_select == 'P01') {
+            service.graficos.getGraficoMin(ubigeo , graf_persona_edad,self.div_grag1 ,self.div_grag2);
+            ///service.graficos.gePoblacionInd('00', graf_barra_ubigeo);
+            //graf_barra_ubigeo(self.Json2,self.div_grag4);
+        }
+        else if (self.categoria_select == 'P02') {
+            service.graficos.getGraficoMin(ubigeo , graf_educacion, self.div_grag1);
+        } else if (self.categoria_select == 'P03') {
+            service.graficos.getGraficoMin(ubigeo , graf_salud,self.div_grag1);
+        } else if (self.categoria_select == 'P04') {
+            service.graficos.getGraficoMin(ubigeo, graf_economia,self.div_grag1);
+        } else if (self.categoria_select == 'P05') {
+            service.graficos.getGraficoMin(ubigeo , graf_vivienda,self.div_grag1, self.div_grag2,self.div_grag5);
+        } else if (self.categoria_select == 'P06') {
+            service.graficos.getGraficoMin(ubigeo , graf_hogar,self.div_grag1);
+        }
+
+        });
 
 
     return {
@@ -1371,6 +1193,5 @@ App.utils.graficos = (function (parent, service, config, appData) {
         crear_div_grafico: crear_div_grafico
 
     }
-
 
 })(App.utils, App.service, AppConfig(), Appdata());

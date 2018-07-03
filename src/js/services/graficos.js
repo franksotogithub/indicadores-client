@@ -1,8 +1,5 @@
 App.service.graficos = (function (parent, config, appData) {
 
-self.data_grafico = [];
-self.ubigeo_select = '00';
-self.cant_select = 0;
 
     var getGraficoMin = function (ubigeo,  callback, div1, div2,div3) {
 
