@@ -10,15 +10,18 @@ var altoVentana = $(window).height();
 function altosAutomaticos(){
     var contador;
 
+
     $('#id_graficoWidget_top > div').each(function(i,v) {
         contador=i;
     });
     if(contador !== undefined){
         $('.contenedorMetadatos').css({"height":(altoVentana-572)+"px", "overflow":"auto"});
+        console.log(contador);
     }else{
-        $('.contenedorMetadatos').css({"height":(altoVentana-662)+"px", "overflow":"auto"});
+        $('.contenedorMetadatos').css({"height":(altoVentana-482)+"px", "overflow":"auto"});
+        console.log(contador);
     }
-    
+
 }
 
 
