@@ -396,10 +396,9 @@ App.utils.mapas = (function (parent, config,service) {
     var visibilityAllChildDiv=function(div,visibility){
           if (div.hasChildNodes()) {
             var children = div.childNodes;
-            console.log('children-->',children);
+
             for(var c=0; c < children.length; c++) {
                 if(children[c].style) {
-
                     children[c].style.visibility = visibility;
                 }
             }
@@ -407,38 +406,56 @@ App.utils.mapas = (function (parent, config,service) {
         div.style.visibility = visibility;
     }
 
-    var visibilityAllMapsChildDiv=function(div,visibility){
-        var _this=parent.mapas;
+
+    var displayAllMapsChildDiv=function(div,display){
+
         if (div.hasChildNodes()) {
             var children = div.childNodes;
 
-            for(var c=0; c < _this.cant_mini_maps; c++) {
-                if(children[c].style) {
-                    children[c].style.visibility = visibility;
+            for(var c=0; c < children.length; c++) {
+
+
+                if(children[c].style.display) {
+                    //console.log('c-->',c,children[c]);
+                    children[c].style.display = 'none';
                 }
             }
         }
-        div.style.visibility = visibility;
 
     }
+
+
 
     var uiMaxCallback =function () {
         var _this=parent.mapas;
         var list_mini_maps=document.getElementById("listMiniMaps");
         _this.maximizado=true;
+
         visibilityAllChildDiv(_this.panelDiv,'visible');
-        visibilityAllMapsChildDiv(list_mini_maps,'visible');
+
         _this.view_map.popup.close();
     }
+
 
     var uiNormalCallback = function(){
         var _this=parent.mapas;
         var list_mini_maps=document.getElementById("listMiniMaps");
         _this.maximizado=false;
+        //displayAllMapsChildDiv(list_mini_maps,'none');
+
+        for (i=1 ; i<=cantMaxMiniMaps; i++)
+        {
+            document.getElementById("divMiniMap_" +i).style.display='none';
+
+
+        }
+
         visibilityAllChildDiv(_this.panelDiv,'hidden');
-        visibilityAllChildDiv(list_mini_maps,'hidden');
+        _this.cant_mini_maps=1;
+
         if(_this.opc_select=="select")
         _this.view_map.popup.visible=true;
+
 
     }
 
@@ -498,6 +515,10 @@ App.utils.mapas = (function (parent, config,service) {
         var codTematico=_this.datosMap.codTematico;
         var urlMap=_this.datosMap.urlMap;
 
+
+        //console.log('div minimapa-->',div);
+        //document.getElementById(div).style.display='inline';
+
         var miniSublayer = new FeatureLayer({
             url: urlMap+'/'+index,
             definitionExpression : where,
@@ -528,13 +549,26 @@ App.utils.mapas = (function (parent, config,service) {
 
         miniView.ui.components = [];
 
-        miniLayer.when(function(){
+
+        miniView.when(function () {
+            miniLayer.when(function() {
+                miniSublayer.queryExtent()
+                    .then(function (response) {
+
+                        miniView.goTo(response.extent);
+                    });
+            });
+        })
+
+        /*miniLayer.when(function(){
             miniSublayer.queryExtent()
                 .then(function(response) {
-                    miniView.goTo(response.extent);
-                });
 
+                    //miniView.goTo(response.extent);
+                });
         });
+*/
+
 
         /*miniLayer.when(function () {
             console.log( 'miniLayer-->',miniLayer);
@@ -797,11 +831,12 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
 
+
             for (i=1 ; i<=cantMaxMiniMaps; i++)
             {   var newDiv = document.createElement("div");
                 newDiv.classList.add("miniMap");
                 newDiv.setAttribute("id","divMiniMap_" +i);
-                newDiv.style.visibility = "hidden";
+                newDiv.style.display = "none";
                 list_mini_maps.appendChild(newDiv);
             }
 
@@ -832,7 +867,6 @@ App.utils.mapas = (function (parent, config,service) {
             _this.view_map.ui.add("list-maps", "bottom-right");
             _this.view_map.ui.add("widget-select-layer", "top-right");
             _this.view_map.ui.remove("zoom");
-
             _this.view_map.constraints.lods=lods;
 
             var changeIndex=function(newIndex) {
@@ -909,13 +943,10 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var createPopup=function(title,codigo,event){
-
-
                 popup=_this.view_map.popup.open({
                         title:title,
                         location:event.mapPoint,
-
-                       content:createContentPopup(codigo,_this.datosMap.codMap),
+                        content:createContentPopup(codigo,_this.datosMap.codMap),
 
                     }
                 );
@@ -942,7 +973,6 @@ App.utils.mapas = (function (parent, config,service) {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
                 }
 
-
             }
 
             var updateBloqueMiniMapa = function (ubigeo,cod_map,index) {
@@ -954,23 +984,33 @@ App.utils.mapas = (function (parent, config,service) {
                 }
                 var where=getDefinitionExpresion([ubigeo],index);
 
+
                 if(_this.cant_mini_maps<=cantMaxMiniMaps)
                 {
                     var idMiniMap="divMiniMap_"+_this.cant_mini_maps;
                     var divMiniMap = document.getElementById(idMiniMap);
                     if(_this.maximizado==true)
-                    {divMiniMap.style.visibility = "visible";}
+                    //{divMiniMap.style.visibility = "visible";}
+                    {
+                        divMiniMap.style.display = "inline-block";
+                        divMiniMap.style.visibility = "visible";
+                    }
 
                     //(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,index,where,div)
                     //crearMinimapa(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,classBreak,cod_map,codTematico,url,stringIndex,where,idMiniMap);
                     crearMinimapa(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,stringIndex,where,idMiniMap);
                     _this.cant_mini_maps++;
                 }
+
+
             }
 
             var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
                 updateBloqueGrafico(ubigeo,cod_map,div_grafico);
-                updateBloqueMiniMapa(ubigeo,cod_map,index);
+
+                if(_this.maximizado==true)
+                {updateBloqueMiniMapa(ubigeo,cod_map,index);}
+
             }
 
             _this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
@@ -989,7 +1029,11 @@ App.utils.mapas = (function (parent, config,service) {
 
                         _this.opc_select="select";
                         createPopup(nombre,codigo,event);
+
+
                         updatePanel(codigo,_this.cod_map,_this.panelDivGrafico,indexLayer);
+
+
                         _this.select_ubigeos.push(codigo);
                         _this.historic_features[indexLayer].nombres.push(nombre);
                     }
