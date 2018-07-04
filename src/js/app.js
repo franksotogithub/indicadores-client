@@ -7,18 +7,21 @@ App = (function (scope, config) {
         "graficos": false
     };
 
-    var init = function () {
+    var _hasUtils = function (_this, callback, options, utils) {
+        if (utils === undefined) {
+            utils = ['mapas', 'cuadros', 'graficos'];
+        }
 
-    };
-
-    var _hasUtils = function (_this, callback, options) {
-        var utils = ['mapas', 'cuadros', 'graficos'];
         for (var i=0;i<utils.length;i++) {
             console.log(_this.utils[utils[i]]);
             if (_this.utils[utils[i]].hasOwnProperty(callback)) {
                 _this.utils[utils[i]][callback](options);
             }
         }
+    };
+
+    var init = function (vista, ventanas) {
+        _hasUtils(this, 'init', {"vista": vista}, ventanas)
     };
 
     var uiMaxCallback = function (ventana) {
@@ -29,6 +32,7 @@ App = (function (scope, config) {
     };
 
     var uiNormalCallback = function (ventana) {
+
         if (this.uiMax.hasOwnProperty(ventana)) {
             this.uiMax[ventana] = false;
         }
@@ -47,6 +51,16 @@ App = (function (scope, config) {
 
     var indicadorChangeEvent = function (indicador) {
         _hasUtils(this, 'indicadorChangeEvent', {"indicador": indicador})
+    };
+
+    var uiReabrirVentana = function () {
+        this.utils.cuadros.uiReabrirVentana();
+    };
+
+    var uiMinimizarVentana = function (inicial) {
+        if (inicial == 3) {
+            this.utils.cuadros.expardirVentana = true;
+        }
     };
 
     var descargarMapaEvent = function () {
@@ -69,6 +83,8 @@ App = (function (scope, config) {
         mapasChangeEvent: mapasChangeEvent,
         categoriaChangeEvent: categoriaChangeEvent,
         indicadorChangeEvent: indicadorChangeEvent,
-        descargarMapaEvent: descargarMapaEvent
+        descargarMapaEvent: descargarMapaEvent,
+        uiReabrirVentana: uiReabrirVentana,
+        uiMinimizarVentana: uiMinimizarVentana
     }
 })(window, AppConfig());

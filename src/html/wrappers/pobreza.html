@@ -38,3 +38,11 @@
     </section>
 </div>
 {% endblock %}
+
+{% block endscript %}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        App.init('pobreza', ['mapas', 'cuadros']);
+    });
+</script>
+{% endblock %}

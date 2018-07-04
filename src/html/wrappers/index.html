@@ -60,3 +60,11 @@
     </section>
 </div>
 {% endblock %}
+
+{% block endscript %}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        App.init('indicadores', ['mapas', 'cuadros', 'graficos']);
+    });
+</script>
+{% endblock %}

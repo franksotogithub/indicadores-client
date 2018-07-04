@@ -2,9 +2,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     /** Atributos privados **/
 
     /** Constructores **/
-    var init = function (callback) {
+    var init = function (options) {
+        if (options.vista == 'indicadores') {
+            _initIndicadores(this);
+        }
+    };
+
+    var _initIndicadores = function (_this) {
         _crearTabsCategorias(appData.categorias);
-        this.crearTablaUigeos([], []);
+        _this.crearTablaUigeos([], []);
     };
 
     /** Metodos privados **/
@@ -128,7 +134,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                             console.log("inserta");
                             var v = appData.tituloIndicadores[cellData];
                             if (v.cod_nivel_tematico == 2) {
-                                $(td).addClass('td_tit');
+                                $(td).addClass('tituloIndicador');
                             }
 
                             $(td).addClass("popover");
@@ -211,7 +217,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             ----
             1. Cargando
          */
-        console.log("historico >>>>", historico);
+        console.log("historico >>>>", ubigeos, historico);
+
         var datos = ubigeos.slice(0);
 
         if (historico.length == 1) {
@@ -223,7 +230,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             }
         }
 
-        datos.unshift('00');
+        if (ubigeos.length > 0) {
+            if (ubigeos[0] != '00') {
+                datos.unshift('00');
+            }
+        }else {
+            datos.unshift('00');
+        }
+
+
 
         var _this = this;
 
@@ -247,6 +262,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         };
 
         // Crear cabecera
+        console.log("redimencionar / expandir >>>>>>", ubigeos.length, this.expardirVentana);
         if (ubigeos.length > 1 && !this.expardirVentana) {
             this.expardirVentana = true;
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)
@@ -279,10 +295,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             clearTimeout(this.timeClikMap);
         }
 
-
-
         this.timeClikMap = setTimeout(function(){
-            console.log(">>>>>> test", options.ubigeo);
             _this.crearTablaUigeos(options.ubigeo, options.historico);
             _this.timeClikMap = undefined;
         }, 1200);
@@ -296,11 +309,20 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiNormalCallback = function (options) {
-        console.log("aplica");
         this.tblIndicadores.fixedColumns().relayout();
         $(".cuadroMinimizado").removeClass("col-4-5").addClass("col-5-5");
         $(".busquedaMaximizadaCuadro").removeClass("CuadroActivoBusqueda");
         $(".busquedaCuadro").show();
+    };
+
+    var uiReabrirVentana = function () {
+        this.fixedColumnsRelayout();
+    };
+
+    var fixedColumnsRelayout = function () {
+        if (this.tblIndicadores !== null) {
+            this.tblIndicadores.fixedColumns().relayout();
+        }
     };
 
     var categoriaChangeEvent = function (options) {
@@ -320,6 +342,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         mapasChangeEvent: mapasChangeEvent,
         uiNormalCallback: uiNormalCallback,
         uiNormalCallback: uiNormalCallback,
-        categoriaChangeEvent: categoriaChangeEvent
+        categoriaChangeEvent: categoriaChangeEvent,
+        fixedColumnsRelayout: fixedColumnsRelayout,
+        uiReabrirVentana: uiReabrirVentana
     }
 })(AppConfig(), Appdata(), App.utils, App.service);

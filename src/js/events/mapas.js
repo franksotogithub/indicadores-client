@@ -1,5 +1,6 @@
 
-    (function (service,utils,config) {
+    (function (service,utils,config, sistema) {
+
         var cod_mapa='P01';
         service.mapas.getMapa(cod_mapa,function (data) {
             //var cod_tematico=data.cod_tematico_default;

@@ -156,6 +156,7 @@
 
 <div id="contentHelpInfo"></div>
 </body>
+{% block prependscript %}{% endblock %}
 <script src="{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
 
 <!-- libs -->
@@ -166,6 +167,5 @@
 <script src="{{ output.assets ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
 
 <script src="{{ output.folders.js ~ output.concat.js }}"></script>
-
-
+{% block endscript %}{% endblock %}
 </html>

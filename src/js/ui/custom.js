@@ -267,6 +267,7 @@ function reabrirVentanas(e) {
         $(".ventanaTabla").addClass("col-35");
         $(".ventanaGrafico").addClass("col-1-4");
         $(".contenedorVentana").css("display","inline-block");
+        App.uiReabrirVentana();
     }
 }
 
@@ -345,9 +346,11 @@ function minimizarVentana(e, callback) {
                 $(this ).find("button").addClass("animacionbtn");
             }
         });
+
+
     }
 
-
+    App.uiMinimizarVentana(contadorVentanas[0]);
 }
 
 /* Maximizar Ventana */
