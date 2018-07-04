@@ -1110,6 +1110,12 @@ App.utils.graficos = (function (parent, service, config, appData) {
 
         sliderGraph();
 
+        setTimeout(function () {
+            altosAutomaticos();
+
+        },400)
+
+
     };
 
     $('.check_cat').click(function()  {
