@@ -1,0 +1,40 @@
+{% extends "../base.html" %}
+{% block menutitulo %} Mapa de pobreza 2017 {% endblock %}
+{% block wrapper %}
+<div class="col-1-2 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
+    <section >
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe012;"></span>
+                    Mapa temático</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana ">
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>
+
+        </div>
+        </header>
+        <div class="contenidoMapa" >
+            {% include 'indicadores/mapa.html' %}
+        </div>
+    </section>
+</div><!--
+         --><div class="col-1-2 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
+    <section >
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe051;"></span>
+                    Indicadores</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana" >
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+            <button data-icon=":" data-title="Descargar" class="tooltip"></button>
+
+        </div>
+        </header>
+        <div class="contenidoCuadro">
+            {% include 'indicadores/cuadro.html' %}
+        </div>
+    </section>
+</div>
+{% endblock %}
