@@ -8,8 +8,20 @@ var ultimaMinimizada;
 var altoVentana = $(window).height();
 
 function altosAutomaticos(){
-    $('.contenedorMetadatos').css({"height":(altoVentana-572)+"px", "overflow":"auto"});
+    var contador;
+
+    $('#id_graficoWidget_top > div').each(function(i,v) {
+        contador=i;
+    });
+    if(contador !== undefined){
+        $('.contenedorMetadatos').css({"height":(altoVentana-572)+"px", "overflow":"auto"});
+    }else{
+        $('.contenedorMetadatos').css({"height":(altoVentana-662)+"px", "overflow":"auto"});
+    }
+    
 }
+
+
 
 /* Exportar graficos */
 
@@ -460,6 +472,9 @@ function restaurarVentana(e, callback) {
 
 
 $(document).ready(function() {
+    
+    altosAutomaticos();
+    sliderGraph ();
 
     $('.contenedorVentana').on('click','.minimizar', function() {
         minimizarVentana($(this));
@@ -524,8 +539,7 @@ $(document).ready(function() {
         $('#contenedorPopover').find( "span" ).remove();
     });
 
-
-    sliderGraph ();
+    
 
     $('.botonesControlGrafico').on('click','button', function() {
         var slider = $(this).attr("data-slider");
@@ -538,10 +552,12 @@ $(document).ready(function() {
     });
 
     $('.contenedorVentana').on('click','.descargarMapa', function() {
+
         App.utils.mapas.descargarMapaEvent(function (resp,error) {
 
             /**aqui pones la descarga*/
             window.open(resp.url);
+
 
         });
 
@@ -553,7 +569,7 @@ $(document).ready(function() {
 
     });
 
-    altosAutomaticos();
+   
 
 
     $('.contenedorVentana').on('click','.descargarGrafico', function() {

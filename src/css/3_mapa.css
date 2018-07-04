@@ -68,6 +68,10 @@
     background-color: #FFFFFF;
 }
 
+.miniMap > div:first-child{
+    height: 100%;
+}
+
 .subirMiniMap {
     bottom:-30px !important;
 }
