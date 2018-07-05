@@ -159,8 +159,39 @@ td.popover:hover {
 }
 
 
-.button_menuTop{
+.dropDownMenuTop {
+    position: absolute;
+    background-color: #12284c;
+    font-size: 14px;
+    z-index: 99;
+    top: 70px;
+    right: 0;
+    display: none;
+}
+
+.dropDownMenuTop>div:hover {
+    background-color:#1B3C71 ;
+}
+
+.dropDownMenuTop .active_top{
+    background-color:#009ae0 ;
+}
+
+.dropDownMenuTop > div {
+    padding: 15px 20px;
+    width: 160px;
+}
+
+
+.tabHeader button.button_menuTop{
     vertical-align: top;
+    padding: 0px 20px;
+    position: relative;
+}
+
+.tabHeader button.button_menuTop:hover {
+    background-color: #12284c;
+    color: white;
 }
 
 
@@ -811,3 +842,121 @@ div.contenidoMapa{
 
 
 
+
+
+/* cuadros Estadisticos */
+
+.tabSubTitulo {
+    text-align: left;
+}
+.tabSubTitulo h2 {
+    display: inline-block;
+    padding-right:20px;
+    background-color: #B3B3B3;
+    color:#666666;
+    border-left-color: #666666 !important;
+    vertical-align: middle;
+    height: 40px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.tabSubTitulo h2:hover {
+    background-color: #d2d1d1;
+}
+
+.verticalAlignTop {
+    vertical-align: top;
+}
+
+
+.tabSubTitulo h2.activeSub {
+    background-color: #7b7b7b;
+
+}
+
+h2.activeSubTabVentana {
+    background-color: #e6e6e6 !important;
+    color:#1B3C71;
+    border-left-color: #1B3C71 !important;
+}
+
+
+.tituloIndiceTematico {
+    padding: 15px 0px !important;
+    border-left:none !important;
+}
+
+.contenedorIndice {
+    background-color:#3E4C60;
+    height: 700px;
+
+}
+
+.buscarIndicadoreTematicos > div {
+    display: block;
+    padding: 0px 10px;
+    background-color: white;
+    position: relative;
+}
+
+.buscarIndicadoreTematicos > div > input {
+    width: 100%;
+    outline: none;
+    border: none;
+    margin: 0px;
+    background-color: transparent;
+    height: 40px;
+    font-family: 'signikaregular';
+}
+
+.buscarIndicadoreTematicos > div > div {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: #12284c;
+    color: white;
+    height: 42px;
+    line-height: 42px;
+    width: 40px;
+}
+
+.contenedorLista {
+    margin-top: 20px;
+}
+
+.contenedorLista ul {
+    padding: 0px;
+    margin:0px
+
+}
+
+.contenedorLista ul li {
+    list-style: none;
+    text-align: left;
+    display: block;
+    padding-left:20px;
+    height: 55px;
+    line-height: 55px;
+    color: white;
+    font-family: "signikaregular";
+    position: relative;
+    cursor: pointer;
+}
+
+.contenedorLista ul li:hover {
+    background-color: #1b3c71;
+}
+
+.contenedorLista ul li span:first-child {
+    padding-right: 20px;
+    font-size: 20px;
+}
+
+span.expandirLista {
+    position: absolute;
+    line-height: 55px;
+    right: 20px;
+}

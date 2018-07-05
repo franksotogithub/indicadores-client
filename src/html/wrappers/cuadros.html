@@ -1,0 +1,101 @@
+{% extends "../base.html" %}
+{% block menutitulo %} Cuadros Estadisticos {% endblock %}
+{% block wrapper %}
+<div class="col-2-10  contenedorVentana" >
+    <section >
+        <header class="b_grissuave">
+            <div class="col-2-2 contennedorTituloVentana">
+                <h2 class="tituloIndiceTematico"> <span class="dripicons-view-list"></span>
+                    Indice temático</h2>
+            </div>
+        </header>
+        <div class="contenedorIndice" >
+            <div class="buscarIndicadoreTematicos">
+                <div>
+                    <input type="text" placeholder="Buscar">
+                    <div class="dripicons-search icoInputTematico"> </div>
+                </div>
+            </div>
+            <div class="contenedorLista">
+                <ul>
+                    <li>
+                        <span class="icon-home"></span>
+                        <span>VIVIENDA</span>
+                        <span class=" expandirLista dripicons-chevron-right"></span>
+                    </li>
+                    <li>
+                        <span class="dripicons-view-thumb"></span>
+                        <span>HOGAR</span>
+                        <span class=" expandirLista dripicons-chevron-right"></span>
+                    </li>
+                    <li>
+                        <span class="icon-users"></span>
+                        <span>POBLACION</span>
+                        <span class=" expandirLista dripicons-chevron-right"></span>
+                    </li>
+                    <li>
+                        <span class="icon-graduation"></span>
+                        <span>EDUCACION</span>
+                        <span class=" expandirLista dripicons-chevron-right"></span>
+                    </li>
+                    <li>
+                        <span class="icon-briefcase"></span>
+                        <span>ACTIVIDAD</span>
+                        <span class=" expandirLista dripicons-chevron-right"></span>
+                    </li>
+                    <li>
+                        <span class="icon-plus"></span>
+                        <span>SALUD</span>
+                        <span class=" expandirLista dripicons-chevron-right"></span>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+        </div>
+    </section>
+</div><!--
+         --><div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
+    <section >
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe012;"></span>
+                    Mapa temático</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana ">
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>
+
+        </div>
+        </header>
+        <div class="contenidoMapa" >
+            {% include 'indicadores/mapa.html' %}
+        </div>
+    </section>
+</div><!--
+         --><div class="col-4-10 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
+    <section >
+        <header class="b_grissuave">
+            <div class="col-7-10 contennedorTituloVentana verticalAlignTop ">
+                <div class="col-2-2 tabSubTitulo">
+                    <h2 class="activeSubTabVentana"> <span data-icon="&#xe051;"></span>
+                        Indicadores</h2><!--
+                    --><h2> <span data-icon="&#xe051;"></span>
+                        Graficos y Metadatos</h2>
+                </div>
+
+            </div><!--
+                     --><div class="col-3-10 contenedorBotonesVentana" >
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+            <button data-icon=":" data-title="Descargar" class="tooltip"></button>
+
+        </div>
+        </header>
+        <div class="contenidoCuadro">
+            {% include 'indicadores/cuadro.html' %}
+        </div>
+    </section>
+</div>
+{% endblock %}

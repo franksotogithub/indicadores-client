@@ -557,6 +557,14 @@ $(document).ready(function() {
 
     });
 
+    $('.tabSubTitulo').on('click','h2', function() {
+
+        $(this).siblings("h2").removeClass("activeSubTabVentana");
+        $(this).addClass("activeSubTabVentana");
+    });
+
+
+
     $('.contenedorVentana').on('click','.descargarMapa', function() {
 
         App.utils.mapas.descargarMapaEvent(function (resp,error) {
@@ -590,6 +598,10 @@ $(document).ready(function() {
     });
 
 
+
+    $('button.button_menuTop').click(function () {
+        $('.dropDownMenuTop').toggle("slow");
+    });
 
 
 });
