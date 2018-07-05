@@ -231,6 +231,9 @@ App.utils.mapas = (function (parent, config,service) {
         return renderer
     }
 
+
+
+
     var getAccesDirectMaps = function(){
         return [
             {id:1 ,
@@ -424,8 +427,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
-
-
     var uiMaxCallback =function () {
         var _this=parent.mapas;
         var list_mini_maps=document.getElementById("listMiniMaps");
@@ -452,7 +453,6 @@ App.utils.mapas = (function (parent, config,service) {
 
         visibilityAllChildDiv(_this.panelDiv,'hidden');
         _this.cant_mini_maps=1;
-
         if(_this.opc_select=="select")
         _this.view_map.popup.visible=true;
 
@@ -514,15 +514,11 @@ App.utils.mapas = (function (parent, config,service) {
         var codMap=_this.datosMap.codMap;
         var codTematico=_this.datosMap.codTematico;
         var urlMap=_this.datosMap.urlMap;
-
-
-        //console.log('div minimapa-->',div);
-        //document.getElementById(div).style.display='inline';
-
         var miniSublayer = new FeatureLayer({
             url: urlMap+'/'+index,
             definitionExpression : where,
         });
+
 
         var miniLayer = new MapImageLayer({
             url:urlMap,
@@ -548,7 +544,6 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
         miniView.ui.components = [];
-
 
         miniView.when(function () {
             miniLayer.when(function() {
@@ -1399,8 +1394,22 @@ App.utils.mapas = (function (parent, config,service) {
         cambiarMapa(codMap,codTematico,url,titulo);
     };
 
+    /*var getMapa = function (cod_mapa) {
+        service.mapas.getMapa(cod_mapa,function (data) {
+
+            var _this=parent.mapas;
+            _this.datosMap.codMap=cod_mapa;
+            _this.datosMap.urlMap=data.url;
+            _this.datosMap.codTematico=data.cod_tematico_default;
+            _this.datosMap.tituloLegend=data.descripcion;
+            console.log('datos del mapa-->',_this.datosMap);
+            cambiarMapa();
+        });
+    }*/
+
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;
+        getMapa(cod_mapa);
         service.mapas.getMapa(cod_mapa,function (data) {
             var _this=parent.mapas;
             _this.datosMap.codMap=cod_mapa;
@@ -1411,7 +1420,30 @@ App.utils.mapas = (function (parent, config,service) {
         });
     }
 
+
+
+
+    var init = function (options) {
+        var _this=parent.mapas;
+        var cod_mapa=''
+        if (options.vista == 'indicadores') {
+            cod_mapa='P01';
+        }
+        else {
+            cod_mapa='P07'
+        }
+
+        service.mapas.getMapa(cod_mapa,function (data) {
+            _this.datosMap.codMap=cod_mapa;
+            _this.datosMap.urlMap=data.url;
+            _this.datosMap.codTematico=data.cod_tematico_default;
+            _this.datosMap.tituloLegend=data.descripcion;
+            crearMapa();
+        });
+    }
+
     return {
+        init:init,
         requireEvents: requireEvents,
         historic_features: historic_features,
         select_ubigeos: select_ubigeos,
