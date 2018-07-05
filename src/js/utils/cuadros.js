@@ -3,20 +3,30 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     /** Constructores **/
     var init = function (options) {
+        this.vista = options.vista;
         if (options.vista == 'indicadores') {
-            _initIndicadores(this);
+            _initIndicadores(this, options.vista);
+        }
+        else if (options.vista == 'pobreza') {
+            _initPobreza(this, options.vista);
         }
     };
 
-    var _initIndicadores = function (_this) {
-        _crearTabsCategorias(appData.categorias);
+    var _initIndicadores = function (_this, vista) {
+        _crearTabsCategorias(appData.categorias, vista);
+        _this.crearTablaUigeos([], []);
+    };
+
+    var _initPobreza = function (_this, vista) {
+        App.categoria = 'P07';
+        _crearTabsCategorias(appData.categorias, vista);
         _this.crearTablaUigeos([], []);
     };
 
     /** Metodos privados **/
 
     // Metodos UI
-    var _crearTabsCategorias = function (datos) {
+    var _crearTabsCategorias = function (datos, vista) {
         var tabsTemplate = function (dato) {
             var clase='';
             if (dato.esActivo) {
@@ -27,7 +37,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         var html = '';
         for (var i=0;i<datos.length;i++) {
-            html += tabsTemplate(datos[i]);
+            if (datos[i]["sistema"] == vista) {
+                html += tabsTemplate(datos[i]);
+            }
+
         }
 
         $("#tabsCategoria").html(html);
@@ -254,7 +267,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _this.tablaColumns = _getTalaColumn(datos);
 
             // Instanciar el servicio
-            service.cuadros.getIndicadores(datos, function () {
+            service.cuadros.getIndicadores(datos, _this.vista, function () {
                 _this.tblIndicadores = _crearTabla('#tblindicadores', service.cuadros.indicadores[App.categoria], _this.tablaColumns);
                 _this.tblIndicadores.fixedColumns().relayout();
                 $("#loadindicadores").hide();
@@ -262,7 +275,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         };
 
         // Crear cabecera
-        console.log("redimencionar / expandir >>>>>>", ubigeos.length, this.expardirVentana);
         if (ubigeos.length > 1 && !this.expardirVentana) {
             this.expardirVentana = true;
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)
@@ -336,6 +348,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         tablaColumns: [],
         expardirVentana: false,
         timeClikMap: undefined,
+        vista: 'indicadores',
         crearTablaUigeos: crearTablaUigeos,
         crearTablaCategoria: crearTablaCategoria,
         uiMaxCallback: uiMaxCallback,

@@ -1,9 +1,9 @@
 App.service.cuadros = (function (parent, config) {
 
-    var getIndicadores = function (ubigeos, callback) {
+    var getIndicadores = function (ubigeos, vista, callback) {
         var _this = this;
         parent.get({
-            url: parent.getUrlServer('indicadores/tabla/', {"u": ubigeos}),
+            url: parent.getUrlServer('indicadores/tabla/', {"u": ubigeos, "vista": [vista]}),
             success: function (data) {
                 _this.indicadores = data;
                 callback();

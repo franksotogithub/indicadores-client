@@ -604,4 +604,9 @@ $(document).ready(function() {
     });
 
 
+    $(".dropDownMenuTop div").click(function (e) {
+        var href = $(this).attr('data-href');
+        window.location = href;
+    });
+
 });
