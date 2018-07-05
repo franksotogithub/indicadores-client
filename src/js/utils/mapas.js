@@ -1409,7 +1409,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;
-        getMapa(cod_mapa);
         service.mapas.getMapa(cod_mapa,function (data) {
             var _this=parent.mapas;
             _this.datosMap.codMap=cod_mapa;
