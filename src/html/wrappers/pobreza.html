@@ -1,7 +1,7 @@
 {% extends "../base.html" %}
 {% block menutitulo %} Mapa de pobreza 2017 {% endblock %}
 {% block wrapper %}
-<div class="col-1-2 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
+<div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
@@ -19,7 +19,7 @@
         </div>
     </section>
 </div><!--
-         --><div class="col-1-2 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
+         --><div class="col-6-10 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
@@ -32,7 +32,7 @@
 
         </div>
         </header>
-        <div class="contenidoCuadro">
+        <div class="contenidoCuadro cuadroPobreza">
             {% include 'indicadores/cuadro.html' %}
         </div>
     </section>

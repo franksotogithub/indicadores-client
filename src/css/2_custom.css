@@ -132,6 +132,10 @@ td.popover:hover {
 }
 
 
+.cuadroPobreza td.popover:hover{
+    background-color: #bf1d1d !important;
+}
+
 
 /* asd */
 
