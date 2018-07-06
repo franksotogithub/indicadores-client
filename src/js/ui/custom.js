@@ -525,6 +525,8 @@ $(document).ready(function() {
         var textTool = $(this).text();
         var titleTool = $(this).attr("data-title");
 
+
+
         $(this).html(  textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
     }, function () {
         $(this).find( "span" ).remove();
@@ -537,12 +539,50 @@ $(document).ready(function() {
 
         $('#contenedorPopover').css({'top':($(this).offset().top - 30)+'px','left':($(this).offset().left - 203)+'px'});
         $('#contenedorPopover').append( "<span class='popovertext'>" + titleTool + "</span>");
-        console.log(titleTool);
+
+
+
+        if(App.uiMouseOverTabla!==undefined)
+        {App.uiMouseOverTabla();}
+
+
+
+        /*App.utils.mapas.descargarMapaEvent(function (resp,error) {
+
+
+        });*/
 
     });
 
+    $(document).on('mouseover','th', function (e) {
+
+        var ubigeo = $(this).attr('ubigeo');
+
+        //console.log('html-->',$(this));
+        //console.log('titulo ubigeo-->',titleTool);
+
+
+        //$('#contenedorPopover').css({'top':($(this).offset().top - 30)+'px','left':($(this).offset().left - 203)+'px'});
+        //$('#contenedorPopover').append( "<span class='popovertext'>" + titleTool + "</span>");
+
+        console.log('ubigeo-->',ubigeo);
+
+        if(App.uiMouseOverTabla!==undefined)
+        {App.uiMouseOverTabla(ubigeo);}
+
+
+
+    });
+
+
     $(document).on('mouseout','.popover', function (e) {
         $('#contenedorPopover').find( "span" ).remove();
+
+
+        /*if(App.uiMouseOutTabla!==undefined){
+            App.uiMouseOutTabla();
+        }*/
+
     });
 
     

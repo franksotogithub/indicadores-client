@@ -72,6 +72,15 @@ App = (function (scope, config) {
         }
     };
 
+    var uiMouseOverTabla = function (ubigeo) {
+        _hasUtils(this, 'uiMouseOverTabla', {"ubigeo":ubigeo})
+    }
+
+    var uiMouseOutTabla = function () {
+        _hasUtils(this, 'uiMouseOutTabla', {})
+    }
+
+
     return {
         ambito: 'nacional',
         categoria: 'P01',
@@ -85,6 +94,9 @@ App = (function (scope, config) {
         indicadorChangeEvent: indicadorChangeEvent,
         descargarMapaEvent: descargarMapaEvent,
         uiReabrirVentana: uiReabrirVentana,
-        uiMinimizarVentana: uiMinimizarVentana
+        uiMinimizarVentana: uiMinimizarVentana,
+        uiMouseOverTabla : uiMouseOverTabla,
+        uiMouseOutTabla : uiMouseOutTabla,
+
     }
 })(window, AppConfig());

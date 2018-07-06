@@ -58,7 +58,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 {
                     "titulo": "%"
                 }
-            ]
+            ],
+            "ubigeo": ubigeo
         };
     };
 
@@ -76,7 +77,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 clase = ' thindicador';
             }
 
-            var th = '<th'+rowspan+colspan+clase+'>'+v.titulo+'</th>';
+            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+v.titulo+'</th>';
 
             thead += th;
 
@@ -106,12 +107,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             {
                 "codigo": "01",
                 "titulo": "Orden",
-                "rowspan": "2"
+                "rowspan": "2",
+                "ubigeo":""
             },
             {
                 "codigo": "02",
                 "titulo": "VARIABLE / INDICADOR",
-                "rowspan": "2"
+                "rowspan": "2",
+                "ubigeo":""
             }
         ];
         for (var i=0;i<ubigeos.length;i++) {

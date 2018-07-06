@@ -189,6 +189,14 @@ App.utils.mapas = (function (parent, config,service) {
         };
     };
 
+    var symbolSombreado= {
+        type: "simple-fill",
+        color: [ 255, 128, 0, 0.1],
+        outline: {
+            width: 2,
+            color: "cyan"
+        }
+    }
 
 
     var renderizado = function(indicador,classBreakinfo){
@@ -402,7 +410,6 @@ App.utils.mapas = (function (parent, config,service) {
         div.style.visibility = visibility;
     }
 
-
     var getDefinitionExpresion=function(array_codigos,index){
         var definitionExpression="";
         var num_features=array_codigos.length;
@@ -417,8 +424,6 @@ App.utils.mapas = (function (parent, config,service) {
         });
         return definitionExpression;
     }
-
-
 
     var crearMinimapa= function(index,where,div){
 
@@ -656,6 +661,58 @@ App.utils.mapas = (function (parent, config,service) {
 
         });
 
+    };
+
+
+
+    var uiMouseOverTabla = function (options){
+        var ubigeo=options.ubigeo;
+
+        if(ubigeo!='' || ubigeo!='00'){
+
+            require(["esri/layers/FeatureLayer","esri/Graphic","esri/tasks/support/Query","esri/tasks/QueryTask","dojo/domReady!"],function (FeatureLayer,Graphic,Query,QueryTask) {
+                var _this=parent.mapas;
+                var queryText='CODIGO='+ubigeo;
+                var queryTask = new QueryTask({
+                    url: _this.historic_features[_this.indexSubLayer].url
+                });
+                var query = new Query({
+                    where: queryText,
+                    outFields: ["CODIGO"],
+                    returnGeometry : true,
+                });
+                _this.view_map.graphics.removeAll();
+                queryTask.execute(query).then(function(result){
+                    var features=result.features;
+
+
+                    features.forEach( function (feature) {
+
+                        console.log('feature seleccionado-->',feature);
+                        var graphic= new Graphic({
+                                geometry : feature.geometry,
+                                symbol: symbolSombreado,
+                                //attributes:feature.attributes,
+                            }
+                        );
+
+                        _this.view_map.graphics.add(graphic);
+
+
+                    });
+
+
+                });
+
+
+
+            });
+        }
+
+    }
+
+    var uiMouseOutTabla = function () {
+        _this.view_map.graphics.removeAll();
     }
 
     var crearMapaRender = function (classBreak) {
@@ -1190,7 +1247,6 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var selectWidget = function(index){
-
                 var definitionExpression_back;
                 var selectHistorico=[];
 
@@ -1218,10 +1274,7 @@ App.utils.mapas = (function (parent, config,service) {
                     else
                         selectHistorico=['00'];
                     App.mapasChangeEvent(_this.select_ubigeos,selectHistorico);
-
-
                 }
-
 
                 else{
 
@@ -1249,6 +1302,7 @@ App.utils.mapas = (function (parent, config,service) {
                     });
                 });
             }
+
 
             var custom_widgets=function(indexLayer){
 
@@ -1356,7 +1410,7 @@ App.utils.mapas = (function (parent, config,service) {
             custom_widgets(0);
         });
 
-    }
+    };
 
     var cambiarMapaRender = function (classBreakinfos) {
 
@@ -1376,7 +1430,7 @@ App.utils.mapas = (function (parent, config,service) {
             _this.layer.title= tituloLegend;
 
         });
-    }
+    };
 
     var cambiarMapa = function(){
         var _this=parent.mapas;
@@ -1449,7 +1503,10 @@ App.utils.mapas = (function (parent, config,service) {
         cod_map:codMap,
         datosMap: datosMap,
         legend: legend,
-        indexSubLayer :indexSubLayer
+        indexSubLayer :indexSubLayer,
+
+        uiMouseOverTabla:uiMouseOverTabla,
+        uiMouseOutTabla:uiMouseOutTabla
     }
 
 })(App.utils, AppConfig() ,App.service );
