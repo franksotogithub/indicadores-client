@@ -3,7 +3,7 @@
 App.utils.mapas = (function (parent, config,service) {
     var listMapas = undefined;
 
-    var indexLayer=0;
+    var indexSubLayer=0;
 
     var select_all=document.getElementById("widget-select-all");
 
@@ -12,8 +12,6 @@ App.utils.mapas = (function (parent, config,service) {
     var url_prov;
 
     var url_dist;
-
-
 
     var urlMap= undefined;
 
@@ -32,8 +30,6 @@ App.utils.mapas = (function (parent, config,service) {
         classBreakinfos:undefined,
         tituloLegend:undefined,
     };
-
-
 
     var select_features_tablas_graficos;
 
@@ -231,9 +227,6 @@ App.utils.mapas = (function (parent, config,service) {
         return renderer
     }
 
-
-
-
     var getAccesDirectMaps = function(){
         return [
             {id:1 ,
@@ -410,151 +403,80 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-    var displayAllMapsChildDiv=function(div,display){
+    var getDefinitionExpresion=function(array_codigos,index){
+        var definitionExpression="";
+        var num_features=array_codigos.length;
+        if (index==0) { definitionExpression="CCDD IN (";}
+        else if (index==1) { definitionExpression=" CCDD+CCPP IN (";}
+        else if (index==2) {definitionExpression=" CCDD+CCPP+CCDI IN (";}
 
-        if (div.hasChildNodes()) {
-            var children = div.childNodes;
-
-            for(var c=0; c < children.length; c++) {
-
-
-                if(children[c].style.display) {
-                    //console.log('c-->',c,children[c]);
-                    children[c].style.display = 'none';
-                }
-            }
-        }
-
-    }
-
-    var uiMaxCallback =function () {
-        var _this=parent.mapas;
-        var list_mini_maps=document.getElementById("listMiniMaps");
-        _this.maximizado=true;
-
-        visibilityAllChildDiv(_this.panelDiv,'visible');
-
-        _this.view_map.popup.close();
+        array_codigos.forEach(function(select_feature) {
+            num_features--;
+            if (num_features>0) definitionExpression= definitionExpression + select_feature+","
+            else definitionExpression= definitionExpression + select_feature+")"
+        });
+        return definitionExpression;
     }
 
 
-    var uiNormalCallback = function(){
-        var _this=parent.mapas;
-        var list_mini_maps=document.getElementById("listMiniMaps");
-        _this.maximizado=false;
-        //displayAllMapsChildDiv(list_mini_maps,'none');
 
-        for (i=1 ; i<=cantMaxMiniMaps; i++)
-        {
-            document.getElementById("divMiniMap_" +i).style.display='none';
+    var crearMinimapa= function(index,where,div){
 
-
-        }
-
-        visibilityAllChildDiv(_this.panelDiv,'hidden');
-        _this.cant_mini_maps=1;
-        if(_this.opc_select=="select")
-        _this.view_map.popup.visible=true;
-
-
-    }
-
-    var descargarMapaEvent = function(callback){
         require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/layers/MapImageLayer",
+            "esri/layers/FeatureLayer",
 
-            "esri/tasks/PrintTask",
-            "esri/tasks/support/PrintTemplate",
-            "esri/tasks/support/PrintParameters",
+            "dojo/domReady!"],function (Map, MapView, MapImageLayer,FeatureLayer) {
 
-            "dojo/domReady!"
-        ],function (PrintTask,PrintTemplate,PrintParameters){
-            var _this=parent.mapas;
-            var printTask = new PrintTask({
-                url: config.utils.print,
+
+            var _this = parent.mapas;
+            var classBreakinfos = _this.datosMap.classBreakinfos;
+            var codMap = _this.datosMap.codMap;
+            var codTematico = _this.datosMap.codTematico;
+            var urlMap = _this.datosMap.urlMap;
+            var miniSublayer = new FeatureLayer({
+                url: urlMap + '/' + index,
+                definitionExpression: where,
             });
 
-            var template = new PrintTemplate({
-                format: "pdf",
-                exportOptions: {
-                    dpi: 300
-                },
-                layout: "a4-portrait",
-                layoutOptions: {
-                    titleText: "Warren Wilson College Trees",
-                    authorText: "Sam"
-                }
-            });
 
-            var params = new PrintParameters({
-                view: _this.view_map,
-                template: template
-            });
-
-            var resp={}
-            printTask.execute(params).then(function(resolvedVal){
-                var url_pdf=resolvedVal.url;
-                resp['success']=true;
-                resp['url']=url_pdf;
-
-                return callback(resp);
-            }, function(error){
-                resp['success']=false;
-                resp['error']=error;
-                return callback(resp);
+            var miniLayer = new MapImageLayer({
+                url: urlMap,
+                sublayers: [{
+                    renderer: renderizado(codTematico, classBreakinfos[index + ""]),
+                    opacity: opacity,
+                    id: parseInt(index),
+                    outFields: ["*"],
+                    definitionExpression: where,
+                    labelsVisible: true,
+                }]
 
             });
 
-        });
-
-    }
-
-    var crearMinimapa= function(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,index,where,div){
-        var _this=parent.mapas;
-        var classBreakinfos=_this.datosMap.classBreakinfos;
-        var codMap=_this.datosMap.codMap;
-        var codTematico=_this.datosMap.codTematico;
-        var urlMap=_this.datosMap.urlMap;
-        var miniSublayer = new FeatureLayer({
-            url: urlMap+'/'+index,
-            definitionExpression : where,
-        });
-
-
-        var miniLayer = new MapImageLayer({
-            url:urlMap,
-            sublayers: [{
-                renderer: renderizado(codTematico,classBreakinfos[index+""]),
-                opacity:opacity,
-                id:parseInt(index),
-                outFields:["*"],
-                definitionExpression : where,
-                labelsVisible: true,
-            }]
-
-        });
-
-        var miniMap = new Map({
-            layers: miniLayer,
-        });
-
-        var miniView = new MapView({
-            container: div,
-            map: miniMap,
-            center: [-75.000, -9.500],
-        });
-
-        miniView.ui.components = [];
-
-        miniView.when(function () {
-            miniLayer.when(function() {
-                miniSublayer.queryExtent()
-                    .then(function (response) {
-
-                        miniView.goTo(response.extent);
-                    });
+            var miniMap = new Map({
+                layers: miniLayer,
             });
-        })
 
+            var miniView = new MapView({
+                container: div,
+                map: miniMap,
+                center: [-75.000, -9.500],
+            });
+
+            miniView.ui.components = [];
+
+            miniView.when(function () {
+                miniLayer.when(function () {
+                    miniSublayer.queryExtent()
+                        .then(function (response) {
+
+                            miniView.goTo(response.extent);
+                        });
+                });
+            })
+        });
         /*miniLayer.when(function(){
             miniSublayer.queryExtent()
                 .then(function(response) {
@@ -615,6 +537,126 @@ App.utils.mapas = (function (parent, config,service) {
         });*/
     }
 
+    var insertarNuevoMiniMapa = function (ubigeo) {
+        var _this=parent.mapas;
+        var index=_this.indexSubLayer
+        if(index<2){
+            var stringIndex=String(index+1);
+        }
+        else {
+            var stringIndex=String(index);
+        }
+        var where=getDefinitionExpresion([ubigeo],index);
+
+        if(_this.cant_mini_maps<=cantMaxMiniMaps)
+        {
+            var idMiniMap="divMiniMap_"+ubigeo;
+            var divMiniMap = document.createElement("div");
+            var list_mini_maps=document.getElementById("listMiniMaps");
+            divMiniMap.classList.add("miniMap");
+            divMiniMap.setAttribute("id",idMiniMap);
+            divMiniMap.style.visibility = "visible";
+            list_mini_maps.appendChild(divMiniMap);
+            crearMinimapa(stringIndex,where,idMiniMap);
+            _this.cant_mini_maps++;
+        }
+    }
+
+    var removerMiniMapa = function (ubigeo){
+        var idMiniMap="divMiniMap_"+ubigeo;
+        var divMiniMap =document.getElementById(idMiniMap);
+        divMiniMap.remove();
+
+
+    }
+
+    var removerTodosMiniMaps=function(){
+        var _this=parent.mapas;
+        console.log('indexLayer-->',_this.indexSubLayer);
+        _this.select_ubigeos.forEach(function (ubigeo) {
+            removerMiniMapa(ubigeo);
+        });
+    }
+
+    var mostrarTodosMiniMaps=function(){
+        var _this=parent.mapas;
+        _this.select_ubigeos.forEach(function (ubigeo) {
+            var elem=document.getElementById("divMiniMap_" +ubigeo);
+            insertarNuevoMiniMapa(ubigeo);
+
+        });
+    }
+
+    var uiMaxCallback =function () {
+        var _this=parent.mapas;
+        var list_mini_maps=document.getElementById("listMiniMaps");
+        _this.maximizado=true;
+        visibilityAllChildDiv(_this.panelDiv,'visible');
+        mostrarTodosMiniMaps();
+        _this.view_map.popup.close();
+        _this.view_map.ui.move("widget-select-layer","top-left");
+    }
+
+    var uiNormalCallback = function(){
+        var _this=parent.mapas;
+        _this.maximizado=false;
+        removerTodosMiniMaps();
+        visibilityAllChildDiv(_this.panelDiv,'hidden');
+        _this.cant_mini_maps=1;
+        if(_this.opc_select=="select")
+        _this.view_map.popup.visible=true;
+        _this.view_map.ui.move("widget-select-layer","top-right");
+    }
+
+    var descargarMapaEvent = function(callback){
+        require([
+
+            "esri/tasks/PrintTask",
+            "esri/tasks/support/PrintTemplate",
+            "esri/tasks/support/PrintParameters",
+
+            "dojo/domReady!"
+        ],function (PrintTask,PrintTemplate,PrintParameters){
+            var _this=parent.mapas;
+            var printTask = new PrintTask({
+                url: config.utils.print,
+            });
+
+            var template = new PrintTemplate({
+                format: "pdf",
+                exportOptions: {
+                    dpi: 300
+                },
+                layout: "a4-portrait",
+                layoutOptions: {
+                    titleText: "Warren Wilson College Trees",
+                    authorText: "Sam"
+                }
+            });
+
+            var params = new PrintParameters({
+                view: _this.view_map,
+                template: template
+            });
+
+            var resp={};
+
+            printTask.execute(params).then(function(resolvedVal){
+                var url_pdf=resolvedVal.url;
+                resp['success']=true;
+                resp['url']=url_pdf;
+                return callback(resp);
+            },
+            function(error){
+                resp['success']=false;
+                resp['error']=error;
+                return callback(resp);
+
+            });
+
+        });
+
+    }
 
     var crearMapaRender = function (classBreak) {
         require([
@@ -827,13 +869,13 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-            for (i=1 ; i<=cantMaxMiniMaps; i++)
+            /*for (i=1 ; i<=cantMaxMiniMaps; i++)
             {   var newDiv = document.createElement("div");
                 newDiv.classList.add("miniMap");
                 newDiv.setAttribute("id","divMiniMap_" +i);
                 newDiv.style.display = "none";
                 list_mini_maps.appendChild(newDiv);
-            }
+            }*/
 
 
             _this.legend = new Legend({
@@ -867,7 +909,7 @@ App.utils.mapas = (function (parent, config,service) {
             var changeIndex=function(newIndex) {
                 if(newIndex<_this.historic_features.length)
                 {
-                    indexLayer=newIndex;
+                    _this.indexSubLayer=newIndex;
                     identifyParams.layerIds = [newIndex];
                     legend = new Legend({
                         view: _this.view_map,
@@ -910,20 +952,7 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.view_map.popup.close();
             }
 
-            var getDefinitionExpresion=function(array_codigos,index){
-                var definitionExpression="";
-                var num_features=array_codigos.length;
-                if (index==0) { definitionExpression="CCDD IN (";}
-                else if (index==1) { definitionExpression=" CCDD+CCPP IN (";}
-                else if (index==2) {definitionExpression=" CCDD+CCPP+CCDI IN (";}
 
-                array_codigos.forEach(function(select_feature) {
-                    num_features--;
-                    if (num_features>0) definitionExpression= definitionExpression + select_feature+","
-                    else definitionExpression= definitionExpression + select_feature+")"
-                });
-                return definitionExpression;
-            }
 
             var getDefinitionExpresionByCodigos=function(array_codigos){
                 var definitionExpression="";
@@ -970,41 +999,13 @@ App.utils.mapas = (function (parent, config,service) {
 
             }
 
-            var updateBloqueMiniMapa = function (ubigeo,cod_map,index) {
-                if(index<2){
-                    var stringIndex=String(index+1);
-                }
-                else {
-                    var stringIndex=String(index);
-                }
-                var where=getDefinitionExpresion([ubigeo],index);
 
-
-                if(_this.cant_mini_maps<=cantMaxMiniMaps)
-                {
-                    var idMiniMap="divMiniMap_"+_this.cant_mini_maps;
-                    var divMiniMap = document.getElementById(idMiniMap);
-                    if(_this.maximizado==true)
-                    //{divMiniMap.style.visibility = "visible";}
-                    {
-                        divMiniMap.style.display = "inline-block";
-                        divMiniMap.style.visibility = "visible";
-                    }
-
-                    //(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,index,where,div)
-                    //crearMinimapa(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,classBreak,cod_map,codTematico,url,stringIndex,where,idMiniMap);
-                    crearMinimapa(Map, MapView, MapImageLayer,FeatureLayer,LabelClass,stringIndex,where,idMiniMap);
-                    _this.cant_mini_maps++;
-                }
-
-
-            }
 
             var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
                 updateBloqueGrafico(ubigeo,cod_map,div_grafico);
 
                 if(_this.maximizado==true)
-                {updateBloqueMiniMapa(ubigeo,cod_map,index);}
+                {insertarNuevoMiniMapa(ubigeo,index);}
 
             }
 
@@ -1015,40 +1016,42 @@ App.utils.mapas = (function (parent, config,service) {
                 if (graphic){
                     var codigo=graphic.attributes.CODIGO;
                     var nombre='';
-                    if(indexLayer==0){nombre=graphic.attributes.NOMBDEP;}
-                    else if(indexLayer==1){nombre=graphic.attributes.NOMBPROV;}
-                    else if(indexLayer==2){nombre=graphic.attributes.NOMBDIST;}
+                    if(_this.indexSubLayer==0){nombre=graphic.attributes.NOMBDEP;}
+                    else if(_this.indexSubLayer==1){nombre=graphic.attributes.NOMBPROV;}
+                    else if(_this.indexSubLayer==2){nombre=graphic.attributes.NOMBDIST;}
                     var index_graphic=_this.select_ubigeos.indexOf(codigo);
 
                     if (index_graphic==-1 || _this.select_ubigeos.length==0) {
 
                         _this.opc_select="select";
                         createPopup(nombre,codigo,event);
-
-
-                        updatePanel(codigo,_this.cod_map,_this.panelDivGrafico,indexLayer);
+                        updatePanel(codigo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
 
 
                         _this.select_ubigeos.push(codigo);
-                        _this.historic_features[indexLayer].nombres.push(nombre);
+                        _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
                     }
                     else{
                         _this.opc_select="unselect";
                         _this.view_map.popup.close();
                         _this.select_ubigeos.splice(index_graphic, 1);
-                        _this.historic_features[indexLayer].nombres.splice(index_graphic, 1);
+                        _this.historic_features[_this.indexSubLayer].nombres.splice(index_graphic, 1);
+
+                        if(_this.maximizado==true)
+                        {removerMiniMapa(codigo);}
+
                     }
 
                     definitionExpression_gloabal=getDefinitionExpresionByCodigos(_this.select_ubigeos);
-                    _this.historic_features[indexLayer].where=definitionExpression_gloabal;
-                    _this.historic_features[indexLayer].select_features=_this.select_ubigeos;
-                    _this.layer.findSublayerById(parseInt(indexLayer)).definitionExpression=definitionExpression_gloabal;
+                    _this.historic_features[_this.indexSubLayer].where=definitionExpression_gloabal;
+                    _this.historic_features[_this.indexSubLayer].select_features=_this.select_ubigeos;
+                    _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression=definitionExpression_gloabal;
 
                     /***aqui se debe llamar a ola funcion q renderiza la tabla****/
 
                     var codigos_anteriores=[];
-                    if (indexLayer==0) { codigos_anteriores=['00']}
-                    else { codigos_anteriores=_this.historic_features[indexLayer-1].select_features}
+                    if (_this.indexSubLayer==0) { codigos_anteriores=['00']}
+                    else { codigos_anteriores=_this.historic_features[_this.indexSubLayer-1].select_features}
                     App.mapasChangeEvent(_this.select_ubigeos,codigos_anteriores);
 
                 }
@@ -1070,14 +1073,14 @@ App.utils.mapas = (function (parent, config,service) {
 
             var openFeature=function(){
                 _this.cant_mini_maps=1;
-                if(indexLayer>=0 && indexLayer<=1 )
+                if(_this.indexSubLayer>=0 && _this.indexSubLayer<=1 )
                 {
-                    definitionExpression_gloabal=getDefinitionExpresion(_this.select_ubigeos,indexLayer);
-                    if (indexLayer==0) { definitionExpressiondep=definitionExpression_gloabal;  }
-                    if (indexLayer==1) { definitionExpressionprov=definitionExpression_gloabal; }
-                    setLabelWidgetUbigeos(indexLayer);
-                    changeIndex(indexLayer+1);
-                    updateMap(definitionExpression_gloabal,indexLayer);
+                    definitionExpression_gloabal=getDefinitionExpresion(_this.select_ubigeos,_this.indexSubLayer);
+                    if (_this.indexSubLayer==0) { definitionExpressiondep=definitionExpression_gloabal;  }
+                    if (_this.indexSubLayer==1) { definitionExpressionprov=definitionExpression_gloabal; }
+                    setLabelWidgetUbigeos(_this.indexSubLayer);
+                    changeIndex(_this.indexSubLayer+1);
+                    updateMap(definitionExpression_gloabal,_this.indexSubLayer);
                     _this.select_ubigeos=[];
                 }
                 _this.view_map.popup.close();
@@ -1108,13 +1111,13 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.select_ubigeos=[];
                 if (checked) {
                     var where="1=1";
-                    if (indexLayer==0){
+                    if (_this.indexSubLayer==0){
                         where="1=1";
                         _this.historic_features[0].select_features=[];
                         _this.historic_features[1].select_features=[];
                         _this.historic_features[2].select_features=[];
                     }
-                    else if(indexLayer==1){
+                    else if(_this.indexSubLayer==1){
 
                         where=getDefinitionExpresion(_this.historic_features[0].select_features,0);
                         _this.historic_features[1].select_features=[];
@@ -1122,18 +1125,18 @@ App.utils.mapas = (function (parent, config,service) {
 
                     }
 
-                    else if (indexLayer==2){
+                    else if (_this.indexSubLayer==2){
                         where=getDefinitionExpresion(_this.historic_features[1].select_features,1);
                         _this.historic_features[2].select_features=[];
                     }
 
 
-                    _this.layer.findSublayerById(parseInt(indexLayer)).definitionExpression=where;
-                    selectFeaturesByQuery(where,indexLayer);
+                    _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression=where;
+                    selectFeaturesByQuery(where,_this.indexSubLayer);
 
                 }
                 else {
-                    _this.layer.findSublayerById(parseInt(indexLayer)).definitionExpression="1<>1";
+                    _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression="1<>1";
                 }
             }
 
@@ -1374,6 +1377,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         });
     }
+
     var cambiarMapa = function(){
         var _this=parent.mapas;
         var codMapa=_this.datosMap.codMap;
@@ -1388,24 +1392,9 @@ App.utils.mapas = (function (parent, config,service) {
         service.mapas.getLegenda(codMapa,codTematico,crearMapaRender)
     }
 
-
-
     var requireEvents = function () {
         cambiarMapa(codMap,codTematico,url,titulo);
     };
-
-    /*var getMapa = function (cod_mapa) {
-        service.mapas.getMapa(cod_mapa,function (data) {
-
-            var _this=parent.mapas;
-            _this.datosMap.codMap=cod_mapa;
-            _this.datosMap.urlMap=data.url;
-            _this.datosMap.codTematico=data.cod_tematico_default;
-            _this.datosMap.tituloLegend=data.descripcion;
-            console.log('datos del mapa-->',_this.datosMap);
-            cambiarMapa();
-        });
-    }*/
 
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;
@@ -1418,9 +1407,6 @@ App.utils.mapas = (function (parent, config,service) {
             cambiarMapa();
         });
     }
-
-
-
 
     var init = function (options) {
         var _this=parent.mapas;
@@ -1462,9 +1448,8 @@ App.utils.mapas = (function (parent, config,service) {
         layer:layer,
         cod_map:codMap,
         datosMap: datosMap,
-        legend: legend
+        legend: legend,
+        indexSubLayer :indexSubLayer
     }
-
-
 
 })(App.utils, AppConfig() ,App.service );
