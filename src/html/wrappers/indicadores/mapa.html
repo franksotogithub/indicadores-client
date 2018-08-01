@@ -59,6 +59,17 @@
     <div id="contentPanel">
         <div id="resumenPanel">
             <div class="row">
+                <div>
+                    <select class="selectMapa">
+                        <option value="0">Categoria: Población</option>
+                        <option value="1">Categoria: Educación</option>
+                        <option value="2">Categoria: Salud</option>
+                        <option value="3">Categoria: Economia</option>
+                        <option value="4">Categoria: vivienda</option>
+                        <option value="5">Categoria: Hogar</option>
+
+                    </select>
+                </div>
                 <div class="graficoWidget-top">
                     <div>
                         <div> Población Censada</div>
@@ -103,9 +114,12 @@
             </table>
         </div>
         <div id="mapaGraficoPanel" style="display: none"></div>
-        <div id="listMiniMaps">  <!--se cambio de id antes tablaPanel-->
+        <div class="cTotalMinimaps">
+            <div id="listMiniMaps">  <!--se cambio de id antes tablaPanel-->
 
+            </div>
         </div>
+
     </div>
 
 </div>
