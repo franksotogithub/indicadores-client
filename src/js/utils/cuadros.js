@@ -19,6 +19,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _initPobreza = function (_this, vista) {
         App.categoria = 'P07';
+        _this.expardirVentana = true;
         _crearTabsCategorias(appData.categorias, vista);
         _this.crearTablaUigeos([], []);
     };
@@ -124,6 +125,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _crearTabla= function (table, data, columns) {
+        console.log("--->colums", columns);
         $(".theadindicadores").show();
 
         return $(table).DataTable({
@@ -263,6 +265,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         var callback = function () {
             // Crear cabecera de la tabla segun los ubigeos indicadors
+            console.log(">>>>> ejecutar crear tabla calback");
             _cabeceraUigeos(datos);
 
             // Crear Estructura Json para renderizado de la tabla
@@ -277,8 +280,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             });
         };
 
+        console.log(">>>>> ejecutar pre-calback");
         // Crear cabecera
         if (ubigeos.length > 1 && !this.expardirVentana) {
+            console.log(">>>>> ejecutar callback minimizar ventana");
             this.expardirVentana = true;
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)
         }else {
@@ -306,11 +311,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var mapasChangeEvent = function (options) {
         var _this = this;
+        console.log(">>>> ejecutar evento --> mapasChangeEvent");
         if (this.timeClikMap !== undefined) {
             clearTimeout(this.timeClikMap);
         }
 
         this.timeClikMap = setTimeout(function(){
+            console.log(">>>> ejecutar timeout ---> mapasChangeEvent");
             _this.crearTablaUigeos(options.ubigeo, options.historico);
             _this.timeClikMap = undefined;
         }, 1200);
@@ -324,10 +331,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiNormalCallback = function (options) {
-        this.tblIndicadores.fixedColumns().relayout();
+        console.log("restaurar ventana modulo cuadros");
         $(".cuadroMinimizado").removeClass("col-4-5").addClass("col-5-5");
         $(".busquedaMaximizadaCuadro").removeClass("CuadroActivoBusqueda");
         $(".busquedaCuadro").show();
+        this.tblIndicadores.fixedColumns().relayout();
     };
 
     var uiReabrirVentana = function () {
@@ -356,7 +364,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         crearTablaCategoria: crearTablaCategoria,
         uiMaxCallback: uiMaxCallback,
         mapasChangeEvent: mapasChangeEvent,
-        uiNormalCallback: uiNormalCallback,
         uiNormalCallback: uiNormalCallback,
         categoriaChangeEvent: categoriaChangeEvent,
         fixedColumnsRelayout: fixedColumnsRelayout,

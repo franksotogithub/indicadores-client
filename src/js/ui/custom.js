@@ -434,6 +434,8 @@ function restaurarVentana(e, callback) {
         //console.log("como llegue aqui?  " + restaurarVent);
     }else if(restaurarVent ==3) {
 
+        console.log("restaurar 3 ventanas");
+
         if (dataCodevent == "mapas") {
             ventana.addClass("col-4-10").removeClass("col-1-1");
         } else if (dataCodevent == "cuadros") {
@@ -451,6 +453,7 @@ function restaurarVentana(e, callback) {
     e.addClass("maximizar").removeClass("restaurar");
 
     if (App.uiNormalCallback!==undefined){
+        console.log("restaurar ventanas modulo interno");
         App.uiNormalCallback(dataCodevent);
     }
 

@@ -11,3 +11,6 @@ src/assets/
 _p*.*
 **/config.js
 *.log
+*.back
+back*
+test*
