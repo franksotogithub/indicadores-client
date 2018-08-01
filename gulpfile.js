@@ -23,7 +23,10 @@ var config = {
                 this.src+'js/utils/*.js', this.src+'js/events/*.js']
         },
         css:  function () {
-            return this.src + 'css/*.css'
+            return [this.src + 'css/*.css']
+        },
+        vistascss:  function () {
+            return [this.src + 'css/vistas/*.css']
         },
         img:  function () {
             return this.src + 'img/*'
@@ -118,7 +121,13 @@ gulp.task('css', function () {
         .pipe(browserSync.reload({stream:true}));
 });
 
-
+gulp.task('vistascss', function () {
+    return gulp.src(config.source.vistascss())
+        //.pipe(concat(config.output.concat.css))
+        .pipe(config.debug ? util.noop() : csso())
+        .pipe(gulp.dest(config.output.css()))
+        .pipe(browserSync.reload({stream:true}));
+});
 /* JS */
 
 gulp.task('js', function () {

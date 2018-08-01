@@ -304,9 +304,16 @@ div.esri-search__submit-button:focus {
     padding: 10px;
 }
 
+.cTotalMinimaps {
+    max-width: 100%;
+    overflow:auto;
+    max-height: 130px ;
+    margin-bottom:10px;
+}
+
 #listMiniMaps {
     display: block;
-    padding: 10px;
+    /*padding: 10px;*/
     height: auto;
     text-align: center;
 
@@ -319,8 +326,29 @@ div.esri-search__submit-button:focus {
     height: 120px;
     width: 120px;
     visibility: hidden;
+    margin-bottom:10px;
 }
 
-#resumenPanel > .row  {
+#resumenPanel > .row {
     text-align: center;
+
+}
+.selectMapa {
+    margin-top: 10px;
+    background-color: #1b3c71;
+    border: none;
+    padding: 15px 25px;
+    border-right: solid 10px #1b3c71;
+    font-family: 'signikaregular';
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    width: 440px;
+    color: white;
+    outline: none;
+}
+
+
+.selectMapa option:hover {
+    background-color: #00b3ff;
 }
