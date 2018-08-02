@@ -1,5 +1,6 @@
 (function (service, utils,appData) {
     $(document).ready(function (e) {
+        /*
         $(".sliderDiv").html();
         $(".sliderDiv").append('<div id="grafico_1_c1" class="graficoElementSlider" ></div>');
         $(".sliderDiv").append('<div id="grafico_2_c1" class="graficoElementSlider" ></div>');
@@ -15,7 +16,7 @@
                 style: {
                     fontSize: "14px"
                 }
-            },
+            }
         });
 
         utils.graficos.mediaLuna('G00001', '00', {
@@ -28,7 +29,7 @@
                 style: {
                     fontSize: "14px"
                 }
-            },
+            }
         });
 
         utils.graficos.mediaLuna('G00001', '00', {
@@ -41,7 +42,7 @@
                 style: {
                     fontSize: "14px"
                 }
-            },
-        });
+            }
+        });*/
     });
 })(App.service, App.utils,Appdata());

@@ -48,5 +48,9 @@ App.utils = {
             if($.inArray(el, arraySinDuplicados) === -1) arraySinDuplicados.push(el);
         });
         return arraySinDuplicados;
+    },
+
+    capitalizeFirstLetter: function (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 };

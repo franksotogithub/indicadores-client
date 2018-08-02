@@ -557,7 +557,7 @@ $(document).ready(function() {
 
     });
 
-    $(document).on('mouseover','th', function (e) {
+    $("#tblindicadores").on('mouseover','th', function (e) {
 
         var ubigeo = $(this).attr('ubigeo');
 
