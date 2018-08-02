@@ -30,13 +30,19 @@ COMBOTOOLSBOX.event = {
     activarButton: function(e){
         /* Evento cambiar de tab (botones de barra de herramientas) */
         var codigoTab= e.attr("data-buttonCod");
-        console.log("codigoTab >>>", codigoTab);
+
         var contenedorVentanas = e.closest(".widget-vistaInteractiva-comboToolsBox").parent().find(".contentTabs");
         e.siblings("button").removeClass("activeButton");
         e.addClass("activeButton");
 
         contenedorVentanas.children(".contentData[data-buttonCod="+codigoTab+"]").siblings("div").hide();
         contenedorVentanas.children(".contentData[data-buttonCod="+codigoTab+"]").show();
+        var bloque = e.parents('.ventana');
+        var vista = $(bloque).find('.contentListaTitulos li[data-selected="selected"]');
+        App.dashboardWidgetChangeEvent(
+            {"jqObject": bloque, "id": bloque.attr("id")},
+            {"jqObject": vista, "id": vista.attr('data-vista')},
+            codigoTab);
     },
     desplegarLista: function(e) {
         /* Evento click sobre desplegar  boton de lista  */
@@ -46,8 +52,12 @@ COMBOTOOLSBOX.event = {
         e.siblings("li").removeAttr("data-selected");
         e.attr("data-selected", "selected");
         var selected = e.text();
+        var bloque = e.parents('.ventana');
         e.closest(".contentComboTitulos").children("h5").text(selected);
         e.closest(".contentComboTitulos").children('.contentListaTitulos').toggle();
+
+        App.dashboardVistaChangeEvent( {"jqObject": bloque, "id": bloque.attr("id")},
+            {"jqObject": e,"jqObjectSelect": e, "id": e.attr('data-vista')})
 
     }
 

@@ -130,7 +130,13 @@ var App = (function (scope, config) {
         _hasUtils(this, 'indicadorChangeEvent', {"indicador": indicador});
     };
 
+    var dashboardWidgetChangeEvent = function (bloque, vista, seleccion) {
+        _hasUtils(this, 'dashboardWidgetChangeEvent', {"bloque": bloque, "vista": vista, "seleccion": seleccion}, ['dashboard', 'mapas']);
+    };
 
+    var dashboardVistaChangeEvent = function (bloque, vista, seleccion) {
+        _hasUtils(this, 'dashboardVistaChangeEvent', {"bloque": bloque, "vista": vista}, ['dashboard', 'mapas']);
+    };
     return {
         ambito: 'nacional',
         categoria: 'P01',
@@ -147,6 +153,8 @@ var App = (function (scope, config) {
         uiMinimizarVentana: uiMinimizarVentana,
         uiMouseOverTabla : uiMouseOverTabla,
         uiMouseOutTabla : uiMouseOutTabla,
+        dashboardWidgetChangeEvent: dashboardWidgetChangeEvent,
+        dashboardVistaChangeEvent: dashboardVistaChangeEvent
 
     };
 })(window, AppConfig());
