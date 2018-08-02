@@ -1,0 +1,531 @@
+@import "gridDmk";
+/* Layouts */
+/*
+  Layout 01:
+    Cabecera y estructura principal con 02 ventanas
+    <body>
+      <header>
+      <main>
+
+*/
+
+
+/* Colores */
+
+$AzulInei: #1b3c71;
+$CelesteInei:#0079C9;
+$NaranjaInei:#d57008;
+$RojoPasionInei:#990000;
+$CelesteJadeAceroInei:#34718C;
+$celesteAcero: #359bc8;
+$colorGris66: #4D4D4D;
+
+
+
+/* fin colores*/
+.bg_AzulInei { background-color: $AzulInei;}
+.bg_CelesteInei{background-color: $CelesteInei;}
+.bg_NaranjaInei{background-color:$NaranjaInei;}
+.bg_RojoPasionInei{background-color: $RojoPasionInei;}
+.bg_CelesteJadeAceroInei{background-color:$CelesteJadeAceroInei;}
+.bg_celesteAcero{background-color: $celesteAcero;}
+.bg_blanco{background-color: white;}
+
+.colorBlanco{color:white; }
+.colorNaranjaInei{color:$NaranjaInei;}
+.colorRojoPasionInei {color: $RojoPasionInei;}
+.colorAzulInei{color:$AzulInei;}
+.colorGris66{color:$colorGris66;}
+
+nav.nav-vertical  button.cbutt1 {background-color:#2F6ABC}
+nav.nav-vertical  button.cbutt2 {background-color:#2a5a9c}
+nav.nav-vertical button.cbutt3 {background-color:#30A36B}
+nav.nav-vertical button.cbutt4 {background-color:#22896E}
+
+
+.textSize-24{font-size: 24px;}
+.textSize-22{font-size: 22px;}
+.textSize-20{font-size: 20px;}
+.textSize-18{font-size: 18px;}
+.textSize-16{font-size: 16px;}
+.textSize-14{font-size: 14px;}
+.textSize-13{font-size: 13px;}
+.textSize-12{font-size: 12px;}
+.textSize-11{font-size: 11px;}
+.textSize-10{font-size: 10px;}
+.textSize-09{font-size: 9px;}
+.textSize-08{font-size: 8px;}
+
+.padding-1{padding:1px;}
+.padding-2{padding:2px;}
+.padding-3{padding:3px;}
+.padding-4{padding:4px;}
+.padding-5{padding:5px;}
+.padding-6{padding:6px;}
+.padding-7{padding:7px;}
+.padding-8{padding:8px;}
+.padding-9{padding:9px;}
+.padding-10{padding:10px;}
+.padding-11{padding:11px;}
+.padding-12{padding:12px;}
+.padding-13{padding:13px;}
+.padding-14{padding:14px;}
+.padding-15{padding:15px;}
+.padding-16{padding:16px;}
+.padding-17{padding:17px;}
+.padding-18{padding:18px;}
+.padding-19{padding:19px;}
+.padding-20{padding:20px;}
+.padding-21{padding:21px;}
+.padding-22{padding:22px;}
+.padding-23{padding:23px;}
+.padding-24{padding:24px;}
+.padding-25{padding:25px;}
+
+
+.margin-1{margin:1px;}
+.margin-2{margin:2px;}
+.margin-3{margin:3px;}
+.margin-4{margin:4px;}
+.margin-5{margin:5px;}
+.margin-6{margin:6px;}
+.margin-7{margin:7px;}
+.margin-8{margin:8px;}
+.margin-9{margin:9px;}
+.margin-10{margin:10px;}
+.margin-11{margin:11px;}
+.margin-12{margin:12px;}
+.margin-13{margin:13px;}
+.margin-14{margin:14px;}
+.margin-15{margin:15px;}
+.margin-16{margin:16px;}
+.margin-17{margin:17px;}
+.margin-18{margin:18px;}
+.margin-19{margin:19px;}
+.margin-20{margin:20px;}
+.margin-21{margin:21px;}
+.margin-22{margin:22px;}
+.margin-23{margin:23px;}
+.margin-24{margin:24px;}
+.margin-25{margin:25px;}
+
+.marginTop-10 {margin-top: 10px;}
+
+
+.mayusculas {text-transform: uppercase;}
+
+
+
+
+
+/* Iniciales */
+
+$fuenteBase: 'open_sansregular' ;
+$fuenteTitulo: 'signikaregular;';
+
+
+* {
+  vertical-align: top;
+}
+h1, h2,h3,h4,h5,h6{
+  /*font-family: $fuenteTitulo;*/
+  margin:0;
+  padding: 0;
+  text-transform: uppercase;
+}
+h1{font-size: 24px;}
+h2{font-size: 18px;}
+h3{ font-size: 16px;}
+h4{ font-size: 14px; }
+h5{ font-size: 12px; }
+
+p{ font-size: 12px; margin:0px;}
+
+/* Body  */
+
+$bg_body: $celesteFondo ;
+
+
+html, body,  main {
+  height: 100%;
+}
+
+body {
+  background-color: $bg_body ;
+  font-family: $fuenteBase;
+}
+button {
+  background-color: transparent;
+}
+
+div[role=wrap] {
+  display: $b;
+}
+div[role=wraper] {
+  display: $b;
+}
+
+
+
+
+/* Componentes*/
+
+
+/* Header
+  El header principal siempre es hijo directo del body
+
+  body > header
+*/
+
+$altoHeader : 50px ;
+$bg_Header:$azulPri ;
+$color_Header: white;
+
+body>header{
+  height: $altoHeader;
+  background-color: $bg_Header;
+  color: $color_Header;
+  line-height: $altoHeader ;
+
+  > img, > h1, > button {
+    display: $ib;
+    vertical-align: middle;
+  }
+  > img {
+    padding-left:25px ;
+    height: 70%;
+  }
+  > h1 {
+    font-size: 18px;
+    padding-left: 25px ;
+    line-height: $altoHeader ;
+  }
+  > button {
+    float: right;
+    height: 100%;
+    background-color: transparent;
+    color: $color_Header;
+    line-height: 100%;
+    padding: 0px 20px;
+  }
+  > button:hover {
+    background-color: rgba(0,0,0,0.25);
+  }
+
+}
+
+/* Fin Header Principal*/
+
+
+
+/* Nav Vertical
+  Los Nav, deberian ir siempre dentro de la etiqueta main
+*/
+
+$bg_navVertical:$azulGrisAside ;
+$color_navVertical: white;
+
+nav.nav-vertical {
+  display: $ib;
+  background-color:$bg_navVertical ;
+  color: $color_navVertical;
+  vertical-align: top;
+  height:100% ;
+  :first-child{
+    margin-top: 3px;
+  }
+  button{
+    background-color: #334051;
+    display: $b;
+    width:100%;
+    padding: 20px 10px;
+    margin-bottom: 3px;
+    color:white;
+    opacity: 0.9;
+  }
+  button:hover{
+    background-color: #359bc8;
+    opacity: 1;
+  }
+}
+
+
+
+/* fin Nav Vertical */
+
+
+
+
+
+section.content-row{
+  display: $ib;
+  vertical-align: top;
+}
+
+section.resumen-button-top {
+  display: $b;
+  text-align: center;
+  vertical-align: top;
+
+  >div {
+    display: $ib;
+    min-height: 60px;
+    vertical-align: top;
+  }
+
+  >div.resumenIconoDatos {
+     .resumenIcono {
+      width: 30%;
+      display: $ib;
+      vertical-align: middle;
+       min-height: 85px;
+       line-height: 80px;
+       img {
+         vertical-align: middle;
+       }
+    }
+     .resumenDatos {
+      width:70%;
+      display: $ib;
+      vertical-align: middle;
+    }
+  }
+}
+
+section.agruparTres > div  div[role="wrap"] {
+  display: $ib;
+}
+
+/* COmponenete Ventana */
+article.ventana {
+  display: $ib;
+  margin-bottom: 10px;
+  vertical-align: top;
+  > header {
+    background-color: $grisTopVentana;
+    color: $azulPri;
+
+    margin: 0px 5px 0px 10px;
+    line-height: $mh100*0.3;
+
+    border-left: solid $azulPri 4px;
+
+    > h2 {
+      text-transform: uppercase;
+      display: $b;
+      margin: 0px;
+      font-size: 13px;
+      padding: 5px;
+      padding-left: 15px;
+      > button {
+        float: right;
+        background-color: transparent;
+        :hover {
+          color: $NaranjaInei;
+        }
+      }
+
+    }
+  }
+
+  >section{
+    background-color: white;
+    height: $mh100*3.5;
+    margin: 0px 5px 0px 10px;
+  }
+
+}
+
+/* contenedore tabs de ventanas */
+div.contentTabs{
+  display: block;
+  padding: 10px;
+  max-height:270px;
+  overflow-x:hidden;
+  overflow-y: auto;
+}
+.contentData{
+  display: $b;
+  h2 {
+    font-size:15px;
+    color:$CelesteJadeAceroInei;
+    text-align: center;
+    display: $b;
+    margin-bottom:10px;
+  }
+
+  table{
+    font-size: 13px;
+    thead{
+      background: $celesteAcero;
+      color: white;
+      border-color: white !important;
+    }
+    tbody tr:nth-child(2n){
+      background-color: $celesteFondo ;
+    }
+
+  }
+}
+
+
+
+
+
+
+/* ventana Maximizada  */
+
+  article.ventanaMaximizada{
+    display: $b;
+
+    vertical-align: top;
+    > header{
+      background-color: $grisTopVentana;
+      color:$azulPri;
+      line-height:$mh100*0.3 ;
+      border-left: solid $azulPri 4px;
+      margin: 0px;
+
+      > h2 {
+        text-transform: uppercase;
+        display: $b;
+        margin: 0px;
+        font-size: 13px;
+        padding: 5px;
+        padding-left:15px;
+        > button {
+          float: right;
+          background-color: transparent;
+          :hover {
+            color:$NaranjaInei;
+          }
+        }
+
+      }
+    }
+    >section{
+      background-color: white;
+      height: auto !important;
+    }
+}
+
+ /* custom */
+footer{
+  position: absolute;
+  bottom: 0;
+}
+
+footer > a {
+  display: block;
+  color: white;
+  vertical-align: middle;
+  img,p {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  img {
+    padding-right: 10px;
+  }
+}
+
+
+/* Componentes */
+
+/* Visor */
+
+.contenedorMapa > svg{
+  display: inline; width: inherit; min-width: inherit; max-width: inherit; height: inherit; min-height: inherit; max-height: inherit;
+}
+
+/* */
+
+
+
+
+
+
+/* ComboTitulo con Barra de herramientas */
+
+.contentComboTitulos {
+  margin:5px;
+  padding:8px;
+  border: solid #CCC 1px;
+  position: relative;
+  padding-right: 55px;
+
+  h5{
+    height: 18px;
+    vertical-align: middle;
+    display: table-cell;
+  }
+}
+
+.botonDesplegarTitulos{
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  width:50px;
+  background: #1b3c71;
+  color:white;
+}
+
+.contentListaTitulos{
+  position: relative;
+  padding: 0px 8px;
+  width: 100%;
+  display: none;
+
+  ul{
+    position: absolute;
+    width: 100%;
+    left: -10px;
+    list-style: none;
+    margin: 0px;
+    padding: 8px 0px;
+    font-size: 14px;
+    top: 8px;
+    background-color: rgba(255,255,255,0.7);
+
+    li {
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+    li:nth-child(2n+2){
+      background-color:#e6e6e6 ;
+    }
+    li:hover{
+      background-color: #0079c9;
+      color: white;
+    }
+  }
+
+}
+.BarraHerramientas {
+  margin:5px;
+  text-align: right;
+  button {
+    background-color: #e6e6e6;
+    padding: 5px 10px;
+    color: #1b3c71;
+  }
+  button:hover, button.activeButton{
+    color: white;
+    background-color: #0079c9;
+  }
+
+}
+
+
+
+
+/*FIn componente */
+
+
+
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
+
+  .resumen-button-top p {
+    font-size: 9px;
+  }
+}

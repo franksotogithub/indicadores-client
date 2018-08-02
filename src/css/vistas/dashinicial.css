@@ -780,6 +780,7 @@ section.resumen-button-top {
 section.agruparTres > div div[role="wrap"] {
   display: inline-block; }
 
+/* COmponenete Ventana */
 article.ventana {
   display: inline-block;
   margin-bottom: 10px;
@@ -802,10 +803,60 @@ article.ventana {
         background-color: transparent; }
         article.ventana > header > h2 > button :hover {
           color: #d57008; }
-  article.ventana section {
+  article.ventana > section {
     background-color: white;
     height: 350px;
     margin: 0px 5px 0px 10px; }
+
+/* contenedore tabs de ventanas */
+div.contentTabs {
+  display: block;
+  padding: 10px;
+  max-height: 270px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.contentData {
+  display: block; }
+  .contentData h2 {
+    font-size: 14px;
+    color: #34718C;
+    text-align: center;
+    display: block; }
+  .contentData table {
+    font-size: 13px; }
+    .contentData table thead {
+      background: #359bc8;
+      color: white;
+      border-color: white !important; }
+    .contentData table tbody tr:nth-child(2n) {
+      background-color: #D0E6F0; }
+
+/* ventana Maximizada  */
+article.ventanaMaximizada {
+  display: block;
+  vertical-align: top; }
+  article.ventanaMaximizada > header {
+    background-color: #E6E6E6;
+    color: #1B3C71;
+    line-height: 30px;
+    border-left: solid #1B3C71 4px;
+    margin: 0px; }
+    article.ventanaMaximizada > header > h2 {
+      text-transform: uppercase;
+      display: block;
+      margin: 0px;
+      font-size: 13px;
+      padding: 5px;
+      padding-left: 15px; }
+      article.ventanaMaximizada > header > h2 > button {
+        float: right;
+        background-color: transparent; }
+        article.ventanaMaximizada > header > h2 > button :hover {
+          color: #d57008; }
+  article.ventanaMaximizada > section {
+    background-color: white;
+    height: auto !important; }
 
 /* custom */
 footer {
@@ -823,6 +874,17 @@ footer > a {
     padding-right: 10px; }
 
 /* Componentes */
+/* Visor */
+.contenedorMapa > svg {
+  display: inline;
+  width: inherit;
+  min-width: inherit;
+  max-width: inherit;
+  height: inherit;
+  min-height: inherit;
+  max-height: inherit; }
+
+/* */
 /* ComboTitulo con Barra de herramientas */
 .contentComboTitulos {
   margin: 5px;
