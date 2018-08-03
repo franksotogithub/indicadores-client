@@ -55,10 +55,22 @@ COMBOTOOLSBOX.event = {
         var bloque = e.parents('.ventana');
         e.closest(".contentComboTitulos").children("h5").text(selected);
         e.closest(".contentComboTitulos").children('.contentListaTitulos').toggle();
-
         App.dashboardVistaChangeEvent( {"jqObject": bloque, "id": bloque.attr("id")},
             {"jqObject": e,"jqObjectSelect": e, "id": e.attr('data-vista')})
+    },
+    replegarLista: function(e){
+        var excluir = $(".contentListaTitulos");
+        var excluir2 = $("button.botonDesplegarTitulos");
 
+
+        if ( !excluir2.is(e.target) && excluir2.has(e.target).length === 0 && !excluir.is(e.target) && excluir.has(e.target).length === 0) {
+            $(".widget-vistaInteractiva-comboToolsBox .contentListaTitulos").each(function(){
+                if($(this).is(":visible")){
+                    console.log("pulsaste afuera y esta abierta una lista");
+                    $(this).toggle();
+                }
+            });
+        }
     }
 
 };
@@ -67,20 +79,44 @@ COMBOTOOLSBOX.event = {
 
 
 $(document).ready(function(){
+    /* Altos Automaticos */
+    var altoPantalla = $(window).height();
+    var anchoPatanlla = $(window).width();
+    var resumentTop = $(".resumen-button-top").height();
+    var altoVentana = ((altoPantalla-resumentTop)-150)/2 ;
+    var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
+    var altoContentTabs = (altoVentana - altoWidgetComboTools) -20;
+
+    // Alto Nav
+    $(".nav-vertical").css("height", (altoPantalla - 50)+"px");
+    //alto de contenedor principal sin el header
+    $("main").css("height",(altoPantalla - 50)+"px");
+    // alto de las ventanas sin resumenes del top
+    $("article.ventana > section").css("height", (altoVentana) + "px");
+    // alto del contenido de los tabs de las ventanas
+    $(".contentTabs").css("height", altoContentTabs + "px");
+
+
     COMBOTOOLSBOX.event.crear();
 
+    $(document).on('click', function(e) {
+        COMBOTOOLSBOX.event.replegarLista(e);
+    });
+
     $('.widget-vistaInteractiva-comboToolsBox').on('click','.BarraHerramientas > button', function() {
-        var objeto= $(this);
-        COMBOTOOLSBOX.event.activarButton(objeto);
+        var _this= $(this);
+        COMBOTOOLSBOX.event.activarButton(_this);
     });
 
     $('.widget-vistaInteractiva-comboToolsBox').on('click','button.botonDesplegarTitulos', function() {
-        var objeto= $(this);
-        COMBOTOOLSBOX.event.desplegarLista(objeto);
+        var _this= $(this);
+        COMBOTOOLSBOX.event.desplegarLista(_this);
     });
 
     $('.widget-vistaInteractiva-comboToolsBox').on('click','.contentListaTitulos li', function() {
-        var objeto= $(this);
-        COMBOTOOLSBOX.event.seleccionarItem(objeto);
+        var _this= $(this);
+        COMBOTOOLSBOX.event.seleccionarItem(_this);
     });
+
+
 });

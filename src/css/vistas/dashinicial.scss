@@ -110,7 +110,11 @@ nav.nav-vertical button.cbutt4 {background-color:#22896E}
 .margin-25{margin:25px;}
 
 .marginTop-10 {margin-top: 10px;}
-
+.marginBottom-10 {margin-bottom:10px;}
+.textAlignRight {text-align: right;}
+.textAlignCenter{text-align: center;}
+.paddingRight-10{padding-right: 10px;}
+.paddingRight-20{padding-right: 20px;}
 
 .mayusculas {text-transform: uppercase;}
 
@@ -299,7 +303,6 @@ section.agruparTres > div  div[role="wrap"] {
 /* COmponenete Ventana */
 article.ventana {
   display: $ib;
-  margin-bottom: 10px;
   vertical-align: top;
   > header {
     background-color: $grisTopVentana;
@@ -340,12 +343,19 @@ article.ventana {
 div.contentTabs{
   display: block;
   padding: 10px;
+  height:270px;
   max-height:270px;
   overflow-x:hidden;
   overflow-y: auto;
 }
 .contentData{
   display: $b;
+  height:100%;
+
+  div {
+    display: block;
+    height: 100%;
+  }
   h2 {
     font-size:15px;
     color:$CelesteJadeAceroInei;
@@ -354,6 +364,7 @@ div.contentTabs{
     margin-bottom:10px;
   }
 
+  /* Componente tabla */
   table{
     font-size: 13px;
     thead{
@@ -368,6 +379,12 @@ div.contentTabs{
   }
 }
 
+.fuenteTabla {
+  font-size: 11px;
+  display: $b;
+}
+
+/* Fin de tablas */
 
 
 
@@ -412,7 +429,8 @@ div.contentTabs{
  /* custom */
 footer{
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
+  left:10px;
 }
 
 footer > a {
@@ -478,6 +496,7 @@ footer > a {
 
   ul{
     position: absolute;
+    border-top: solid 1px #CCC;
     width: 100%;
     left: -10px;
     list-style: none;
@@ -485,7 +504,8 @@ footer > a {
     padding: 8px 0px;
     font-size: 14px;
     top: 8px;
-    background-color: rgba(255,255,255,0.7);
+    z-index: 1;
+    background-color: rgba(255,255,255,1);
 
     li {
       padding: 5px 8px;

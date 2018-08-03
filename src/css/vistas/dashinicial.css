@@ -647,6 +647,21 @@ nav.nav-vertical button.cbutt4 {
 .marginTop-10 {
   margin-top: 10px; }
 
+.marginBottom-10 {
+  margin-bottom: 10px; }
+
+.textAlignRight {
+  text-align: right; }
+
+.textAlignCenter {
+  text-align: center; }
+
+.paddingRight-10 {
+  padding-right: 10px; }
+
+.paddingRight-20 {
+  padding-right: 20px; }
+
 .mayusculas {
   text-transform: uppercase; }
 
@@ -783,7 +798,6 @@ section.agruparTres > div div[role="wrap"] {
 /* COmponenete Ventana */
 article.ventana {
   display: inline-block;
-  margin-bottom: 10px;
   vertical-align: top; }
   article.ventana > header {
     background-color: #E6E6E6;
@@ -812,17 +826,24 @@ article.ventana {
 div.contentTabs {
   display: block;
   padding: 10px;
+  height: 270px;
   max-height: 270px;
   overflow-x: hidden;
   overflow-y: auto; }
 
 .contentData {
-  display: block; }
+  display: block;
+  height: 100%;
+  /* Componente tabla */ }
+  .contentData div {
+    display: block;
+    height: 100%; }
   .contentData h2 {
-    font-size: 14px;
+    font-size: 15px;
     color: #34718C;
     text-align: center;
-    display: block; }
+    display: block;
+    margin-bottom: 10px; }
   .contentData table {
     font-size: 13px; }
     .contentData table thead {
@@ -832,6 +853,11 @@ div.contentTabs {
     .contentData table tbody tr:nth-child(2n) {
       background-color: #D0E6F0; }
 
+.fuenteTabla {
+  font-size: 11px;
+  display: block; }
+
+/* Fin de tablas */
 /* ventana Maximizada  */
 article.ventanaMaximizada {
   display: block;
@@ -861,7 +887,8 @@ article.ventanaMaximizada {
 /* custom */
 footer {
   position: absolute;
-  bottom: 0; }
+  bottom: 10px;
+  left: 10px; }
 
 footer > a {
   display: block;
@@ -913,6 +940,7 @@ footer > a {
   display: none; }
   .contentListaTitulos ul {
     position: absolute;
+    border-top: solid 1px #CCC;
     width: 100%;
     left: -10px;
     list-style: none;
@@ -920,7 +948,8 @@ footer > a {
     padding: 8px 0px;
     font-size: 14px;
     top: 8px;
-    background-color: rgba(255, 255, 255, 0.7); }
+    z-index: 1;
+    background-color: white; }
     .contentListaTitulos ul li {
       padding: 5px 8px;
       cursor: pointer; }
