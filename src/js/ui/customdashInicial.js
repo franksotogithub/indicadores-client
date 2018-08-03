@@ -1,6 +1,29 @@
 
 /* Componentes */
 
+/* Ventana */
+var VENTANACOMPONENTE = VENTANACOMPONENTE || {};
+VENTANACOMPONENTE.event={};
+VENTANACOMPONENTE.event={
+    maximizar:function(e){
+        var altoPantalla = $(window).height();
+        var resumentTop = $(".resumen-button-top").height();
+        var altoHeader = $("body>header").height();
+        var altoVentana = ((altoPantalla-resumentTop)-altoHeader-15) ;
+        var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
+        var altoContentTabs = (altoVentana - altoWidgetComboTools) -20;
+        e.closest("article.ventana").addClass("col-10-10");
+        e.closest("article.ventana").removeClass("col-5-10");
+        e.closest("article.ventana").css("height",altoVentana+"px");
+        e.closest("article.ventana").siblings("article").hide();
+
+    }
+
+};
+
+
+
+
 /* ComboTitulo con Barra de herramientas */
 var COMBOTOOLSBOX = COMBOTOOLSBOX || {};
 COMBOTOOLSBOX.event = {};
@@ -82,21 +105,32 @@ $(document).ready(function(){
     /* Altos Automaticos */
     var altoPantalla = $(window).height();
     var anchoPatanlla = $(window).width();
+    var altoHeader = $("body>header").height();
     var resumentTop = $(".resumen-button-top").height();
-    var altoVentana = ((altoPantalla-resumentTop)-150)/2 ;
     var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
-    var altoContentTabs = (altoVentana - altoWidgetComboTools) -20;
+    var altoVentana = ((altoPantalla-resumentTop)- altoHeader -100 )/2 ;
+    var altoContentTabs = (altoVentana - altoWidgetComboTools) -60;
 
+    console.log();
     // Alto Nav
     $(".nav-vertical").css("height", (altoPantalla - 50)+"px");
     //alto de contenedor principal sin el header
-    $("main").css("height",(altoPantalla - 50)+"px");
+    $("main").css("height",(altoPantalla - altoHeader)+"px");
     // alto de las ventanas sin resumenes del top
     $("article.ventana > section").css("height", (altoVentana) + "px");
     // alto del contenido de los tabs de las ventanas
     $(".contentTabs").css("height", altoContentTabs + "px");
 
 
+    /* eventos de ventana */
+
+    $('.ventana').on('click','button.ventanaMaximizar', function() {
+        var _this= $(this);
+        VENTANACOMPONENTE.event.maximizar(_this);
+    });
+
+
+    /* eventos de widget */
     COMBOTOOLSBOX.event.crear();
 
     $(document).on('click', function(e) {
@@ -117,6 +151,8 @@ $(document).ready(function(){
         var _this= $(this);
         COMBOTOOLSBOX.event.seleccionarItem(_this);
     });
+
+
 
 
 });

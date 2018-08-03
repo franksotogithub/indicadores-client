@@ -827,35 +827,44 @@ div.contentTabs {
   display: block;
   padding: 10px;
   height: 270px;
-  max-height: 270px;
   overflow-x: hidden;
   overflow-y: auto; }
 
 .contentData {
-  display: block;
+  display: none;
   height: 100%;
   /* Componente tabla */ }
   .contentData div {
     display: block;
     height: 100%; }
   .contentData h2 {
-    font-size: 15px;
+    font-size: 12px;
     color: #34718C;
     text-align: center;
     display: block;
     margin-bottom: 10px; }
   .contentData table {
-    font-size: 13px; }
+    font-size: 13px;
+    text-align: right; }
     .contentData table thead {
       background: #359bc8;
       color: white;
       border-color: white !important; }
     .contentData table tbody tr:nth-child(2n) {
       background-color: #D0E6F0; }
+    .contentData table tbody td {
+      padding-right: 20px; }
+  .contentData p.parrafoNormal {
+    color: #666;
+    font-size: 13px;
+    line-height: 135%;
+    margin-bottom: 15px;
+    display: block; }
 
 .fuenteTabla {
-  font-size: 11px;
-  display: block; }
+  font-size: 9px;
+  display: block;
+  color: #555; }
 
 /* Fin de tablas */
 /* ventana Maximizada  */

@@ -344,12 +344,11 @@ div.contentTabs{
   display: block;
   padding: 10px;
   height:270px;
-  max-height:270px;
   overflow-x:hidden;
   overflow-y: auto;
 }
 .contentData{
-  display: $b;
+  display: none;
   height:100%;
 
   div {
@@ -357,7 +356,7 @@ div.contentTabs{
     height: 100%;
   }
   h2 {
-    font-size:15px;
+    font-size:12px;
     color:$CelesteJadeAceroInei;
     text-align: center;
     display: $b;
@@ -367,6 +366,7 @@ div.contentTabs{
   /* Componente tabla */
   table{
     font-size: 13px;
+    text-align: right;
     thead{
       background: $celesteAcero;
       color: white;
@@ -375,13 +375,25 @@ div.contentTabs{
     tbody tr:nth-child(2n){
       background-color: $celesteFondo ;
     }
+    tbody td{
+      padding-right: 20px;
+    }
 
+  }
+
+  p.parrafoNormal{
+    color:#666;
+    font-size: 13px;
+    line-height: 135%;
+    margin-bottom: 15px;
+    display: $b;
   }
 }
 
 .fuenteTabla {
-  font-size: 11px;
+  font-size: 9px;
   display: $b;
+  color: #555;
 }
 
 /* Fin de tablas */
