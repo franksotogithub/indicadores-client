@@ -108,8 +108,9 @@ $(document).ready(function(){
     var altoHeader = $("body>header").height();
     var resumentTop = $(".resumen-button-top").height();
     var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
+
     var altoVentana = ((altoPantalla-resumentTop)- altoHeader -100 )/2 ;
-    var altoContentTabs = (altoVentana - altoWidgetComboTools) -60;
+    var altoContentTabs = (altoVentana - altoWidgetComboTools)-25 ;
 
     console.log();
     // Alto Nav
