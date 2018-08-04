@@ -191,8 +191,7 @@
                 <header class="widget-vistaInteractiva-comboToolsBox">
                     <div class="col-7-10">
                         <div role="wraper" class="contentComboTitulos">
-
-                            <h5 class="mayusculas"> 1. Resultados de los Censos de la Población Peruana desde 1940</h5>
+                            <h5 class="mayusculas"></h5>
                             <button class="botonDesplegarTitulos">
                                 <i class="material-icons">
                                     keyboard_arrow_down </i>
@@ -213,11 +212,13 @@
                     <div class="wraper BarraHerramientas "></div>
                 </div>
                 </header>
-                <div class="wraper contentTabs"></div>
+                <div class="wraper contentTabs">
+                    {% include 'dashboard/contenttabs.html' with {'bloque': 'bloque1'}  %}
+                </div>
 
             </section>
         </article><!--
-            --><article class="ventana marginBottom-10 col-5-10">
+            --><article class="ventana marginBottom-10 col-5-10" id="bloque2">
         <header>
             <h2>
                 2. Estructura y Composición de la Población
@@ -232,38 +233,27 @@
                 <div class="col-7-10">
                     <div role="wraper" class="contentComboTitulos">
 
-                        <h5 class="mayusculas"> 2. Estructura y Composición de la Población</h5>
+                        <h5 class="mayusculas"></h5>
                         <button class="botonDesplegarTitulos">
                             <i class="material-icons">
                                 keyboard_arrow_down </i>
                         </button>
                         <div class="wraper contentListaTitulos">
                             <ul>
-                                <li data-selected="selected">2.1 Composición de la población por sexo</li>
-                                <li>2.2 Estructura por edad de la población</li>
-                                <li>2.3 Índice de Masculinidad</li>
+                                <li data-selected="selected" data-vista="vista1">2.1 Composición de la población por sexo</li>
+                                <li data-vista="vista2">2.2 Estructura por edad de la población</li>
+                                <li data-vista="vista3">2.3 Índice de Masculinidad</li>
                             </ul>
                         </div>
                     </div>
                 </div><!--
                          --><div class="col-3-10">
-                <div class="wraper BarraHerramientas ">
-                    <button class="activeButton">
-                        <i class="material-icons">assignment</i>
-                    </button><!--
-                                 --><button>
-                    <i class="material-icons">bar_chart</i>
-                </button><!--
-                                 --><button>
-                    <i class="material-icons">location_on</i>
-                </button><!--
-                                 --><button>
-                    <i class="material-icons">info</i>
-                </button>
-
-                </div>
+                <div class="wraper BarraHerramientas "></div>
             </div>
             </header>
+            <div class="wraper contentTabs">
+                {% include 'dashboard/contenttabs.html' with {'bloque': 'bloque2'}  %}
+            </div>
         </section>
     </article><!--
             --><article class="ventana col-5-10">
