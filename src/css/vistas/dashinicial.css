@@ -854,7 +854,7 @@ div.contentTabs {
       background-color: #D0E6F0; }
     .contentData table tbody td {
       padding-right: 20px; }
-  .contentData p.parrafoNormal {
+  .contentData p {
     color: #666;
     font-size: 13px;
     line-height: 135%;
