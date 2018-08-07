@@ -115,6 +115,8 @@ nav.nav-vertical button.cbutt4 {background-color:#22896E}
 .textAlignCenter{text-align: center;}
 .paddingRight-10{padding-right: 10px;}
 .paddingRight-20{padding-right: 20px;}
+.marginLeftRight-5{margin-right: 5px; margin-left: 5px;}
+.marginLeftRight-0{margin-right: 0px; margin-left: 0px;}
 
 .mayusculas {text-transform: uppercase;}
 
@@ -235,6 +237,7 @@ nav.nav-vertical {
   color: $color_navVertical;
   vertical-align: top;
   height:100% ;
+  position:relative;
   :first-child{
     margin-top: 3px;
   }
@@ -351,9 +354,14 @@ div.contentTabs{
   display: none;
   height:100%;
 
-  div {
-    display: block;
+  div.height100{
     height: 100%;
+  }
+  div.heightAuto{
+    height: auto;
+  }
+  >div {
+    display: block;
   }
   h2 {
     font-size:12px;
@@ -560,4 +568,54 @@ footer > a {
   .resumen-button-top p {
     font-size: 9px;
   }
+}
+@media screen and (min-width: 1450px) and (max-width: 1650px) {
+
+  footer > a {
+    display: block;
+    color: white;
+    vertical-align: middle;
+    img,p {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 10px;
+    }
+    img {
+      padding-right: 10px;
+    }
+  }
+}
+@media screen and (min-width: 360px) and (max-width: 1450px) {
+  footer{
+    position: absolute;
+    bottom: 10px;
+    left:3px;
+    max-width: 100%;
+  }
+  footer > a {
+    display: $ib;
+    color: white;
+    vertical-align: middle;
+    img {
+      display: inline-block;
+      vertical-align: middle;
+      padding-right: 5px;
+      width:22px;
+      height: 22px;
+    }
+    p {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 360px) and (max-width: 1280px) {
+  nav.nav-vertical{
+    display: none;
+    position: absolute;
+    footer{
+      position: relative;
+    }
+  }
+
 }

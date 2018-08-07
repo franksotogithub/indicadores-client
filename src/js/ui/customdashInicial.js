@@ -104,7 +104,7 @@ COMBOTOOLSBOX.event = {
 $(document).ready(function(){
     /* Altos Automaticos */
     var altoPantalla = $(window).height();
-    var anchoPatanlla = $(window).width();
+    //var anchoPatanlla = $(window).width();
     var altoHeader = $("body>header").height();
     var resumentTop = $(".resumen-button-top").height();
     var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
@@ -154,6 +154,26 @@ $(document).ready(function(){
     });
 
 
+
+
+    /* Responsive  */
+
+    $(window).resize(function(){
+        var anchoPatanlla = $("body").width();
+        console.log('pantallas : ' + anchoPatanlla );
+        if(anchoPatanlla <1280){
+            $("#contenedorPrincipalDashIni").removeClass('col-9-10');
+        }
+        if(anchoPatanlla>1280){
+            if($("#contenedorPrincipalDashIni").hasClass('col-9-10')){
+            }else{
+                $("#contenedorPrincipalDashIni").addClass('col-9-10');
+            }
+
+
+        }
+
+    });
 
 
 });
