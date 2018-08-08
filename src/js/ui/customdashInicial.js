@@ -1,6 +1,10 @@
 
 /* Componentes */
 
+/* Tooltip */
+
+
+
 /* Ventana */
 var VENTANACOMPONENTE = VENTANACOMPONENTE || {};
 VENTANACOMPONENTE.event={};
@@ -10,14 +14,38 @@ VENTANACOMPONENTE.event={
         var resumentTop = $(".resumen-button-top").height();
         var altoHeader = $("body>header").height();
         var altoVentana = ((altoPantalla-resumentTop)-altoHeader-15) ;
-        var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
-        var altoContentTabs = (altoVentana - altoWidgetComboTools) -20;
+        var altoWidgetComboTools = e.closest("article.ventana").find(".widget-vistaInteractiva-comboToolsBox").height();
+        var altoContentTabs = (altoVentana - altoWidgetComboTools);
+        var altoHeaderVentana = e.closest("article.ventana").children("header").height() +20;
         e.closest("article.ventana").addClass("col-10-10");
-        e.closest("article.ventana").removeClass("col-5-10");
+        e.closest("article.ventana").removeClass("col-5-10 margin-bottom-10");
         e.closest("article.ventana").css("height",altoVentana+"px");
+        e.closest("article.ventana").children("section").css("height", (altoContentTabs + 10) + "px");
         e.closest("article.ventana").siblings("article").hide();
+        e.closest("article.ventana").find(".contentTabs").css("height", (altoContentTabs-altoHeaderVentana) + "px");
 
+        /* Cambio de boton */
+        e.addClass('ventanaRestaurar').removeClass('ventanaMaximizar').find('i').text('fullscreen_exit');
+    },
+    restaurar:function(e){
+        var altoPantalla = $(window).height();
+        var resumentTop = $(".resumen-button-top").height();
+        var altoHeader = $("body>header").height();
+        var altoVentana = 480 ;
+        var altoWidgetComboTools = e.closest("article.ventana").find(".widget-vistaInteractiva-comboToolsBox").height();
+        var altoContentTabs = (altoVentana - altoWidgetComboTools);
+        var altoHeaderVentana = e.closest("article.ventana").children("header").height() +20;
+        e.closest("article.ventana").addClass("col-5-10 margin-bottom-10");
+        e.closest("article.ventana").removeClass("col-10-10");
+        e.closest("article.ventana").css("height",altoVentana+"px");
+        e.closest("article.ventana").children("section").css("height", (altoVentana ) + "px");
+        e.closest("article.ventana").siblings("article").css('display','');
+        e.closest("article.ventana").find(".contentTabs").css("height", (altoContentTabs-altoHeaderVentana) + "px");
+
+        /* Cambio de boton */
+        e.addClass('ventanaMaximizar').removeClass('ventanaRestaurar').find('i').text('zoom_out_map');
     }
+
 
 };
 
@@ -102,6 +130,8 @@ COMBOTOOLSBOX.event = {
 
 
 $(document).ready(function(){
+
+
     /* Altos Automaticos */
     var altoPantalla = $(window).height();
     //var anchoPatanlla = $(window).width();
@@ -109,18 +139,18 @@ $(document).ready(function(){
     var resumentTop = $(".resumen-button-top").height();
     var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
 
-    var altoVentana = ((altoPantalla-resumentTop)- altoHeader -100 )/2 ;
+    var altoVentana = 480;  //((altoPantalla-resumentTop)- altoHeader -100 )*0.8 ;
     var altoContentTabs = (altoVentana - altoWidgetComboTools)-25 ;
 
-    console.log();
-    // Alto Nav
-    $(".nav-vertical").css("height", (altoPantalla - 50)+"px");
     //alto de contenedor principal sin el header
     $("main").css("height",(altoPantalla - altoHeader)+"px");
     // alto de las ventanas sin resumenes del top
     $("article.ventana > section").css("height", (altoVentana) + "px");
     // alto del contenido de los tabs de las ventanas
     $(".contentTabs").css("height", altoContentTabs + "px");
+    // asignando overflow hidden a html.
+    $('html').css('overflow','hidden');
+
 
 
     /* eventos de ventana */
@@ -128,6 +158,10 @@ $(document).ready(function(){
     $('.ventana').on('click','button.ventanaMaximizar', function() {
         var _this= $(this);
         VENTANACOMPONENTE.event.maximizar(_this);
+    });
+    $('.ventana').on('click','button.ventanaRestaurar', function() {
+        var _this= $(this);
+        VENTANACOMPONENTE.event.restaurar(_this);
     });
 
 
@@ -160,8 +194,26 @@ $(document).ready(function(){
 
     $(window).resize(function(){
         var anchoPatanlla = $("body").width();
+        /* Altos Automaticos */
+        var altoPantalla = $(window).height();
+        //var anchoPatanlla = $(window).width();
+        var altoHeader = $("body>header").height();
+        var resumentTop = $(".resumen-button-top").height();
+        var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
+
+        var altoVentana = 480;  //((altoPantalla-resumentTop)- altoHeader -100 )*0.8 ;
+        var altoContentTabs = (altoVentana - altoWidgetComboTools)-25 ;
+
+        //alto de contenedor principal sin el header
+        $("main").css("height",(altoPantalla - altoHeader)+"px");
+        // alto de las ventanas sin resumenes del top
+        $("article.ventana > section").css("height", (altoVentana) + "px");
+        // alto del contenido de los tabs de las ventanas
+        $(".contentTabs").css("height", altoContentTabs + "px");
+
+
         console.log('pantallas : ' + anchoPatanlla );
-        if(anchoPatanlla <1280){
+        if(anchoPatanlla <=1280){
             $("#contenedorPrincipalDashIni").removeClass('col-9-10');
         }
         if(anchoPatanlla>1280){
@@ -169,8 +221,6 @@ $(document).ready(function(){
             }else{
                 $("#contenedorPrincipalDashIni").addClass('col-9-10');
             }
-
-
         }
 
     });

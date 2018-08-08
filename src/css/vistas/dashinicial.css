@@ -747,6 +747,10 @@ body > header {
     color: white;
     line-height: 100%;
     padding: 0px 20px; }
+  body > header > button.menuResponsive {
+    float: left;
+    margin-right: 25px;
+    display: none; }
   body > header > button:hover {
     background-color: rgba(0, 0, 0, 0.25); }
 
@@ -800,6 +804,9 @@ section.resumen-button-top {
     width: 70%;
     display: inline-block;
     vertical-align: middle; }
+
+section.agruparTres {
+  display: none; }
 
 section.agruparTres > div div[role="wrap"] {
   display: inline-block; }
@@ -991,10 +998,20 @@ footer > a {
     color: white;
     background-color: #0079c9; }
 
+#contenedorPrincipalDashIni {
+  overflow: auto;
+  height: 100%; }
+
 /*FIn componente */
 @media screen and (min-width: 1500px) and (max-width: 1700px) {
   .resumen-button-top p {
     font-size: 9px; } }
+
+@media screen and (max-width: 1510px) {
+  section.resumen-button-top {
+    display: none; }
+  section.resumen-button-top.agruparTres {
+    display: block; } }
 
 @media screen and (min-width: 1450px) and (max-width: 1650px) {
   footer > a {
@@ -1032,4 +1049,6 @@ footer > a {
     display: none;
     position: absolute; }
     nav.nav-vertical footer {
-      position: relative; } }
+      position: relative; }
+  body > header > button.menuResponsive {
+    display: inline-block; } }
