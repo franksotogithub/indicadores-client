@@ -1003,6 +1003,42 @@ footer > a {
   height: 100%; }
 
 /*FIn componente */
+/* Tooltip */
+/* Tooltip DMK */
+.tooltipDash {
+  position: relative; }
+
+.tooltipDash .tooltiptext {
+  visibility: visible;
+  max-width: 80px;
+  width: 80px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin: 0 auto;
+  left: -33px;
+  font-family: "signikaregular";
+  font-size: 13px; }
+  .tooltipDash .tooltiptext .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent; }
+  .tooltipDash .tooltiptext :hover .tooltiptext {
+    visibility: visible; }
+  .tooltipDash .tooltiptext .tooltiptext {
+    left: 0px; }
+
 @media screen and (min-width: 1500px) and (max-width: 1700px) {
   .resumen-button-top p {
     font-size: 9px; } }

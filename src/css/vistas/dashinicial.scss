@@ -577,13 +577,13 @@ footer > a {
 
 
 /* Tooltip DMK */
-.tooltip {
+.tooltipDash {
   position: relative;
 
 }
 
-.tooltip .tooltiptext {
-  visibility: hidden;
+.tooltipDash .tooltiptext {
+  visibility: visible;
   max-width: 80px;
   width: 80px;
   background-color: black;
@@ -599,27 +599,31 @@ footer > a {
   left:-33px;
   font-family: "signikaregular";
   font-size: 13px;
+
+  .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+  }
+
+  :hover .tooltiptext {
+    visibility: visible;
+
+  }
+
+  .tooltiptext  {
+    left:0px;
+  }
+
+
 }
 
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent black transparent;
-}
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-
-}
-
-.tooltip.ayudaInformacion .tooltiptext, .tooltip.miniTop .tooltiptext  {
-  left:0px;
-}
 
 
 @media screen and (min-width: 1500px) and (max-width: 1700px) {

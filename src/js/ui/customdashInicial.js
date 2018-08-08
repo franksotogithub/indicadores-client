@@ -2,7 +2,22 @@
 /* Componentes */
 
 /* Tooltip */
+var GLOBALCOMPONENTE = GLOBALCOMPONENTE || {};
+GLOBALCOMPONENTE.global={};
+GLOBALCOMPONENTE.global={
+    tooltip:function () {
 
+        $(".tooltipDash").hover(function () {
+            var e = $(this);
+            //var textTool = $(this).text();
+            var titleTool = e.attr("data-title");
+            e.append("<span class='tooltiptext'>" + titleTool + "</span>");
+        }, function () {
+            var e = $(this);
+            e.find( "span" ).remove();
+        });
+    }
+}
 
 
 /* Ventana */
@@ -152,16 +167,39 @@ $(document).ready(function(){
     $('html').css('overflow','hidden');
 
 
-
     /* eventos de ventana */
 
     $('.ventana').on('click','button.ventanaMaximizar', function() {
         var _this= $(this);
+
+        var bloque =_this.closest('.ventana').attr('id');
+        var vista= _this.closest('.ventana').find('.widget-vistaInteractiva-comboToolsBox '+
+            '.contentListaTitulos li[data-selected]').attr('data-vista');
+        console.log(bloque+' , '+vista);
+
         VENTANACOMPONENTE.event.maximizar(_this);
     });
     $('.ventana').on('click','button.ventanaRestaurar', function() {
         var _this= $(this);
+        var bloque =_this.closest('.ventana').attr('id');
+        var vista= _this.closest('.ventana').find('.widget-vistaInteractiva-comboToolsBox '+
+            '.contentListaTitulos li[data-selected]').attr('data-vista');
+        console.log(bloque+' , '+vista);
+
         VENTANACOMPONENTE.event.restaurar(_this);
+
+    });
+
+    $(document).on("mouseenter", ".tooltipDash", function() {
+        var e = $(this);
+        var textTool = $(this).html();
+        var titleTool = e.attr("data-title");
+        e.html(textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
+        console.log();
+    });
+
+    $(document).on("mouseleave", ".tooltipDash", function() {
+        $(this).find( "span" ).remove();
     });
 
 
@@ -174,7 +212,10 @@ $(document).ready(function(){
 
     $('.widget-vistaInteractiva-comboToolsBox').on('click','.BarraHerramientas > button', function() {
         var _this= $(this);
+
+
         COMBOTOOLSBOX.event.activarButton(_this);
+
     });
 
     $('.widget-vistaInteractiva-comboToolsBox').on('click','button.botonDesplegarTitulos', function() {
