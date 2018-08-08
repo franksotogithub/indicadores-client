@@ -30,9 +30,27 @@ App.utils.dashboard = (function (utils, service) {
                 titulo: "1.2 Crecimiento de la población",
                 widgets: {
                     bar_chart: [],
-                    //assignment: [],
+                    assignment: [],
                     info: "<p>En el periodo intercensal 2007–2017, la población total del país se incrementó en 3 millones 16 mil 621 habitantes, es decir, un crecimiento de 10,7% respecto de la población total de 2007, que fue 28 millones 220 mil 764 habitantes. En promedio, la población peruana ha crecido 301 mil 662 habitantes por año en el mencionado período.</p>\n" +
                     "<p>La población ha tenido un crecimiento promedio anual de 1,0% durante el periodo 2007–2017, lo cual confirma la tendencia decreciente del ritmo de crecimiento poblacional en los últimos 56 años. De una Tasa de Crecimiento de 2,8% en el periodo íntercensal 1961–1972, pasó a 2,6% entre 1972–1981, desciende a 2,0% en el periodo 1981–1993, y en el penúltimo periodo intercensal fue de 1,6% por año. En el período de mayor crecimiento de la población, según estudios de fecundidad, la Tasa Global de Fecundidad era 6,0 hijas/os en promedio por mujer, este nivel ha descendido hasta 2,5 para el lapso 2010–2015.</p>"
+                }
+            },
+            "vista2": {
+                widgets: {
+                    bar_chart: [],
+                    info: []
+                }
+            },
+            "vista3": {
+                widgets: {
+                    bar_chart: [],
+                    info: []
+                }
+            },
+            "vista4": {
+                widgets: {
+                    bar_chart: [],
+                    info: []
                 }
             }
         },
@@ -42,6 +60,61 @@ App.utils.dashboard = (function (utils, service) {
             "vista0": {
                 widgets: {
                     bar_chart: [],
+                    assignment: [],
+                    info: []
+                }
+            },
+            "vista1": {
+                widgets: {
+                    bar_chart: [],
+                    assignment: [],
+                    location_on: [],
+                    info: []
+                }
+            },
+            "vista2": {
+                widgets: {
+                    bar_chart: [],
+                    location_on: [],
+                    info: []
+                }
+            }
+        },
+        "bloque3": {
+            "default": "vista0",
+            "vista0": {
+                widgets: {
+                    bar_chart: [],
+                    assignment: [],
+                    info: []
+                }
+            },
+            "vista1": {
+                widgets: {
+                    bar_chart: [],
+                    assignment: [],
+                    info: []
+                }
+            },
+            "vista2": {
+                widgets: {
+                    bar_chart: [],
+                    assignment: [],
+                    location_on: [],
+                    info: []
+                }
+            }
+        },
+        "bloque4": {
+            "default": "vista0",
+            "vista0": {
+                widgets: {
+                    assignment: [],
+                    info: []
+                }
+            },
+            "vista1": {
+                widgets: {
                     assignment: [],
                     location_on: [],
                     info: []
@@ -138,17 +211,19 @@ App.utils.dashboard = (function (utils, service) {
                 chart: {
                     zoomType: 'xy'
                 },
+
                 title: {
-                    text: 'Average Monthly Temperature and Rainfall in Tokyo'
+                    text: null
                 },
                 subtitle: {
-                    text: ''
+                    text: 'POBLACIÓN TOTAL Y TASA DE CRECIMIENTO PROMEDIO ANUAL, 1940 - 2017'
                 },
                 xAxis: [{
                     categories: ['1940', '', '1961', '', '1972', '', '1981', '', '1993', '', '2007', '', '2017'],
-                    //crosshair: true
+                    crosshair: true
                 }],
-                yAxis: [{ // Primary yAxis
+                yAxis: [
+                    { // Primary yAxis
                     labels: {
                         format: '{value}',
                         style: {
@@ -156,17 +231,18 @@ App.utils.dashboard = (function (utils, service) {
                         }
                     },
                     title: {
-                        text: 'Miles',
+                        text: '',
                         style: {
                             color: Highcharts.getOptions().colors[1]
                         }
                     },
 
-                    max: 35000,
+                    max: 40000,
 
-                }, { // Secondary yAxis
+                },
+                    { // Secondary yAxis
                     title: {
-                        text: '%',
+                        text: '',
                         style: {
                             color: Highcharts.getOptions().colors[0]
                         }
@@ -180,7 +256,8 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     opposite: true,
                     max: 3
-                }],
+                }
+                ],
                 tooltip: {
                     enabled: false
                 },
@@ -193,13 +270,15 @@ App.utils.dashboard = (function (utils, service) {
                         }
                     }
                 },
-                series: [{
+                series: [
+                    {
                     name: 'Población Total',
                     type: 'column',
                     data: [7023.1, null, 10420.4, null, 14121.6, null, 17762.2, null, 22639.4, null, 28220.8, null, 31237.4],
 
 
-                }, {
+                },
+                    {
                     name: 'Tasa de Crecimiento',
                     color: 'red',
 
@@ -223,6 +302,9 @@ App.utils.dashboard = (function (utils, service) {
                         2.8,
                         {y: 2.7,
                             marker:{
+                                enabled: false
+                            },
+                            dataLabels:{
                                 enabled: false
                             }},
                         2.6,
