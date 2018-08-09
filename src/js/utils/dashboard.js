@@ -24,6 +24,7 @@ App.utils.dashboard = (function (utils, service) {
                     "\n" +
                     "<p>Históricamente, la metodología empleada en el Perú, para el empadronamiento poblacional, ha sido el que corresponde a los censos de Hecho o Facto, es decir, se empadronó a la población en el lugar en que se encontraba el “Día del Censo”, independientemente de que éste fuera el lugar de su residencia habitual.</p>",
 
+
                 }
             },
             "vista1": {
@@ -32,9 +33,11 @@ App.utils.dashboard = (function (utils, service) {
                     bar_chart: [],
                     assignment: [],
                     info: "<p>En el periodo intercensal 2007–2017, la población total del país se incrementó en 3 millones 16 mil 621 habitantes, es decir, un crecimiento de 10,7% respecto de la población total de 2007, que fue 28 millones 220 mil 764 habitantes. En promedio, la población peruana ha crecido 301 mil 662 habitantes por año en el mencionado período.</p>\n" +
-                    "<p>La población ha tenido un crecimiento promedio anual de 1,0% durante el periodo 2007–2017, lo cual confirma la tendencia decreciente del ritmo de crecimiento poblacional en los últimos 56 años. De una Tasa de Crecimiento de 2,8% en el periodo íntercensal 1961–1972, pasó a 2,6% entre 1972–1981, desciende a 2,0% en el periodo 1981–1993, y en el penúltimo periodo intercensal fue de 1,6% por año. En el período de mayor crecimiento de la población, según estudios de fecundidad, la Tasa Global de Fecundidad era 6,0 hijas/os en promedio por mujer, este nivel ha descendido hasta 2,5 para el lapso 2010–2015.</p>"
+                    "<p>La población ha tenido un crecimiento promedio anual de 1,0% durante el periodo 2007–2017, lo cual confirma la tendencia decreciente del ritmo de crecimiento poblacional en los últimos 56 años. De una Tasa de Crecimiento de 2,8% en el periodo íntercensal 1961–1972, pasó a 2,6% entre 1972–1981, desciende a 2,0% en el periodo 1981–1993, y en el penúltimo periodo intercensal fue de 1,6% por año. En el período de mayor crecimiento de la población, según estudios de fecundidad, la Tasa Global de Fecundidad era 6,0 hijas/os en promedio por mujer, este nivel ha descendido hasta 2,5 para el lapso 2010–2015.</p>",
+
                 }
             },
+
             "vista2": {
                 widgets: {
                     bar_chart: [],
@@ -53,6 +56,7 @@ App.utils.dashboard = (function (utils, service) {
                     info: []
                 }
             }
+
         },
 
         "bloque2": {
@@ -61,6 +65,7 @@ App.utils.dashboard = (function (utils, service) {
                 widgets: {
                     bar_chart: [],
                     assignment: [],
+                    location_on: [],
                     info: []
                 }
             },
@@ -110,6 +115,7 @@ App.utils.dashboard = (function (utils, service) {
             "vista0": {
                 widgets: {
                     assignment: [],
+                    location_on: [],
                     info: []
                 }
             },

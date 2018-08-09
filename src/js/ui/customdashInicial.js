@@ -178,6 +178,12 @@ $(document).ready(function(){
         console.log(bloque+' , '+vista);
 
         VENTANACOMPONENTE.event.maximizar(_this);
+        //options={bloque:'bloque1',vista:'vista0'};
+        //bloque='bloque1';
+        //vista='vista0',
+
+        App.uiMaxCallbackDashBoardEvent(bloque,vista);
+        //console.log('maximizado-->',_this);
     });
     $('.ventana').on('click','button.ventanaRestaurar', function() {
         var _this= $(this);
@@ -185,7 +191,7 @@ $(document).ready(function(){
         var vista= _this.closest('.ventana').find('.widget-vistaInteractiva-comboToolsBox '+
             '.contentListaTitulos li[data-selected]').attr('data-vista');
         console.log(bloque+' , '+vista);
-
+        App.uiNormalCallbackDashBoardEvent(bloque,vista);
         VENTANACOMPONENTE.event.restaurar(_this);
 
     });

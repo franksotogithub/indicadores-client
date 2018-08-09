@@ -131,12 +131,20 @@ var App = (function (scope, config) {
     };
 
     var dashboardWidgetChangeEvent = function (bloque, vista, seleccion) {
-        _hasUtils(this, 'dashboardWidgetChangeEvent', {"bloque": bloque, "vista": vista, "seleccion": seleccion}, ['dashboard', 'mapas']);
+        _hasUtils(this, 'dashboardWidgetChangeEvent', {"bloque": bloque, "vista": vista, "seleccion": seleccion}, ['dashboard', 'mapasDashBoard']);
     };
 
     var dashboardVistaChangeEvent = function (bloque, vista, seleccion) {
-        _hasUtils(this, 'dashboardVistaChangeEvent', {"bloque": bloque, "vista": vista}, ['dashboard', 'mapas']);
+        _hasUtils(this, 'dashboardVistaChangeEvent', {"bloque": bloque, "vista": vista}, ['dashboard', 'mapasDashBoard']);
     };
+
+    var uiMaxCallbackDashBoardEvent= function (bloque,vista) {
+        _hasUtils(this, 'uiMaxCallbackDashBoardEvent', {"bloque": bloque , "vista": vista}, ['dashboard', 'mapasDashBoard']);
+    }
+    var uiNormalCallbackDashBoardEvent= function (bloque,vista) {
+        _hasUtils(this, 'uiNormalCallbackDashBoardEvent', {"bloque": bloque , "vista": vista}, ['dashboard', 'mapasDashBoard']);
+    }
+
     return {
         ambito: 'nacional',
         categoria: 'P01',
@@ -154,7 +162,9 @@ var App = (function (scope, config) {
         uiMouseOverTabla : uiMouseOverTabla,
         uiMouseOutTabla : uiMouseOutTabla,
         dashboardWidgetChangeEvent: dashboardWidgetChangeEvent,
-        dashboardVistaChangeEvent: dashboardVistaChangeEvent
+        dashboardVistaChangeEvent: dashboardVistaChangeEvent,
+        uiMaxCallbackDashBoardEvent: uiMaxCallbackDashBoardEvent,
+        uiNormalCallbackDashBoardEvent:uiNormalCallbackDashBoardEvent,
 
     };
 })(window, AppConfig());

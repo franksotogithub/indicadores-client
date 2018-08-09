@@ -29,6 +29,9 @@ App.utils.mapas = (function (parent, config,service) {
         codMap:undefined,
         classBreakinfos:undefined,
         tituloLegend:undefined,
+        optionsSublayers:undefined,
+        renderOptionsSublayers:undefined,
+        renderOptionsSublayersBack:undefined,
     };
 
     var select_features_tablas_graficos;
@@ -163,9 +166,9 @@ App.utils.mapas = (function (parent, config,service) {
 
     ];
 
-    var cant_mini_maps=1;
+    var cantMiniMaps=1;
 
-    var cantMaxMiniMaps=10;
+    var cantMaxMiniMaps=50;
 
     var labelClass=undefined;
 
@@ -177,17 +180,23 @@ App.utils.mapas = (function (parent, config,service) {
 
     var panelDivGrafico =undefined;
 
-    var createSymbol = function(color) {
-        return {
-            type: "simple-fill",
+    var  createSymbol=function(color,type,style,outline,size) {
+        var symbol={};
+
+        symbol= {
+            type: type,
             color: color,
             outline: {
-                width: 1,
-                color: [255, 255, 255, 0.4]
+                width: outline,
+
             },
-            style: "solid"
+            style: style,
         };
-    };
+        if (size!==undefined)
+            symbol.size=size;
+
+        return symbol;
+    }
 
     var symbolSombreado= {
         type: "simple-fill",
@@ -198,17 +207,16 @@ App.utils.mapas = (function (parent, config,service) {
         }
     }
 
-
-    var renderizado = function(indicador,classBreakinfo){
+    var renderizadoClassBreaks = function(indicador,classBreakinfo){
         var renderer = {
             type: "class-breaks",
             field: indicador,
             defaultSymbol: {
                 type: "simple-fill",
-                color: "#F0C1B8",
+                color: "white",
                 outline: {
                     width: 1,
-                    color: "white"
+                    //color: "white"
                 }
             },
             defaultLabel: "Otro",
@@ -434,8 +442,6 @@ App.utils.mapas = (function (parent, config,service) {
             "esri/layers/FeatureLayer",
 
             "dojo/domReady!"],function (Map, MapView, MapImageLayer,FeatureLayer) {
-
-
             var _this = parent.mapas;
             var classBreakinfos = _this.datosMap.classBreakinfos;
             var codMap = _this.datosMap.codMap;
@@ -450,13 +456,14 @@ App.utils.mapas = (function (parent, config,service) {
             var miniLayer = new MapImageLayer({
                 url: urlMap,
                 sublayers: [{
-                    renderer: renderizado(codTematico, classBreakinfos[index + ""]),
+                    renderer: renderizadoClassBreaks(codTematico, classBreakinfos[index + ""]),
                     opacity: opacity,
                     id: parseInt(index),
                     outFields: ["*"],
                     definitionExpression: where,
                     labelsVisible: true,
-                }]
+                }],
+
 
             });
 
@@ -482,65 +489,8 @@ App.utils.mapas = (function (parent, config,service) {
                 });
             })
         });
-        /*miniLayer.when(function(){
-            miniSublayer.queryExtent()
-                .then(function(response) {
-
-                    //miniView.goTo(response.extent);
-                });
-        });
-*/
-
-
-        /*miniLayer.when(function () {
-            console.log( 'miniLayer-->',miniLayer);
-            return miniLayer.queryExtent()
-        }).then(function (response) {
-            console.log('response-->',response);
-            miniView.goTo(response.extent);
-        })*/
-
-        /*
-        miniLayer.then(function () {
-            miniLayer.queryExtent(where)
-                .then(function(response) {
-                    miniView.goTo(response.extent);
-                });
-        });
-        */
-
-        /*require([
-            "esri/Map",
-            "esri/views/MapView",
-            "esri/layers/MapImageLayer",
-            "esri/layers/FeatureLayer",
-            "dojo/domReady!"],function (Map, MapView, MapImageLayer,FeatureLayer) {
-
-            var miniLayer = new FeatureLayer({
-                url: url+'/'+index,
-                renderer: renderizado(cod_tematico,classBreakinfos[index+""]),
-                opacity:opacity,
-                id:"minimap_"+index,
-                //outFields:["*"],
-            });
-
-            var miniMap = new Map({
-                basemap: "gray",
-                layers: layers_inicial,
-            });
-
-            var miniView = new MapView({
-                    container: "viewDivMiniMap",
-                    map: miniMap,
-                    constraints: {
-                    rotationEnabled: false
-                    },
-                    center: [-75.000, -9.500],
-             });
-
-            miniView.ui.components = [];
-        });*/
     }
+
 
     var insertarNuevoMiniMapa = function (ubigeo) {
         var _this=parent.mapas;
@@ -567,10 +517,13 @@ App.utils.mapas = (function (parent, config,service) {
         }
     }
 
+
     var removerMiniMapa = function (ubigeo){
+        var _this=parent.mapas;
         var idMiniMap="divMiniMap_"+ubigeo;
         var divMiniMap =document.getElementById(idMiniMap);
         divMiniMap.remove();
+        _this.cant_mini_maps--;
 
 
     }
@@ -591,7 +544,6 @@ App.utils.mapas = (function (parent, config,service) {
 
         });
     }
-
     var uiMaxCallback =function () {
         var _this=parent.mapas;
         var list_mini_maps=document.getElementById("listMiniMaps");
@@ -663,8 +615,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     };
 
-
-
     var uiMouseOverTabla = function (options){
         var ubigeo=options.ubigeo;
 
@@ -715,7 +665,67 @@ App.utils.mapas = (function (parent, config,service) {
         _this.view_map.graphics.removeAll();
     }
 
-    var crearMapaRender = function (classBreak) {
+
+    var getClassBreakInfoSublayerTematico = function (datos) {
+        var respuesta = [];
+        var ini={
+                    minValue: 0,
+                    maxValue: 0,
+                };
+
+        respuesta.push(ini);
+        datos.forEach(function (el) {
+            var res= new Object();
+            res.minValue=el.min_valor;
+            res.maxValue=el.max_valor;
+            res.label=el.label;
+            res.symbol=createSymbol(el.color,"simple-fill","solid",1);
+            respuesta.push(res);
+        });
+
+        return respuesta;
+    }
+
+    var getListSublayerTematico = function () {
+        var _this=parent.mapas;
+        var renderOptionSublayer = undefined;
+        var codTematico = _this.datosMap.codTematico;
+        _this.datosMap.renderOptionsSublayers=[];
+
+
+        _this.datosMap.optionsSublayers.forEach(function (sublayer) {
+            renderOptionSublayer= new Object(),
+            renderOptionSublayer.id=parseInt(sublayer.id);
+            renderOptionSublayer.title=sublayer.title;
+            renderOptionSublayer.visible=sublayer.visible;
+            renderOptionSublayer.labelsVisible=sublayer.labelsVisible;
+            renderOptionSublayer.outFields=['*'];
+            renderOptionSublayer.renderer=renderizadoClassBreaks(codTematico,getClassBreakInfoSublayerTematico(sublayer.renderer));
+            _this.datosMap.renderOptionsSublayers.push(renderOptionSublayer);
+        });
+    }
+
+
+    var getListSublayerTematicoBack = function () {
+        var _this=parent.mapas;
+        var renderOptionSublayer = undefined;
+
+        _this.datosMap.renderOptionsSublayersBack=[];
+        _this.datosMap.optionsSublayers.forEach(function (sublayer) {
+            renderOptionSublayer= new Object(),
+            renderOptionSublayer.id=parseInt(sublayer.id);
+            renderOptionSublayer.visible=sublayer.visible;
+            renderOptionSublayer.labelsVisible=sublayer.labelsVisible;
+            renderOptionSublayer.outFields=['*'];
+            renderOptionSublayer.renderer=renderBack();
+            _this.datosMap.renderOptionsSublayersBack.push(renderOptionSublayer);
+        });
+
+    }
+
+
+
+    var crearMapaRender = function (optionsSublayers,div) {
         require([
             "esri/Map",
             "esri/views/MapView",
@@ -748,16 +758,22 @@ App.utils.mapas = (function (parent, config,service) {
             var _this=parent.mapas;
             var list_mini_maps=document.getElementById("listMiniMaps");
             _this.panelDivGrafico= document.getElementById("mapaGraficoPanel");
-            //var mapaGraficoPanel=document.getElementById("mapaGraficoPanel");
+
             list_maps=getAccesDirectMaps();
-            _this.datosMap.classBreakinfos=classBreak;
-            classBreakinfos= classBreak;
-
-
-
+            //_this.datosMap.classBreakinfos=optionsSublayers;
+            /////////////*
+            //
+            // datos
+            //** /////////////
+            _this.datosMap.optionsSublayers=optionsSublayers;
+            getListSublayerTematico();
+            getListSublayerTematicoBack();
+            console.log( 'renderOptionsSublayers-->',_this.datosMap.renderOptionsSublayers);
+            //classBreakinfos= optionsSublayers;
             codMap=_this.datosMap.codMap;
             codTematico=_this.datosMap.codTematico;
             urlMap=_this.datosMap.urlMap;
+
             tituloLegend=_this.datosMap.tituloLegend;
 
             url_dep=urlMap+'/0';
@@ -771,17 +787,17 @@ App.utils.mapas = (function (parent, config,service) {
 
             _this.layer = new MapImageLayer({
                 url: urlMap,
-                opacity:0.8,
+                //opacity:0.8,
                 outFields:["*"],
-                sublayers: [{
+                sublayers:  _this.datosMap.renderOptionsSublayers,
+
+                /*    [{
                     id: 0,
                     title: "DEPARTAMENTAL",
                     visible: true,
                     labelsVisible: true,
                     outFields:["*"],
                     renderer:renderizado(codTematico,classBreakinfos["0"]),
-
-
                 }, {
                     id: 1,
                     title: "PROVINCIAL",
@@ -789,8 +805,6 @@ App.utils.mapas = (function (parent, config,service) {
                     labelsVisible: true,
                     outFields:["*"],
                     renderer:renderizado(codTematico,classBreakinfos["1"]),
-
-
 
                 }, {
                     id: 2,
@@ -801,13 +815,17 @@ App.utils.mapas = (function (parent, config,service) {
                     renderer:renderizado(codTematico,classBreakinfos["2"]),
 
                 }],
+                */
+
                 title: tituloLegend
             });
             layer_back= new MapImageLayer({
                 url: urlMap,
-                opacity:0.8,
+                //opacity:0.8,
                 outFields:["*"],
-                sublayers: [{
+                sublayers: _this.datosMap.renderOptionsSublayersBack,
+
+                /*[{
                     id: 0,
                     title: "DEPARTAMENTAL",
                     visible: true,
@@ -830,13 +848,16 @@ App.utils.mapas = (function (parent, config,service) {
                     visible: false,
                     labelsVisible: true,
                     renderer:renderBack(),
-                }]
+                }]*/
             });
             layers_inicial = [layer_back,_this.layer];
 
+
+            console.log('renderOptionsSublayers-->',_this.datosMap.renderOptionsSublayers);
             departamentoLyr = new FeatureLayer({
                 url: url_dep,
-                renderer: renderizado(codTematico,classBreakinfos["0"]),
+                renderer:_this.datosMap.renderOptionsSublayers[0].renderer,
+                //renderer: renderizadoClassBreaks(codTematico,classBreakinfos["0"]),
                 opacity:opacity,
                 id:"dep",
                 outFields:["*"],
@@ -845,7 +866,8 @@ App.utils.mapas = (function (parent, config,service) {
 
             provinciaLyr = new FeatureLayer({
                 url: url_prov,
-                renderer: renderizado(codTematico,classBreakinfos["1"]),
+                renderer:_this.datosMap.renderOptionsSublayers[1].renderer,
+                //renderer:_this.datosMap.renderOptionsSublayers[1],
                 opacity:opacity,
                 outFields:["*"],
                 title:'PROVINCIAS',
@@ -853,7 +875,8 @@ App.utils.mapas = (function (parent, config,service) {
 
             distritoLyr = new FeatureLayer({
                 url: url_dist,
-                renderer: renderizado(codTematico,classBreakinfos["2"]),
+                renderer:_this.datosMap.renderOptionsSublayers[2].renderer,
+                //renderer:_this.datosMap.renderOptionsSublayers[2],
                 opacity:opacity,
                 outFields:["*"],
                 title:'DISTRITOS',
@@ -866,7 +889,7 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             _this.view_map = new MapView({
-                container: "viewDiv",
+                container: div,
                 map: map,
                 center: [-75.000, -9.500],
                 zoom : zoomGlobal(),
@@ -917,6 +940,7 @@ App.utils.mapas = (function (parent, config,service) {
                 var newImg = document.createElement("img");
                 newImg.setAttribute("src",'/img/'+map.imagen);
                 newImg.classList.add("overviewDiv");
+
                 newImg.setAttribute("id","map_"+index);
                 div_list_maps.appendChild(newImg);
                 newImg.addEventListener("click",function (event) {
@@ -983,10 +1007,11 @@ App.utils.mapas = (function (parent, config,service) {
                             {sublayer.visible=false;}
                         });
                     });
-
                 }
                 else
-                {console.log('index no existe');}
+                {
+                    console.log('index no existe');
+                }
 
             }
 
@@ -1412,21 +1437,27 @@ App.utils.mapas = (function (parent, config,service) {
 
     };
 
-    var cambiarMapaRender = function (classBreakinfos) {
+    var cambiarMapaRender = function (optionsSublayers) {
 
         require([
             "esri/widgets/Legend",
             "dojo/domReady!"
         ],function (Legend){
+
+
             var _this=parent.mapas;
             var cod_tematico=_this.datosMap.codTematico;
             var tituloLegend = _this.datosMap.tituloLegend;
+
+            _this.datosMap.optionsSublayers=optionsSublayers;
             _this.datosMap.classBreakinfos=classBreakinfos;
             _this.layer.url=_this.datosMap.urlMap;
-            _this.layer.sublayers.forEach(function (sublayer) {
-                sublayer.renderer=renderizado(cod_tematico,classBreakinfos[ String(sublayer.id) ]);
 
-            });
+            getListSublayerTematico();
+
+
+            _this.layer.sublayers=_this.datosMap.renderOptionsSublayers;
+
             _this.layer.title= tituloLegend;
 
         });
@@ -1439,17 +1470,16 @@ App.utils.mapas = (function (parent, config,service) {
         service.mapas.getLegenda(codMapa,codTematico, cambiarMapaRender);
     }
 
-    var crearMapa = function(){
+    var crearMapa = function(div){
         var _this=parent.mapas;
         var codMapa=_this.datosMap.codMap;
         var codTematico=_this.datosMap.codTematico;
-        service.mapas.getLegenda(codMapa,codTematico,crearMapaRender)
+        service.mapas.getLegenda(codMapa,codTematico,div,crearMapaRender);
     }
 
     var requireEvents = function () {
         cambiarMapa(codMap,codTematico,url,titulo);
     };
-
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;
         service.mapas.getMapa(cod_mapa,function (data) {
@@ -1461,26 +1491,29 @@ App.utils.mapas = (function (parent, config,service) {
             cambiarMapa();
         });
     }
-
     var init = function (options) {
         var _this=parent.mapas;
         var cod_mapa=''
+        var list_mapas=[];
+
         if (options.vista == 'indicadores') {
-            cod_mapa='P01';
-        }
-        else {
-            cod_mapa='P07'
+            list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
         }
 
-        service.mapas.getMapa(cod_mapa,function (data) {
-            _this.datosMap.codMap=cod_mapa;
-            _this.datosMap.urlMap=data.url;
-            _this.datosMap.codTematico=data.cod_tematico_default;
-            _this.datosMap.tituloLegend=data.descripcion;
-            crearMapa();
-        });
+        list_mapas.forEach(
+            function (el,index) {
+
+                service.mapas.getMapa(el.cod_mapa,function (data) {
+                    _this.datosMap.codMap=el.cod_mapa;
+                    _this.datosMap.urlMap=data.url;
+                    _this.datosMap.codTematico=data.cod_tematico_default;
+                    _this.datosMap.tituloLegend=data.descripcion;
+                    crearMapa(el.div);
+                });
+            }
+        );
+
     }
-
     return {
         init:init,
         requireEvents: requireEvents,
@@ -1495,7 +1528,7 @@ App.utils.mapas = (function (parent, config,service) {
         crearMapa :crearMapa,
         cambiarMapa:cambiarMapa,
         listMapas : listMapas,
-        cant_mini_maps:cant_mini_maps,
+        cant_mini_maps:cantMiniMaps,
         opc_select:opc_select,
         descargarMapaEvent:descargarMapaEvent,
         panelDivGrafico:panelDivGrafico,
@@ -1504,7 +1537,6 @@ App.utils.mapas = (function (parent, config,service) {
         datosMap: datosMap,
         legend: legend,
         indexSubLayer :indexSubLayer,
-
         uiMouseOverTabla:uiMouseOverTabla,
         uiMouseOutTabla:uiMouseOutTabla
     }

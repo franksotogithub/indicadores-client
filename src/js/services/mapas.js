@@ -1,26 +1,11 @@
 App.service.mapas = (function (parent, config) {
 
-    /*
-    var getLegenda = function (map,indicador,url,titulo,callback) {
+
+    var getLegenda = function (map,indicador,options,callback) {
         parent.get({
-            url: parent.getUrlServer('mapa/legendas/obtener-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
+            url: parent.getUrlServer('mapa/mapas/mapa_optiones_sublayers/'+map+'/'+indicador+'/'),
             success: function (data) {
-                callback(data,map,indicador,url,titulo);
-            },
-
-            error: function (obj, status, otherr) {
-                parent.responseError(obj, "No existe datos");
-            }
-        });
-    };
-
-*/
-
-    var getLegenda = function (map,indicador,callback) {
-        parent.get({
-            url: parent.getUrlServer('mapa/legendas/obtener-por-mapa-cod-tematico/'+map+'/'+indicador+'/'),
-            success: function (data) {
-                callback(data);
+                callback(data,options);
             },
 
             error: function (obj, status, otherr) {
