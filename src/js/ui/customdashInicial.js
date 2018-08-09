@@ -16,6 +16,9 @@ GLOBALCOMPONENTE.global={
             var e = $(this);
             e.find( "span" ).remove();
         });
+    },
+    menuDesplegable:function (e) {
+        $('main > nav').toggle();
     }
 }
 
@@ -169,6 +172,10 @@ $(document).ready(function(){
 
     /* eventos de ventana */
 
+    $('body').on('click','button.menuResponsive', function() {
+        var _this= $(this);
+        GLOBALCOMPONENTE.global.menuDesplegable(_this);
+    });
     $('.ventana').on('click','button.ventanaMaximizar', function() {
         var _this= $(this);
 
@@ -269,6 +276,19 @@ $(document).ready(function(){
                 $("#contenedorPrincipalDashIni").addClass('col-9-10');
             }
         }
+        if(anchoPatanlla <=1080){
+            $("article.ventana").addClass('col-10-10');
+            $("article.ventana").removeClass('col-5-10');
+        }
+        if(anchoPatanlla>1080){
+            if($("article.ventana").hasClass('col-10-10')){
+                $("article.ventana").addClass('col-5-10');
+                $("article.ventana").removeClass('col-10-10');
+            }else{
+
+            }
+        }
+
 
     });
 
