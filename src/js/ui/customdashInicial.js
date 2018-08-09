@@ -140,6 +140,17 @@ COMBOTOOLSBOX.event = {
                 }
             });
         }
+    },
+    bloqueVista: function () {
+        var bloqueVista= {};
+
+        $('article.ventana').each(function (i) {
+            var bloque = $(this).attr('id');
+            var vista = $(this).find('.widget-vistaInteractiva-comboToolsBox ' +
+                '.contentListaTitulos li[data-selected]').attr('data-vista');
+            bloqueVista[i]={bloque:bloque,vista:vista};
+        });
+        return(bloqueVista);
     }
 
 };
@@ -152,7 +163,7 @@ $(document).ready(function(){
 
     /* Altos Automaticos */
     var altoPantalla = $(window).height();
-    //var anchoPatanlla = $(window).width();
+    var anchoPatanlla = $(window).width();
     var altoHeader = $("body>header").height();
     var resumentTop = $(".resumen-button-top").height();
     var altoWidgetComboTools = $(".widget-vistaInteractiva-comboToolsBox").height();
@@ -168,6 +179,10 @@ $(document).ready(function(){
     $(".contentTabs").css("height", altoContentTabs + "px");
     // asignando overflow hidden a html.
     $('html').css('overflow','hidden');
+
+    if(anchoPatanlla <= 1280){
+        $("#contenedorPrincipalDashIni").removeClass('col-9-10');
+    }
 
 
     /* eventos de ventana */
@@ -266,7 +281,7 @@ $(document).ready(function(){
         $(".contentTabs").css("height", altoContentTabs + "px");
 
 
-        console.log('pantallas : ' + anchoPatanlla );
+
         if(anchoPatanlla <=1280){
             $("#contenedorPrincipalDashIni").removeClass('col-9-10');
         }
