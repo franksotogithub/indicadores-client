@@ -231,9 +231,9 @@
                         </button>
                         <div class="wraper contentListaTitulos">
                             <ul>
-                                <li data-selected="selected" data-vista="vista1">2.1 Composición de la población por sexo</li>
-                                <li data-vista="vista2">2.2 Estructura por edad de la población</li>
-                                <li data-vista="vista3">2.3 Índice de Masculinidad</li>
+                                <li data-selected="selected" data-vista="vista0">2.1 Composición de la población por sexo</li>
+                                <li data-vista="vista1">2.2 Estructura por edad de la población</li>
+                                <li data-vista="vista2">2.3 Índice de Masculinidad</li>
                             </ul>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
             </div>
         </section>
     </article><!--
-            --><article class="ventana col-5-10 marginBottom-10">
+            --><article class="ventana col-5-10 marginBottom-10" id="bloque3">
         <header>
             <h2>
                 3. Distribución Espacial de la Población
@@ -263,41 +263,30 @@
                 <div class="col-7-10">
                     <div role="wraper" class="contentComboTitulos">
 
-                        <h5 class="mayusculas"> 3. Distribución Espacial de la Población</h5>
+                        <h5 class="mayusculas"></h5>
                         <button class="botonDesplegarTitulos">
                             <i class="material-icons">
                                 keyboard_arrow_down </i>
                         </button>
                         <div class="wraper contentListaTitulos">
                             <ul>
-                                <li data-selected="selected">3.1 Distribución de la población por región natural y tasa de crecimiento</li>
-                                <li>3.2 Distribución de la población por departamento y tasa de crecimiento</li>
-                                <li>3.3 Densidad poblacional por departamento</li>
+                                <li data-selected="selected" data-vista="vista0">3.1 Distribución de la población por región natural y tasa de crecimiento</li>
+                                <li data-vista="vista1">3.2 Distribución de la población por departamento y tasa de crecimiento</li>
+                                <li data-vista="vista2">3.3 Densidad poblacional por departamento</li>
                             </ul>
                         </div>
                     </div>
                 </div><!--
                          --><div class="col-3-10">
-                <div class="wraper BarraHerramientas ">
-                    <button class="activeButton">
-                        <i class="material-icons">assignment</i>
-                    </button><!--
-                                 --><button>
-                    <i class="material-icons">bar_chart</i>
-                </button><!--
-                                 --><button>
-                    <i class="material-icons">location_on</i>
-                </button><!--
-                                 --><button>
-                    <i class="material-icons">info</i>
-                </button>
-
-                </div>
+                <div class="wraper BarraHerramientas "></div>
             </div>
             </header>
+            <div class="wraper contentTabs">
+                {% include 'dashboard/contenttabs.html' with {'bloque': 'bloque3'}  %}
+            </div>
         </section>
     </article><!--
-            --><article class="ventana col-5-10 marginBottom-10">
+            --><article class="ventana col-5-10 marginBottom-10" id="bloque4">
         <header>
             <h2>
                 4. Provincias y Distritos más poblados
@@ -313,37 +302,26 @@
                 <div class="col-7-10">
                     <div role="wraper" class="contentComboTitulos">
 
-                        <h5 class="mayusculas">  4. Provincias y Distritos más poblados</h5>
+                        <h5 class="mayusculas"></h5>
                         <button class="botonDesplegarTitulos">
                             <i class="material-icons">
                                 keyboard_arrow_down </i>
                         </button>
                         <div class="wraper contentListaTitulos">
                             <ul>
-                                <li data-selected="selected">4.1 Provincias más pobladas</li>
-                                <li>4.2 Distritos más poblados</li>
+                                <li data-selected="selected" data-vista="vista0">4.1 Provincias más pobladas</li>
+                                <li data-vista="vista1">4.2 Distritos más poblados</li>
                             </ul>
                         </div>
                     </div>
                 </div><!--
                          --><div class="col-3-10">
-                <div class="wraper BarraHerramientas ">
-                    <button class="activeButton">
-                        <i class="material-icons">assignment</i>
-                    </button><!--
-                                 --><button>
-                    <i class="material-icons">bar_chart</i>
-                </button><!--
-                                 --><button>
-                    <i class="material-icons">location_on</i>
-                </button><!--
-                                 --><button>
-                    <i class="material-icons">info</i>
-                </button>
-
-                </div>
+                <div class="wraper BarraHerramientas "></div>
             </div>
             </header>
+            <div class="wraper contentTabs">
+                {% include 'dashboard/contenttabs.html' with {'bloque': 'bloque4'}  %}
+            </div>
         </section>
     </article>
     </section>
