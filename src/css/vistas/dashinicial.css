@@ -749,7 +749,7 @@ body > header {
     padding: 0px 20px; }
   body > header > button.menuResponsive {
     float: left;
-    margin-right: 25px;
+    margin-right: 5px;
     display: none; }
   body > header > button:hover {
     background-color: rgba(0, 0, 0, 0.25); }
@@ -1043,7 +1043,7 @@ footer > a {
   .resumen-button-top p {
     font-size: 9px; } }
 
-@media screen and (max-width: 1510px) {
+@media screen and (max-width: 1524px) {
   section.resumen-button-top {
     display: none; }
   section.resumen-button-top.agruparTres {
@@ -1083,8 +1083,40 @@ footer > a {
 @media screen and (min-width: 360px) and (max-width: 1280px) {
   nav.nav-vertical {
     display: none;
-    position: absolute; }
+    position: absolute;
+    width: 160px;
+    z-index: 99; }
+    nav.nav-vertical img {
+      height: 30px;
+      width: 32px; }
+    nav.nav-vertical h4 {
+      font-size: 12px; }
     nav.nav-vertical footer {
-      position: relative; }
+      position: relative;
+      display: none; }
   body > header > button.menuResponsive {
     display: inline-block; } }
+
+@media screen and (max-width: 1080px) {
+  button.ventanaMaximizar {
+    display: none; } }
+
+/* Responsive De alto */
+@media screen and (max-height: 680px) {
+  footer {
+    position: absolute;
+    bottom: 10px;
+    left: 3px;
+    max-width: 100%; }
+  footer > a {
+    display: inline-block;
+    color: white;
+    vertical-align: middle; }
+    footer > a img {
+      display: inline-block;
+      vertical-align: middle;
+      padding-right: 5px;
+      width: 22px;
+      height: 22px; }
+    footer > a p {
+      display: none; } }
