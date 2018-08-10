@@ -183,6 +183,10 @@ $(document).ready(function(){
     if(anchoPatanlla <= 1280){
         $("#contenedorPrincipalDashIni").removeClass('col-9-10');
     }
+    if (anchoPatanlla <= 1080){
+        $("article.ventana").addClass('col-10-10');
+        $('article.ventana').removeClass('col-5-10');
+    }
 
 
     /* eventos de ventana */
@@ -191,6 +195,11 @@ $(document).ready(function(){
         var _this= $(this);
         GLOBALCOMPONENTE.global.menuDesplegable(_this);
     });
+    $('body').on('click','button.compartirRedes', function() {
+        var _this= $(this);
+        _this.find('.contentRedes').toggle();
+    });
+
     $('.ventana').on('click','button.ventanaMaximizar', function() {
         var _this= $(this);
 
