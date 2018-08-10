@@ -13,9 +13,13 @@
 
 </div>
 
-<div class="contentData" data-buttonCod="location_on" >
-    <div id="location_on_{{bloque}}" style="height: 100%" > </div>
 
+<div class="contentData" data-buttonCod="location_on" >
+
+    <div id="location_on_{{bloque}}" style="height:94%" >
+        <h2 id="location_on_titulo_{{bloque}}"></h2>
+    </div>
+    <!--<button  class="location_info">INFO</button>-->
 </div>
 
 
@@ -23,5 +27,7 @@
     .esri-view-root{
         height: 100%;
     }
-
+    .esri-legend__layer-cell{
+        min-width: 0px;
+    }
 </style>

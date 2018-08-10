@@ -144,6 +144,9 @@ var App = (function (scope, config) {
     var uiNormalCallbackDashBoardEvent= function (bloque,vista) {
         _hasUtils(this, 'uiNormalCallbackDashBoardEvent', {"bloque": bloque , "vista": vista}, ['dashboard', 'mapasDashBoard']);
     }
+    var uiResizeCallbackDashBoardEvent= function (list,anchoPatanlla) {
+        _hasUtils(this, 'uiResizeCallbackDashBoardEvent', {"list": list,"anchoPantalla":anchoPatanlla}, ['dashboard', 'mapasDashBoard']);
+    }
 
     return {
         ambito: 'nacional',
@@ -165,6 +168,6 @@ var App = (function (scope, config) {
         dashboardVistaChangeEvent: dashboardVistaChangeEvent,
         uiMaxCallbackDashBoardEvent: uiMaxCallbackDashBoardEvent,
         uiNormalCallbackDashBoardEvent:uiNormalCallbackDashBoardEvent,
-
+        uiResizeCallbackDashBoardEvent:uiResizeCallbackDashBoardEvent,
     };
 })(window, AppConfig());

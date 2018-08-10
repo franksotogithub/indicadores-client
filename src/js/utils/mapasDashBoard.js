@@ -4,6 +4,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     var listLayers= new Object();
 
 
+    var estadoResize = 1;
 
     var indexSubLayer=0;
 
@@ -337,36 +338,81 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     }
 
     var crearLegenda=function(datosMap,data){
-        var _this=parent.mapasDashBoard;
-        var html='<div class="esri-legend__service">' +
-            '<div class="esri-legend__service-label" >' +data.title+
-            '<div class="esri-legend__layer">' +data.titleLayer+
+
+
+        console.log('datosMap>>',datosMap);
+        console.log('data>>>',data);
+        var html=
+            //'<div class="esri-legend__service">' +
+            //'<div class="esri-legend__service-label" >' +data.title+
+            //'<div class="esri-legend__layer"> <div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' +data.titleLayer+'</div>'+
+            //'<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' +data.titleLayer+'</div>'+
+
             '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
             '<div class="esri-legend__layer-body" >' ;
 
+             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
+             html+='<div style="opacity: 1; background-color:transparent;  width:20px;height:20px "></div>';
+             html+='</div>';
+             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; font-weight: bold;">'+data.title+'</div>';
+
+            if (datosMap.layer>0){
+             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px; font-weight: bold;">2007</div>';
+             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px; font-weight: bold;">2017</div>';
+            }
+
+             html+='</div>';
+
         if(datosMap.layer>0){
 
+            var total1=0;
+            var total2=0;
+            data.renderer.forEach(function (el,index) {
+                total1=parseFloat(el.label1)+total1;
+                total2=parseFloat(el.label2)+total2;
+            });
+
+
+
+
+            //html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">2007</div>';
+            //html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">2017</div>';
+            //html+='</div>';
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
+            html+='<div style="opacity: 1; background-color:transparent;  width:20px;height:20px "></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Total</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">'+total1+'</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">'+total2+'</div>';
+            html+='</div>';
         }
+
+
+
 
         data.renderer.forEach(function (el,index) {
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
             html+='<div style="opacity: 1; background-color:'+el.color+';  width:20px;height:20px "></div>';
             html+='</div>';
-
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">'+el.label+'</div>';
             if(datosMap.layer>0) {
+                html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">' + el.label1 + '</div>';
+                html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;width: 60px;">' + el.label2 + '</div>';
 
-                if (_this.maximizado){
-                    html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' + el.label1 + '</div>';
-                    html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' + el.label2 + '</div>';
+                /*if (_this.maximizado){
+                    html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">' + el.label1 + '</div>';
+                    html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;width: 60px;">' + el.label2 + '</div>';
                 }
                 else{
                     if (datosMap.anio=='2007')
-                    {html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' + el.label1 + '</div>';}
+                    {html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px">' + el.label1 + '</div>';}
                     else(datosMap.anio=='2017')
-                    {html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' + el.label2 + '</div>';}
-                }
+                    {html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px">' + el.label2 + '</div>';}
+                }*/
             }
             html+='</div>';
         });
@@ -409,7 +455,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             });
 
 
-            var center=[-65.000, -9.500];
+            var center=[-70.000, -9.500];
             if (_this.maximizado){center=[-70.000, -9.500];}
 
             var view = new MapView({
@@ -422,12 +468,13 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             view.ui.components = [];
 
             view.when(function () {
-                if(datosMap.divWidgetSelect!==null && datosMap.divWidgetSelect!==undefined){view.ui.add(datosMap.divWidgetSelect, "top-left");}
-                if(datosMap.divLegend!==null && datosMap.divLegend!==undefined){view.ui.add(datosMap.divLegend, "top-right");}
+                if(datosMap.divWidgetSelect!=null && datosMap.divWidgetSelect!=undefined){view.ui.add(datosMap.divWidgetSelect, "top-left");}
+                if(datosMap.divLegend!=null && datosMap.divLegend!=undefined){view.ui.add(datosMap.divLegend, "top-right");}
+                if(datosMap.buttomInfo!=null && datosMap.buttomInfo!=undefined){view.ui.add(datosMap.buttomInfo, "top-left");}
+                if(datosMap.divAnio!=undefined){view.ui.add(datosMap.divAnio, "top-left");}
             });
 
-            if(datosMap.divLegend!==null && datosMap.divLegend!==undefined){crearLegenda(datosMap,optionsSublayers[datosMap.layer]);}
-
+            if(!(datosMap.divLegend==null )){crearLegenda(datosMap,optionsSublayers[datosMap.layer]);}
 
         });
     }
@@ -441,7 +488,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             var renderOptionsSublayers=getListSublayerTematico(optionsSublayers,datosMap);
             _this.listLayers[datosMap.div].url=datosMap.urlMap;
             _this.listLayers[datosMap.div].sublayers=renderOptionsSublayers;
-            crearLegenda(datosMap,optionsSublayers[parseInt(datosMap.sublayer)]);
+            console.log('datosMap.divLegend>>>',datosMap);
+            console.log('datosMap.divLegend>>>',datosMap.layer);
+            //console.log('optionsSublayers>>>',optionsSublayers);
+            crearLegenda(datosMap,optionsSublayers[datosMap.layer]);
         });
     };
 
@@ -480,22 +530,21 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     var dashboardWidgetChangeEvent = function (options) {
         console.log(options);
     }
-
+    var listBloques=['bloque1','bloque2','bloque3','bloque4'];
     var listMapas=
         [
-            {divParent:'location_on_bloque2',id:'mapa1',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:0},
-            {divParent:'location_on_bloque2',id:'mapa2',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:false,layer:0},
-            {divParent:'location_on_bloque2',id:'mapa3',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002',inicialVista:true ,layer:0},
-            {divParent:'location_on_bloque2',id:'mapa4',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002' ,inicialVista:false,layer:0},
-            {divParent:'location_on_bloque2',id:'mapa5',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003',inicialVista:true ,layer:0},
-            {divParent:'location_on_bloque2',id:'mapa6',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003' ,inicialVista:false,layer:0},
-            {divParent:'location_on_bloque3',id:'mapa7',div:'mapa31',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004',inicialVista:true ,layer:0},
-            {divParent:'location_on_bloque3',id:'mapa8',div:'mapa32',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004' ,inicialVista:false,layer:0},
-            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:1},
-            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:1},
-            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:true ,layer:2},
-            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:false ,layer:2},
-
+            {divParent:'location_on_bloque2',id:'mapa1',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017"},
+            {divParent:'location_on_bloque2',id:'mapa2',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:false,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017"},
+            {divParent:'location_on_bloque2',id:'mapa3',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002',inicialVista:true ,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))"},
+            {divParent:'location_on_bloque2',id:'mapa4',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002' ,inicialVista:false,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))"},
+            {divParent:'location_on_bloque2',id:'mapa5',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003',inicialVista:true ,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017"},
+            {divParent:'location_on_bloque2',id:'mapa6',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003' ,inicialVista:false,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017"},
+            {divParent:'location_on_bloque3',id:'mapa7',div:'mapa31',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004',inicialVista:true ,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)"},
+            {divParent:'location_on_bloque3',id:'mapa8',div:'mapa32',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004' ,inicialVista:false,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)"},
+            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
+            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
+            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:true ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
+            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:false ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
         ];
 
     var limpiarContenedor=function(bloque){
@@ -507,17 +556,34 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         var _this=parent.mapasDashBoard;
         var tam=listMapas.length;
 
-
         listMapas.forEach(
             function (el,index) {
-                var divLegend= '';
-                var divWidgetSelect= '';
+                var tituloMapa=undefined;
+                var divAnio=undefined;
+                var tituloMapa=document.getElementById('location_on_titulo_'+el.bloque);
+                var divLegend=undefined;
+                var divWidgetSelect= undefined;
+                var buttomInfo=undefined;
+
                 var div=document.getElementById(el.div);
                 var divParent=document.getElementById(el.divParent);
+
+                if (tituloMapa==null )
+                {
+                    tituloMapa=document.createElement('h2')
+                    tituloMapa.setAttribute('id','location_on_titulo_'+el.bloque);
+                    divParent.appendChild(tituloMapa);
+                }
+
+
+
+                tituloMapa.innerHTML=el.titulo;
+
                 var htmlSelect= '<option value="2007" selected>2007</option>' +
                                 '<option value="2017">2017</option>'
 
                 var w=parseInt(100.0/tam);
+
 
                 if(div!==null) {
                     div.remove();
@@ -534,6 +600,8 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
 
                 if(index==0){
                     if(!(max)){
+
+
                         divWidgetSelect = document.createElement("select");
                         divWidgetSelect.innerHTML=htmlSelect;
                         divWidgetSelect.setAttribute("id","select_"+el.bloque);
@@ -550,6 +618,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                                             datosMap.divLegend=divLegend;
                                             datosMap.layer=el.layer;
                                             datosMap.anio=anio;
+                                            //datosMap.sublayer=e.sublayer;
                                             cambiarMapa(datosMap);
                                         });
                                     }
@@ -558,9 +627,28 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                             }
                         );
                     }
+
+                    else{
+                        divAnio=document.createElement('h2');
+                        divAnio.innerHTML=el.anio;
+                    }
+
+                    buttomInfo=document.createElement("buttom");
+
+                    buttomInfo.classList.add("locationInfo");
+                    buttomInfo.innerHTML='INFO';
                     divLegend= document.createElement("div");
                     divLegend.setAttribute("id","legend_"+el.bloque);
+                    divLegend.style.backgroundColor='white';
                 }
+
+                else{
+
+                    if(max){
+                    divAnio=document.createElement('h2');
+                    divAnio.innerHTML=el.anio;}
+                }
+
 
                 service.mapas.getMapa(el.codMapa,function (data) {
                     var datosMap = new Object();
@@ -570,10 +658,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                     datosMap.div=el.div;
                     datosMap.layer=el.layer;
                     datosMap.anio=el.anio;
-                    if(index==0){
-                        if(!(max)) datosMap.divWidgetSelect=divWidgetSelect;
-                        datosMap.divLegend=divLegend;
-                    }
+                    datosMap.buttomInfo=buttomInfo;
+                    datosMap.divAnio=divAnio;
+                    datosMap.divWidgetSelect=divWidgetSelect;
+                    datosMap.divLegend=divLegend;
                     crearMapa(datosMap);
                 });
 
@@ -587,14 +675,36 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         var vista=options.vista.id;
 
         var list = _this.listMapas.filter(function (el) {
-            if(_this.maximizado)
-            {return el.bloque==bloque && el.vista ==vista}
+            if(_this.maximizado) {
+                if(_this.estadoResize==2)
+                {
+                    return el.bloque == bloque && el.vista == vista;
+                }
+
+                else
+                {
+                    return el.bloque == bloque && el.vista == vista && el.inicialVista==true;
+                }
+            }
             else
             {return el.bloque==bloque && el.vista ==vista && el.inicialVista==true}
 
         });
 
-        iniciarMapas(list,_this.maximizado);
+        limpiarContenedor(bloque);
+        console.log('estado>>>',_this.estadoResize);
+        console.log('maximizado>>>',_this.maximizado);
+        if (_this.estadoResize==2 && _this.maximizado==true ){
+            console.log('maximizado')
+            iniciarMapas(list,true);
+        }
+
+        else{
+
+            iniciarMapas(list,false);
+        }
+
+
     }
 
     var uiMaxCallbackDashBoardEvent=function(options){
@@ -603,12 +713,25 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         var vista=options.vista;
 
         var list = _this.listMapas.filter(function (el) {
-            return el.bloque==bloque && el.vista ==vista
+            if(_this.estadoResize==2)
+            {
+                return el.bloque == bloque && el.vista == vista;
+            }
+
+            else
+            {
+                return el.bloque == bloque && el.vista == vista && el.inicialVista==true;
+            }
+
         });
 
         _this.maximizado=true;
         limpiarContenedor(bloque);
-        iniciarMapas(list,true);
+        console.log('estadoResize>>>',_this.estadoResize);
+        if (_this.estadoResize==1)
+        {iniciarMapas(list,false);}
+        else{iniciarMapas(list,true);}
+
     }
 
     var uiNormalCallbackDashBoardEvent=function(options){
@@ -624,15 +747,110 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         iniciarMapas(list,false);
     }
 
+
+    var uiResizeCallbackDashBoardEvent=function (options) {
+        var _this=parent.mapasDashBoard;
+        var list=options.list;
+        var anchoPantalla=options.anchoPantalla;
+        var listaFinal=[];
+        var estadoResizeTemp=1;
+
+
+        console.log('anchoPantalla>>>',anchoPantalla);
+        if (anchoPantalla<1080)
+            estadoResizeTemp=1;
+
+        else
+            estadoResizeTemp=2;
+
+        if (_this.estadoResize!=estadoResizeTemp) {  //se cambia el tamaño de la ventana
+            list.forEach(function (element1) {
+                _this.listMapas.forEach(function (element2) {
+                    if (_this.maximizado) {
+                        if (estadoResizeTemp==1){
+                            if (element1.bloque == element2.bloque && element1.vista == element2.vista && element2.inicialVista==true) {
+                                listaFinal.push(element2);
+                            }
+
+                        }
+
+                        else {
+                            if (element1.bloque == element2.bloque && element1.vista == element2.vista) {
+                                listaFinal.push(element2);
+                            }
+
+                        }
+
+
+
+                    }
+
+
+                    /*else {
+                        if(element1.bloque==element2.bloque && element1.vista==element2.vista && element2.inicialVista==true){
+                            listaFinal.push(element2);
+                        }
+                    }*/
+
+
+                    /*if(_this.maximizado)
+                    {return el.bloque==bloque && el.vista ==vista}
+                    else
+                    {return el.bloque==bloque && el.vista ==vista && el.inicialVista==true}
+                    */
+                    /*if(element1.bloque==element2.bloque && element1.vista==element2.vista){
+                        listaFinal.push(element2);
+                    }*/
+                });
+            });
+
+            _this.listBloques.forEach(
+                function (bloque) {
+                    var mapasInicial = listaFinal.filter(function (el) {
+                        return el.bloque == bloque
+                    });
+
+                    if(_this.maximizado) {
+                        limpiarContenedor(bloque);
+                        if (estadoResizeTemp == 1) {
+                            iniciarMapas(mapasInicial, false);
+                        }
+                        else if (estadoResizeTemp == 2) {
+                            iniciarMapas(mapasInicial, true);
+                        }
+                    }
+                    //console.log('maximizado>>>', _this.maximizado);
+
+                }
+            );
+
+            _this.estadoResize=estadoResizeTemp;
+
+        }
+        /*_this.maximizado=false;
+        limpiarContenedor(bloque);
+        iniciarMapas(listaFinal,false);
+        */
+    }
     var init = function (options) {
         var _this= parent.mapasDashBoard;
         var list = _this.listMapas.filter(function (el) {
             return el.inicial==true
         });
 
-        var listBloques=['bloque1','bloque2','bloque3','bloque4'];
+        //var bodys=document.width;
 
-        listBloques.forEach(
+        var anchoPantalla=document.body.clientWidth;
+
+        if(anchoPantalla<1080)
+            _this.estadoResize=1
+        else
+            _this.estadoResize=2
+
+        console.log('init estadoResize>>>',_this.estadoResize);
+        console.log('init anchoPantalla>>>',anchoPantalla);
+
+        _this.listBloques.forEach(
             function (bloque) {
                 var mapasInicial=list.filter(function (el) {
                    return  el.bloque==bloque
@@ -667,8 +885,11 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         dashboardVistaChangeEvent :dashboardVistaChangeEvent ,
         uiMaxCallbackDashBoardEvent:uiMaxCallbackDashBoardEvent,
         uiNormalCallbackDashBoardEvent:uiNormalCallbackDashBoardEvent,
+        uiResizeCallbackDashBoardEvent: uiResizeCallbackDashBoardEvent,
         maximizado:maximizado,
-        listLayers: listLayers
+        listLayers: listLayers,
+        listBloques:listBloques,
+        estadoResize: estadoResize
 
     }
 

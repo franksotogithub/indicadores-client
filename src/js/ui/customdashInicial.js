@@ -142,13 +142,13 @@ COMBOTOOLSBOX.event = {
         }
     },
     bloqueVista: function () {
-        var bloqueVista= {};
-
+        //var bloqueVista= {};
+        var bloqueVista= [];
         $('article.ventana').each(function (i) {
             var bloque = $(this).attr('id');
             var vista = $(this).find('.widget-vistaInteractiva-comboToolsBox ' +
                 '.contentListaTitulos li[data-selected]').attr('data-vista');
-            bloqueVista[i]={bloque:bloque,vista:vista};
+            bloqueVista.push({bloque:bloque,vista:vista});
         });
         return(bloqueVista);
     }
@@ -303,7 +303,8 @@ $(document).ready(function(){
 
             }
         }
-
+        //COMBOTOOLSBOX.event.bloqueVista();
+        App.uiResizeCallbackDashBoardEvent(COMBOTOOLSBOX.event.bloqueVista(),anchoPatanlla);
 
     });
 
