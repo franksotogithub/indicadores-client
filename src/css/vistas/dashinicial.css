@@ -1183,7 +1183,8 @@ footer > a {
     background-color: #0079c9; }
 
 #contenedorPrincipalDashIni {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 100%; }
 
 /*FIn componente */

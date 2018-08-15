@@ -15,7 +15,6 @@ GLOBALCOMPONENTE.global={
             var titleTool = e.attr("data-title");
             e.append("<span class='tooltiptext'>" + titleTool + "</span>");
         });
-
         $(document).on("mouseleave", ".tooltipDash", function() {
             var e = $(this);
             e.find( "span" ).remove();
