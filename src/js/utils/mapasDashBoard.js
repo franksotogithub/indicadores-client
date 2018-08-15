@@ -633,10 +633,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                         divAnio.innerHTML=el.anio;
                     }
 
-                    buttomInfo=document.createElement("buttom");
+                    buttomInfo=document.createElement("button");
 
                     buttomInfo.classList.add("locationInfo");
-                    buttomInfo.innerHTML='INFO';
+                    buttomInfo.innerHTML='<i class=\"material-icons\">info</i><div class=\"boxInfoMap \">información</div>';
                     divLegend= document.createElement("div");
                     divLegend.setAttribute("id","legend_"+el.bloque);
                     divLegend.style.backgroundColor='white';

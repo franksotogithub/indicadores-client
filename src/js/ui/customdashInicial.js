@@ -1,11 +1,29 @@
 
 /* Componentes */
 
+
+
 /* Tooltip */
 var GLOBALCOMPONENTE = GLOBALCOMPONENTE || {};
 GLOBALCOMPONENTE.global={};
 GLOBALCOMPONENTE.global={
     tooltip:function () {
+
+        $(document).on("mouseenter", ".tooltipDash", function() {
+            var e = $(this);
+            //var textTool = $(this).text();
+            var titleTool = e.attr("data-title");
+            e.append("<span class='tooltiptext'>" + titleTool + "</span>");
+        });
+
+        $(document).on("mouseleave", ".tooltipDash", function() {
+            var e = $(this);
+            e.find( "span" ).remove();
+        });
+
+
+
+        /*
 
         $(".tooltipDash").hover(function () {
             var e = $(this);
@@ -16,9 +34,17 @@ GLOBALCOMPONENTE.global={
             var e = $(this);
             e.find( "span" ).remove();
         });
+        */
     },
     menuDesplegable:function (e) {
-        $('main > nav').toggle();
+        $('main > nav').toggle(function() {
+            if($(this).is(':hidden')) {
+                //$(this).text('This element is hidden.');
+            }
+            else {
+                $(this).css('display','inline-block');
+            }
+        });
     }
 }
 
@@ -159,7 +185,8 @@ COMBOTOOLSBOX.event = {
 
 
 $(document).ready(function(){
-
+    /* Iniciar Tooltip */
+    GLOBALCOMPONENTE.global.tooltip();
 
     /* Altos Automaticos */
     var altoPantalla = $(window).height();
@@ -195,7 +222,8 @@ $(document).ready(function(){
         var _this= $(this);
         GLOBALCOMPONENTE.global.menuDesplegable(_this);
     });
-    $('body').on('click','button.compartirRedes', function() {
+
+    $('body').on('click','button.compartirRedes , button.compartirRedesNav ', function() {
         var _this= $(this);
         _this.find('.contentRedes').toggle();
     });
@@ -216,6 +244,11 @@ $(document).ready(function(){
         App.uiMaxCallbackDashBoardEvent(bloque,vista);
         //console.log('maximizado-->',_this);
     });
+    $('.ventana').on('click','button.locationInfo', function() {
+        $(this).find('div.boxInfoMap').toggle();
+    });
+
+
     $('.ventana').on('click','button.ventanaRestaurar', function() {
         var _this= $(this);
         var bloque =_this.closest('.ventana').attr('id');
@@ -227,17 +260,6 @@ $(document).ready(function(){
 
     });
 
-    $(document).on("mouseenter", ".tooltipDash", function() {
-        var e = $(this);
-        var textTool = $(this).html();
-        var titleTool = e.attr("data-title");
-        e.html(textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
-        console.log();
-    });
-
-    $(document).on("mouseleave", ".tooltipDash", function() {
-        $(this).find( "span" ).remove();
-    });
 
 
     /* eventos de widget */
