@@ -52,5 +52,66 @@ App.utils = {
 
     capitalizeFirstLetter: function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    },
+
+    renderLines : function() {
+        var renderer = {
+            type: "unique-value",  // autocasts as new UniqueValueRenderer()
+            field: "OBJECTID",
+            defaultSymbol: {
+                type: "simple-fill",
+                color : [255,255,255,0],
+            },
+        };
+        return renderer
+    },
+
+
+    createSymbol: function (color,type,style,outlineOptions,size) {
+
+        var symbol= {
+            type: type,
+            color: color,
+            outline: outlineOptions,
+            style: style,
+        };
+        if (size!==undefined)
+            symbol.size=size;
+
+        return symbol;
+    },
+
+    getClassBreakInfoSublayerTematico: function (datos,outlineOptions) {
+        var respuesta = [];
+        var ini={
+            minValue: 0,
+            maxValue: 0,
+        };
+        respuesta.push(ini);
+        datos.forEach(function (el) {
+            var res= new Object();
+            res.minValue=el.min_valor;
+            res.maxValue=el.max_valor;
+            res.label=el.label;
+
+
+            res.symbol= {
+                type: "simple-fill",
+                color: el.color,
+                outline: outlineOptions,
+                style: "solid",
+            }
+
+
+
+            respuesta.push(res);
+        });
+
+        return respuesta;
+    },
+
+
+
+
+
 };

@@ -3,6 +3,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
 
     var listLayers= new Object();
 
+    var map = undefined;
 
     var estadoResize = 1;
 
@@ -182,13 +183,14 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     var panelDiv=undefined;
 
     var panelDivGrafico =undefined;
-    var  createSymbol=function(color,type,style,oulineOptions,size) {
+
+    var  createSymbol=function(color,type,style,outlineOptions,size) {
         var symbol={};
 
         symbol= {
             type: type,
             color: color,
-            outline: oulineOptions,
+            outline: outlineOptions,
             style: style,
         };
         if (size!==undefined)
@@ -214,18 +216,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         return renderer;
     };
 
-    var renderLines=function() {
-        var renderer = {
-            type: "unique-value",  // autocasts as new UniqueValueRenderer()
-            field: "OBJECTID",
-            defaultSymbol: {
-                type: "simple-fill",
-                color : [255,255,255,0],
-            },
-        };
-        return renderer
-    }
-
     var zoomGlobal = function () {
 
         var zoom;
@@ -237,13 +227,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         return zoom;
     }
 
-    var uiMaxCallback =function () {
-
-    }
-
-    var uiNormalCallback = function(){
-
-    }
 
     var descargarMapaEvent = function(callback){
         require([
@@ -259,24 +242,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
 
     };
 
-    var getClassBreakInfoSublayerTematico = function (datos,outlineOptions) {
-        var respuesta = [];
-        var ini={
-                    minValue: 0,
-                    maxValue: 0,
-                };
-        respuesta.push(ini);
-        datos.forEach(function (el) {
-            var res= new Object();
-            res.minValue=el.min_valor;
-            res.maxValue=el.max_valor;
-            res.label=el.label;
-            res.symbol=createSymbol(el.color,"simple-fill","solid",outlineOptions);
-            respuesta.push(res);
-        });
 
-        return respuesta;
-    }
 
     var getListSublayerTematico = function (optionsSublayers,datosMap) {
         var _this=parent.mapasDashBoard;
@@ -289,9 +255,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         if(datosMap.layer!==null && datosMap.layer!==undefined)
             layer=parseInt(datosMap.layer);
 
-
-
-
         optionsSublayers.forEach(function (sublayer) {
             renderOptionSublayer= new Object();
             renderOptionSublayer.id=parseInt(sublayer.id);
@@ -300,7 +263,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             renderOptionSublayer.outFields=['*'];
             renderOptionSublayer.visible=true;
 
-            renderOptionSublayer.renderer=renderizadoClassBreaks(codTematico,getClassBreakInfoSublayerTematico(sublayer.renderer,oulineOptions));
+            renderOptionSublayer.renderer=renderizadoClassBreaks(codTematico,parent.getClassBreakInfoSublayerTematico(sublayer.renderer,oulineOptions));
 
 
             if(layer==undefined)
@@ -311,7 +274,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 {
                     if (layer==2)
                     {   oulineOptions=undefined;
-                        renderOptionSublayer.renderer=renderizadoClassBreaks(codTematico,getClassBreakInfoSublayerTematico(sublayer.renderer,oulineOptions));
+                        renderOptionSublayer.renderer=renderizadoClassBreaks(codTematico,parent.getClassBreakInfoSublayerTematico(sublayer.renderer,oulineOptions));
                         renderOptionSublayer.labelsVisible=false;
                     }
                     else if(layer==1)
@@ -330,10 +293,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             renderOptionSublayer.id=limDep.id;
             renderOptionSublayer.labelsVisible=true;
             renderOptionSublayer.visible=true;
-            renderOptionSublayer.renderer=renderLines();
+            renderOptionSublayer.renderer=parent.renderLines();
             res.push(renderOptionSublayer);
         }
-        console.log('respuesta>>>>',res);
+
         return res
     }
 
@@ -343,10 +306,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         console.log('datosMap>>',datosMap);
         console.log('data>>>',data);
         var html=
-            //'<div class="esri-legend__service">' +
-            //'<div class="esri-legend__service-label" >' +data.title+
-            //'<div class="esri-legend__layer"> <div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' +data.titleLayer+'</div>'+
-            //'<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">' +data.titleLayer+'</div>'+
 
             '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
             '<div class="esri-legend__layer-body" >' ;
@@ -372,13 +331,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 total1=parseFloat(el.label1)+total1;
                 total2=parseFloat(el.label2)+total2;
             });
-
-
-
-
-            //html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">2007</div>';
-            //html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">2017</div>';
-            //html+='</div>';
 
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
@@ -449,22 +401,30 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 title: titulo
             });
 
+            /*
             var map = new Map({
+                layers: _this.listLayers[datosMap.div],
+
+            });*/
+
+            _this.map = new Map({
                 layers: _this.listLayers[datosMap.div],
                 //layers: layer,
             });
 
+            _this.map.on("load",function(){
+
+            });
 
             var center=[-70.000, -9.500];
             if (_this.maximizado){center=[-70.000, -9.500];}
 
             var view = new MapView({
                 container: datosMap.div,
-                map: map,
+                map: _this.map,
                 center: center,
                 zoom : zoomGlobal(),
             });
-
             view.ui.components = [];
 
             view.when(function () {
@@ -472,6 +432,8 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 if(datosMap.divLegend!=null && datosMap.divLegend!=undefined){view.ui.add(datosMap.divLegend, "top-right");}
                 if(datosMap.buttomInfo!=null && datosMap.buttomInfo!=undefined){view.ui.add(datosMap.buttomInfo, "top-left");}
                 if(datosMap.divAnio!=undefined){view.ui.add(datosMap.divAnio, "top-left");}
+
+
             });
 
             if(!(datosMap.divLegend==null )){crearLegenda(datosMap,optionsSublayers[datosMap.layer]);}
@@ -488,63 +450,118 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             var renderOptionsSublayers=getListSublayerTematico(optionsSublayers,datosMap);
             _this.listLayers[datosMap.div].url=datosMap.urlMap;
             _this.listLayers[datosMap.div].sublayers=renderOptionsSublayers;
-            console.log('datosMap.divLegend>>>',datosMap);
-            console.log('datosMap.divLegend>>>',datosMap.layer);
-            //console.log('optionsSublayers>>>',optionsSublayers);
             crearLegenda(datosMap,optionsSublayers[datosMap.layer]);
         });
     };
 
     var cambiarMapa = function(datosMap){
-        var _this=parent.mapasDashBoard;
-        var codMapa=datosMap.codMap;
-        var codTematico=datosMap.codTematico;
-        service.mapas.getLegenda(codMapa,codTematico,datosMap, cambiarMapaRender);
+        service.mapas.getLegenda(datosMap, cambiarMapaRender);
     }
 
     var crearMapa = function(datosMap){
-        var _this=parent.mapasDashBoard;
-        var codMapa=datosMap.codMap;
-        var codTematico=datosMap.codTematico;
-        service.mapas.getLegenda(codMapa,codTematico,datosMap,crearMapaRender)
+        service.mapas.getLegenda(datosMap,crearMapaRender)
     }
 
     var requireEvents = function () {
         cambiarMapa(codMap,codTematico,url,titulo);
     };
 
-    var categoriaChangeEvent = function (options) {
-        /*var cod_mapa=options.categoria;
-        service.mapas.getMapa(cod_mapa,function (data) {
-            var _this=parent.mapasDashBoard;
 
-            //_this.datosMap.codMap=cod_mapa;
-            //_this.datosMap.urlMap=data.url;
-            //_this.datosMap.codTematico=data.cod_tematico_default;
-            //_this.datosMap.tituloLegend=data.descripcion;
-
-            cambiarMapa();
-        });*/
-    }
 
     var dashboardWidgetChangeEvent = function (options) {
-        console.log(options);
+
+
+
     }
     var listBloques=['bloque1','bloque2','bloque3','bloque4'];
+
+
     var listMapas=
         [
-            {divParent:'location_on_bloque2',id:'mapa1',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017"},
-            {divParent:'location_on_bloque2',id:'mapa2',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:false,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017"},
-            {divParent:'location_on_bloque2',id:'mapa3',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002',inicialVista:true ,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))"},
-            {divParent:'location_on_bloque2',id:'mapa4',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002' ,inicialVista:false,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))"},
-            {divParent:'location_on_bloque2',id:'mapa5',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003',inicialVista:true ,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017"},
-            {divParent:'location_on_bloque2',id:'mapa6',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003' ,inicialVista:false,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017"},
-            {divParent:'location_on_bloque3',id:'mapa7',div:'mapa31',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004',inicialVista:true ,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)"},
-            {divParent:'location_on_bloque3',id:'mapa8',div:'mapa32',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004' ,inicialVista:false,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)"},
-            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
-            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
-            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:true ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
-            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:false ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017"},
+            {divParent:'location_on_bloque2',id:'mapa1',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017",
+                info:'1/ Comprende los 43 distritos de la provincia de Lima.<br>' +
+                     '2/ Comprende las provincias de Barranca, Cajatambo,' +
+                     'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
+                     'Fuente: Instituto Nacional de Estadística e Informática <br>'+
+                     'Censos Nacionales de Población y Vivienda.<br><br>'+
+                     'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización'+
+                     'Territorial: “En tanto se determina el saneamiento de los límites territoriales, conforme a la'+
+                     'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones'+
+                     'existentes son de carácter referencial”.',
+
+            },
+            {divParent:'location_on_bloque2',id:'mapa2',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:false,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017",
+                info:''
+            },
+            {divParent:'location_on_bloque2',id:'mapa3',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002',inicialVista:true ,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))",
+                info:'(1) Es la relación de la población de 0 a 14 años más la población\n' +
+                'de 65 y más, entre la población de 15 a 64 años de edad.<br>' +
+                '1/ Comprende los 43 distritos de la provincia de Lima.<br>' +
+                '2/ Comprende las provincias de Barranca, Cajatambo,\n' +
+                'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
+                'Fuente: Instituto Nacional de Estadística e Informática -\n' +
+                'Censos Nacionales de Población y Vivienda<br><br> ' +
+                'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización\n' +
+                'Territorial: “En tanto se determina el saneamiento de los límites territoriales, conforme a la\n' +
+                'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
+                'existentes son de carácter referencial”.',
+
+            },
+            {divParent:'location_on_bloque2',id:'mapa4',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002' ,inicialVista:false,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))",
+                info:''
+            },
+            {divParent:'location_on_bloque2',id:'mapa5',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003',inicialVista:true ,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017",
+                info:'1/ Comprende los 43 distritos de la provincia de Lima.<br>\n' +
+                '2/ Comprende las provincias de Barranca, Cajatambo,\n' +
+                'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
+                'Fuente: Instituto Nacional de Estadística e Informática -\n' +
+                'Censos Nacionales de Población y Vivienda.<br><br>\n' +
+                'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización\n' +
+                'Territorial: “En tanto se determina el saneamiento de los límites territoriales, conforme a la\n' +
+                'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
+                'existentes son de carácter referencial”. '
+            },
+            {divParent:'location_on_bloque2',id:'mapa6',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003' ,inicialVista:false,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017",
+                info:''
+            },
+            {divParent:'location_on_bloque3',id:'mapa7',div:'mapa31',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004',inicialVista:true ,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)",
+                info:'1/ Comprende los 43 distritos de la provincia de Lima.<br>\n' +
+                '2/ Comprende las provincias de Barranca, Cajatambo,\n' +
+                'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
+                'Fuente: Instituto Nacional de Estadística e Informática -\n' +
+                'Censos Nacionales de Población y Vivienda.<br><br>' +
+                'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización\n' +
+                'Territorial: “En tanto se determina el saneamiento de los límites territoriales, conforme a la\n' +
+                'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
+                'existentes son de carácter referencial”.'
+            },
+            {divParent:'location_on_bloque3',id:'mapa8',div:'mapa32',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004' ,inicialVista:false,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)",
+                info:''
+            },
+            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+                info:'Fuente: Instituto Nacional de Estadística e Informática -\n' +
+                'Censos Nacionales de Población y Vivienda<br><br>' +
+                'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización\n' +
+                'Territorial: “En tanto se determina el saneamiento de los límites territoriales, conforme a la\n' +
+                'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
+                'existentes son de carácter referencial”.'
+            },
+            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+                info:''
+            },
+            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:true ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+                info:'<strong>Nota:</strong> En 2007 autoridades no permitieron censo en el distrito de Carmen Alto, provincia\n' +
+                'de Huamanga, departamento de Ayacucho.<br><br>' +
+                'Fuente: Instituto Nacional de Estadística e Informática -\n' +
+                'Censos Nacionales de Población y Vivienda.<br><br>' +
+                'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización\n' +
+                'Territorial: “En tanto se determina el saneamiento de los límites territoriales, conforme a la\n' +
+                'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
+                'existentes son de carácter referencial”.'
+            },
+            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:false ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+                info:''
+            },
         ];
 
     var limpiarContenedor=function(bloque){
@@ -558,13 +575,11 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
 
         listMapas.forEach(
             function (el,index) {
-                var tituloMapa=undefined;
                 var divAnio=undefined;
                 var tituloMapa=document.getElementById('location_on_titulo_'+el.bloque);
                 var divLegend=undefined;
                 var divWidgetSelect= undefined;
                 var buttomInfo=undefined;
-
                 var div=document.getElementById(el.div);
                 var divParent=document.getElementById(el.divParent);
 
@@ -574,8 +589,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                     tituloMapa.setAttribute('id','location_on_titulo_'+el.bloque);
                     divParent.appendChild(tituloMapa);
                 }
-
-
 
                 tituloMapa.innerHTML=el.titulo;
 
@@ -597,12 +610,13 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 div.style.margin=0;
                 divParent.appendChild(div);
                 div.style.display='inline-block';
+                div.style.position='relative';
+
 
                 if(index==0){
                     if(!(max)){
-
-
                         divWidgetSelect = document.createElement("select");
+                        divWidgetSelect.classList.add('selectMapAnio');
                         divWidgetSelect.innerHTML=htmlSelect;
                         divWidgetSelect.setAttribute("id","select_"+el.bloque);
                         divWidgetSelect.addEventListener('change', function(){
@@ -618,7 +632,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                                             datosMap.divLegend=divLegend;
                                             datosMap.layer=el.layer;
                                             datosMap.anio=anio;
-                                            //datosMap.sublayer=e.sublayer;
                                             cambiarMapa(datosMap);
                                         });
                                     }
@@ -627,16 +640,14 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                             }
                         );
                     }
-
                     else{
                         divAnio=document.createElement('h2');
                         divAnio.innerHTML=el.anio;
                     }
 
                     buttomInfo=document.createElement("button");
-
                     buttomInfo.classList.add("locationInfo");
-                    buttomInfo.innerHTML='<i class=\"material-icons\">info</i><div class=\"boxInfoMap \">información</div>';
+                    buttomInfo.innerHTML='<i class=\"material-icons \">info</i><div class=\"boxInfoMap\" style="text-align: left;font-size:10px "> '+el.info+'</div>';
                     divLegend= document.createElement("div");
                     divLegend.setAttribute("id","legend_"+el.bloque);
                     divLegend.style.backgroundColor='white';
@@ -692,8 +703,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         });
 
         limpiarContenedor(bloque);
-        console.log('estado>>>',_this.estadoResize);
-        console.log('maximizado>>>',_this.maximizado);
+
         if (_this.estadoResize==2 && _this.maximizado==true ){
             console.log('maximizado')
             iniciarMapas(list,true);
@@ -747,7 +757,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         iniciarMapas(list,false);
     }
 
-
     var uiResizeCallbackDashBoardEvent=function (options) {
         var _this=parent.mapasDashBoard;
         var list=options.list;
@@ -785,22 +794,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
 
                     }
 
-
-                    /*else {
-                        if(element1.bloque==element2.bloque && element1.vista==element2.vista && element2.inicialVista==true){
-                            listaFinal.push(element2);
-                        }
-                    }*/
-
-
-                    /*if(_this.maximizado)
-                    {return el.bloque==bloque && el.vista ==vista}
-                    else
-                    {return el.bloque==bloque && el.vista ==vista && el.inicialVista==true}
-                    */
-                    /*if(element1.bloque==element2.bloque && element1.vista==element2.vista){
-                        listaFinal.push(element2);
-                    }*/
                 });
             });
 
@@ -819,7 +812,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                             iniciarMapas(mapasInicial, true);
                         }
                     }
-                    //console.log('maximizado>>>', _this.maximizado);
+
 
                 }
             );
@@ -827,11 +820,9 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             _this.estadoResize=estadoResizeTemp;
 
         }
-        /*_this.maximizado=false;
-        limpiarContenedor(bloque);
-        iniciarMapas(listaFinal,false);
-        */
+
     }
+
     var init = function (options) {
         var _this= parent.mapasDashBoard;
         var list = _this.listMapas.filter(function (el) {
@@ -869,7 +860,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         maximizado : maximizado,
         view_map: view_map,
         panelDiv: panelDiv,
-        categoriaChangeEvent: categoriaChangeEvent,
         crearMapa :crearMapa,
         cambiarMapa:cambiarMapa,
         listMapas : listMapas,
@@ -889,7 +879,8 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         maximizado:maximizado,
         listLayers: listLayers,
         listBloques:listBloques,
-        estadoResize: estadoResize
+        estadoResize: estadoResize,
+        map:map,
 
     }
 
