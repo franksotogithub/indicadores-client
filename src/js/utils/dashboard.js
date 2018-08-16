@@ -21,7 +21,7 @@ App.utils.dashboard = (function (utils, service) {
                         fuente: "Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.",
                         cabecera: '<tr>\n' +
                         '<th rowspan="2">AÑO</th>\n' +
-                        '<th colspan="3">POBLACIÓN</th>\n' +
+                        '<th colspan="3" class="textAlignCenter">POBLACIÓN</th>\n' +
                         '</tr>\n' +
                         '<tr>\n' +
                         '<th>CENSADA</th>\n' +
@@ -114,7 +114,6 @@ App.utils.dashboard = (function (utils, service) {
                 }
             }
         },
-
         "bloque2": {
             "default": "vista0",
             tabla: undefined,
@@ -395,10 +394,10 @@ App.utils.dashboard = (function (utils, service) {
                             }],
                         cabecera: '<tr>\n' +
                         '<th rowspan="2">Departamento</th>\n' +
-                        '<th rowspan="2">Total</th>\n' +
-                        '<th colspan="2">2007</th>\n' +
-                        '<th rowspan="2">Total</th>\n' +
-                        '<th colspan="2">2017</th>\n' +
+                        '<th rowspan="2" class="textAlignCenter">Total</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">2007</th>\n' +
+                        '<th rowspan="2" class="textAlignCenter">Total</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">2017</th>\n' +
                         '</tr>\n' +
                         '<tr>\n' +
                         '<th>Hombre</th>\n' +
@@ -424,11 +423,11 @@ App.utils.dashboard = (function (utils, service) {
                     assignment: {
                         cabecera: '<tr>\n' +
                         '<th rowspan="2">Departamento</th>\n' +
-                        '<th colspan="2">Población censada</th>\n' +
-                        '<th colspan="2">Razón de dependencia demográfica<br />(1)</th>\n' +
-                        '<th colspan="2">Proporción de personas adultas mayores<br />(2)</th>\n' +
-                        '<th colspan="2">Índice de envejecimiento (%)<br />(3)</th>\n' +
-                        '<th colspan="2">Relación de dependencia demográfica de vejez <br />(4)</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">Población censada</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">Razón de dependencia demográfica<br />(1)</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">Proporción de personas adultas mayores<br />(2)</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">Índice de envejecimiento (%)<br />(3)</th>\n' +
+                        '<th colspan="2" class="textAlignCenter">Relación de dependencia demográfica de vejez <br />(4)</th>\n' +
                         '</tr>\n' +
                         '<tr>\n' +
                         '<th>2007</th>\n' +
@@ -1413,10 +1412,10 @@ App.utils.dashboard = (function (utils, service) {
                         codigo: '09',
                         alias: "Cuadro 09",
                         titulo: "PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA, SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
-                        cabecera: '<tr>\n' +
-                        '<th rowspan="2">Rango de población</th>\n' +
-                        '<th colspan="4">2007</th>\n' +
-                        '<th colspan="4">2017</th>\n'+
+                        cabecera: '<tr >\n' +
+                        '<th rowspan="2" class="textAlignCenter">Rango de población</th>\n' +
+                        '<th colspan="4" class="textAlignCenter">2007</th>\n' +
+                        '<th colspan="4" class="textAlignCenter">2017</th>\n'+
                         '</tr>\n'+
                         '<tr>\n' +
                         '<th>Nº de Provincias</th>\n' +
@@ -1576,9 +1575,9 @@ App.utils.dashboard = (function (utils, service) {
                         alias: "Cuadro 11",
                         titulo: "PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA, SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                         cabecera: '<tr>\n' +
-                        '<th rowspan="2">Rango de población</th>\n' +
-                        '<th colspan="4">2007</th>\n' +
-                        '<th colspan="4">2017</th>\n'+
+                        '<th rowspan="2" class="textAlignCenter">Rango de población</th>\n' +
+                        '<th colspan="4" class="textAlignCenter">2007</th>\n' +
+                        '<th colspan="4" class="textAlignCenter">2017</th>\n'+
                         '</tr>\n'+
                         '<tr>\n' +
                         '<th>Nº de Distritos</th>\n' +
