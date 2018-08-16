@@ -836,6 +836,9 @@ nav.nav-vertical button.cbutt4 {
 .textAlignCenter {
   text-align: center; }
 
+.textAlignLeft {
+  text-align: left; }
+
 .paddingRight-10 {
   padding-right: 10px; }
 
@@ -1266,9 +1269,24 @@ button.locationInfo:hover, button.locationInfo.activeButton {
   position: absolute;
   z-index: 999;
   color: #2b2b2b;
-  font-size: 12px;
+  font-size: 10px;
   left: 0;
-  width: 240px; }
+  width: 240px;
+  text-align: left; }
+
+.contentSelect {
+  padding: 0px 5px;
+  display: inline-block; }
+  .contentSelect > select {
+    width: 100%; }
+
+select.mapaSelect {
+  padding: 5px;
+  background-color: #e6e6e6;
+  border: none;
+  color: #1b3c71;
+  outline: none;
+  border-right: solid 5px #e6e6e6; }
 
 /*
   Tooltips
