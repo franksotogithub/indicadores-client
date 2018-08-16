@@ -1429,7 +1429,107 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>(%)</th>\n'+
                         '</tr>\n',
 
-                        data: [],
+                        data: [
+                            {
+                                "rangos": "Total",
+                                "provincias_2007_abs": 195,
+                                "provincias_2007_por": 100,
+                                "poblacion_2007_abs": 27412157,
+                                "poblacion_2007_por": 100,
+                                "provincias_2017_abs": 196,
+                                "provincias_2017_por": 100,
+                                "poblacion_2017_abs": 29381884,
+                                "poblacion_2017_por": 100
+                            },
+                            {
+                                "rangos": "De 1 millón y más",
+                                "provincias_2007_abs": 1,
+                                "provincias_2007_por": 0.5,
+                                "poblacion_2007_abs": 7605742,
+                                "poblacion_2007_por": 27.7,
+                                "provincias_2017_abs": 2,
+                                "provincias_2017_por": 1,
+                                "poblacion_2017_abs": 9655609,
+                                "poblacion_2017_por": 32.9
+                            },
+                            {
+                                "rangos": "De 500 000 a 999 999",
+                                "provincias_2007_abs": 5,
+                                "provincias_2007_por": 2.6,
+                                "poblacion_2007_abs": 3976549,
+                                "poblacion_2007_por": 14.5,
+                                "provincias_2017_abs": 5,
+                                "provincias_2017_por": 2.6,
+                                "poblacion_2017_abs": 410921,
+                                "poblacion_2017_por": 14
+                            },
+                            {
+                                "rangos": "De 200 000 a 499 999",
+                                "provincias_2007_abs": 15,
+                                "provincias_2007_por": 7.7,
+                                "poblacion_2007_abs": 4666998,
+                                "poblacion_2007_por": 17,
+                                "provincias_2017_abs": 14,
+                                "provincias_2017_por": 7.1,
+                                "poblacion_2017_abs": 5405666,
+                                "poblacion_2017_por": 18.4
+                            },
+                            {
+                                "rangos": "De 100 000 a 199 999",
+                                "provincias_2007_abs": 34,
+                                "provincias_2007_por": 17.4,
+                                "poblacion_2007_abs": 4786863,
+                                "poblacion_2007_por": 17.5,
+                                "provincias_2017_abs": 29,
+                                "provincias_2017_por": 14.8,
+                                "poblacion_2017_abs": 4214953,
+                                "poblacion_2017_por": 14.3
+                            },
+                            {
+                                "rangos": "De 50 000 a 99 999",
+                                "provincias_2007_abs": 60,
+                                "provincias_2007_por": 30.8,
+                                "poblacion_2007_abs": 4144939,
+                                "poblacion_2007_por": 15.1,
+                                "provincias_2017_abs": 43,
+                                "provincias_2017_por": 21.9,
+                                "poblacion_2017_abs": 3822485,
+                                "poblacion_2017_por": 13
+                            },
+                            {
+                                "rangos": "De 20 000 a 49 999",
+                                "provincias_2007_abs": 57,
+                                "provincias_2007_por": 29.2,
+                                "poblacion_2007_abs": 1950836,
+                                "poblacion_2007_por": 7.1,
+                                "provincias_2017_abs": 64,
+                                "provincias_2017_por": 32.7,
+                                "poblacion_2017_abs": 1764706,
+                                "poblacion_2017_por": 6
+                            },
+                            {
+                                "rangos": "Menos de 20 000",
+                                "provincias_2007_abs": 23,
+                                "provincias_2007_por": 11.8,
+                                "poblacion_2007_abs": 280230,
+                                "poblacion_2007_por": 1,
+                                "provincias_2017_abs": 39,
+                                "provincias_2017_por": 19.9,
+                                "poblacion_2017_abs": 409344,
+                                "poblacion_2017_por": 1.4
+                            }
+                        ],
+                        columns: [
+                            {"data": "rangos"},
+                            {"data": "provincias_2007_abs"},
+                            {"data": "provincias_2007_por"},
+                            {"data": "poblacion_2007_abs"},
+                            {"data": "poblacion_2007_por"},
+                            {"data": "provincias_2017_abs"},
+                            {"data": "provincias_2017_por"},
+                            {"data": "poblacion_2017_abs"},
+                            {"data": "poblacion_2017_por"}
+                        ],
                         fuente: 'Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.',
 
                         secundario: {
@@ -1491,7 +1591,107 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>(%)</th>\n'+
                         '</tr>\n',
 
-                        data: [],
+                        data: [
+                            {
+                                "rangos": "Total",
+                                "provincias_2007_abs": 195,
+                                "provincias_2007_por": 100,
+                                "poblacion_2007_abs": 27412157,
+                                "poblacion_2007_por": 100,
+                                "provincias_2017_abs": 196,
+                                "provincias_2017_por": 100,
+                                "poblacion_2017_abs": 29381884,
+                                "poblacion_2017_por": 100
+                            },
+                            {
+                                "rangos": "De 1 millón y más",
+                                "provincias_2007_abs": 1,
+                                "provincias_2007_por": 0.5,
+                                "poblacion_2007_abs": 7605742,
+                                "poblacion_2007_por": 27.7,
+                                "provincias_2017_abs": 2,
+                                "provincias_2017_por": 1,
+                                "poblacion_2017_abs": 9655609,
+                                "poblacion_2017_por": 32.9
+                            },
+                            {
+                                "rangos": "De 500 000 a 999 999",
+                                "provincias_2007_abs": 5,
+                                "provincias_2007_por": 2.6,
+                                "poblacion_2007_abs": 3976549,
+                                "poblacion_2007_por": 14.5,
+                                "provincias_2017_abs": 5,
+                                "provincias_2017_por": 2.6,
+                                "poblacion_2017_abs": 410921,
+                                "poblacion_2017_por": 14
+                            },
+                            {
+                                "rangos": "De 200 000 a 499 999",
+                                "provincias_2007_abs": 15,
+                                "provincias_2007_por": 7.7,
+                                "poblacion_2007_abs": 4666998,
+                                "poblacion_2007_por": 17,
+                                "provincias_2017_abs": 14,
+                                "provincias_2017_por": 7.1,
+                                "poblacion_2017_abs": 5405666,
+                                "poblacion_2017_por": 18.4
+                            },
+                            {
+                                "rangos": "De 100 000 a 199 999",
+                                "provincias_2007_abs": 34,
+                                "provincias_2007_por": 17.4,
+                                "poblacion_2007_abs": 4786863,
+                                "poblacion_2007_por": 17.5,
+                                "provincias_2017_abs": 29,
+                                "provincias_2017_por": 14.8,
+                                "poblacion_2017_abs": 4214953,
+                                "poblacion_2017_por": 14.3
+                            },
+                            {
+                                "rangos": "De 50 000 a 99 999",
+                                "provincias_2007_abs": 60,
+                                "provincias_2007_por": 30.8,
+                                "poblacion_2007_abs": 4144939,
+                                "poblacion_2007_por": 15.1,
+                                "provincias_2017_abs": 43,
+                                "provincias_2017_por": 21.9,
+                                "poblacion_2017_abs": 3822485,
+                                "poblacion_2017_por": 13
+                            },
+                            {
+                                "rangos": "De 20 000 a 49 999",
+                                "provincias_2007_abs": 57,
+                                "provincias_2007_por": 29.2,
+                                "poblacion_2007_abs": 1950836,
+                                "poblacion_2007_por": 7.1,
+                                "provincias_2017_abs": 64,
+                                "provincias_2017_por": 32.7,
+                                "poblacion_2017_abs": 1764706,
+                                "poblacion_2017_por": 6
+                            },
+                            {
+                                "rangos": "Menos de 20 000",
+                                "provincias_2007_abs": 23,
+                                "provincias_2007_por": 11.8,
+                                "poblacion_2007_abs": 280230,
+                                "poblacion_2007_por": 1,
+                                "provincias_2017_abs": 39,
+                                "provincias_2017_por": 19.9,
+                                "poblacion_2017_abs": 409344,
+                                "poblacion_2017_por": 1.4
+                            }
+                        ],
+                        columns: [
+                            {"data": "rangos"},
+                            {"data": "provincias_2007_abs"},
+                            {"data": "provincias_2007_por"},
+                            {"data": "poblacion_2007_abs"},
+                            {"data": "poblacion_2007_por"},
+                            {"data": "provincias_2017_abs"},
+                            {"data": "provincias_2017_por"},
+                            {"data": "poblacion_2017_abs"},
+                            {"data": "poblacion_2017_por"}
+                        ],
                         fuente: '<p>Nota: En 2007 autoridades no permitieron censo en el distrito de Carmen Alto, provincia de Huamanga, departamento de Ayacucho.</p>' +
                         '<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>',
 
@@ -1644,9 +1844,9 @@ App.utils.dashboard = (function (utils, service) {
             $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
             $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
             data[bloque].tabla = $(tabla).DataTable({
-                //data: data[bloque][vista].widgets.assignment.data,
-                //columns: data[bloque][vista].widgets.assignment.columns,
-                //columnDefs: data[bloque][vista].widgets.assignment.columnDefs,
+                data: data[bloque][vista].widgets.assignment.data,
+                columns: data[bloque][vista].widgets.assignment.columns,
+                columnDefs: (data[bloque][vista].widgets.assignment.columnDefs !== undefined) ? data[bloque][vista].widgets.assignment.columnDefs: [],
                 paging: false,
                 info: false,
                 ordering: false,
