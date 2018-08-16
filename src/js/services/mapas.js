@@ -1,9 +1,12 @@
 App.service.mapas = (function (parent, config) {
 
 
-    var getLegenda = function (map,indicador,options,callback) {
+    var getLegenda = function (options,callback) {
+        var codMap=options.codMap;
+        var codTematico=options.codTematico;
+
         parent.get({
-            url: parent.getUrlServer('mapa/mapas/mapa_optiones_sublayers/'+map+'/'+indicador+'/'),
+            url: parent.getUrlServer('mapa/mapas/mapa_optiones_sublayers/'+codMap+'/'+codTematico+'/'),
             success: function (data) {
                 callback(data,options);
             },
