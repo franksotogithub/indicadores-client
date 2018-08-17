@@ -301,15 +301,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     }
 
     var crearLegenda=function(datosMap,data){
-
-
-        console.log('datosMap>>',datosMap);
-        console.log('data>>>',data);
         var html=
 
-            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
-            '<div class="esri-legend__layer-body" >' ;
-
+             '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+             '<div class="esri-legend__layer-body" >' ;
              html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
              html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
              html+='<div style="opacity: 1; background-color:transparent;  width:20px;height:20px "></div>';
@@ -324,7 +319,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
              html+='</div>';
 
         if(datosMap.layer>0){
-
             var total1=0;
             var total2=0;
             data.renderer.forEach(function (el,index) {
@@ -341,9 +335,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">'+total2+'</div>';
             html+='</div>';
         }
-
-
-
 
         data.renderer.forEach(function (el,index) {
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
@@ -365,11 +356,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                     else(datosMap.anio=='2017')
                     {html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px">' + el.label2 + '</div>';}
                 }*/
+
             }
             html+='</div>';
         });
-
-
         html+=
         '</div>'+
         '</div>'+
@@ -432,8 +422,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 if(datosMap.divLegend!=null && datosMap.divLegend!=undefined){view.ui.add(datosMap.divLegend, "top-right");}
                 if(datosMap.buttomInfo!=null && datosMap.buttomInfo!=undefined){view.ui.add(datosMap.buttomInfo, "top-left");}
                 if(datosMap.divAnio!=undefined){view.ui.add(datosMap.divAnio, "top-left");}
-
-
             });
 
             if(!(datosMap.divLegend==null )){crearLegenda(datosMap,optionsSublayers[datosMap.layer]);}
@@ -448,9 +436,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         ],function (Legend){
             var _this=parent.mapasDashBoard;
             var renderOptionsSublayers=getListSublayerTematico(optionsSublayers,datosMap);
+            var dataLegenda=optionsSublayers[datosMap.layer];
             _this.listLayers[datosMap.div].url=datosMap.urlMap;
             _this.listLayers[datosMap.div].sublayers=renderOptionsSublayers;
-            crearLegenda(datosMap,optionsSublayers[datosMap.layer]);
+            crearLegenda(datosMap,dataLegenda);
         });
     };
 
@@ -616,7 +605,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 if(index==0){
                     if(!(max)){
                         divWidgetSelect = document.createElement("select");
-                        divWidgetSelect.classList.add('selectMapAnio');
+                        divWidgetSelect.classList.add('mapaSelect');
                         divWidgetSelect.innerHTML=htmlSelect;
                         divWidgetSelect.setAttribute("id","select_"+el.bloque);
                         divWidgetSelect.addEventListener('change', function(){

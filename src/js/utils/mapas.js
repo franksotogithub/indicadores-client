@@ -21,6 +21,7 @@ App.utils.mapas = (function (parent, config,service) {
 
     var classBreakinfos=undefined;
 
+
     var tituloLegend=undefined;
 
     /*var datosMap={
@@ -529,6 +530,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         });
     }
+
     var uiMaxCallback =function () {
         var _this=parent.mapas;
         var list_mini_maps=document.getElementById("listMiniMaps");
@@ -545,8 +547,7 @@ App.utils.mapas = (function (parent, config,service) {
         removerTodosMiniMaps();
         visibilityAllChildDiv(_this.panelDiv,'hidden');
         _this.cant_mini_maps=1;
-        if(_this.opc_select=="select")
-        _this.view_map.popup.visible=true;
+        if(_this.opc_select=="select") _this.view_map.popup.visible=true;
         _this.view_map.ui.move("widget-select-layer","top-right");
     }
 
@@ -599,7 +600,7 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
     };
-
+    /*
     var uiMouseOverTabla = function (options){
         var ubigeo=options.ubigeo;
 
@@ -644,7 +645,7 @@ App.utils.mapas = (function (parent, config,service) {
             });
         }
 
-    }
+    }*/
 
     var uiMouseOutTabla = function () {
         _this.view_map.graphics.removeAll();
@@ -707,6 +708,35 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
+    var crearLegenda=function(data){
+        var html=
+            '<div class="esri-legend__service">'+
+            '<div class="esri-legend__service-label">'+data.title+'</div>'+
+            '<div class="esri-legend__layer">'+
+            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+            '<div class="esri-legend__layer-caption" >'+data.titleLayer+'</div>'+
+            '<div class="esri-legend__layer-body" >' ;
+
+        data.renderer.forEach(function (el,index) {
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
+            html+='<div style="opacity: 1; background-color:'+el.color+';  width:20px;height:20px "></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">'+el.label+'</div>';
+
+            html+='</div>';
+        });
+
+        html+=
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+        return html;
+
+    }
+
+
 
     var crearMapaRender = function (optionsSublayers) {
         require([
@@ -740,6 +770,8 @@ App.utils.mapas = (function (parent, config,service) {
 
             var _this=parent.mapas;
             var list_mini_maps=document.getElementById("listMiniMaps");
+
+
             _this.panelDivGrafico= document.getElementById("mapaGraficoPanel");
 
             list_maps=getAccesDirectMaps();
@@ -811,7 +843,7 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             map = new Map({
-                basemap: "gray",
+                basemap: "osm",
                 layers: layers_inicial,
             });
 
@@ -874,14 +906,15 @@ App.utils.mapas = (function (parent, config,service) {
                     selectedMap(index);
                 });
             });
-
+            /*
             _this.legend = new Legend({
                 view: _this.view_map,
                 layerInfos: [{
                     layer: _this.layer,
                     title:tituloLegend,
                 }],
-            });
+            });*/
+
 
             searchWidget = new Search({
                 view: _this.view_map,
@@ -892,7 +925,8 @@ App.utils.mapas = (function (parent, config,service) {
                 //activeSource:false
             });
 
-            _this.view_map.ui.add(_this.legend, "bottom-left");
+            _this.view_map.ui.add( _this.datosMap.divLegend, "bottom-left");
+
             _this.view_map.ui.add(searchWidget, {
                 position: "top-left",
                 index: 2,
@@ -911,31 +945,15 @@ App.utils.mapas = (function (parent, config,service) {
                 var i = parseInt(newIndex);
                 if(newIndex<_this.historic_features.length)
                 {
+                    var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
                     _this.indexSubLayer=i;
+                    console.log('index>>>',i);
                     identifyParams.layerIds = i;
+                    _this.datosMap.divLegend.innerHTML=htmlLengenda;
 
 
-                    /*_this.legend = new Legend(
-                        {
-                            view: _this.view_map,
-                            layerInfos:[]
 
-                        }
-                    )*/
-
-
-                    _this.view_map.
-
-
-                    /*
-                    legend = new Legend({
-                        view: _this.view_map,
-                        layerInfos: [{
-                            //layer: _this.historic_features[i].layer,
-                        }],
-                    });*/
-
-
+                    //console.log('view>>>>',_this.view_map);
 
                     layers_inicial.forEach(function (layer) {
                         layer.sublayers.forEach(function (sublayer) {
@@ -1040,6 +1058,9 @@ App.utils.mapas = (function (parent, config,service) {
 
             _this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
 
+            /**
+             * seleccion del feature
+             * **/
             var selectedFeature=function(graphic,event){
                 select_all.style.display="block";
                 if (graphic){
@@ -1055,8 +1076,6 @@ App.utils.mapas = (function (parent, config,service) {
                         _this.opc_select="select";
                         createPopup(nombre,codigo,event);
                         updatePanel(codigo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
-
-
                         _this.select_ubigeos.push(codigo);
                         _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
                     }
@@ -1081,6 +1100,7 @@ App.utils.mapas = (function (parent, config,service) {
                     var codigos_anteriores=[];
                     if (_this.indexSubLayer==0) { codigos_anteriores=['00']}
                     else { codigos_anteriores=_this.historic_features[_this.indexSubLayer-1].select_features}
+
                     App.mapasChangeEvent(_this.select_ubigeos,codigos_anteriores);
 
                 }
@@ -1332,16 +1352,13 @@ App.utils.mapas = (function (parent, config,service) {
                 cleanVars();
                 changeIndex(index);
                 custom_widgets(0);
-                _this.layer.findSublayerById(i).renderer=renderizadoClassBreaks(codTematico,parent.getClassBreakInfoSublayerTematico(_this.datosMap.optionsSublayers[i].renderer));
                 _this.layer.findSublayerById(i).definitionExpression="1=1";
                 layer_back.findSublayerById(i).definitionExpression="1=1";
 
-
                 if(i>0){
-
+                    _this.layer.findSublayerById(i).renderer=renderizadoClassBreaks(codTematico,parent.getClassBreakInfoSublayerTematico(_this.datosMap.optionsSublayers[i].renderer));
                     _this.layer.sublayers.items[3].visible=true;
                 }
-
 
                 zoomToLayer(_this.view_map,_this.historic_features[0].layer,"1=1");
             }
@@ -1358,6 +1375,10 @@ App.utils.mapas = (function (parent, config,service) {
                 selectAllFeatures(checked);
             });
 
+
+            /**
+             * Evento callback de busqueda
+             * **/
             searchWidget.on("select-result", function(event){
                 var feature=event.result.feature;
                 var index= event.sourceIndex;
@@ -1376,13 +1397,21 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
                 }
 
+                //console.log(index);
+                //console.log(feature);
+
+
+                changeIndex(index);
+                selectedFeature(feature,event);
+                for (var i=0;i<index;i++) {setLabelWidgetUbigeos(index);}
 
                 if (index<2){
-                    changeIndex(index);
-                    selectedFeature(feature,event);
-                    for (var i=0;i<index;i++) {setLabelWidgetUbigeos(index);}
                     openFeature();
                 }
+
+                /*else{
+                    changeIndex(index);
+                }*/
 
             });
 
@@ -1399,7 +1428,7 @@ App.utils.mapas = (function (parent, config,service) {
             _this.view_map.when(function () {
                 var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
                 xsearch.css('display','none');
-
+                _this.datosMap.divLegend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[0]);
             });
             changeLayer(0);
             custom_widgets(0);
@@ -1413,19 +1442,16 @@ App.utils.mapas = (function (parent, config,service) {
             "esri/widgets/Legend",
             "dojo/domReady!"
         ],function (Legend){
-
-
             var _this=parent.mapas;
             //var tituloLegend = _this.datosMap.tituloLegend;
-
+            var htmlLengenda=crearLegenda(optionsSublayers[0]);
             _this.datosMap.optionsSublayers=optionsSublayers;
             _this.datosMap.classBreakinfos=classBreakinfos;
             _this.layer.url=_this.datosMap.urlMap;
             _this.datosMap.renderOptionsSublayers=getListSublayerTematico();
             _this.layer.sublayers=_this.datosMap.renderOptionsSublayers;
             _this.layer.title= _this.datosMap.optionsSublayers[0].title;
-
-
+            _this.datosMap.divLegend.innerHTML=htmlLengenda;
         });
     };
 
@@ -1436,12 +1462,15 @@ App.utils.mapas = (function (parent, config,service) {
 
     var crearMapa = function(){
         var _this=parent.mapas;
+
         service.mapas.getLegenda(_this.datosMap,crearMapaRender);
+
     }
 
     var requireEvents = function () {
         cambiarMapa(codMap,codTematico,url,titulo);
     };
+
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;
         service.mapas.getMapa(cod_mapa,function (data) {
@@ -1458,6 +1487,8 @@ App.utils.mapas = (function (parent, config,service) {
         var _this=parent.mapas;
         var list_mapas=[];
 
+        var divLegend=document.getElementById("legendMap");
+
         if (options.vista == 'indicadores') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
         }
@@ -1470,7 +1501,8 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.datosMap.urlMap=data.url;
                     _this.datosMap.codTematico=data.cod_tematico_default;
                     _this.datosMap.tituloLegend=data.descripcion;
-                    _this.datosMap.div=el.div
+                    _this.datosMap.div=el.div;
+                    _this.datosMap.divLegend=divLegend;
                     crearMapa();
                 });
             }
@@ -1500,7 +1532,7 @@ App.utils.mapas = (function (parent, config,service) {
         datosMap: datosMap,
         legend: legend,
         indexSubLayer :indexSubLayer,
-        uiMouseOverTabla:uiMouseOverTabla,
+        //uiMouseOverTabla:uiMouseOverTabla,
         uiMouseOutTabla:uiMouseOutTabla
     }
 
