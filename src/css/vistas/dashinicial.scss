@@ -485,6 +485,10 @@ nav.nav-vertical {
     margin-bottom: 3px;
     color:white;
     opacity: 0.9;
+    a{
+      color:white;
+      text-decoration: none;
+    }
   }
   button:hover{
     background-color: #359bc8;

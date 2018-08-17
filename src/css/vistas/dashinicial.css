@@ -961,6 +961,9 @@ nav.nav-vertical {
     margin-bottom: 3px;
     color: white;
     opacity: 0.9; }
+    nav.nav-vertical button a {
+      color: white;
+      text-decoration: none; }
   nav.nav-vertical button:hover {
     background-color: #359bc8;
     opacity: 1; }
