@@ -144,7 +144,7 @@ COMBOTOOLSBOX.event = {
     },
     desplegarListaContent: function(e) {
         /* Evento click sobre desplegar  boton de lista  */
-        console.log("desplegar lista .....");
+
         e.find(".contentListaTitulos").toggle();
     },
 
@@ -154,9 +154,12 @@ COMBOTOOLSBOX.event = {
         var selected = e.text();
         var bloque = e.parents('.ventana');
         e.closest(".contentComboTitulos").children("h5").text(selected);
-        e.closest(".contentComboTitulos").children('.contentListaTitulos').toggle();
+        e.closest(".contentComboTitulos").find('.contentListaTitulos').toggle(function () {
+            console.log("cerrar lista .....");
+        });
         App.dashboardVistaChangeEvent( {"jqObject": bloque, "id": bloque.attr("id")},
             {"jqObject": e,"jqObjectSelect": e, "id": e.attr('data-vista')})
+
     },
     replegarLista: function(e){
         var excluir = $(".contentListaTitulos");

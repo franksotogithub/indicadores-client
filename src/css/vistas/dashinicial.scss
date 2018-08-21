@@ -597,6 +597,7 @@ div.contentTabs{
   display: none;
   height:100%;
   overflow-x: auto;
+  text-align: center;
 
   div.height100{
     height: 100%;
@@ -641,6 +642,15 @@ div.contentTabs{
     line-height: 135%;
     margin-bottom: 15px;
     display: $b;
+  }
+  >p{
+    color:#666;
+    font-size: 13px;
+    line-height: 180%;
+    margin-bottom: 15px;
+    display: $ib;
+    width: 70%;
+    text-align: justify;
   }
 }
 

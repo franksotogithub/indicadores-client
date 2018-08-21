@@ -1042,6 +1042,7 @@ div.contentTabs {
   display: none;
   height: 100%;
   overflow-x: auto;
+  text-align: center;
   /* Componente tabla */ }
   .contentData div.height100 {
     height: 100%; }
@@ -1074,6 +1075,14 @@ div.contentTabs {
     line-height: 135%;
     margin-bottom: 15px;
     display: block; }
+  .contentData > p {
+    color: #666;
+    font-size: 13px;
+    line-height: 180%;
+    margin-bottom: 15px;
+    display: inline-block;
+    width: 70%;
+    text-align: justify; }
 
 .fuenteTabla {
   font-size: 10px;
