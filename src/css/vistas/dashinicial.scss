@@ -596,6 +596,7 @@ div.contentTabs{
 .contentData{
   display: none;
   height:100%;
+  overflow-x: auto;
 
   div.height100{
     height: 100%;
@@ -605,6 +606,7 @@ div.contentTabs{
   }
   >div {
     display: block;
+    width: 100%;
   }
   h2 {
     font-size:12px;
@@ -612,6 +614,7 @@ div.contentTabs{
     text-align: center;
     display: $b;
     margin-bottom:10px;
+    min-height: 25px;
   }
 
   /* Componente tabla */
@@ -642,7 +645,7 @@ div.contentTabs{
 }
 
 .fuenteTabla {
-  font-size: 9px;
+  font-size: 10px;
   display: $b;
   color: #555;
 }
@@ -739,6 +742,7 @@ footer > a {
   border: solid #CCC 1px;
   position: relative;
   padding-right: 55px;
+  cursor: pointer;
 
   h5{
     height: 18px;
@@ -916,6 +920,17 @@ button.locationInfo:hover, button.locationInfo.activeButton{
   text-align: left;
 
 }
+
+h2 > .contentSelect {
+  padding: 0px 5px;
+  display: inline-block;
+  float:left;
+  padding-left:0px;
+  >select{
+    width: 100%;
+  }
+}
+
 .contentSelect {
   padding: 0px 5px;
   display: inline-block;
@@ -925,14 +940,22 @@ button.locationInfo:hover, button.locationInfo.activeButton{
 }
 select.mapaSelect {
     padding: 5px;
-    background-color: #e6e6e6;
+    background-color: #ffffff;
     border: none;
     color: #1b3c71;
     outline: none;
-    border-right: solid 5px #e6e6e6;
+    border-right:solid 5px #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 
+text.highcharts-subtitle {
+  font-size: 12px;
+  color: #34718C !important;
+  fill: #34718C !important;
+  font-weight: bold;
+  font-family: 'open_sansregular';
+}
 
 /*
   Tooltips
@@ -968,6 +991,9 @@ select.mapaSelect {
 }
 @media screen and (min-width: 1450px) and (max-width: 1650px) {
 
+  body>header>h1{
+    font-size: 15px;
+  }
   footer > a {
     display: block;
     color: white;
@@ -1013,13 +1039,21 @@ select.mapaSelect {
 }
 
 @media screen and (min-width: 200px) and (max-width: 1280px) {
+  body>header>h1{
+    font-size: 14px;
+  }
   nav.nav-vertical {
     button.compartirRedesNav,button.irPdfNav {
       display: block;
       position: relative;
     }
   }
-
+  button.compartirRedes{
+    display: none;
+  }
+  a.irPdf{
+    display: none;
+  }
   nav.nav-vertical{
     display: none;
     position: absolute;
@@ -1072,6 +1106,9 @@ select.mapaSelect {
   button.ventanaMaximizar {
     display:none;
   }
+  body>header>h1{
+    font-size: 13px;
+  }
 }
 @media screen and (max-width: 935px) {
   section.agruparTres h1 {
@@ -1117,12 +1154,7 @@ select.mapaSelect {
 
 @media screen and (max-width: 620px) {
 
-  button.compartirRedes{
-    display: none;
-  }
-  a.irPdf{
-    display: none;
-  }
+
 
   section.agruparDos h1 {
     font-size: 15px;
