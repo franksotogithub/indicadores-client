@@ -142,22 +142,32 @@ COMBOTOOLSBOX.event = {
         /* Evento click sobre desplegar  boton de lista  */
         e.parent().children(".contentListaTitulos").toggle();
     },
+    desplegarListaContent: function(e) {
+        /* Evento click sobre desplegar  boton de lista  */
+
+        e.find(".contentListaTitulos").toggle();
+    },
+
     seleccionarItem: function(e){
         e.siblings("li").removeAttr("data-selected");
         e.attr("data-selected", "selected");
         var selected = e.text();
         var bloque = e.parents('.ventana');
         e.closest(".contentComboTitulos").children("h5").text(selected);
-        e.closest(".contentComboTitulos").children('.contentListaTitulos').toggle();
+        e.closest(".contentComboTitulos").find('.contentListaTitulos').toggle(function () {
+            console.log("cerrar lista .....");
+        });
         App.dashboardVistaChangeEvent( {"jqObject": bloque, "id": bloque.attr("id")},
             {"jqObject": e,"jqObjectSelect": e, "id": e.attr('data-vista')})
+
     },
     replegarLista: function(e){
         var excluir = $(".contentListaTitulos");
         var excluir2 = $("button.botonDesplegarTitulos");
+        var excluir3 = $(".contentComboTitulos");
 
 
-        if ( !excluir2.is(e.target) && excluir2.has(e.target).length === 0 && !excluir.is(e.target) && excluir.has(e.target).length === 0) {
+        if ( !excluir3.is(e.target) && excluir3.has(e.target).length === 0 && !excluir2.is(e.target) && excluir2.has(e.target).length === 0 && !excluir.is(e.target) && excluir.has(e.target).length === 0) {
             $(".widget-vistaInteractiva-comboToolsBox .contentListaTitulos").each(function(){
                 if($(this).is(":visible")){
                     console.log("pulsaste afuera y esta abierta una lista");
@@ -275,11 +285,18 @@ $(document).ready(function(){
         COMBOTOOLSBOX.event.activarButton(_this);
 
     });
-
+    /*
     $('.widget-vistaInteractiva-comboToolsBox').on('click','button.botonDesplegarTitulos', function() {
         var _this= $(this);
         COMBOTOOLSBOX.event.desplegarLista(_this);
     });
+    */
+    $('.widget-vistaInteractiva-comboToolsBox').on('click','div.contentComboTitulos', function() {
+        var _this= $(this);
+        COMBOTOOLSBOX.event.desplegarListaContent(_this);
+    });
+
+
 
     $('.widget-vistaInteractiva-comboToolsBox').on('click','.contentListaTitulos li', function() {
         var _this= $(this);
@@ -314,11 +331,16 @@ $(document).ready(function(){
 
         if(anchoPatanlla <=1280){
             $("#contenedorPrincipalDashIni").removeClass('col-9-10');
+            $("#contenedorPrincipalDashIni").addClass('col-10-10');
+
         }
         if(anchoPatanlla>1280){
             if($("#contenedorPrincipalDashIni").hasClass('col-9-10')){
             }else{
                 $("#contenedorPrincipalDashIni").addClass('col-9-10');
+            }
+            if($("#contenedorPrincipalDashIni").hasClass('col-10-10')){
+                $("#contenedorPrincipalDashIni").removeClass('col-10-10');
             }
         }
         if(anchoPatanlla <=1080){
