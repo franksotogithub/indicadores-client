@@ -856,6 +856,12 @@ nav.nav-vertical button.cbutt4 {
   margin-right: 0px;
   margin-left: 0px; }
 
+.marginLeft-20 {
+  margin-left: 20px; }
+
+.marginLeft-25 {
+  margin-left: 25px; }
+
 .mayusculas {
   text-transform: uppercase; }
 
@@ -1083,11 +1089,13 @@ div.contentTabs {
     display: inline-block;
     width: 70%;
     text-align: justify; }
-
-.fuenteTabla {
-  font-size: 10px;
-  display: block;
-  color: #555; }
+  .contentData div.fuenteTabla {
+    font-size: 10px;
+    display: block;
+    color: #555;
+    line-height: 150%;
+    text-align: left;
+    margin-top: 5px; }
 
 /* Fin de tablas */
 /* ventana Maximizada  */
