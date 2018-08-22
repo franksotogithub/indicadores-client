@@ -613,7 +613,7 @@ div.contentTabs{
   }
   h2 {
     font-size:12px;
-    color:$CelesteJadeAceroInei;
+    color:#222222;
     text-align: center;
     display: $b;
     margin-bottom:10px;
@@ -624,13 +624,15 @@ div.contentTabs{
   table{
     font-size: 13px;
     text-align: right;
+    border-collapse: collapse;
     thead{
-      background: $celesteAcero;
-      color: white;
-      border-color: white !important;
+      background: #aae0f9;
+      color: #222222;
+      border-top: #504639 solid 2px;
+      border-bottom: #504639 solid 2px;
     }
     tbody tr:nth-child(2n){
-      background-color: $celesteFondo ;
+      background-color: #e6f6fd ;
     }
     tbody td{
       padding-right: 20px;
@@ -661,6 +663,13 @@ div.contentTabs{
     line-height: 150%;
     text-align: left;
     margin-top: 5px;
+    p{
+      margin: 0px;
+      font-size: 10px;
+      display: $b;
+      line-height: 150%;
+      text-align: left;
+    }
   }
 }
 
@@ -967,8 +976,8 @@ select.mapaSelect {
 
 text.highcharts-subtitle {
   font-size: 12px;
-  color: #34718C !important;
-  fill: #34718C !important;
+  color: #222222 !important;
+  fill: #222222 !important;
   font-weight: bold;
   font-family: 'open_sansregular';
 }
