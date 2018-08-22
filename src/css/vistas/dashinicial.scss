@@ -346,6 +346,8 @@ nav.nav-vertical button.cbutt4 {background-color:#22896E}
 .paddingRight-20{padding-right: 20px;}
 .marginLeftRight-5{margin-right: 5px; margin-left: 5px;}
 .marginLeftRight-0{margin-right: 0px; margin-left: 0px;}
+.marginLeft-20{margin-left: 20px}
+.marginLeft-25{margin-left:25px}
 
 .mayusculas {text-transform: uppercase;}
 .vAlignMid{
@@ -652,13 +654,17 @@ div.contentTabs{
     width: 70%;
     text-align: justify;
   }
+  div.fuenteTabla {
+    font-size: 10px;
+    display: $b;
+    color: #555;
+    line-height: 150%;
+    text-align: left;
+    margin-top: 5px;
+  }
 }
 
-.fuenteTabla {
-  font-size: 10px;
-  display: $b;
-  color: #555;
-}
+
 
 /* Fin de tablas */
 
