@@ -8,7 +8,6 @@ App.utils.dashboard = (function (utils, service) {
                 widgets: {
                     assignment: {
                         titulo: "PERÚ: POBLACIÓN CENSADA, OMITIDA Y TOTAL, SEGÚN CENSOS REALIZADOS, 1940 - 2017",
-                        
                         data: [
                             {"anio": 1940, "censada": 6207967, "omitida": 815144, total: 7023111},
                             {"anio": 1961, "censada": 9906746, "omitida":  513611 , total: 10420357},
@@ -18,7 +17,7 @@ App.utils.dashboard = (function (utils, service) {
                             {"anio": 2007, "censada": 27412157, "omitida":  808607, total: 28220764},
                             {"anio": 2017, "censada": 29381884, "omitida": 1855501, total: 31237385}
                         ],
-                        fuente: "Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.",
+                        fuente: "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>",
                         cabecera: '<tr>\n' +
                         '<th rowspan="2">AÑO</th>\n' +
                         '<th colspan="3" class="textAlignCenter">POBLACIÓN</th>\n' +
@@ -26,7 +25,7 @@ App.utils.dashboard = (function (utils, service) {
                         '<tr>\n' +
                         '<th>CENSADA</th>\n' +
                         '<th>OMITIDA</th>\n' +
-                        '<th>TOTAL</th>\n' +
+                        '<th>TOTAL</th>\n'+
                         '</tr>',
                         columns: [
                             {"data": "anio"},
@@ -46,14 +45,19 @@ App.utils.dashboard = (function (utils, service) {
                     "\n" +
                     "<p>La realización de Censos de Población y Vivienda en el Perú data desde la época del Imperio Incaico. Los censos ejecutados desde la Época Republicana, hasta la actualidad son doce de Población y siete de Vivienda. En 1940, después de 64 años se realizó el quinto Censo de Población.</p>\n" +
                     "\n" +
-                    "<p>Históricamente, la metodología empleada en el Perú, para el empadronamiento poblacional, ha sido el que corresponde a los censos de Hecho o Facto, es decir, se empadronó a la población en el lugar en que se encontraba el “Día del Censo”, independientemente de que éste fuera el lugar de su residencia habitual.</p>",
-
+                    "<p>Históricamente, la metodología empleada en el Perú, para el empadronamiento poblacional, ha sido el que corresponde a los censos de Hecho o Facto, es decir, se empadronó a la población en el lugar en que se encontraba el “Día del Censo”, independientemente de que éste fuera el lugar de su residencia habitual.</p>"
                 }
             },
             "vista1": {
                 titulo: "1.2 Crecimiento de la población",
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "01",
+                        titulo: "POBLACIÓN TOTAL Y TASA DE CRECIMIENTO PROMEDIO ANUAL, 1940 - 2017",
+                        unidad: "",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática- Censos Nacionales de Población y Vivienda.</p>",
+                        colors: ['#00ccff', '#ff0000']
+                    },
                     assignment: {
                         titulo: "PERÚ: POBLACIÓN TOTAL Y TASA DE CRECIMIENTO PROMEDIO ANUAL, 1940 - 2017",
                         cabecera: '<tr>\n' +
@@ -85,7 +89,8 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "anual"},
                             {"data": "crecimiento_promedio"}
                         ],
-                        columnDefs: []
+                        columnDefs: [],
+                        fuente: "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>"
                     },
                     info: "<p>En el periodo intercensal 2007–2017, la población total del país se incrementó en 3 millones 16 mil 621 habitantes, es decir, un crecimiento de 10,7% respecto de la población total de 2007, que fue 28 millones 220 mil 764 habitantes. En promedio, la población peruana ha crecido 301 mil 662 habitantes por año en el mencionado período.</p>\n" +
                     "<p>La población ha tenido un crecimiento promedio anual de 1,0% durante el periodo 2007–2017, lo cual confirma la tendencia decreciente del ritmo de crecimiento poblacional en los últimos 56 años. De una Tasa de Crecimiento de 2,8% en el periodo íntercensal 1961–1972, pasó a 2,6% entre 1972–1981, desciende a 2,0% en el periodo 1981–1993, y en el penúltimo periodo intercensal fue de 1,6% por año. En el período de mayor crecimiento de la población, según estudios de fecundidad, la Tasa Global de Fecundidad era 6,0 hijas/os en promedio por mujer, este nivel ha descendido hasta 2,5 para el lapso 2010–2015.</p>",
@@ -94,21 +99,41 @@ App.utils.dashboard = (function (utils, service) {
             },
             "vista2": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "02",
+                        titulo: "PERÚ: EVOLUCIÓN DE LA DENSIDAD POBLACIONAL, SEGÚN CENSOS, 1940 - 2017 <br />(Hab./Km2)",
+                        unidad: "(Hab./Km2)",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática- Censos Nacionales de Población y Vivienda.</p>"
+                    },
                     info: "<p>La densidad poblacional, es un indicador que permite evaluar la concentración de la población de una determinada área geográfica. Comprende el número de habitantes por kilómetro cuadrado, que se encuentran en una determinada extensión territorial.</p>\n" +
                     "<p>La densidad poblacional del Perú para el año 2017, es 24,3 Hab./Km2. Al evaluar el comportamiento de este indicador, tomando como referencia la información censal de 1940, se observa que en los últimos 77 años se ha incrementado en 4,4 veces, pasando de 5,5 Hab./Km2 a 24,3 Hab./Km2 en el año 2017, en 1961 el número de personas por kilómetro cuadrado fue de 8,1, en 1972 alcanzó 11,0, en 1981 subió a 13,8, en 1993 a 17,6 y en 2007 se eleva a 22,0 habitantes por Km2.</p>"
                 }
             },
             "vista3": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "03",
+                        titulo: "RANKING DE POBLACIÓN EN AMÉRICA DEL SUR Y AMÉRICA LATINA, POR PAÍSES, 2017",
+                        unidad: "(Miles de Habitantes)",
+                        fuente: "<p>1/ INEI - Censos Nacionales 2017: XII de Población, VII de Vivienda y III de Comunidades Indígenas.</p>",
+                        subtitulo: "América del Sur",
+                        secundario: [{
+                            subtitulo: "América Latina"
+                        }]
+                    },
                     info: "<p>Con relación a los países de América del Sur1, el Perú es el quinto país más poblado, después de Brasil, Colombia, Argentina y Venezuela. Entre los países de América Latina (20), el Perú ocupa el sexto lugar, siendo antecedido por Brasil, México, Colombia, Argentina y Venezuela.<p>\n" +
                     "<p>En lo que se refiere al continente americano (39 países), el Perú ocupa el octavo lugar. El primero corresponde a Estados Unidos de Norte América, seguido de Brasil, México, Colombia, Argentina, Canadá y Venezuela.</p>\n"
                 }
             },
             "vista4": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "04",
+                        titulo: "PAÍSES DE AMÉRICA DEL SUR: DENSIDAD POBLACIONAL, 2017",
+                        unidad: "(Hab. / Km2 )",
+                        fuente: "<p>1/ INEI - Censos Nacionales 2017: XII de Población, VII de Vivienda y III de Comunidades Indígenas.</p>" +
+                        "<p>Fuente: CELADE - División de Población de la CEPAL. Revisión 2017.</p>   "
+                    },
                     info: "<p>En América del Sur, el Perú, es el tercer país de mayor extensión geográfica (1’285, 215.6 Km2) después de Brasil y Argentina. En cuanto a densidad, se ubica en el quinto lugar entre los países con mayor densidad poblacional2, Ecuador y Colombia son los países más densos, con 58,6 Hab./Km2 y 43,0 Hab./ Km2, respectivamente. Por el contrario, los países con menor densidad son: Bolivia con 10,1 Hab./ Km2 y Argentina con 15,8 Hab./ Km2.</p>\n" +
                     "<p>Es necesario precisar, que el territorio peruano tiene características geomorfológicas que limitan las posibilidades de ocupación de gran porcentaje del territorio nacional, concretamente las grandes zonas desérticas en la Costa, o aquellas que se ubican por encima de los cuatro mil metros sobre el nivel del mar y las zonas húmedas cubiertas de vegetación de la Selva Alta y Baja.</p>"
                 }
@@ -119,9 +144,14 @@ App.utils.dashboard = (function (utils, service) {
             tabla: undefined,
             "vista0": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "05",
+                        titulo: "PERÚ: COMPOSICIÓN DE LA POBLACIÓN CENSADA, SEGÚN SEXO, 1993 - 2017",
+                        unidad: "(Miles)",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
+                    },
                     assignment: {
-                        titulo: "PERÚ: DISTRIBUCIÓN PORCENTUAL DE LA POBLACIÓN CENSADA, POR SEXO, SEGÚN DEPARTAMENTO, 2007 Y 2017 <br /> (Porcentaje)",
+                        titulo: "PERÚ: DISTRIBUCIÓN PORCENTUAL DE LA POBLACIÓN CENSADA, POR SEXO, SEGÚN DEPARTAMENTO, 2007 Y 2017 <br />(Porcentaje)",
                         data: [
                             {
                                 "departamento": "Total",
@@ -405,9 +435,9 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>Hombre</th>\n' +
                         '<th>Mujer</th>\n' +
                         '</tr>',
-                        fuente: "<p>1/ Comprende los 43 distritos de la provincia de Lima.</p>\n" +
-                        "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>\n" +
-                        "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
+                        fuente: "1/ Comprende los 43 distritos de la provincia de Lima.<br />" +
+                        "2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n" +
+                        "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>"
                     },
                     location_on: [],
                     info: "<p>Según el Censo del 2017, la población masculina asciende a 14 millones 450 mil 757 hombres, que representan el 49,2% de la población censada y la población femenina a 14 millones 931 mil 127 mujeres, es decir el 50,8%.</p>\n" +
@@ -419,8 +449,21 @@ App.utils.dashboard = (function (utils, service) {
             },
             "vista1": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "06",
+                        titulo: "PERÚ: PIRÁMIDE DE POBLACIÓN CENSADA, 2007 Y 2017",
+                        unidad: "(Distribución porcentual)",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
+                    },
                     assignment: {
+                        titulo: "PERÚ: INDICADORES DE DEPENDENCIA Y ENVEJECIMIENTO DEMOGRÁFICO, 2007 Y 2017",
+                        fuente: "<b>(1) Es la relación de la población de 0 a 14 años más la población de 65 y más, entre la población de 15 a 64 años de edad.</b>\n" +
+                        "<p>(2) Es el porcentaje de la población de 60 y más años de edad, en relación a la población total.</p>\n" +
+                        "<p>(3) Es el porcentaje de la población de 60 y más años sobre el total de menores de 15 años.</p>\n" +
+                        "<p>(4) Porcentaje de la población de 60 y más años respecto de la población de 15 a 59 años.</p>\n" +
+                        "<p>1/ Comprende los 43 distritos de la provincia de Lima.</p>\n" +
+                        "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>\n" +
+                        "<p>Fuente: INEI - Censos Nacionales de Población y Vivienda.</p>",
                         cabecera: '<tr>\n' +
                         '<th rowspan="2">Departamento</th>\n' +
                         '<th colspan="2" class="textAlignCenter">Población censada</th>\n' +
@@ -838,7 +881,20 @@ App.utils.dashboard = (function (utils, service) {
             },
             "vista2": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "07",
+                        titulo: "PERÚ: ÍNDICE DE MASCULINIDAD, SEGÚN CENSOS, 1940-2017",
+                        unidad: "",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática- Censos Nacionales de Población y Vivienda.</p>",
+                        secundario: [{
+                            codigo: "08",
+                            titulo: "PERÚ: ÍNDICE DE MASCULINIDAD, SEGÚN DEPARTAMENTO, 1993 y 2017",
+                            unidad: "",
+                            fuente: "<p>1/ Comprende los 43 distritos de la provincia.</p>" +
+                            "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>" +
+                            "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p> "
+                        }]
+                    },
                     location_on: [],
                     info: '<p>El índice masculinidad o razón de sexo, es un indicador sintético que muestra el número de hombres por cada 100 mujeres.</p>\n' +
                     '<p>Según los datos del Censo 2017, el índice de masculinidad es 96,8, este valor significa que el número de hombres es menor comparado con sus pares mujeres.</p>\n' +
@@ -852,7 +908,27 @@ App.utils.dashboard = (function (utils, service) {
             "default": "vista0",
             "vista0": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "09",
+                        titulo: "PERÚ: EVOLUCIÓN DE LA POBLACIÓN CENSADA, POR REGIÓN NATURAL, 1940 – 2017",
+                        unidad: "(Porcentaje)",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>",
+                        secunadario: [
+                            {
+                                codigo: "10",
+                                titulo: "PERÚ: EVOLUCIÓN DE LA DISTRIBUCIÓN DE LA POBLACIÓN CENSADA, POR REGIÓN NATURAL, 1940 - 2017",
+                                unidad: "(Porcentaje)",
+                                fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática- Censos Nacionales de Población y Vivienda.</p>"
+                            },
+
+                            {
+                                codigo: "11",
+                                titulo: "PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL, SEGÚN REGIÓN NATURAL, 1940 - 2017",
+                                unidad: "(Porcentaje)",
+                                fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
+                            }
+                        ]
+                    },
                     assignment: {
                         codigo: '05',
                         alias: "Cuadro 05",
@@ -913,7 +989,7 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "valor_2007"},
                             {"data": "valor_2017"}
                         ],
-                        fuente: "Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda."
+                        fuente: "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>"
                     },
                     info: "<p>Por región natural según el último censo la Región de la Costa es la más poblada con de 17 millones 37 mil 297 habitantes, le sigue la Sierra 8 millones 268 mil 183 habitantes y la Selva 4 millones 76 mil 404 habitantes. En términos porcentuales, la Costa es la región que alberga más de la mitad de la población del país (58,0%).</p>\n" +
                     "\n" +
@@ -932,7 +1008,33 @@ App.utils.dashboard = (function (utils, service) {
             },
             "vista1": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "12",
+                        titulo: "PERÚ: POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 2017",
+                        unidad: "(Miles)",
+                        fuente: "<p>1/ Comprende los 43 distritos de la provincia</p>" +
+                        "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>" +
+                        "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>",
+                        secundario: [
+                            {
+                                codigo: "13",
+                                titulo: "PERÚ: DISTRIBUCIÓN RELATIVA DE LA POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 2017",
+                                unidad: "(Porcentaje)",
+                                fuente: "<p>1/ Comprende los 43 distritos de la provincia.</p>" +
+                                "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>" +
+                                "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales: XII de Población, VII de Vivienda</p>"
+                            },
+
+                            {
+                                codigo: "14",
+                                titulo: "PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL DE POBLACIÓN CENSADA, POR DEPARTAMENTO, 1993-2007 Y2007-2017",
+                                unidad: "(Porcentaje)",
+                                fuente: "<p>1/ Comprende los 43 distritos de la provincia</p>" +
+                                "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>" +
+                                "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
+                            }
+                        ]
+                    },
                     assignment: {
                         codigo: '06',
                         alias: "Cuadro 06",
@@ -1079,9 +1181,9 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "valor_2007"},
                             {"data": "valor_2017"}
                         ],
-                        fuente: '<p>1/ Comprende los 43 distritos de la provincia de Lima.</p>\n' +
-                        '<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>\n' +
-                        '<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>'
+                        fuente: '1/ Comprende los 43 distritos de la provincia de Lima.<br />\n' +
+                        '2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n' +
+                        '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>'
                     },
                     info: "<p>El Censo de Población 2017, también da cuenta del tamaño poblacional en cada departamento y de su participación relativa con respecto a la población censada del país. Los departamentos con mayor población censada son: Piura 1 millón 856 mil 809 habitantes (6,3%), La Libertad 1 millón 778 mil 80 habitantes (6,1%), Arequipa 1 millón 382 mil 730 habitantes (4,7%) y Cajamarca con 1 millón 341 mil 12 habitantes (4,6%), completa este grupo la provincia de Lima con 8 millones 574 mil 974 habitantes (29,2%), en conjunto concentran más de la mitad de la población nacional (50,8%).</p>\n" +
                     "\n" +
@@ -1106,11 +1208,16 @@ App.utils.dashboard = (function (utils, service) {
             },
             "vista2": {
                 widgets: {
-                    bar_chart: [],
+                    bar_chart: {
+                        codigo: "15",
+                        titulo: "PERÚ: INCREMENTO DE LA DENSIDAD POBLACIONAL POR DEPARTAMENTO, 1940 - 2017",
+                        unidad: "(Número de veces)",
+                        fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>",
+                    },
                     assignment: {
                         codigo: '07',
                         alias: "Cuadro 07",
-                        titulo: "PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL DE LA POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 1940 - 20177",
+                        titulo: "PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL DE LA POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 1940 - 2017 <br />(Porcentaje)",
                         cabecera: '<tr>\n' +
                         '<th>DEPARTAMENTO</th>\n' +
                         '<th>1940-1961</th>\n' +
@@ -1239,9 +1346,9 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "valor_1993_2007"},
                             {"data": "valor_2007_2017"}
                         ],
-                        fuente: '<p>1/ Comprende los 43 distritos de la provincia de Lima.</p>\n' +
-                        '<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>\n' +
-                        '<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>'
+                        fuente: '1/ Comprende los 43 distritos de la provincia de Lima.<br />\n' +
+                        '2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n' +
+                        '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>'
                     },
                     location_on: [],
                     info: "\n" +
@@ -1391,9 +1498,9 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "valor_2007"},
                             {"data": "valor_2017"}
                         ],
-                        fuente: '<p>1/ Comprende los 43 distritos de la provincia de Lima.</p>\n' +
-                        '<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>\n' +
-                        '<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>'
+                        fuente: '1/ Comprende los 43 distritos de la provincia de Lima.<br />\n' +
+                        '2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n' +
+                        '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>'
                     },
                     location_on: [],
                     info: "<p>De acuerdo a los resultados del último Censo de 2017, la Provincia Constitucional del Callao (6 815,8 Hab./Km2) y la provincia de Lima (3 278,9 Hab./Km2), destacaron por presentar la densidad más alta del país. Lo que significa que albergan una mayor cantidad de habitantes por kilómetro cuadrado. Por el contrario, los departamentos de Madre de Dios (1,7 Hab./Km2), Loreto (2,4 Hab./Km2) y Ucayali (4,9 Hab./Km2), presentaron la menor densidad poblacional.</p>\n" +
@@ -1529,7 +1636,7 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "poblacion_2017_abs"},
                             {"data": "poblacion_2017_por"}
                         ],
-                        fuente: 'Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.',
+                        fuente: '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>',
 
                         secundario: {
                             codigo: '10',
@@ -1691,8 +1798,8 @@ App.utils.dashboard = (function (utils, service) {
                             {"data": "poblacion_2017_abs"},
                             {"data": "poblacion_2017_por"}
                         ],
-                        fuente: '<p>Nota: En 2007 autoridades no permitieron censo en el distrito de Carmen Alto, provincia de Huamanga, departamento de Ayacucho.</p>' +
-                        '<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>',
+                        fuente: 'Nota: En 2007 autoridades no permitieron censo en el distrito de Carmen Alto, provincia de Huamanga, departamento de Ayacucho.<br />\n' +
+                        '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda</b>',
 
                         secundario: {
                             codigo: '12',
@@ -1761,7 +1868,6 @@ App.utils.dashboard = (function (utils, service) {
             html += utils.format(template, [options[i], uiClase]);
 
             // Instanciar a funciones que generan la data
-            console.log(">>>>>>>>>options[i], uiId-->", options, uiId);
             var uiCallback = options[i]+utils.capitalizeFirstLetter(uiId);
             if (_this.uiBarraHerramientas.hasOwnProperty(uiCallback)) {
                 _this.uiBarraHerramientas[uiCallback](uiId, vista_default, options[i], content);
@@ -1774,10 +1880,13 @@ App.utils.dashboard = (function (utils, service) {
         assignmentBloque1: function (bloque, vista, seleccion, content) {
             var tabla = "#table_"+seleccion+"_"+bloque;
             var titulo = "#titulo_"+seleccion+"_"+bloque;
+
             if (data[bloque].tabla !== undefined) {
                 data[bloque].tabla.clear().draw();
                 data[bloque].tabla.destroy();
             }
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
             $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
             $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
             data[bloque].tabla = $(tabla).DataTable({
@@ -1798,6 +1907,8 @@ App.utils.dashboard = (function (utils, service) {
                 data[bloque].tabla.clear().draw();
                 data[bloque].tabla.destroy();
             }
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
             $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
             $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
             data[bloque].tabla = $(tabla).DataTable({
@@ -1818,7 +1929,8 @@ App.utils.dashboard = (function (utils, service) {
                 data[bloque].tabla.clear().draw();
                 data[bloque].tabla.destroy();
             }
-            console.log(">>>>>>>>>", vista,tabla);
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
             $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
             $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
 
@@ -1840,6 +1952,8 @@ App.utils.dashboard = (function (utils, service) {
                 data[bloque].tabla.clear().draw();
                 data[bloque].tabla.destroy();
             }
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
             $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
             $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
             data[bloque].tabla = $(tabla).DataTable({
@@ -1870,8 +1984,9 @@ App.utils.dashboard = (function (utils, service) {
         "bar_chartBloque1": function (bloque, vista, seleccion, content) {
             var charId = seleccion+"_"+bloque;
             var charId2 = seleccion+"_2_"+bloque;
-            // Vista 0
-            console.log(">>>> vista grafico", vista);
+
+            $("#"+charId2).hide();
+            // Vista 1
             if (vista == 'vista1') {
                 Highcharts.chart(charId, {
                     chart: {
@@ -1882,7 +1997,7 @@ App.utils.dashboard = (function (utils, service) {
                         text: null
                     },
                     subtitle: {
-                        text: 'POBLACIÓN TOTAL Y TASA DE CRECIMIENTO PROMEDIO ANUAL, 1940 - 2017'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     xAxis: [{
                         categories: ['1940', '', '1961', '', '1972', '', '1981', '', '1993', '', '2007', '', '2017'],
@@ -1890,35 +2005,33 @@ App.utils.dashboard = (function (utils, service) {
                     }],
                     yAxis: [
                         { // Primary yAxis
-                            labels: {
-                                format: '{value}',
-                                style: {
-                                    color: Highcharts.getOptions().colors[1]
-                                }
-                            },
                             title: {
-                                text: '',
-                                style: {
-                                    color: Highcharts.getOptions().colors[1]
-                                }
+                                text: 'Miles',
+                                textAlign: 'left',
+                                align:'high',
+                                rotation: 0,
+                                y: -20,
+                                offset: 50
                             },
-
-                            max: 40000,
+                            labels: {
+                                format: '{value}'
+                            },
+                            max: 40000
 
                         },
                         { // Secondary yAxis
                             title: {
-                                text: '',
-                                style: {
-                                    color: Highcharts.getOptions().colors[0]
-                                }
+                                text: '(%)',
+                                textAlign: 'right',
+                                align:'high',
+                                rotation: 0,
+                                offset: -2,
+                                //x: 34,
+                                y: -20
                             },
 
                             labels: {
-                                format: '{value}',
-                                style: {
-                                    color: Highcharts.getOptions().colors[0]
-                                }
+                                format: '{value}'
                             },
                             opposite: true,
                             max: 3
@@ -1941,12 +2054,12 @@ App.utils.dashboard = (function (utils, service) {
                             name: 'Población Total',
                             type: 'column',
                             data: [7023.1, null, 10420.4, null, 14121.6, null, 17762.2, null, 22639.4, null, 28220.8, null, 31237.4],
-
+                            color: data[bloque][vista].widgets.bar_chart.colors[0]
 
                         },
                         {
                             name: 'Tasa de Crecimiento',
-                            color: 'red',
+                            color: data[bloque][vista].widgets.bar_chart.colors[1],
 
                             marker: {
                                 symbol: 'diamond',
@@ -2013,27 +2126,32 @@ App.utils.dashboard = (function (utils, service) {
                     },
 
                     subtitle: {
-                        text: 'PERÚ: EVOLUCIÓN DE LA DENSIDAD POBLACIONAL, SEGÚN CENSOS, 1940 - 2017 (Hab./Km2)'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
 
+                    yAxis: { // Primary yAxis
+                        title: {
+                            text: ''
+                        },
+                        max: 25
+                    },
                     xAxis: {
                         categories: [1940, 1961, 1972, 1981, 1993, 2007, 2017]
                     },
-
-
                     series: [{
                         type: 'column',
                         data: [5.5, 8.1, 11.0, 13.8, 17.6, 22.0, 24.3],
                         dataLabels:{
                             enabled: true
                         },
-                        name: "DENSIDAD POBLACIONAL",
+                        name: "DENSIDAD POBLACIONAL"
+
                     }]
 
                 });
             }
             else if (vista == 'vista3') {
-
+                $("#"+charId2).show();
                 Highcharts.chart(charId, {
                     chart: {
                         type: 'bar'
@@ -2042,7 +2160,7 @@ App.utils.dashboard = (function (utils, service) {
                         text: ''
                     },
                     subtitle: {
-                        text: 'RANKING DE POBLACIÓN EN AMÉRICA DEL SUR Y AMÉRICA LATINA, POR PAÍSES, 2017'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     xAxis: {
                         categories: ["Brasil", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Bolivia", "Paraguay" , "Uruguay"],
@@ -2073,7 +2191,9 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     series: [{
                         name: '(Miles de Habitantes)',
-                        data: [211175, 49059, 44121, 32121, 31237, 18209, 16624,  11071, 6805, 3456]
+                        data: [211175, 49059, 44121, 32121, {
+                            y: 31237, color: "#0070c0"
+                        }, 18209, 16624,  11071, 6805, 3456]
                     }]
                 });
                 Highcharts.chart(charId2, {
@@ -2084,7 +2204,7 @@ App.utils.dashboard = (function (utils, service) {
                         text: ''
                     },
                     subtitle: {
-                        text: 'RANKING DE POBLACIÓN EN AMÉRICA DEL SUR Y AMÉRICA LATINA, POR PAÍSES, 2017'
+                        text: data[bloque][vista].widgets.bar_chart.secundario[0].titulo
                     },
                     xAxis: {
                         categories: ["Brasil", "México", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Guatemala", "Cuba", "Bolivia", "Haití", "República Dominicana", "Honduras", "Paraguay", "El Salvador", "Nicaragua", "Costa Rica", "Panamá", "Uruguay"],
@@ -2115,7 +2235,9 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     series: [{
                         name: '(Miles de Habitantes)',
-                        data: [211175, 127878, 49059, 44121, 32121, 31237, 18209, 16624, 16536, 11423, 11071, 11029, 10779, 9071, 6805, 6350, 6218, 4918, 4054, 3456]
+                        data: [211175, 127878, 49059, 44121, 32121, {
+                            y: 31237, color: "#0070c0"
+                        }, 18209, 16624, 16536, 11423, 11071, 11029, 10779, 9071, 6805, 6350, 6218, 4918, 4054, 3456]
                     }]
                 });
             }
@@ -2127,7 +2249,7 @@ App.utils.dashboard = (function (utils, service) {
                     },
 
                     subtitle: {
-                        text: 'PAÍSES DE AMÉRICA DEL SUR: DENSIDAD POBLACIONAL, 2017'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
 
                     xAxis: {
@@ -2135,7 +2257,7 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     series: [{
                         type: 'column',
-                        data: [58.6, 43.0, 35.1, 24.8, 24.3, 24.1, 19.6, 16.7, 15.8, 10.1],
+                        data: [58.6, 43.0, 35.1, 24.8, {y: 24.3, color: "#0070c0"}, 24.1, 19.6, 16.7, 15.8, 10.1],
                         dataLabels:{
                             enabled: true
                         },
@@ -2153,17 +2275,22 @@ App.utils.dashboard = (function (utils, service) {
             var charId3 = seleccion+"_3_"+bloque;
             var charId4 = seleccion+"_4_"+bloque;
 
+            $("#"+charId2).hide();
+            $("#"+charId3).hide();
+            $("#"+charId4).hide();
+
             if (vista == 'vista0') {
 
                 Highcharts.chart(charId, {
                     chart: {
                         type: 'column'
                     },
+                    colors: ['#dcf7f8', '#00ccff'],
                     title: {
                         text: ''
                     },
                     subtitle: {
-                        text: 'PERÚ: COMPOSICIÓN DE LA POBLACIÓN CENSADA, SEGÚN SEXO, 1993 - 2017 <br />(Miles)'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     xAxis: {
                         categories: [
@@ -2198,22 +2325,33 @@ App.utils.dashboard = (function (utils, service) {
             }
             else if (vista == 'vista1') {
                 var categories = [
-                    '0-4', '5-9', '10-14', '15-19',
-                    '20-24', '25-29', '30-34', '35-39', '40-44',
-                    '45-49', '50-54', '55-59', '60-64', '65-69',
-                    '70-74', '75-79', '80-84', '85-89', '90-94',
-                    '95-99', '100 + '
-                ];
-
+                    "0-4",
+                    "5-9",
+                    "10-14",
+                    "15-19",
+                    "20-24",
+                    "25-29",
+                    "30-34",
+                    "35-39",
+                    "40-44",
+                    "45-49",
+                    "50-54",
+                    "55-59",
+                    "60-64",
+                    "65-69",
+                    "70-74",
+                    "75-79",
+                    "80 y más"];
+                $("#"+charId2).show();
                 Highcharts.chart(charId, {
                     chart: {
                         type: 'bar'
                     },
                     title: {
-                        text: 'Population pyramid for Germany, 2018'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
-                        text: 'Source: <a href="http://populationpyramid.net/germany/2018/">Population Pyramids of the World from 1950 to 2100</a>'
+                        text: '2017'
                     },
                     xAxis: [
                         {
@@ -2258,24 +2396,25 @@ App.utils.dashboard = (function (utils, service) {
                     },
 
                     series: [{
-                        name: 'Male',
+                        name: 'Hombres',
                         data: [
-                            -2.2, -2.1, -2.2, -2.4,
-                            -2.7, -3.0, -3.3, -3.2,
-                            -2.9, -3.5, -4.4, -4.1,
-                            -3.4, -2.7, -2.3, -2.2,
-                            -1.6, -0.6, -0.3, -0.0,
-                            -0.0
-                        ]
+                            -2.2, -2.2, -2.4,
+                            -2.7, -3.0,  -3.2,
+                            -2.9, -3.5, -4.4,
+                            -4.1, -3.4, -2.7,
+                            -2.2, -1.6, -0.3,
+                            -0.2, -0.1
+                        ] // 17
                     }, {
-                        name: 'Female',
+                        name: 'Mujeres',
                         data: [
-                            2.1, 2.0, 2.1, 2.3, 2.6,
-                            2.9, 3.2, 3.1, 2.9, 3.4,
-                            4.3, 4.0, 3.5, 2.9, 2.5,
-                            2.7, 2.2, 1.1, 0.6, 0.2,
-                            0.0
-                        ]
+                            2.1,  2.1, 2.3,
+                            2.6, 2.9, 3.2,
+                            3.1,  3.4,4.3,
+                            4.0,  2.9, 2.5,
+                            2.7, 2.2, 1.1,
+                            0.2, 0.1
+                        ] //17
                     }]
                 });
 
@@ -2284,10 +2423,10 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'bar'
                     },
                     title: {
-                        text: 'Population pyramid for Germany, 2018'
+                        text: ""
                     },
                     subtitle: {
-                        text: 'Source: <a href="http://populationpyramid.net/germany/2018/">Population Pyramids of the World from 1950 to 2100</a>'
+                        text: '2007'
                     },
                     xAxis: [
                         {
@@ -2332,37 +2471,41 @@ App.utils.dashboard = (function (utils, service) {
                     },
 
                     series: [{
-                        name: 'Male',
+                        name: 'Hombres',
                         data: [
-                            -2.2, -2.1, -2.2, -2.4,
-                            -2.7, -3.0, -3.3, -3.2,
-                            -2.9, -3.5, -4.4, -4.1,
-                            -3.4, -2.7, -2.3, -2.2,
-                            -1.6, -0.6, -0.3, -0.0,
-                            -0.0
-                        ]
-                    }, {
-                        name: 'Female',
+                            -2.2, -2.2, -2.4,
+                            -2.7, -3.0,  -3.2,
+                            -2.9, -3.5, -4.4,
+                            -4.1, -3.4, -2.7,
+                            -2.2, -1.6, -0.3,
+                            -0.2, -0.1
+                        ] // 17
+                    },
+                        {
+                        name: 'Mujeres',
                         data: [
-                            2.1, 2.0, 2.1, 2.3, 2.6,
-                            2.9, 3.2, 3.1, 2.9, 3.4,
-                            4.3, 4.0, 3.5, 2.9, 2.5,
-                            2.7, 2.2, 1.1, 0.6, 0.2,
-                            0.0
-                        ]
+                            2.1,  2.1, 2.3,
+                            2.6, 2.9, 3.2,
+                            3.1,  3.4,4.3,
+                            4.0,  2.9, 2.5,
+                            2.7, 2.2, 1.1,
+                            0.2, 0.1
+                        ] //17
                     }]
                 });
             }
 
             else if (vista == 'vista2') {
+                $("#"+charId2).show();
+                $("#"+charId3).show();
+                $("#"+charId4).show();
                 Highcharts.chart(charId, {
 
                     title: {
                         text: ''
                     },
-
                     subtitle: {
-                        text: 'PAÍSES DE AMÉRICA DEL SUR: DENSIDAD POBLACIONAL, 2017'
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
 
                     xAxis: {
@@ -2383,6 +2526,7 @@ App.utils.dashboard = (function (utils, service) {
                     chart: {
                         type: 'column'
                     },
+                    colors: ['#dcf7f8', '#00ccff'],
                     title: {
                         text: ''
                     },
@@ -2390,7 +2534,7 @@ App.utils.dashboard = (function (utils, service) {
                         text: 'COSTA'
                     },
                     xAxis: {
-                            categories: [
+                        categories: [
                             'Tumbes',
                             'Moquegua',
                             'Región Lima 2/',
@@ -2432,11 +2576,12 @@ App.utils.dashboard = (function (utils, service) {
                     chart: {
                         type: 'column'
                     },
+                    colors: ['#dcf7f8', '#00ccff'],
                     title: {
                         text: ''
                     },
                     subtitle: {
-                        text: 'COSTA'
+                        text: 'SIERRA'
                     },
                     xAxis: {
                         categories: [
@@ -2481,11 +2626,12 @@ App.utils.dashboard = (function (utils, service) {
                     chart: {
                         type: 'column'
                     },
+                    colors: ['#dcf7f8', '#00ccff'],
                     title: {
                         text: ''
                     },
                     subtitle: {
-                        text: 'COSTA'
+                        text: 'SELVA'
                     },
                     xAxis: {
                         categories: [
@@ -2524,6 +2670,331 @@ App.utils.dashboard = (function (utils, service) {
                         data: [102.0, 101.6, 100.9, 98.8, 98.0, 97.4, 95.5, 95.4, 95.2, 94.6, 94.2]
 
                     }]
+                });
+            }
+        },
+
+        "bar_chartBloque3": function (bloque, vista, seleccion, content) {
+            var charId = seleccion+"_"+bloque;
+            var charId2 = seleccion+"_2_"+bloque;
+            var charId3 = seleccion+"_3_"+bloque;
+            var charId4 = seleccion+"_4_"+bloque;
+            var charId5 = seleccion+"_5_"+bloque;
+            var charId51 = seleccion+"_5_"+bloque+"_1";
+            var charId52 = seleccion+"_5_"+bloque+"_2";
+            var charId53 = seleccion+"_5_"+bloque+"_3";
+
+
+            $("#"+charId2).hide();
+            $("#"+charId3).hide();
+            $("#"+charId4).hide();
+
+            if (vista == 'vista0') {
+
+                $("#"+charId2).show();
+                $("#"+charId3).show();
+                $("#"+charId4).show();
+
+                Highcharts.chart(charId, {
+                    chart: {
+                        type: 'column'
+                    },
+                    colors: ['#dcf7f8', '#00ccff'],
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: data[bloque][vista].widgets.bar_chart.titulo
+                    },
+                    xAxis: {
+                        categories: [
+                            'Costa',
+                            'Sierra',
+                            'Selva'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: false
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: '2007',
+                        data: [54.6, 32.0, 13.4]
+
+                    }, {
+                        name: '2017',
+                        data: [58.0, 28.1, 13.9]
+
+                    }]
+                });
+
+                Highcharts.chart(charId51, {
+                    chart: {
+                        type: 'column'
+                    },
+                    colors: ["#0070C0"],
+                    title: {
+                        text: ''
+                    },
+                    exporting: [],
+                    subtitle: {
+                        text: 'COSTA'
+                    },
+                    xAxis: {
+                        categories: [
+                            '1940',
+                            '1961',
+                            '1972',
+                            '1981',
+                            '1993',
+                            '2007',
+                            '2017'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: false,
+                        max: 70
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Costa',
+                        data: [28.3, 39.0, 46.1, 49.8, 52.4, 54.6, 58.0]
+
+                    }]
+                });
+
+                Highcharts.chart(charId52, {
+                    chart: {
+                        type: 'column'
+                    },
+                    exporting: [],
+                    colors: ["#ffd85d"],
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: 'SIERRA'
+                    },
+                    xAxis: {
+                        categories: [
+                            '1940',
+                            '1961',
+                            '1972',
+                            '1981',
+                            '1993',
+                            '2007',
+                            '2017'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: false,
+                        max: 70
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'SIERRA',
+                        data: [65.0, 52.3, 44.0, 39.7, 34.8, 32.0, 28.1]
+
+                    }]
+                });
+
+                Highcharts.chart(charId53, {
+                    chart: {
+                        type: 'column'
+                    },
+                    exporting: [],
+                    colors: ["#b4de86"],
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: 'SELVA'
+                    },
+                    xAxis: {
+                        categories: [
+                            '1940',
+                            '1961',
+                            '1972',
+                            '1981',
+                            '1993',
+                            '2007',
+                            '2017'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: false,
+                        max: 70
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'SELVA',
+                        data: [6.7, 8.7, 9.9, 10.6, 12.8, 13.4, 13.9]
+
+                    }]
+                });
+            }
+            else if (vista == 'vista1') {
+                $("#"+charId2).show();
+                Highcharts.chart(charId, {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: data[bloque][vista].widgets.bar_chart.titulo
+                    },
+                    xAxis: {
+                        categories: ["Brasil", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Bolivia", "Paraguay" , "Uruguay"],
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: '(Miles de Habitantes)',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: '(Miles de Habitantes)',
+                        data: [211175, 49059, 44121, 32121, 31237, 18209, 16624,  11071, 6805, 3456]
+                    }]
+                });
+                Highcharts.chart(charId2, {
+
+                    title: {
+                        text: ''
+                    },
+
+                    subtitle: {
+                        text: data[bloque][vista].widgets.bar_chart.secundario[0].titulo
+                    },
+
+                    xAxis: {
+                        categories: [1940, 1961, 1972, 1981, 1993, 2007, 2017]
+                    },
+
+
+                    series: [{
+                        type: 'column',
+                        data: [5.5, 8.1, 11.0, 13.8, 17.6, 22.0, 24.3],
+                        dataLabels:{
+                            enabled: true
+                        },
+                        name: "DENSIDAD POBLACIONAL",
+                    }]
+
+                });
+
+            }
+            else if (vista == 'vista2') {
+                Highcharts.chart(charId, {
+
+                    title: {
+                        text: ''
+                    },
+
+                    subtitle: {
+                        text: 'PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL, 1993-2007 Y 2007-2017'
+                    },
+
+                    series: [{
+                        name: 'Tasa de crecimiento promedio anual 1993-2007',
+                        data: [3.5, 1.6, 1.6, 2.2, 2.0, 2.3, 2.0, 2.0, 1.8, 2.0, 1.3, 1.7, 1.5, 1.6, 1.3, 0.9, 0.8,
+                            1.2, 0.8, 1.5, 0.4, 1.8, 0.7, 1.1, 1.1, 1.5, 1.2],
+                        dataLabels:{
+                            enabled: true
+                        },
+                    }, {
+                        name: 'Tasa de crecimiento promedio anual 2007-2017',
+                        data: [2.6, 1.8, 1.8, 1.4, 1.3, 1.2, 1.2, 1.2, 1.2, 1.1, 1.0, 1.0, 0.8, 0.8, 0.7, 0.3, 0.2,
+                            0.2, 0.1, 0.1, 0.0, -0.1, -0.3, -0.6, -0.8, -1.0, -2.7],
+                        color: 'red',
+                        dataLabels:{
+                            enabled: true
+                        }
+                    }]
+                });
+
+            }
+            else if (vista == 'vista3') {
+                Highcharts.chart(charId, {
+
+                    title: {
+                        text: ''
+                    },
+
+                    subtitle: {
+                        text: 'PERÚ: EVOLUCIÓN DE LA DENSIDAD POBLACIONAL, SEGÚN CENSOS, 1940 - 2017 (Hab./Km2)'
+                    },
+
+                    xAxis: {
+                        categories: [1940, 1961, 1972, 1981, 1993, 2007, 2017]
+                    },
+
+
+                    series: [{
+                        type: 'column',
+                        data: [5.5, 8.1, 11.0, 13.8, 17.6, 22.0, 24.3],
+                        dataLabels:{
+                            enabled: true
+                        },
+                        name: "DENSIDAD POBLACIONAL",
+                    }]
+
                 });
             }
         }

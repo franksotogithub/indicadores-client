@@ -343,12 +343,12 @@
                          --><div class="col-3-10">
                     <div class="wraper BarraHerramientas "></div>
                 </div><!--
-                --><div class="contentSelect col-3-10">
+                --><!--<div class="contentSelect col-3-10">
                     <select class="mapaSelect">
                         <option>opt1</option>
                         <option>opt2</option>
                     </select>
-                </div>
+                </div> -->
                 </header>
                 <div class="wraper contentTabs">
                     {% include 'dashboard/contenttabs.html' with {'bloque': 'bloque1'}  %}
@@ -477,6 +477,7 @@
 {% block endscript %}
 <script type="text/javascript">
     $(document).ready(function (e) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>", App);
         App.init('dashboard', ['dashboard','mapasDashBoard']);
     });
 </script>
