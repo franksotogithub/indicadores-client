@@ -63,8 +63,8 @@ App.utils.dashboard = (function (utils, service) {
                         cabecera: '<tr>\n' +
                         '<th>AÑO</th>\n' +
                         '<th>TOTAL</th>\n' +
-                        '<th>INCREMENTO INTERCENSAL</th>\n' +
-                        '<th>INCREMENTO ANUAL</th>\n' +
+                        '<th>INCREMENTO<br /> INTERCENSAL</th>\n' +
+                        '<th>INCREMENTO<br /> ANUAL</th>\n' +
                         '<th>TASA DE <br />CRECIMIENTO <br />PROMEDIO ANUAL </th>\n' +
                         '</tr>',
                         data: [
@@ -1994,10 +1994,10 @@ App.utils.dashboard = (function (utils, service) {
                     },
 
                     title: {
-                        text: null
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
                     xAxis: [{
                         categories: ['1940', '', '1961', '', '1972', '', '1981', '', '1993', '', '2007', '', '2017'],
@@ -2122,11 +2122,11 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId, {
 
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
 
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
 
                     yAxis: { // Primary yAxis
@@ -2157,10 +2157,10 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'bar'
                     },
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: "América del Sur"
                     },
                     xAxis: {
                         categories: ["Brasil", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Bolivia", "Paraguay" , "Uruguay"],
@@ -2204,7 +2204,7 @@ App.utils.dashboard = (function (utils, service) {
                         text: ''
                     },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.secundario[0].titulo
+                        text: "América Latina"
                     },
                     xAxis: {
                         categories: ["Brasil", "México", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Guatemala", "Cuba", "Bolivia", "Haití", "República Dominicana", "Honduras", "Paraguay", "El Salvador", "Nicaragua", "Costa Rica", "Panamá", "Uruguay"],
@@ -2245,11 +2245,11 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId, {
 
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
 
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
 
                     xAxis: {
@@ -2287,10 +2287,10 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     colors: ['#dcf7f8', '#00ccff'],
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
                     xAxis: {
                         categories: [
@@ -2701,10 +2701,10 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     colors: ['#dcf7f8', '#00ccff'],
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
                     xAxis: {
                         categories: [
@@ -2876,10 +2876,10 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'bar'
                     },
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
                     xAxis: {
                         categories: ["Brasil", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Bolivia", "Paraguay" , "Uruguay"],
@@ -2916,11 +2916,11 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId2, {
 
                     title: {
-                        text: ''
+                        text: data[bloque][vista].widgets.bar_chart.secundario[0].titulo
                     },
 
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.secundario[0].titulo
+                        text: ''
                     },
 
                     xAxis: {
@@ -2944,11 +2944,11 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId, {
 
                     title: {
-                        text: ''
+                        text: 'PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL, 1993-2007 Y 2007-2017'
                     },
 
                     subtitle: {
-                        text: 'PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL, 1993-2007 Y 2007-2017'
+                        text: ''
                     },
 
                     series: [{
@@ -2974,11 +2974,11 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId, {
 
                     title: {
-                        text: ''
+                        text: 'PERÚ: EVOLUCIÓN DE LA DENSIDAD POBLACIONAL, SEGÚN CENSOS, 1940 - 2017 <br />(Hab./Km2)'
                     },
 
                     subtitle: {
-                        text: 'PERÚ: EVOLUCIÓN DE LA DENSIDAD POBLACIONAL, SEGÚN CENSOS, 1940 - 2017 (Hab./Km2)'
+                        text: ''
                     },
 
                     xAxis: {
