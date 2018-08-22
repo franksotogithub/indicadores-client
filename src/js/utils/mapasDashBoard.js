@@ -85,40 +85,40 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     var lods = [
         {
             "level": 0,
-            "scale": 160000000
+
         },
 
         {   "level": 1,
-            "scale": 80000000
+
         },
 
         {   "level": 2,
-            "scale": 40000000
+
         },
 
         {   "level": 3,
-            "scale": 20000000
+
         },
         {   "level": 4,
-            "scale": 14000000
+
             //"scale": 36978595
         },
 
         {   "level": 5,
-            "scale": 12000000
+
             //"scale": 18489297
         },
         {
             "level": 6,
-            "scale": 10000000
+
         },
 
         {
             "level": 7,
-            "scale": 5000000
+
         },
 
-        {
+       /* {
             "level": 8,
             "scale": 2311162
         },
@@ -166,7 +166,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         {
             "level": 18,
             "scale": 2256
-        },
+        },*/
 
     ];
 
@@ -301,15 +301,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     }
 
     var crearLegenda=function(datosMap,data){
-
-
-        console.log('datosMap>>',datosMap);
-        console.log('data>>>',data);
         var html=
 
-            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
-            '<div class="esri-legend__layer-body" >' ;
-
+             '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+             '<div class="esri-legend__layer-body" >' ;
              html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
              html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
              html+='<div style="opacity: 1; background-color:transparent;  width:20px;height:20px "></div>';
@@ -324,7 +319,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
              html+='</div>';
 
         if(datosMap.layer>0){
-
             var total1=0;
             var total2=0;
             data.renderer.forEach(function (el,index) {
@@ -341,9 +335,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px;">'+total2+'</div>';
             html+='</div>';
         }
-
-
-
 
         data.renderer.forEach(function (el,index) {
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
@@ -365,11 +356,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                     else(datosMap.anio=='2017')
                     {html += '<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px; width: 60px">' + el.label2 + '</div>';}
                 }*/
+
             }
             html+='</div>';
         });
-
-
         html+=
         '</div>'+
         '</div>'+
@@ -426,14 +416,19 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 zoom : zoomGlobal(),
             });
             view.ui.components = [];
+            //view.constraints.maxScale =3000000;
+            view.constraints.minScale =30000000;
+            //view.constraints.lods=lods;
 
             view.when(function () {
                 if(datosMap.divWidgetSelect!=null && datosMap.divWidgetSelect!=undefined){view.ui.add(datosMap.divWidgetSelect, "top-left");}
                 if(datosMap.divLegend!=null && datosMap.divLegend!=undefined){view.ui.add(datosMap.divLegend, "top-right");}
                 if(datosMap.buttomInfo!=null && datosMap.buttomInfo!=undefined){view.ui.add(datosMap.buttomInfo, "top-left");}
                 if(datosMap.divAnio!=undefined){view.ui.add(datosMap.divAnio, "top-left");}
-
-
+            });
+            view.on("drag", function(event){
+                // prevents panning with the mouse drag event
+                //event.stopPropagation();
             });
 
             if(!(datosMap.divLegend==null )){crearLegenda(datosMap,optionsSublayers[datosMap.layer]);}
@@ -448,9 +443,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
         ],function (Legend){
             var _this=parent.mapasDashBoard;
             var renderOptionsSublayers=getListSublayerTematico(optionsSublayers,datosMap);
+            var dataLegenda=optionsSublayers[datosMap.layer];
             _this.listLayers[datosMap.div].url=datosMap.urlMap;
             _this.listLayers[datosMap.div].sublayers=renderOptionsSublayers;
-            crearLegenda(datosMap,optionsSublayers[datosMap.layer]);
+            crearLegenda(datosMap,dataLegenda);
         });
     };
 
@@ -475,10 +471,9 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
     }
     var listBloques=['bloque1','bloque2','bloque3','bloque4'];
 
-
     var listMapas=
         [
-            {divParent:'location_on_bloque2',id:'mapa1',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017",
+            {divParent:'location_on_bloque2',id:'mapa1',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017",
                 info:'1/ Comprende los 43 distritos de la provincia de Lima.<br>' +
                      '2/ Comprende las provincias de Barranca, Cajatambo,' +
                      'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
@@ -490,10 +485,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                      'existentes son de carácter referencial”.',
 
             },
-            {divParent:'location_on_bloque2',id:'mapa2',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:false,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017",
+            {divParent:'location_on_bloque2',id:'mapa2',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista0',codTematico:'P0001' ,inicialVista:true,layer:0,titulo:"PERÚ:POBLACION CENSADA,2007 Y 2017",
                 info:''
             },
-            {divParent:'location_on_bloque2',id:'mapa3',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002',inicialVista:true ,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))",
+            {divParent:'location_on_bloque2',id:'mapa3',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002',inicialVista:false ,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))",
                 info:'(1) Es la relación de la población de 0 a 14 años más la población\n' +
                 'de 65 y más, entre la población de 15 a 64 años de edad.<br>' +
                 '1/ Comprende los 43 distritos de la provincia de Lima.<br>' +
@@ -507,10 +502,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 'existentes son de carácter referencial”.',
 
             },
-            {divParent:'location_on_bloque2',id:'mapa4',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002' ,inicialVista:false,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))",
+            {divParent:'location_on_bloque2',id:'mapa4',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista1',codTematico:'D0002' ,inicialVista:true,layer:0,titulo:"PERÚ: DEPENDENCIA DEMOGRÁFICA, 2007 Y 2017 (Razón de dependencia demográfica(1))",
                 info:''
             },
-            {divParent:'location_on_bloque2',id:'mapa5',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003',inicialVista:true ,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017",
+            {divParent:'location_on_bloque2',id:'mapa5',div:'mapa21',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003',inicialVista:false ,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017",
                 info:'1/ Comprende los 43 distritos de la provincia de Lima.<br>\n' +
                 '2/ Comprende las provincias de Barranca, Cajatambo,\n' +
                 'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
@@ -521,10 +516,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
                 'existentes son de carácter referencial”. '
             },
-            {divParent:'location_on_bloque2',id:'mapa6',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003' ,inicialVista:false,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017",
+            {divParent:'location_on_bloque2',id:'mapa6',div:'mapa22',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque2',vista:'vista2',codTematico:'I0003' ,inicialVista:true,layer:0,titulo:"PERÚ: ÍNDICE DE MASCULINIDAD,SEGÚN DEPARTAMENTO, 2007 Y 2017",
                 info:''
             },
-            {divParent:'location_on_bloque3',id:'mapa7',div:'mapa31',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004',inicialVista:true ,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)",
+            {divParent:'location_on_bloque3',id:'mapa7',div:'mapa31',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004',inicialVista:false ,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)",
                 info:'1/ Comprende los 43 distritos de la provincia de Lima.<br>\n' +
                 '2/ Comprende las provincias de Barranca, Cajatambo,\n' +
                 'Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br><br>' +
@@ -535,10 +530,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
                 'existentes son de carácter referencial”.'
             },
-            {divParent:'location_on_bloque3',id:'mapa8',div:'mapa32',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004' ,inicialVista:false,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)",
+            {divParent:'location_on_bloque3',id:'mapa8',div:'mapa32',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'hidden',display:'inline-block',bloque:'bloque3',vista:'vista2',codTematico:'D0004' ,inicialVista:true,layer:0,titulo:"PERÚ: DENSIDAD POBLACIONAL POR AÑOS CENSALES,SEGÚN DEPARTAMENTO, 2007 Y 2017 (Hab./ Km2)",
                 info:''
             },
-            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:true,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                 info:'Fuente: Instituto Nacional de Estadística e Informática -\n' +
                 'Censos Nacionales de Población y Vivienda<br><br>' +
                 'Ley Nº 27795 - Quinta Disposición Transitoria y Final de la Ley de Demarcación y Organización\n' +
@@ -546,10 +541,10 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
                 'existentes son de carácter referencial”.'
             },
-            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:false ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista0',codTematico:'P0001' ,inicialVista:true ,layer:1,titulo:"PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                 info:''
             },
-            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:true ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+            {divParent:'location_on_bloque4',id:'mapa9',div:'mapa41',codMapa:'DASH2007',anio:'2007',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:false ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                 info:'<strong>Nota:</strong> En 2007 autoridades no permitieron censo en el distrito de Carmen Alto, provincia\n' +
                 'de Huamanga, departamento de Ayacucho.<br><br>' +
                 'Fuente: Instituto Nacional de Estadística e Informática -\n' +
@@ -559,7 +554,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 'presente Ley, las delimitaciones censales y/u otros relacionados con las circunscripciones\n' +
                 'existentes son de carácter referencial”.'
             },
-            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:false ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
+            {divParent:'location_on_bloque4',id:'mapa10',div:'mapa42',codMapa:'DASH2017',anio:'2017',inicial:false,visibility:'visible',display:'inline-block',bloque:'bloque4',vista:'vista1',codTematico:'P0001' ,inicialVista:true ,layer:2,titulo:"PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA,SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                 info:''
             },
         ];
@@ -592,8 +587,9 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
 
                 tituloMapa.innerHTML=el.titulo;
 
-                var htmlSelect= '<option value="2007" selected>2007</option>' +
-                                '<option value="2017">2017</option>'
+
+                var htmlSelect= '<option value="2007" >2007</option>' +
+                                '<option value="2017" selected>2017</option>'
 
                 var w=parseInt(100.0/tam);
 
@@ -616,7 +612,7 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                 if(index==0){
                     if(!(max)){
                         divWidgetSelect = document.createElement("select");
-                        divWidgetSelect.classList.add('selectMapAnio');
+                        divWidgetSelect.classList.add('mapaSelect');
                         divWidgetSelect.innerHTML=htmlSelect;
                         divWidgetSelect.setAttribute("id","select_"+el.bloque);
                         divWidgetSelect.addEventListener('change', function(){

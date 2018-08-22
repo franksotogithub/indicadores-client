@@ -1,4 +1,11 @@
-<div id="viewDiv"></div>
+<div id="viewDiv" style="position:relative;">
+    <div id="cargarMapaDiv"> Cargando...</div>
+
+
+</div>
+
+
+<div id="legendMap" style="background-color: white"></div>
 
 <div id="list-widgets">
     <div id="widget-nacional" class="widget-ubigeo">
@@ -19,6 +26,12 @@
 </div>
 
 <div id="widget-select-layer">
+
+    <select id="select-ubigeo">
+
+    </select>
+
+
     <select id="select-layer">
         <option selected value="0">
             Vista Departamental
@@ -30,6 +43,8 @@
             Vista Distrital
         </option>
     </select>
+
+
 
 </div>
 
@@ -130,6 +145,18 @@
         width:150px;
         height:150px;
         border: 1px solid black;
+
+    }
+
+    #cargarMapaDiv{
+        top: 60px;
+        right: 40px;
+        height: 20px;
+        width: 100px;
+        background-color: #2b2b2b;
+        color: white;
+        position: absolute;
+        z-index: 1;
 
     }
 

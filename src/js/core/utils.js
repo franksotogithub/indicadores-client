@@ -93,17 +93,12 @@ App.utils = {
             res.minValue=el.min_valor;
             res.maxValue=el.max_valor;
             res.label=el.label;
-
-
             res.symbol= {
                 type: "simple-fill",
                 color: el.color,
                 outline: outlineOptions,
                 style: "solid",
             }
-
-
-
             respuesta.push(res);
         });
 
@@ -111,7 +106,23 @@ App.utils = {
     },
 
 
+    renderBack  :function ( ) {
+        var renderer = {
+            type: "unique-value",
+            field: "OBJECTID",
+            defaultSymbol: {
+                type: "simple-fill",
+                color: "#A8A8A8",
+                outline: {
+                    width: 1,
+                    color: "white"
+                }
+            },
 
+        };
+
+        return renderer
+    }
 
 
 };
