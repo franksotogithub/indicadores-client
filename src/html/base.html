@@ -22,6 +22,8 @@
     <!-- custom -->
     <link rel="stylesheet" href="{{ output.folders.css ~ output.concat.css }}">
     <link rel="stylesheet" href="{{ output.assets ~ 'arcgis/4.7/esri/css/main.css' }}">
+    <link rel="stylesheet" href="{{ output.assets ~ 'select2/css/select2.min.css' }}">
+
 
 
 
@@ -82,15 +84,14 @@
                     <div class="dropDownMenu" >
                         <!-- Sharingbutton Facebook -->
 
-                            <a class="resp-sharing-button__link " href="https://www.facebook.com/sharer/sharer.php?u=http%3A//www.censos2017.pe/" target="_blank" aria-label="" >
-                                <div class=" resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small" >
-                                    <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
-                                    </div>
-
+                        <a class="resp-sharing-button__link " href="https://www.facebook.com/sharer/sharer.php?u=http%3A//www.censos2017.pe/" target="_blank" aria-label="" >
+                            <div class=" resp-sharing-button resp-sharing-button--facebook resp-sharing-button--small" >
+                                <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z"/></svg>
                                 </div>
-                                <div class="textSharingBu">Facebook</div>
-                            </a>
+                            </div>
+                            <div class="textSharingBu">Facebook</div>
+                        </a>
 
 
                         <!-- Sharingbutton Twitter -->
@@ -168,12 +169,12 @@
 <script src="{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
 
 <!-- libs -->
+<script src="{{ output.assets ~ 'select2/js/select2.min.js' }}"></script>
 <script src="{{ output.assets ~ 'datatable/js/jquery.dataTables.js' }}"></script>
 <script src="{{ output.assets ~ 'datatable/js/dataTables.fixedColumns.js' }}"></script>
 <script src="{{ output.assets ~ 'highcharts/highcharts.js' }}"></script>
 <script src="{{ output.assets ~ 'highcharts/modules/exporting.js' }}"></script>
 <script src="{{ output.assets ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
-
 <script src="{{ output.folders.js ~ output.concat.js }}"></script>
 {% block endscript %}{% endblock %}
 </html>
