@@ -21,6 +21,8 @@ var App = (function (scope, config) {
      * App.init('indicadores', ['mapas', 'cuadros', 'graficos'])
      */
     var init = function (vista, ventanas) {
+        // Config
+        config.highchart();
         _hasUtils(this, 'init', {"vista": vista}, ventanas);
     };
 
@@ -138,9 +140,16 @@ var App = (function (scope, config) {
         _hasUtils(this, 'dashboardVistaChangeEvent', {"bloque": bloque, "vista": vista}, ['dashboard', 'mapasDashBoard']);
     };
 
+    /**
+     * Maximizar ventana de dashboard
+     */
     var uiMaxCallbackDashBoardEvent= function (bloque,vista) {
         _hasUtils(this, 'uiMaxCallbackDashBoardEvent', {"bloque": bloque , "vista": vista}, ['dashboard', 'mapasDashBoard']);
     }
+
+    /**
+     * Restaurar ventana de dashboard
+     */
     var uiNormalCallbackDashBoardEvent= function (bloque,vista) {
         _hasUtils(this, 'uiNormalCallbackDashBoardEvent', {"bloque": bloque , "vista": vista}, ['dashboard', 'mapasDashBoard']);
     }
