@@ -305,6 +305,21 @@ $(document).ready(function(){
 
 
 
+    /* Scroll automatico */
+    $(document).on("mouseenter", ".contentData", function() {
+        var e = $(this);
+        //var textTool = $(this).text();
+        e.css("overflow-x","auto");
+        e.css("overflow-y","auto");
+    });
+    $(document).on("mouseleave", ".contentData", function() {
+        var e = $(this);
+        e.css("overflow-x","hidden");
+        e.css("overflow-y","hidden");
+    });
+
+
+
 
     /* Responsive  */
 

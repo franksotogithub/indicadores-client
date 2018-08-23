@@ -593,12 +593,11 @@ div.contentTabs{
   padding: 10px;
   height:270px;
   overflow-x:hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 .contentData{
   display: none;
   height:100%;
-  overflow-x: auto;
   text-align: center;
 
   div.height100{
