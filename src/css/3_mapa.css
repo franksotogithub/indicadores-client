@@ -195,8 +195,12 @@ div.esri-search__submit-button:hover {
 div.esri-search__submit-button:focus {
     outline: none;
 }
+#widget-select-layer {
+    text-align: right;
+    position: relative;
+}
 
-#select-layer{
+#select-layer , #select-ubigeo{
     font-family: 'Alegreya-Sans', 'open_sansregular';
     outline: none;
     padding: 5px 15px;
@@ -204,6 +208,27 @@ div.esri-search__submit-button:focus {
     height: 32px;
     border-radius: 5px;
 }
+.botonVistaMapa {
+    padding:9px 11px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.mostrarListaMapa{
+    font-family: 'Alegreya-Sans';
+    position: absolute;
+    width: 150px;
+    right: 0;
+    background: white;
+    cursor: pointer;
+}
+.mostrarListaMapa > div {
+    padding: 10px;
+}
+.mostrarListaMapa > div:hover {
+    background-color: #009ae0;
+    color: white;
+}
+
 
 #list-widgets {
     margin: 0px;
@@ -294,7 +319,7 @@ div.esri-search__submit-button:focus {
 
 /* Maximizado */
 #panel {
-    width:460px;
+    width:640px;
     background-color : white;
 }
 
@@ -340,12 +365,25 @@ div.esri-search__submit-button:focus {
     padding: 15px 25px;
     border-right: solid 10px #1b3c71;
     font-family: 'signikaregular';
-    display: block;
+    display: inline-block;
     margin-right: auto;
     margin-left: auto;
     width: 440px;
     color: white;
     outline: none;
+}
+.contentTabsBotonesMapa > div {
+    padding: 10px;
+}
+
+.buttonMapTool{
+    padding: 15px 20px;
+    height: 52px;
+    vertical-align: middle;
+
+}
+.buttonMapTool.active, .buttonMapTool:hover{
+    background-color: #D57008;
 }
 
 

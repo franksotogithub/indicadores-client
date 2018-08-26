@@ -485,6 +485,17 @@ $(document).ready(function() {
     altosAutomaticos();
     sliderGraph ();
 
+    $(document).on('click','#contentPanel .headerToolMap > button', function() {
+        var dataSelect= $(this).attr('data-select');
+        $('#contentPanel .headerToolMap > button').removeClass('active');
+        $(this).addClass('active');
+        var divMostrar = $(this).closest('#contentPanel').find('div.contentTabsBotonesMapa > div[data-select='+dataSelect+']');
+
+        divMostrar.siblings().hide();
+        divMostrar.show();
+    });
+
+
     $('.contenedorVentana').on('click','.minimizar', function() {
         minimizarVentana($(this));
     });
@@ -625,6 +636,13 @@ $(document).ready(function() {
         $(this).remove("button");
 
     });
+    $(document).on('click','button.botonVistaMapa', function() {
+        $(".mostrarListaMapa").toggle("slow");
+    });
+
+    $(document).on('click','.mostrarListaMapa', function() {
+        $(this).toggle("slow");
+    });
 
    
 
@@ -651,5 +669,6 @@ $(document).ready(function() {
         var href = $(this).attr('data-href');
         window.location = href;
     });
+
 
 });

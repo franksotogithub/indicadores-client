@@ -31,9 +31,14 @@
 
     </select>
 
-
-    <select id="select-layer">
-        <option selected value="0">
+    <button class="icon-eye b_azul f_blanco icon tooltip botonVistaMapa" data-title="Tipo de vista"></button>
+    <div class="mostrarListaMapa" style="display: none">
+        <div>Vista Departamental</div>
+        <div>Vista Provincial</div>
+        <div>Vista Distrital</div>
+    </div>
+    <select id="select-layer" style="display: none">
+        <option selected value="0" >
             Vista Departamental
         </option>
         <option value="1">
@@ -43,7 +48,6 @@
             Vista Distrital
         </option>
     </select>
-
 
 
 </div>
@@ -74,7 +78,7 @@
     <div id="contentPanel">
         <div id="resumenPanel">
             <div class="row">
-                <div>
+                <div class="headerToolMap">
                     <select class="selectMapa">
                         <option value="0">Categoria: Población</option>
                         <option value="1">Categoria: Educación</option>
@@ -84,6 +88,10 @@
                         <option value="5">Categoria: Hogar</option>
 
                     </select>
+
+                    <button data-icon="&#xe051;" data-select="1" class=" buttonMapTool active b_azul f_blanco icon tooltip" data-title="Mostrar Indicadores">  </button>
+                    <button data-icon="&#xe002;" data-select="2" class=" buttonMapTool  b_azul f_blanco icon tooltip " data-title="Mostrar Gráficos ">  </button>
+                    <button data-select="3" class=" buttonMapTool b_azul f_blanco icon-info tooltip" data-title="Mostrar Metadatos">   </button>
                 </div>
                 <div class="graficoWidget-top">
                     <div>
@@ -119,6 +127,12 @@
                     </div>
                 </div>
             </div>
+            <div class="contentTabsBotonesMapa">
+                <div class="" data-select="1">1</div>
+                <div class="" data-select="2" style="display: none">2</div>
+                <div class="" data-select="3" style="display: none">3</div>
+            </div>
+
 
 
         </div>

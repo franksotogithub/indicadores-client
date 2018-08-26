@@ -1,5 +1,7 @@
 
-/* Componentes */
+/* Componentes  Scroll */
+
+
 
 
 
@@ -280,8 +282,6 @@ $(document).ready(function(){
 
     $('.widget-vistaInteractiva-comboToolsBox').on('click','.BarraHerramientas > button', function() {
         var _this= $(this);
-
-
         COMBOTOOLSBOX.event.activarButton(_this);
 
     });
@@ -306,6 +306,9 @@ $(document).ready(function(){
 
 
     /* Scroll automatico */
+
+
+
     $(document).on("mouseenter", ".contentData", function() {
         var e = $(this);
         //var textTool = $(this).text();
