@@ -1,6 +1,6 @@
 <div id="viewDiv" style="position:relative;">
     <div id="cargarMapaDiv">
-        Cargando...
+
         <div class="spinner">
             <div class="bounce1"></div>
             <div class="bounce2"></div>
@@ -87,7 +87,7 @@
             </div>
 </div>
 
-<div id="panel">
+<div id="panel" style="display: none">
     <div id="contentPanel">
         <div id="resumenPanel">
             <div class="row">
@@ -174,14 +174,14 @@
     }
 
     #cargarMapaDiv{
-        top: 60px;
-        right: 40px;
-        height: 20px;
-        width: 100px;
-        background-color: #2b2b2b;
-        color: white;
+        right: 0;
+        height: 100%;
+        width: 100%;
         position: absolute;
-        z-index: 1;
+        z-index: 2;
+        display: block ;
+        background-color: rgba(232, 232, 232, 0.5);
+
 
     }
 
