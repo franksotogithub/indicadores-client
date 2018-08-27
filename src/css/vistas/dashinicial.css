@@ -830,6 +830,9 @@ nav.nav-vertical button.cbutt4 {
 .marginTop-10 {
   margin-top: 10px; }
 
+.marginTop-50 {
+  margin-top: 50px; }
+
 .marginBottom-10 {
   margin-bottom: 10px; }
 
@@ -1341,32 +1344,14 @@ text.highcharts-subtitle {
   font-weight: bold;
   font-family: 'open_sansregular'; }
 
+table tbody.hijoNegro tr:first-child {
+  font-weight: bold; }
 
-.phancy-scrollbar {
-  width: 5px;
-  border-radius: 4px;
-  top: 0;
-  position: absolute;
-  background: #ccc;
-  -moz-transition: opacity .2s;
-  -webkit-transition: opacity .2s;
-  -o-transition: opacity .2s;
-  -ms-transition: opacity .2s;
-  transition: opacity .2s;
-  -webkit-transition-delay: 1s;
-  opacity: 0;
-}
-.phancy-scroller .phancy-scrollbar:active, .phancy-scroller:hover .phancy-scrollbar {
-  opacity: 1;
-  -webkit-transition-delay: 0s;
-}
-.phancy-scrollbarbutton {
-  width: 100%;
-  border-radius: 4px;
-  top: 0;
-  position: absolute;
-  background-color: #999;
-}
+td.millones {
+  min-width: 100px; }
+
+td.ajustarAContenido {
+  white-space: nowrap; }
 
 /*
   Tooltips

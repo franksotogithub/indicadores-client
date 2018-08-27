@@ -11,6 +11,12 @@ App.utils = {
         return num;
     },
 
+    round: function (num, decimal) {
+        decimal = (decimal === undefined)  ? 1 : decimal;
+        var dies = Math.pow(10, decimal);
+        return Math.round(num*dies)/dies;
+    },
+
     nullToblank: function (valor) {
         return (valor === null) ? '' : valor;
     },

@@ -338,6 +338,7 @@ nav.nav-vertical button.cbutt4 {background-color:#22896E}
 .margin-25{margin:25px;}
 
 .marginTop-10 {margin-top: 10px;}
+.marginTop-50 {margin-top: 50px;}
 .marginBottom-10 {margin-bottom:10px;}
 .textAlignRight {text-align: right;}
 .textAlignCenter{text-align: center;}
@@ -980,6 +981,21 @@ text.highcharts-subtitle {
   font-weight: bold;
   font-family: 'open_sansregular';
 }
+
+table tbody.hijoNegro tr:first-child{
+  font-weight:bold;
+}
+
+td.millones {
+  min-width:100px;
+}
+
+td.ajustarAContenido {
+  white-space: nowrap;
+}
+
+
+
 
 /*
   Tooltips

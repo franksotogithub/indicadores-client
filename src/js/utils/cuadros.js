@@ -221,7 +221,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         ];
         for (var i=0; i<ubigeos.length; i++) {
             var v = ubigeos[i];
-            columns.push({"data": "valor_"+v});
+            columns.push({"data": "absoluto_"+v});
             columns.push({"data": "porcentaje_"+v})
         }
 

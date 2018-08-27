@@ -1,4 +1,4 @@
-App.utils.dashboard = (function (utils, service) {
+App.utils.dashboard = (function (config, appData, utils, service) {
     var data = {
         "bloque1": {
             "default": "vista0",
@@ -7,33 +7,37 @@ App.utils.dashboard = (function (utils, service) {
                 titulo: "1.1 Población a través de los censos",
                 widgets: {
                     assignment: {
+                        codigo: "01",
                         titulo: "PERÚ: POBLACIÓN CENSADA, OMITIDA Y TOTAL, SEGÚN CENSOS REALIZADOS, 1940 - 2017",
-                        data: [
-                            {"anio": 1940, "censada": 6207967, "omitida": 815144, total: 7023111},
-                            {"anio": 1961, "censada": 9906746, "omitida":  513611 , total: 10420357},
-                            {"anio": 1972, "censada": 13538208, "omitida":  583356, total: 14121564},
-                            {"anio": 1981, "censada": 17005210, "omitida": 757021, total: 17762231},
-                            {"anio": 1993, "censada": 22048356, "omitida":  591087, total: 22639443},
-                            {"anio": 2007, "censada": 27412157, "omitida":  808607, total: 28220764},
-                            {"anio": 2017, "censada": 29381884, "omitida": 1855501, total: 31237385}
-                        ],
                         fuente: "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>",
                         cabecera: '<tr>\n' +
-                        '<th rowspan="2">AÑO</th>\n' +
+                        '<th rowspan="2" class="textAlignCenter">AÑO</th>\n' +
                         '<th colspan="3" class="textAlignCenter">POBLACIÓN</th>\n' +
+                        '<th rowspan="2" style="display: none;">ORDEN</th>\n'+
                         '</tr>\n' +
                         '<tr>\n' +
                         '<th>CENSADA</th>\n' +
                         '<th>OMITIDA</th>\n' +
                         '<th>TOTAL</th>\n'+
+
                         '</tr>',
                         columns: [
-                            {"data": "anio"},
-                            {"data": "censada"},
-                            {"data": "omitida"},
-                            {"data": "total"}
+                            {"data": "fuente"},
+                            {"data": "absoluto_p010100"},
+                            {"data": "absoluto_p012901"},
+                            {"data": "absoluto_p012900"},
+                            {"data": "orden", visible: false}
                         ],
                         columnDefs: [
+                            {
+                                targets: 0,
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignCenter');
+                                },
+                                render: function (data, type, row) {
+                                    return _titulos.fuente(data);
+                                }
+                            },
                             {
                                 targets: [1, 2, 3],
                                 render: function (data, type, row) {
@@ -59,6 +63,7 @@ App.utils.dashboard = (function (utils, service) {
                         colors: ['#00ccff', '#ff0000']
                     },
                     assignment: {
+                        codigo: "02",
                         titulo: "PERÚ: POBLACIÓN TOTAL Y TASA DE CRECIMIENTO PROMEDIO ANUAL, 1940 - 2017",
                         cabecera: '<tr>\n' +
                         '<th>AÑO</th>\n' +
@@ -66,30 +71,39 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>INCREMENTO<br /> INTERCENSAL</th>\n' +
                         '<th>INCREMENTO<br /> ANUAL</th>\n' +
                         '<th>TASA DE <br />CRECIMIENTO <br />PROMEDIO ANUAL </th>\n' +
+                        '<th style="display: none;">ORDEN</th>\n'+
                         '</tr>',
-                        data: [
-                            {"anio": 1940, total: 7023111, intercensal: "", anual: "", "crecimiento_promedio": ""},
-                            {"anio": "", total: "", intercensal: 3397246, anual:  161774, "crecimiento_promedio": 1.9},
-                            {"anio": 1961, total: 10420357, intercensal: "", anual: "", "crecimiento_promedio": ""},
-                            {"anio": "", total: "", intercensal: 3701207, anual:  336473, "crecimiento_promedio": 2.8},
-                            {"anio": 1972, total: 14121564, intercensal: "", anual: "", "crecimiento_promedio": ""},
-                            {"anio": "", total: "", intercensal: 3640667, anual: 404519, "crecimiento_promedio": 2.6},
-                            {"anio": 1981, total: 17762231, intercensal: "", anual: "", "crecimiento_promedio": ""},
-                            {"anio": "", total: "", intercensal: 4877212, anual:  406434, "crecimiento_promedio": 2.0},
-                            {"anio": 1993, total: 22639443, intercensal: "", anual: "", "crecimiento_promedio": ""},
-                            {"anio": "", total: "", intercensal: 5581321, anual:  398666, "crecimiento_promedio": 1.6},
-                            {"anio": 2007, total: 28220764, intercensal: "", anual: "", "crecimiento_promedio": ""},
-                            {"anio": "", total: "", intercensal: 3016621, anual:  301662, "crecimiento_promedio": 1.0},
-                            {"anio": 2017, total: 31237385, intercensal: "", anual: "", "crecimiento_promedio": ""}
-                        ],
                         columns: [
-                            {"data": "anio"},
-                            {"data": "total"},
-                            {"data": "intercensal"},
-                            {"data": "anual"},
-                            {"data": "crecimiento_promedio"}
+                            {"data": "anio", orderable: false},
+                            {"data": "total", orderable: false},
+                            {"data": "intercensal", orderable: false},
+                            {"data": "anual", orderable: false},
+                            {"data": "crecimiento_promedio", orderable: false},
+                            {"data": "orden", visible: false}
                         ],
-                        columnDefs: [],
+                        columnDefs: [
+                            {
+                                targets: [1, 2, 3],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            },
+                            {
+                                targets: 4,
+                                render: function (data, type, row) {
+                                    var porcentaje = utils.round(data, 1);
+                                    if (porcentaje > 0) {
+                                        return porcentaje.toFixed(1);
+                                    }else {
+                                        return '';
+                                    }
+
+                                }
+                            }
+                        ],
                         fuente: "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>"
                     },
                     info: "<p>En el periodo intercensal 2007–2017, la población total del país se incrementó en 3 millones 16 mil 621 habitantes, es decir, un crecimiento de 10,7% respecto de la población total de 2007, que fue 28 millones 220 mil 764 habitantes. En promedio, la población peruana ha crecido 301 mil 662 habitantes por año en el mencionado período.</p>\n" +
@@ -151,283 +165,52 @@ App.utils.dashboard = (function (utils, service) {
                         fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
                     },
                     assignment: {
+                        codigo: "03",
+                        clase: "hijoNegro",
                         titulo: "PERÚ: DISTRIBUCIÓN PORCENTUAL DE LA POBLACIÓN CENSADA, POR SEXO, SEGÚN DEPARTAMENTO, 2007 Y 2017 <br />(Porcentaje)",
-                        data: [
-                            {
-                                "departamento": "Total",
-                                "total_2007": 27412157,
-                                "hombre_2007": 49.7,
-                                "mujer_2007": 50.3,
-                                "total_2017": 29381884,
-                                "hombre_2017": 49.2,
-                                "mujer_2017": 50.8
-                            },
-                            {
-                                "departamento": "Amazonas",
-                                "total_2007": 375993,
-                                "hombre_2007": 51.03,
-                                "mujer_2007": 48.7,
-                                "total_2017": 379384,
-                                "hombre_2017": 50.4,
-                                "mujer_2017": 49.6
-                            },
-                            {
-                                "departamento": "Áncash",
-                                "total_2007": 1063459,
-                                "hombre_2007": 49.8,
-                                "mujer_2007": 50.2,
-                                "total_2017": 1083519,
-                                "hombre_2017": 49.3,
-                                "mujer_2017": 50.7
-                            },
-                            {
-                                "departamento": "Apurímac",
-                                "total_2007": 404190,
-                                "hombre_2007": 49.7,
-                                "mujer_2007": 50.3,
-                                "total_2017": 405759,
-                                "hombre_2017": 49.5,
-                                "mujer_2017": 50.5
-                            },
-                            {
-                                "departamento": "Arequipa",
-                                "total_2007": 1152303,
-                                "hombre_2007": 49.2,
-                                "mujer_2007": 50.8,
-                                "total_2017": 1382730,
-                                "hombre_2017": 49,
-                                "mujer_2017": 51
-                            },
-                            {
-                                "departamento": "Ayacucho",
-                                "total_2007": 612489,
-                                "hombre_2007": 49.7,
-                                "mujer_2007": 50.3,
-                                "total_2017": 616176,
-                                "hombre_2017": 49.4,
-                                "mujer_2017": 50.6
-                            },
-                            {
-                                "departamento": "Cajamarca",
-                                "total_2007": 1387809,
-                                "hombre_2007": 49.9,
-                                "mujer_2007": 50.1,
-                                "total_2017": 1341012,
-                                "hombre_2017": 49,
-                                "mujer_2017": 51
-                            },
-                            {
-                                "departamento": "Prov. Const. del Callao",
-                                "total_2007": 879679,
-                                "hombre_2007": 49.1,
-                                "mujer_2007": 50.9,
-                                "total_2017": 994494,
-                                "hombre_2017": 48.8,
-                                "mujer_2017": 51.2
-                            },
-                            {
-                                "departamento": "Cusco",
-                                "total_2007": 1171403,
-                                "hombre_2007": 49.9,
-                                "mujer_2007": 50.1,
-                                "total_2017": 1205527,
-                                "hombre_2017": 49.5,
-                                "mujer_2017": 50.5
-                            },
-                            {
-                                "departamento": "Huancavelica",
-                                "total_2007": 454797,
-                                "hombre_2007": 49.5,
-                                "mujer_2007": 50.5,
-                                "total_2017": 347639,
-                                "hombre_2017": 48.6,
-                                "mujer_2017": 51.4
-                            },
-                            {
-                                "departamento": "Huánuco",
-                                "total_2007": 762223,
-                                "hombre_2007": 50.4,
-                                "mujer_2007": 49.6,
-                                "total_2017": 721047,
-                                "hombre_2017": 49.5,
-                                "mujer_2017": 50.5
-                            },
-                            {
-                                "departamento": "Ica",
-                                "total_2007": 711932,
-                                "hombre_2007": 49.6,
-                                "mujer_2007": 50.4,
-                                "total_2017": 850765,
-                                "hombre_2017": 49.3,
-                                "mujer_2017": 50.7
-                            },
-                            {
-                                "departamento": "Junín",
-                                "total_2007": 1225474,
-                                "hombre_2007": 49.8,
-                                "mujer_2007": 50.2,
-                                "total_2017": 1246038,
-                                "hombre_2017": 48.9,
-                                "mujer_2017": 51.1
-                            },
-                            {
-                                "departamento": "La Libertad",
-                                "total_2007": 1617050,
-                                "hombre_2007": 49.4,
-                                "mujer_2007": 50.6,
-                                "total_2017": 1778080,
-                                "hombre_2017": 48.8,
-                                "mujer_2017": 51.2
-                            },
-                            {
-                                "departamento": "Lambayeque",
-                                "total_2007": 1112868,
-                                "hombre_2007": 48.7,
-                                "mujer_2007": 51.3,
-                                "total_2017": 1197260,
-                                "hombre_2017": 48.5,
-                                "mujer_2017": 51.5
-                            },
-                            {
-                                "departamento": "Lima",
-                                "total_2007": 8442409,
-                                "hombre_2007": 49,
-                                "mujer_2007": 51,
-                                "total_2017": 9485405,
-                                "hombre_2017": 48.8,
-                                "mujer_2017": 51.2
-                            },
-                            {
-                                "departamento": "Loreto",
-                                "total_2007": 891732,
-                                "hombre_2007": 51.2,
-                                "mujer_2007": 48.8,
-                                "total_2017": 883510,
-                                "hombre_2017": 50.2,
-                                "mujer_2017": 49.8
-                            },
-                            {
-                                "departamento": "Madre de Dios",
-                                "total_2007": 109555,
-                                "hombre_2007": 54.3,
-                                "mujer_2007": 45.7,
-                                "total_2017": 141070,
-                                "hombre_2017": 52.3,
-                                "mujer_2017": 47.7
-                            },
-                            {
-                                "departamento": "Moquegua",
-                                "total_2007": 161533,
-                                "hombre_2007": 51.3,
-                                "mujer_2007": 48.7,
-                                "total_2017": 174863,
-                                "hombre_2017": 50.4,
-                                "mujer_2017": 49.6
-                            },
-                            {
-                                "departamento": "Pasco",
-                                "total_2007": 280449,
-                                "hombre_2007": 51.4,
-                                "mujer_2007": 48.6,
-                                "total_2017": 254065,
-                                "hombre_2017": 50.4,
-                                "mujer_2017": 49.6
-                            },
-                            {
-                                "departamento": "Piura",
-                                "total_2007": 1676315,
-                                "hombre_2007": 49.8,
-                                "mujer_2007": 50.2,
-                                "total_2017": 1856809,
-                                "hombre_2017": 49.5,
-                                "mujer_2017": 50.5
-                            },
-                            {
-                                "departamento": "Puno",
-                                "total_2007": 1268441,
-                                "hombre_2007": 49.9,
-                                "mujer_2007": 50.1,
-                                "total_2017": 1172697,
-                                "hombre_2017": 49.3,
-                                "mujer_2017": 50.7
-                            },
-                            {
-                                "departamento": "San Martín",
-                                "total_2007": 728808,
-                                "hombre_2007": 52.5,
-                                "mujer_2007": 47.5,
-                                "total_2017": 813381,
-                                "hombre_2017": 51,
-                                "mujer_2017": 49
-                            },
-                            {
-                                "departamento": "Tacna",
-                                "total_2007": 288781,
-                                "hombre_2007": 50,
-                                "mujer_2007": 50,
-                                "total_2017": 329332,
-                                "hombre_2017": 49.7,
-                                "mujer_2017": 50.3
-                            },
-                            {
-                                "departamento": "Tumbes",
-                                "total_2007": 200306,
-                                "hombre_2007": 51.8,
-                                "mujer_2007": 48.2,
-                                "total_2017": 224863,
-                                "hombre_2017": 50.5,
-                                "mujer_2017": 49.5
-                            },
-                            {
-                                "departamento": "Ucayali",
-                                "total_2007": 432159,
-                                "hombre_2007": 51.4,
-                                "mujer_2007": 48.6,
-                                "total_2017": 496459,
-                                "hombre_2017": 50.5,
-                                "mujer_2017": 49.5
-                            },
-                            {
-                                "departamento": "Provincia de Lima 1/",
-                                "total_2007": 7602940,
-                                "hombre_2007": 48.8,
-                                "mujer_2007": 51.2,
-                                "total_2017": 8574974,
-                                "hombre_2017": 48.6,
-                                "mujer_2017": 51.4
-                            },
-                            {
-                                "departamento": "Región Lima 2/",
-                                "total_2007": 839469,
-                                "hombre_2007": 50.8,
-                                "mujer_2007": 49.2,
-                                "total_2017": 910431,
-                                "hombre_2017": 50.2,
-                                "mujer_2017": 49.8
-                            }
-                        ],
                         columns: [
-                            {"data": "departamento"},
-                            {"data": "total_2007"}, //1
-                            {"data": "hombre_2007"},
-                            {"data": "mujer_2007"},
-                            {"data": "total_2017"}, //4
-                            {"data": "hombre_2017"},
-                            {"data": "mujer_2017"}
+                            {"data": "cod_territorio"},
+                            {"data": "absoluto_p010100_01"}, //1
+                            {"data": "porcentaje_p010101_01"},
+                            {"data": "porcentaje_p010102_01"},
+                            {"data": "absoluto_p010100_03"}, //1
+                            {"data": "porcentaje_p010101_03"},
+                            {"data": "porcentaje_p010102_03"},
+                            {"data": "orden", visible: false}
                         ],
                         columnDefs: [
+                            {
+                                targets: 0,
+                                render: function (data, type, row) {
+                                    return _titulos.territorio(data, '00');
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                }
+                            },
                             {
                                 targets: [1, 4],
                                 render: function (data, type, row) {
                                     return utils.numberFormat(data);
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
                                 }
-                            }],
+                            },
+                            {
+                                targets: [2, 3, 5,6],
+                                render: function (data, type, row) {
+                                    return utils.round(data, 1).toFixed(1);
+                                }
+                            }
+                        ],
                         cabecera: '<tr>\n' +
-                        '<th rowspan="2">Departamento</th>\n' +
+                        '<th rowspan="2" class="textAlignLeft">Departamento</th>\n' +
                         '<th rowspan="2" class="textAlignCenter">Total</th>\n' +
                         '<th colspan="2" class="textAlignCenter">2007</th>\n' +
                         '<th rowspan="2" class="textAlignCenter">Total</th>\n' +
                         '<th colspan="2" class="textAlignCenter">2017</th>\n' +
+                        '<th rowspan="2" style="display: none;">ORDEN</th>\n'+
                         '</tr>\n' +
                         '<tr>\n' +
                         '<th>Hombre</th>\n' +
@@ -451,11 +234,13 @@ App.utils.dashboard = (function (utils, service) {
                 widgets: {
                     bar_chart: {
                         codigo: "06",
-                        titulo: "PERÚ: PIRÁMIDE DE POBLACIÓN CENSADA, 2007 Y 2017",
+                        titulo: "PERÚ: PIRÁMIDE DE POBLACIÓN CENSADA, 2007 Y 2017<br />(Distribución porcentual)",
                         unidad: "(Distribución porcentual)",
                         fuente: "<p>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</p>"
                     },
                     assignment: {
+                        codigo: "04",
+                        clase: "hijoNegro",
                         titulo: "PERÚ: INDICADORES DE DEPENDENCIA Y ENVEJECIMIENTO DEMOGRÁFICO, 2007 Y 2017",
                         fuente: "<b>(1) Es la relación de la población de 0 a 14 años más la población de 65 y más, entre la población de 15 a 64 años de edad.</b>\n" +
                         "<p>(2) Es el porcentaje de la población de 60 y más años de edad, en relación a la población total.</p>\n" +
@@ -465,12 +250,13 @@ App.utils.dashboard = (function (utils, service) {
                         "<p>2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>\n" +
                         "<p>Fuente: INEI - Censos Nacionales de Población y Vivienda.</p>",
                         cabecera: '<tr>\n' +
-                        '<th rowspan="2">Departamento</th>\n' +
+                        '<th rowspan="2" class="textAlignLeft">Departamento</th>\n' +
                         '<th colspan="2" class="textAlignCenter">Población censada</th>\n' +
                         '<th colspan="2" class="textAlignCenter">Razón de dependencia demográfica<br />(1)</th>\n' +
                         '<th colspan="2" class="textAlignCenter">Proporción de personas adultas mayores<br />(2)</th>\n' +
                         '<th colspan="2" class="textAlignCenter">Índice de envejecimiento (%)<br />(3)</th>\n' +
                         '<th colspan="2" class="textAlignCenter">Relación de dependencia demográfica de vejez <br />(4)</th>\n' +
+                        '<th rowspan="2" style="display: none;">ORDEN</th>\n'+
                         '</tr>\n' +
                         '<tr>\n' +
                         '<th>2007</th>\n' +
@@ -485,388 +271,47 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>2017</th>\n' +
                         '</tr>',
 
-                        data: [
-                            {
-                                "departamento": "Total",
-                                "censada_2007": 27412157,
-                                "censada_2017": 29381884,
-                                "razon_2007": 58.5,
-                                "razon_2017": 53.2,
-                                "proporcion_2007": 9.1,
-                                "proporcion_2017": 11.9,
-                                "envejecimiento_2007": 29.9,
-                                "envejecimiento_2017": 45.1,
-                                "relacion_2007": 15.1,
-                                "relacion_2017": 19.3
-                            },
-                            {
-                                "departamento": "Amazonas",
-                                "censada_2007": 375993,
-                                "censada_2017": 379384,
-                                "razon_2007": 75.7,
-                                "razon_2017": 65.3,
-                                "proporcion_2007": 7.5,
-                                "proporcion_2017": 10.4,
-                                "envejecimiento_2007": 19.8,
-                                "envejecimiento_2017": 32.2,
-                                "relacion_2007": 13.7,
-                                "relacion_2017": 18
-                            },
-                            {
-                                "departamento": "Áncash",
-                                "censada_2007": 1063459,
-                                "censada_2017": 1083519,
-                                "razon_2007": 64.4,
-                                "razon_2017": 58.6,
-                                "proporcion_2007": 10.6,
-                                "proporcion_2017": 13.6,
-                                "envejecimiento_2007": 33.8,
-                                "envejecimiento_2017": 50.4,
-                                "relacion_2007": 18.4,
-                                "relacion_2017": 22.9
-                            },
-                            {
-                                "departamento": "Apurímac",
-                                "censada_2007": 404190,
-                                "censada_2017": 405759,
-                                "razon_2007": 81.9,
-                                "razon_2017": 62.1,
-                                "proporcion_2007": 10.2,
-                                "proporcion_2017": 12.6,
-                                "envejecimiento_2007": 27.2,
-                                "envejecimiento_2017": 43.6,
-                                "relacion_2007": 19.5,
-                                "relacion_2017": 21.6
-                            },
-                            {
-                                "departamento": "Arequipa",
-                                "censada_2007": 1152303,
-                                "censada_2017": 1382730,
-                                "razon_2007": 51.1,
-                                "razon_2017": 48.1,
-                                "proporcion_2007": 10.3,
-                                "proporcion_2017": 12.4,
-                                "envejecimiento_2007": 38.8,
-                                "envejecimiento_2017": 52.5,
-                                "relacion_2007": 16.2,
-                                "relacion_2017": 19.5
-                            },
-                            {
-                                "departamento": "Ayacucho",
-                                "censada_2007": 612489,
-                                "censada_2017": 61676,
-                                "razon_2007": 76.7,
-                                "razon_2017": 59.5,
-                                "proporcion_2007": 9.8,
-                                "proporcion_2017": 11.9,
-                                "envejecimiento_2007": 26.9,
-                                "envejecimiento_2017": 41.6,
-                                "relacion_2007": 18.1,
-                                "relacion_2017": 20
-                            },
-                            {
-                                "departamento": "Cajamarca",
-                                "censada_2007": 1387809,
-                                "censada_2017": 1341012,
-                                "razon_2007": 70.6,
-                                "razon_2017": 61.9,
-                                "proporcion_2007": 9,
-                                "proporcion_2017": 12,
-                                "envejecimiento_2007": 25.7,
-                                "envejecimiento_2017": 40.6,
-                                "relacion_2007": 16,
-                                "relacion_2017": 20.5
-                            },
-                            {
-                                "departamento": "Prov.Const.del Callao",
-                                "censada_2007": 879679,
-                                "censada_2017": 994494,
-                                "razon_2007": 49.7,
-                                "razon_2017": 49.2,
-                                "proporcion_2007": 9.2,
-                                "proporcion_2017": 12.4,
-                                "envejecimiento_2007": 34.4,
-                                "envejecimiento_2017": 50.6,
-                                "relacion_2007": 14.4,
-                                "relacion_2017": 19.6
-                            },
-                            {
-                                "departamento": "Cusco",
-                                "censada_2007": 1171403,
-                                "censada_2017": 1205527,
-                                "razon_2007": 68.3,
-                                "razon_2017": 53.7,
-                                "proporcion_2007": 8.7,
-                                "proporcion_2017": 11.1,
-                                "envejecimiento_2007": 25.2,
-                                "envejecimiento_2017": 40.9,
-                                "relacion_2007": 15.2,
-                                "relacion_2017": 18
-                            },
-                            {
-                                "departamento": "Huancavelica",
-                                "censada_2007": 454797,
-                                "censada_2017": 347639,
-                                "razon_2007": 85.2,
-                                "razon_2017": 66.4,
-                                "proporcion_2007": 8.7,
-                                "proporcion_2017": 13.1,
-                                "envejecimiento_2007": 21.9,
-                                "envejecimiento_2017": 43,
-                                "relacion_2007": 16.9,
-                                "relacion_2017": 23.1
-                            },
-                            {
-                                "departamento": "Huánuco",
-                                "censada_2007": 762223,
-                                "censada_2017": 721047,
-                                "razon_2007": 74.9,
-                                "razon_2017": 60.3,
-                                "proporcion_2007": 7.6,
-                                "proporcion_2017": 10.7,
-                                "envejecimiento_2007": 20.4,
-                                "envejecimiento_2017": 35.6,
-                                "relacion_2007": 13.9,
-                                "relacion_2017": 18.1
-                            },
-                            {
-                                "departamento": "Ica",
-                                "censada_2007": 711932,
-                                "censada_2017": 850765,
-                                "razon_2007": 55.3,
-                                "razon_2017": 54.8,
-                                "proporcion_2007": 9.7,
-                                "proporcion_2017": 11.6,
-                                "envejecimiento_2007": 33.5,
-                                "envejecimiento_2017": 42.8,
-                                "relacion_2007": 15.7,
-                                "relacion_2017": 19
-                            },
-                            {
-                                "departamento": "Junín",
-                                "censada_2007": 1225474,
-                                "censada_2017": 1246038,
-                                "razon_2007": 64.2,
-                                "razon_2017": 56.2,
-                                "proporcion_2007": 8.6,
-                                "proporcion_2017": 11.3,
-                                "envejecimiento_2007": 26,
-                                "envejecimiento_2017": 40.4,
-                                "relacion_2007": 14.7,
-                                "relacion_2017": 18.6
-                            },
-                            {
-                                "departamento": "La Libertad",
-                                "censada_2007": 1617050,
-                                "censada_2017": 1778080,
-                                "razon_2007": 60.7,
-                                "razon_2017": 57.2,
-                                "proporcion_2007": 9.5,
-                                "proporcion_2017": 12,
-                                "envejecimiento_2007": 30.6,
-                                "envejecimiento_2017": 43,
-                                "relacion_2007": 16,
-                                "relacion_2017": 19.9
-                            },
-                            {
-                                "departamento": "Lambayeque",
-                                "censada_2007": 1112868,
-                                "censada_2017": 1197260,
-                                "razon_2007": 59.2,
-                                "razon_2017": 56.2,
-                                "proporcion_2007": 9.4,
-                                "proporcion_2017": 12.5,
-                                "envejecimiento_2007": 30.6,
-                                "envejecimiento_2017": 46.1,
-                                "relacion_2007": 15.6,
-                                "relacion_2017": 20.8
-                            },
-                            {
-                                "departamento": "Lima",
-                                "censada_2007": 8442409,
-                                "censada_2017": 9485405,
-                                "razon_2007": 47.7,
-                                "razon_2017": 45.7,
-                                "proporcion_2007": 9.8,
-                                "proporcion_2017": 12.7,
-                                "envejecimiento_2007": 38.4,
-                                "envejecimiento_2017": 56.7,
-                                "relacion_2007": 15.1,
-                                "relacion_2017": 19.7
-                            },
-                            {
-                                "departamento": "Loreto",
-                                "censada_2007": 891732,
-                                "censada_2017": 883510,
-                                "razon_2007": 73.8,
-                                "razon_2017": 73.9,
-                                "proporcion_2007": 5.7,
-                                "proporcion_2017": 8.7,
-                                "envejecimiento_2007": 14.9,
-                                "envejecimiento_2017": 23.8,
-                                "relacion_2007": 10.3,
-                                "relacion_2017": 16
-                            },
-                            {
-                                "departamento": "Madre de Dios",
-                                "censada_2007": 109555,
-                                "censada_2017": 141070,
-                                "razon_2007": 51.7,
-                                "razon_2017": 52.3,
-                                "proporcion_2007": 4.1,
-                                "proporcion_2017": 5.9,
-                                "envejecimiento_2007": 13,
-                                "envejecimiento_2017": 19.1,
-                                "relacion_2007": 6.4,
-                                "relacion_2017": 9.3
-                            },
-                            {
-                                "departamento": "Moquegua",
-                                "censada_2007": 161533,
-                                "censada_2017": 174863,
-                                "razon_2007": 48,
-                                "razon_2017": 48.4,
-                                "proporcion_2007": 10.1,
-                                "proporcion_2017": 13.2,
-                                "envejecimiento_2007": 40,
-                                "envejecimiento_2017": 56.7,
-                                "relacion_2007": 15.7,
-                                "relacion_2017": 20.9
-                            },
-                            {
-                                "departamento": "Pasco",
-                                "censada_2007": 280449,
-                                "censada_2017": 254065,
-                                "razon_2007": 60.7,
-                                "razon_2017": 53.7,
-                                "proporcion_2007": 6.9,
-                                "proporcion_2017": 9.7,
-                                "envejecimiento_2007": 20.8,
-                                "envejecimiento_2017": 34.4,
-                                "relacion_2007": 11.4,
-                                "relacion_2017": 15.6
-                            },
-                            {
-                                "departamento": "Piura",
-                                "censada_2007": 1676315,
-                                "censada_2017": 1856809,
-                                "razon_2007": 64.5,
-                                "razon_2017": 60,
-                                "proporcion_2007": 8.8,
-                                "proporcion_2017": 11.1,
-                                "envejecimiento_2007": 26.6,
-                                "envejecimiento_2017": 37.3,
-                                "relacion_2007": 15,
-                                "relacion_2017": 18.9
-                            },
-                            {
-                                "departamento": "Puno",
-                                "censada_2007": 1268441,
-                                "censada_2017": 1172697,
-                                "razon_2007": 64.2,
-                                "razon_2017": 52.1,
-                                "proporcion_2007": 10.1,
-                                "proporcion_2017": 13,
-                                "envejecimiento_2007": 31.6,
-                                "envejecimiento_2017": 52.1,
-                                "relacion_2007": 17.3,
-                                "relacion_2017": 20.9
-                            },
-                            {
-                                "departamento": "San Martin",
-                                "censada_2007": 728808,
-                                "censada_2017": 813381,
-                                "razon_2007": 63.8,
-                                "razon_2017": 59.8,
-                                "proporcion_2007": 6.5,
-                                "proporcion_2017": 9,
-                                "envejecimiento_2007": 18.7,
-                                "envejecimiento_2017": 28.9,
-                                "relacion_2007": 11,
-                                "relacion_2017": 15.2
-                            },
-                            {
-                                "departamento": "Tacna",
-                                "censada_2007": 288781,
-                                "censada_2017": 329332,
-                                "razon_2007": 46.4,
-                                "razon_2017": 43.2,
-                                "proporcion_2007": 7.5,
-                                "proporcion_2017": 10.7,
-                                "envejecimiento_2007": 28.3,
-                                "envejecimiento_2017": 46.3,
-                                "relacion_2007": 11.4,
-                                "relacion_2017": 16.1
-                            },
-                            {
-                                "departamento": "Tumbes",
-                                "censada_2007": 200306,
-                                "censada_2017": 224863,
-                                "razon_2007": 54.5,
-                                "razon_2017": 55.7,
-                                "proporcion_2007": 7.1,
-                                "proporcion_2017": 9.8,
-                                "envejecimiento_2007": 23.3,
-                                "envejecimiento_2017": 33.6,
-                                "relacion_2007": 11.3,
-                                "relacion_2017": 16.2
-                            },
-                            {
-                                "departamento": "Ucayali",
-                                "censada_2007": 432159,
-                                "censada_2017": 496459,
-                                "razon_2007": 66.4,
-                                "razon_2017": 65.4,
-                                "proporcion_2007": 5.5,
-                                "proporcion_2017": 7.8,
-                                "envejecimiento_2007": 15.2,
-                                "envejecimiento_2017": 22.7,
-                                "relacion_2007": 9.5,
-                                "relacion_2017": 13.6
-                            },
-                            {
-                                "departamento": "Provincia de Lima, 1/",
-                                "censada_2007": 7602940,
-                                "censada_2017": 8574974,
-                                "razon_2007": 46.6,
-                                "razon_2017": 44.9,
-                                "proporcion_2007": 9.7,
-                                "proporcion_2017": 12.7,
-                                "envejecimiento_2007": 38.6,
-                                "envejecimiento_2017": 57.4,
-                                "relacion_2007": 14.8,
-                                "relacion_2017": 19.5
-                            },
-                            {
-                                "departamento": "Región Lima 2/",
-                                "censada_2007": 839469,
-                                "censada_2017": 910431,
-                                "razon_2007": 58,
-                                "razon_2017": 54.5,
-                                "proporcion_2007": 10.7,
-                                "proporcion_2017": 13.1,
-                                "envejecimiento_2007": 37.2,
-                                "envejecimiento_2017": 50.8,
-                                "relacion_2007": 17.8,
-                                "relacion_2017": 21.5
-                            }
-                        ],
-
                         columns: [
-                            {data: "departamento"},
-                            {data: "censada_2007"},
-                            {data: "censada_2017"},
-                            {data: "razon_2007"},
-                            {data: "razon_2017"},
-                            {data: "proporcion_2007"},
-                            {data: "proporcion_2017"},
-                            {data: "envejecimiento_2007"},
-                            {data: "envejecimiento_2017"},
-                            {data: "relacion_2007"},
-                            {data: "relacion_2007"}
+                            {data: "cod_territorio"},
+                            {data: "absoluto_p010100_01"},
+                            {data: "absoluto_p010100_03"},
+                            {data: "porcentaje_p013201_01"},
+                            {data: "porcentaje_p013201_03"},
+                            {data: "porcentaje_p013202_01"},
+                            {data: "porcentaje_p013202_03"},
+                            {data: "porcentaje_p013203_01"},
+                            {data: "porcentaje_p013203_03"},
+                            {data: "porcentaje_p013204_01"},
+                            {data: "porcentaje_p013204_03"},
+                            {"data": "orden", visible: false}
                         ],
 
-
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                render: function (data, type, row) {
+                                    return _titulos.territorio(data, '00');
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                }
+                            },
+                            {
+                                targets: [1, 2],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            },
+                            {
+                                targets: [3, 4, 5, 6, 7, 8, 9, 10],
+                                render: function (data, type, row) {
+                                    return utils.round(data, 1).toFixed(1);
+                                }
+                            }
+                        ]
                     },
                     location_on: [],
                     info: '<p>La evolución de la población en las últimas décadas se refleja en la forma que ha adoptado la pirámide poblacional, así de haber presentado una base ancha y vértice angosto en los censos de 1940, en la actualidad se observa una base más reducida y un ensanchamiento progresivo en los centros, que refleja un menor número de nacimientos y el proceso de envejecimiento.</p>\n' +
@@ -931,63 +376,49 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     assignment: {
                         codigo: '05',
+                        clase: "hijoNegro",
                         alias: "Cuadro 05",
                         titulo: "PERÚ: EVOLUCIÓN DE LA POBLACIÓN CENSADA, POR AÑO CENSAL, SEGÚN REGIÓN NATURAL, 1940 - 2017",
                         cabecera: '<tr>\n' +
-                        '<th>REGIÓN NATURAL</th>\n' +
+                        '<th>REGIÓN<br /> NATURAL</th>\n' +
                         '<th>1940</th>\n' +
                         '<th>1961</th>\n' +
                         '<th>1972</th>\n' +
                         '<th>1993</th>\n' +
                         '<th>2007</th>\n' +
                         '<th>2017</th>\n' +
+                        '<th style="display: none;">ORDEN</th>\n'+
                         '</tr>\n',
-                        data: [
-                            {
-                                "region_natural": "Total",
-                                "valor_1940": 6207967,
-                                "valor_1961": 9906746,
-                                "valor_1972": 13538208,
-                                "valor_1993": 22048356,
-                                "valor_2007": 27412157,
-                                "valor_2017": 29381884
-                            },
-                            {
-                                "region_natural": "Costa",
-                                "valor_1940": 1759573,
-                                "valor_1961": 3859443,
-                                "valor_1972": 6242993,
-                                "valor_1993": 11547743,
-                                "valor_2007": 14973264,
-                                "valor_2017": 17037297
-                            },
-                            {
-                                "region_natural": "Sierra",
-                                "valor_1940": 4033952,
-                                "valor_1961": 5182093,
-                                "valor_1972": 5953293,
-                                "valor_1993": 7668359,
-                                "valor_2007": 8763601,
-                                "valor_2017": 8268183
-                            },
-                            {
-                                "region_natural": "Selva",
-                                "valor_1940": 414452,
-                                "valor_1961": 865210,
-                                "valor_1972": 1341922,
-                                "valor_1993": 2832254,
-                                "valor_2007": 3675292,
-                                "valor_2017": 4076404
-                            }
-                        ],
                         columns: [
-                            {"data": "region_natural"},
-                            {"data": "valor_1940"},
-                            {"data": "valor_1961"},
-                            {"data": "valor_1972"},
-                            {"data": "valor_1993"},
-                            {"data": "valor_2007"},
-                            {"data": "valor_2017"}
+                            {"data": "cod_tematico"},
+                            {"data": "absoluto_05"},
+                            {"data": "absoluto_06"},
+                            {"data": "absoluto_07"},
+                            {"data": "absoluto_09"},
+                            {"data": "absoluto_01"},
+                            {"data": "absoluto_03"},
+                            {"data": "orden", visible: false}
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                },
+                                render: function (data, type, row) {
+                                    return _titulos.tematico(data, 'P013300');
+
+                                }
+                            },
+                            {
+                                targets: [1,2,3,4,5,6],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            }
                         ],
                         fuente: "<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>"
                     },
@@ -1038,9 +469,10 @@ App.utils.dashboard = (function (utils, service) {
                     assignment: {
                         codigo: '06',
                         alias: "Cuadro 06",
+                        clase: "hijoNegro",
                         titulo: "PERÚ: POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 1940 - 2017",
                         cabecera: '<tr>\n' +
-                        '<th>DEPARTAMENTO</th>\n' +
+                        '<th class="textAlignLeft">DEPARTAMENTO</th>\n' +
                         '<th>1940</th>\n' +
                         '<th>1961</th>\n' +
                         '<th>1972</th>\n' +
@@ -1048,138 +480,38 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>1993</th>\n' +
                         '<th>2007</th>\n' +
                         '<th>2017</th>\n' +
+                        '<th style="display: none;">ORDEN</th>\n'+
                         '</tr>\n',
-                        data: [
-                            {
-                                "departamento": "Total",
-                                "valor_1940": 6207967,
-                                "valor_1961": 9906746,
-                                "valor_1972": 13538208,
-                                "valor_1981": 17005210,
-                                "valor_1993": 22048356,
-                                "valor_2007": 2741257,
-                                "valor_2017": 29381884
-                            },
-                            {
-                                "departamento": "Amazonas",
-                                "valor_1940": 65137,
-                                "valor_1961": 118439,
-                                "valor_1972": 194472,
-                                "valor_1981": 254560,
-                                "valor_1993": 336665,
-                                "valor_2007": 375993,
-                                "valor_2017": 379384
-                            },
-                            {
-                                "departamento": "Áncash",
-                                "valor_1940": 424975,
-                                "valor_1961": 582598,
-                                "valor_1972": 726215,
-                                "valor_1981": 826399,
-                                "valor_1993": 955023,
-                                "valor_2007": 1063459,
-                                "valor_2017": 1083519
-                            },
-                            {
-                                "departamento": "Apurímac",
-                                "valor_1940": 258094,
-                                "valor_1961": 288223,
-                                "valor_1972": 308613,
-                                "valor_1981": 323346,
-                                "valor_1993": 381997,
-                                "valor_2007": 404190,
-                                "valor_2017": 405759
-                            },
-                            {
-                                "departamento": "Arequipa",
-                                "valor_1940": 263077,
-                                "valor_1961": 388881,
-                                "valor_1972": 529566,
-                                "valor_1981": 706580,
-                                "valor_1993": 916806,
-                                "valor_2007": 1152303,
-                                "valor_2017": 1382730
-                            },
-                            {
-                                "departamento": "Ayacucho",
-                                "valor_1940": 358991,
-                                "valor_1961": 410772,
-                                "valor_1972": 457441,
-                                "valor_1981": 503392,
-                                "valor_1993": 492507,
-                                "valor_2007": 612489,
-                                "valor_2017": 616176
-                            },
-                            {
-                                "departamento": "Cajamarca",
-                                "valor_1940": 494412,
-                                "valor_1961": 746938,
-                                "valor_1972": 919161,
-                                "valor_1981": 1026444,
-                                "valor_1993": 1259808,
-                                "valor_2007": 1387809,
-                                "valor_2017": 1341012
-                            },
-                            {
-                                "departamento": "Prov. Const. del Callao",
-                                "valor_1940": 82287,
-                                "valor_1961": 213540,
-                                "valor_1972": 321231,
-                                "valor_1981": 443413,
-                                "valor_1993": 639729,
-                                "valor_2007": 879679,
-                                "valor_2017": 994494
-                            },
-                            {
-                                "departamento": "Cusco",
-                                "valor_1940": 486592,
-                                "valor_1961": 611972,
-                                "valor_1972": 715237,
-                                "valor_1981": 832504,
-                                "valor_1993": 1028763,
-                                "valor_2007": 1171403,
-                                "valor_2017": 1205527
-                            },
-                            {
-                                "departamento": "Huancavelica",
-                                "valor_1940": 244595,
-                                "valor_1961": 302817,
-                                "valor_1972": 331629,
-                                "valor_1981": 346797,
-                                "valor_1993": 385162,
-                                "valor_2007": 454797,
-                                "valor_2017": 347639
-                            },
-                            {
-                                "departamento": "Huánuco",
-                                "valor_1940": 234024,
-                                "valor_1961": 328919,
-                                "valor_1972": 414468,
-                                "valor_1981": 477650,
-                                "valor_1993": 654489,
-                                "valor_2007": 762223,
-                                "valor_2017": 721047
-                            },
-                            {
-                                "departamento": "Ica",
-                                "valor_1940": 140898,
-                                "valor_1961": 255930,
-                                "valor_1972": 357247,
-                                "valor_1981": 433897,
-                                "valor_1993": 565686,
-                                "valor_2007": 711932,
-                                "valor_2017": 850765
-                            }
-                        ],
                         columns: [
-                            {"data": "departamento"},
-                            {"data": "valor_1940"},
-                            {"data": "valor_1961"},
-                            {"data": "valor_1972"},
-                            {"data": "valor_1981"},
-                            {"data": "valor_1993"},
-                            {"data": "valor_2007"},
-                            {"data": "valor_2017"}
+                            {"data": "cod_territorio"},
+                            {"data": "absoluto_p010100_05"},
+                            {"data": "absoluto_p010100_06"},
+                            {"data": "absoluto_p010100_07"},
+                            {"data": "absoluto_p010100_08"},
+                            {"data": "absoluto_p010100_09"},
+                            {"data": "absoluto_p010100_01"},
+                            {"data": "absoluto_p010100_03"},
+                            {"data": "orden", visible: false}
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                render: function (data, type, row) {
+                                    return _titulos.territorio(data, '00');
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                }
+                            },
+                            {
+                                targets: [1,2,3,4,5,6,7],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            }
                         ],
                         fuente: '1/ Comprende los 43 distritos de la provincia de Lima.<br />\n' +
                         '2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n' +
@@ -1217,140 +549,49 @@ App.utils.dashboard = (function (utils, service) {
                     assignment: {
                         codigo: '07',
                         alias: "Cuadro 07",
+                        clase: "hijoNegro",
                         titulo: "PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL DE LA POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 1940 - 2017 <br />(Porcentaje)",
                         cabecera: '<tr>\n' +
-                        '<th>DEPARTAMENTO</th>\n' +
+                        '<th class="textAlignLeft">DEPARTAMENTO</th>\n' +
                         '<th>1940-1961</th>\n' +
                         '<th>1961-1972</th>\n' +
                         '<th>1972-1981</th>\n' +
                         '<th>1981-1993</th>\n' +
                         '<th>1993-2007</th>\n' +
                         '<th>2007-2017</th>\n' +
+                        '<th style="display: none;">ORDEN</th>\n'+
                         '</tr>\n',
-                        data: [
-                            {
-                                "departamento": "Total",
-                                "valor_1940_1961": 2.2,
-                                "valor_1961_1972": 2.9,
-                                "valor_1972_1981": 2.5,
-                                "valor_1981_1993": 2.2,
-                                "valor_1993_2007": 1.5,
-                                "valor_2007_2017": 0.7
-                            },
-                            {
-                                "departamento": "Amazonas",
-                                "valor_1940_1961": 2.9,
-                                "valor_1961_1972": 4.6,
-                                "valor_1972_1981": 3,
-                                "valor_1981_1993": 2.4,
-                                "valor_1993_2007": 0.8,
-                                "valor_2007_2017": 0.1
-                            },
-                            {
-                                "departamento": "Áncash",
-                                "valor_1940_1961": 1.5,
-                                "valor_1961_1972": 2,
-                                "valor_1972_1981": 1.4,
-                                "valor_1981_1993": 1.2,
-                                "valor_1993_2007": 0.8,
-                                "valor_2007_2017": 0.2
-                            },
-                            {
-                                "departamento": "Apurímac",
-                                "valor_1940_1961": 0.5,
-                                "valor_1961_1972": 0.6,
-                                "valor_1972_1981": 0.5,
-                                "valor_1981_1993": 1.4,
-                                "valor_1993_2007": 0.4,
-                                "valor_2007_2017": 0
-                            },
-                            {
-                                "departamento": "Arequipa",
-                                "valor_1940_1961": 1.9,
-                                "valor_1961_1972": 2.9,
-                                "valor_1972_1981": 3.2,
-                                "valor_1981_1993": 2.2,
-                                "valor_1993_2007": 1.6,
-                                "valor_2007_2017": 1.8
-                            },
-                            {
-                                "departamento": "Ayacucho",
-                                "valor_1940_1961": 0.6,
-                                "valor_1961_1972": 1,
-                                "valor_1972_1981": 1.1,
-                                "valor_1981_1993": -0.2,
-                                "valor_1993_2007": 1.5,
-                                "valor_2007_2017": 0.1
-                            },
-                            {
-                                "departamento": "Cajamarca",
-                                "valor_1940_1961": 2,
-                                "valor_1961_1972": 1.9,
-                                "valor_1972_1981": 1.2,
-                                "valor_1981_1993": 1.7,
-                                "valor_1993_2007": 0.7,
-                                "valor_2007_2017": -0.3
-                            },
-                            {
-                                "departamento": "Prov. Const. del Callao",
-                                "valor_1940_1961": 4.6,
-                                "valor_1961_1972": 3.8,
-                                "valor_1972_1981": 3.6,
-                                "valor_1981_1993": 3.1,
-                                "valor_1993_2007": 2.2,
-                                "valor_2007_2017": 1.2
-                            },
-                            {
-                                "departamento": "Cusco",
-                                "valor_1940_1961": 1.1,
-                                "valor_1961_1972": 1.4,
-                                "valor_1972_1981": 1.7,
-                                "valor_1981_1993": 1.8,
-                                "valor_1993_2007": 0.9,
-                                "valor_2007_2017": 0.3
-                            },
-                            {
-                                "departamento": "Huancavelica",
-                                "valor_1940_1961": 1,
-                                "valor_1961_1972": 0.8,
-                                "valor_1972_1981": 0.5,
-                                "valor_1981_1993": 0.9,
-                                "valor_1993_2007": 1.2,
-                                "valor_2007_2017": -2.7
-                            },
-                            {
-                                "departamento": "Huánuco",
-                                "valor_1940_1961": 1.6,
-                                "valor_1961_1972": 2.1,
-                                "valor_1972_1981": 1.6,
-                                "valor_1981_1993": 2.7,
-                                "valor_1993_2007": 1.1,
-                                "valor_2007_2017": -0.6
-                            },
-                            {
-                                "departamento": "Ica",
-                                "valor_1940_1961": 2.9,
-                                "valor_1961_1972": 3.1,
-                                "valor_1972_1981": 2.2,
-                                "valor_1981_1993": 2.2,
-                                "valor_1993_2007": 1.6,
-                                "valor_2007_2017": 1.8
-                            }
-                        ],
                         columns: [
-                            {"data": "departamento"},
-                            {"data": "valor_1940_1961"},
-                            {"data": "valor_1961_1972"},
-                            {"data": "valor_1972_1981"},
-                            {"data": "valor_1981_1993"},
-                            {"data": "valor_1993_2007"},
-                            {"data": "valor_2007_2017"}
+                            {"data": "cod_territorio"},
+                            {"data": "porcentaje_p013700_06"},
+                            {"data": "porcentaje_p013700_07"},
+                            {"data": "porcentaje_p013700_08"},
+                            {"data": "porcentaje_p013700_09"},
+                            {"data": "porcentaje_p013700_01"},
+                            {"data": "porcentaje_p013700_03"},
+                            {"data": "orden", visible: false}
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                render: function (data, type, row) {
+                                    return _titulos.territorio(data, '00');
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                }
+                            },
+                            {
+                                targets: [1,2,3,4,5,6],
+                                render: function (data, type, row) {
+                                    return utils.round(data, 1).toFixed(1);
+                                }
+                            }
                         ],
                         fuente: '1/ Comprende los 43 distritos de la provincia de Lima.<br />\n' +
                         '2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n' +
                         '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>'
                     },
-                    location_on: [],
                     info: "\n" +
                     "<p>Al observar el comportamiento de la población censada a nivel departamental de los Censos 2007 y 2017, el mayor incremento se presenta en Madre de Dios, con un aumento en el volumen de la población de 28,8%, creciendo a un ritmo promedio anual de 2,6%, que equivale a 3 mil 152 habitantes por año. Arequipa fue el segundo departamento en cuanto a mayor crecimiento poblacional (20,0%), es decir, 23 mil 43 habitantes por año, aumentando a un ritmo anual de 1,8%.</p>\n" +
                     "<p>De acuerdo a la tasa de crecimiento poblacional, los 24 departamentos, la Provincia Constitucional del Callao, la provincia de Lima y la Región Lima, se pueden clasificar en tres grupos: de Mayor Crecimiento (2,0% y más), de Crecimiento Intermedio (1,0% a 1,9%), y los de Menor Crecimiento (menos de 1,0%).</p>\n" +
@@ -1375,128 +616,35 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>1993</th>\n' +
                         '<th>2007</th>\n' +
                         '<th>2017</th>\n' +
+                        '<th style="display: none;">ORDEN</th>\n'+
                         '</tr>\n',
-                        data: [
-                            {
-                                "departamento": "Amazonas",
-                                "valor_1940": 1.7,
-                                "valor_1961": 3,
-                                "valor_1972": 5,
-                                "valor_1981": 6.5,
-                                "valor_1993": 9,
-                                "valor_2007": 10.6,
-                                "valor_2017": 9.7
-                            },
-                            {
-                                "departamento": "Áncash",
-                                "valor_1940": 12.1,
-                                "valor_1961": 16.6,
-                                "valor_1972": 20.7,
-                                "valor_1981": 23.6,
-                                "valor_1993": 27.5,
-                                "valor_2007": 30.3,
-                                "valor_2017": 30.2
-                            },
-                            {
-                                "departamento": "Apurímac",
-                                "valor_1940": 12.4,
-                                "valor_1961": 13.8,
-                                "valor_1972": 14.8,
-                                "valor_1981": 15.5,
-                                "valor_1993": 19,
-                                "valor_2007": 21,
-                                "valor_2017": 19.4
-                            },
-                            {
-                                "departamento": "Arequipa",
-                                "valor_1940": 4.2,
-                                "valor_1961": 6.1,
-                                "valor_1972": 8.4,
-                                "valor_1981": 11.2,
-                                "valor_1993": 14.8,
-                                "valor_2007": 18.9,
-                                "valor_2017": 21.8
-                            },
-                            {
-                                "departamento": "Ayacucho",
-                                "valor_1940": 8.2,
-                                "valor_1961": 9.4,
-                                "valor_1972": 10.4,
-                                "valor_1981": 11.5,
-                                "valor_1993": 11.7,
-                                "valor_2007": 15.3,
-                                "valor_2017": 14.1
-                            },
-                            {
-                                "departamento": "Cajamarca",
-                                "valor_1940": 14.9,
-                                "valor_1961": 22.5,
-                                "valor_1972": 27.6,
-                                "valor_1981": 30.9,
-                                "valor_1993": 39,
-                                "valor_2007": 42.6,
-                                "valor_2017": 40.3
-                            },
-                            {
-                                "departamento": "Prov. Const. del Callao",
-                                "valor_1940": 559.9,
-                                "valor_1961": 1452.9,
-                                "valor_1972": 2185.5,
-                                "valor_1981": 3016.8,
-                                "valor_1993": 4405.8,
-                                "valor_2007": 5774.1,
-                                "valor_2017": 6815.8
-                            },
-                            {
-                                "departamento": "Cusco",
-                                "valor_1940": 6.8,
-                                "valor_1961": 8.5,
-                                "valor_1972": 9.9,
-                                "valor_1981": 11.6,
-                                "valor_1993": 14.8,
-                                "valor_2007": 17,
-                                "valor_2017": 16.7
-                            },
-                            {
-                                "departamento": "Huancavelica",
-                                "valor_1940": 11.1,
-                                "valor_1961": 13.7,
-                                "valor_1972": 15,
-                                "valor_1981": 15.7,
-                                "valor_1993": 18.1,
-                                "valor_2007": 21.3,
-                                "valor_2017": 15.7
-                            },
-                            {
-                                "departamento": "Huánuco",
-                                "valor_1940": 6.2,
-                                "valor_1961": 8.7,
-                                "valor_1972": 11,
-                                "valor_1981": 12.7,
-                                "valor_1993": 18.4,
-                                "valor_2007": 20.9,
-                                "valor_2017": 19.3
-                            },
-                            {
-                                "departamento": "Ica",
-                                "valor_1940": 6.6,
-                                "valor_1961": 12,
-                                "valor_1972": 16.8,
-                                "valor_1981": 20.3,
-                                "valor_1993": 27.1,
-                                "valor_2007": 33.2,
-                                "valor_2017": 39.9
-                            }
-                        ],
                         columns: [
-                            {"data": "departamento"},
-                            {"data": "valor_1940"},
-                            {"data": "valor_1961"},
-                            {"data": "valor_1972"},
-                            {"data": "valor_1981"},
-                            {"data": "valor_1993"},
-                            {"data": "valor_2007"},
-                            {"data": "valor_2017"}
+                            {"data": "cod_territorio"},
+                            {"data": "porcentaje_p012905_05"},
+                            {"data": "porcentaje_p012905_06"},
+                            {"data": "porcentaje_p012905_07"},
+                            {"data": "porcentaje_p012905_08"},
+                            {"data": "porcentaje_p012905_09"},
+                            {"data": "porcentaje_p012905_01"},
+                            {"data": "porcentaje_p012905_03"},
+                            {"data": "orden", visible: false}
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                render: function (data, type, row) {
+                                    return _titulos.territorio(data, '00');
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                }
+                            },
+                            {
+                                targets: [1,2,3,4,5,6,7],
+                                render: function (data, type, row) {
+                                    return utils.round(data, 1).toFixed(1);
+                                }
+                            }
                         ],
                         fuente: '1/ Comprende los 43 distritos de la provincia de Lima.<br />\n' +
                         '2/ Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.<br />\n' +
@@ -1518,11 +666,13 @@ App.utils.dashboard = (function (utils, service) {
                     assignment: {
                         codigo: '09',
                         alias: "Cuadro 09",
+                        clase: "hijoNegro",
                         titulo: "PERÚ: NÚMERO DE PROVINCIAS Y POBLACIÓN CENSADA, SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                         cabecera: '<tr >\n' +
-                        '<th rowspan="2" class="textAlignCenter">Rango de población</th>\n' +
+                        '<th rowspan="2" class="textAlignLeft">Rango de población</th>\n' +
                         '<th colspan="4" class="textAlignCenter">2007</th>\n' +
                         '<th colspan="4" class="textAlignCenter">2017</th>\n'+
+                        '<th rowspan="2">ORDEN</th>\n'+
                         '</tr>\n'+
                         '<tr>\n' +
                         '<th>Nº de Provincias</th>\n' +
@@ -1534,107 +684,49 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>Población</th>\n'+
                         '<th>(%)</th>\n'+
                         '</tr>\n',
-
-                        data: [
-                            {
-                                "rangos": "Total",
-                                "provincias_2007_abs": 195,
-                                "provincias_2007_por": 100,
-                                "poblacion_2007_abs": 27412157,
-                                "poblacion_2007_por": 100,
-                                "provincias_2017_abs": 196,
-                                "provincias_2017_por": 100,
-                                "poblacion_2017_abs": 29381884,
-                                "poblacion_2017_por": 100
-                            },
-                            {
-                                "rangos": "De 1 millón y más",
-                                "provincias_2007_abs": 1,
-                                "provincias_2007_por": 0.5,
-                                "poblacion_2007_abs": 7605742,
-                                "poblacion_2007_por": 27.7,
-                                "provincias_2017_abs": 2,
-                                "provincias_2017_por": 1,
-                                "poblacion_2017_abs": 9655609,
-                                "poblacion_2017_por": 32.9
-                            },
-                            {
-                                "rangos": "De 500 000 a 999 999",
-                                "provincias_2007_abs": 5,
-                                "provincias_2007_por": 2.6,
-                                "poblacion_2007_abs": 3976549,
-                                "poblacion_2007_por": 14.5,
-                                "provincias_2017_abs": 5,
-                                "provincias_2017_por": 2.6,
-                                "poblacion_2017_abs": 410921,
-                                "poblacion_2017_por": 14
-                            },
-                            {
-                                "rangos": "De 200 000 a 499 999",
-                                "provincias_2007_abs": 15,
-                                "provincias_2007_por": 7.7,
-                                "poblacion_2007_abs": 4666998,
-                                "poblacion_2007_por": 17,
-                                "provincias_2017_abs": 14,
-                                "provincias_2017_por": 7.1,
-                                "poblacion_2017_abs": 5405666,
-                                "poblacion_2017_por": 18.4
-                            },
-                            {
-                                "rangos": "De 100 000 a 199 999",
-                                "provincias_2007_abs": 34,
-                                "provincias_2007_por": 17.4,
-                                "poblacion_2007_abs": 4786863,
-                                "poblacion_2007_por": 17.5,
-                                "provincias_2017_abs": 29,
-                                "provincias_2017_por": 14.8,
-                                "poblacion_2017_abs": 4214953,
-                                "poblacion_2017_por": 14.3
-                            },
-                            {
-                                "rangos": "De 50 000 a 99 999",
-                                "provincias_2007_abs": 60,
-                                "provincias_2007_por": 30.8,
-                                "poblacion_2007_abs": 4144939,
-                                "poblacion_2007_por": 15.1,
-                                "provincias_2017_abs": 43,
-                                "provincias_2017_por": 21.9,
-                                "poblacion_2017_abs": 3822485,
-                                "poblacion_2017_por": 13
-                            },
-                            {
-                                "rangos": "De 20 000 a 49 999",
-                                "provincias_2007_abs": 57,
-                                "provincias_2007_por": 29.2,
-                                "poblacion_2007_abs": 1950836,
-                                "poblacion_2007_por": 7.1,
-                                "provincias_2017_abs": 64,
-                                "provincias_2017_por": 32.7,
-                                "poblacion_2017_abs": 1764706,
-                                "poblacion_2017_por": 6
-                            },
-                            {
-                                "rangos": "Menos de 20 000",
-                                "provincias_2007_abs": 23,
-                                "provincias_2007_por": 11.8,
-                                "poblacion_2007_abs": 280230,
-                                "poblacion_2007_por": 1,
-                                "provincias_2017_abs": 39,
-                                "provincias_2017_por": 19.9,
-                                "poblacion_2017_abs": 409344,
-                                "poblacion_2017_por": 1.4
-                            }
-                        ],
                         columns: [
-                            {"data": "rangos"},
-                            {"data": "provincias_2007_abs"},
-                            {"data": "provincias_2007_por"},
-                            {"data": "poblacion_2007_abs"},
-                            {"data": "poblacion_2007_por"},
-                            {"data": "provincias_2017_abs"},
-                            {"data": "provincias_2017_por"},
-                            {"data": "poblacion_2017_abs"},
-                            {"data": "poblacion_2017_por"}
+                            {"data": "cod_tematico"},
+                            {"data": "absoluto_territorio_01"},
+                            {"data": "porcentaje_territorio_01"},
+                            {"data": "absoluto_01"},
+                            {"data": "porcentaje_01"},
+                            {"data": "absoluto_territorio_03"},
+                            {"data": "porcentaje_territorio_03"},
+                            {"data": "absoluto_03"},
+                            {"data": "porcentaje_03"},
+                            {"data": "orden"}
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                },
+                                render: function (data, type, row) {
+                                    return _titulos.tematico(data, 'P015000');
+                                }
+                            },
+                            {
+                                targets: [1,3,5,7],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                },
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            },
+                            {
+                                targets: [3,7],
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            },
+                            {
+                                targets: [2, 4, 6,8],
+                                render: function (data, type, row) {
+                                    return utils.round(data, 1).toFixed(1);
+                                }
+                            }
                         ],
                         fuente: '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.</b>',
 
@@ -1645,20 +737,55 @@ App.utils.dashboard = (function (utils, service) {
                             cabecera: '<tr>\n' +
                             '<th rowspan="2">Provincia</th>\n' +
                             '<th colspan="4">Población</th>\n' +
-                            '<th colspan="4">Tasa de crecimiento promedio anual (%)</th>\n'+
+                            '<th colspan="3">Tasa de crecimiento promedio anual (%)</th>\n'+
+                            '<th rowspan="2" style="display: none;">ORDEN</th>\n'+
                             '</tr>\n'+
                             '<tr>\n' +
                             '<th>1981</th>\n' +
                             '<th>1993</th>\n' +
                             '<th>2007</th>\n'+
                             '<th>2017</th>\n'+
-                            '<th>1981</th>\n' +
-                            '<th>1993</th>\n' +
-                            '<th>2007</th>\n'+
-                            '<th>2017</th>\n'+
+                            '<th>1981-1993</th>\n' +
+                            '<th>1993-2007</th>\n' +
+                            '<th>2007-2017</th>\n'+
                             '</tr>\n',
-
-                            data: [],
+                            columns: [
+                                {"data": "cod_territorio"},
+                                {"data": "absoluto_p010100_08"},
+                                {"data": "absoluto_p010100_09"},
+                                {"data": "absoluto_p010100_01"},
+                                {"data": "absoluto_p010100_03"},
+                                {"data": "porcentaje_p013700_09"},
+                                {"data": "porcentaje_p013700_01"},
+                                {"data": "porcentaje_p013700_03"},
+                                {"data": "orden", visible: false}
+                            ],
+                            columnDefs: [
+                                {
+                                    targets: 0,
+                                    render: function (data, type, row) {
+                                        return _titulos.territorio(data, '00');
+                                    },
+                                    createdCell: function (td, cellData, rowData, row, col) {
+                                        $(td).addClass('textAlignLeft');
+                                    }
+                                },
+                                {
+                                    targets: [1,2,3,4],
+                                    render: function (data, type, row) {
+                                        return utils.numberFormat(data);
+                                    },
+                                    createdCell: function (td, cellData, rowData, row, col) {
+                                        $(td).addClass('millones');
+                                    }
+                                },
+                                {
+                                    targets: [5,6,7],
+                                    render: function (data, type, row) {
+                                        return utils.round(data,1).toFixed(1);
+                                    }
+                                }
+                            ],
                             fuente: 'Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.',
                         }
                     },
@@ -1680,11 +807,13 @@ App.utils.dashboard = (function (utils, service) {
                     assignment: {
                         codigo: '11',
                         alias: "Cuadro 11",
+                        clase: "hijoNegro",
                         titulo: "PERÚ: NÚMERO DE DISTRITOS Y POBLACIÓN CENSADA, SEGÚN RANGO DE POBLACIÓN, 2007 Y 2017",
                         cabecera: '<tr>\n' +
                         '<th rowspan="2" class="textAlignCenter">Rango de población</th>\n' +
                         '<th colspan="4" class="textAlignCenter">2007</th>\n' +
                         '<th colspan="4" class="textAlignCenter">2017</th>\n'+
+                        '<th rowspan="2" style="display: none;">ORDEN</th>\n'+
                         '</tr>\n'+
                         '<tr>\n' +
                         '<th>Nº de Distritos</th>\n' +
@@ -1696,107 +825,46 @@ App.utils.dashboard = (function (utils, service) {
                         '<th>Población</th>\n'+
                         '<th>(%)</th>\n'+
                         '</tr>\n',
-
-                        data: [
-                            {
-                                "rangos": "Total",
-                                "provincias_2007_abs": 195,
-                                "provincias_2007_por": 100,
-                                "poblacion_2007_abs": 27412157,
-                                "poblacion_2007_por": 100,
-                                "provincias_2017_abs": 196,
-                                "provincias_2017_por": 100,
-                                "poblacion_2017_abs": 29381884,
-                                "poblacion_2017_por": 100
-                            },
-                            {
-                                "rangos": "De 1 millón y más",
-                                "provincias_2007_abs": 1,
-                                "provincias_2007_por": 0.5,
-                                "poblacion_2007_abs": 7605742,
-                                "poblacion_2007_por": 27.7,
-                                "provincias_2017_abs": 2,
-                                "provincias_2017_por": 1,
-                                "poblacion_2017_abs": 9655609,
-                                "poblacion_2017_por": 32.9
-                            },
-                            {
-                                "rangos": "De 500 000 a 999 999",
-                                "provincias_2007_abs": 5,
-                                "provincias_2007_por": 2.6,
-                                "poblacion_2007_abs": 3976549,
-                                "poblacion_2007_por": 14.5,
-                                "provincias_2017_abs": 5,
-                                "provincias_2017_por": 2.6,
-                                "poblacion_2017_abs": 410921,
-                                "poblacion_2017_por": 14
-                            },
-                            {
-                                "rangos": "De 200 000 a 499 999",
-                                "provincias_2007_abs": 15,
-                                "provincias_2007_por": 7.7,
-                                "poblacion_2007_abs": 4666998,
-                                "poblacion_2007_por": 17,
-                                "provincias_2017_abs": 14,
-                                "provincias_2017_por": 7.1,
-                                "poblacion_2017_abs": 5405666,
-                                "poblacion_2017_por": 18.4
-                            },
-                            {
-                                "rangos": "De 100 000 a 199 999",
-                                "provincias_2007_abs": 34,
-                                "provincias_2007_por": 17.4,
-                                "poblacion_2007_abs": 4786863,
-                                "poblacion_2007_por": 17.5,
-                                "provincias_2017_abs": 29,
-                                "provincias_2017_por": 14.8,
-                                "poblacion_2017_abs": 4214953,
-                                "poblacion_2017_por": 14.3
-                            },
-                            {
-                                "rangos": "De 50 000 a 99 999",
-                                "provincias_2007_abs": 60,
-                                "provincias_2007_por": 30.8,
-                                "poblacion_2007_abs": 4144939,
-                                "poblacion_2007_por": 15.1,
-                                "provincias_2017_abs": 43,
-                                "provincias_2017_por": 21.9,
-                                "poblacion_2017_abs": 3822485,
-                                "poblacion_2017_por": 13
-                            },
-                            {
-                                "rangos": "De 20 000 a 49 999",
-                                "provincias_2007_abs": 57,
-                                "provincias_2007_por": 29.2,
-                                "poblacion_2007_abs": 1950836,
-                                "poblacion_2007_por": 7.1,
-                                "provincias_2017_abs": 64,
-                                "provincias_2017_por": 32.7,
-                                "poblacion_2017_abs": 1764706,
-                                "poblacion_2017_por": 6
-                            },
-                            {
-                                "rangos": "Menos de 20 000",
-                                "provincias_2007_abs": 23,
-                                "provincias_2007_por": 11.8,
-                                "poblacion_2007_abs": 280230,
-                                "poblacion_2007_por": 1,
-                                "provincias_2017_abs": 39,
-                                "provincias_2017_por": 19.9,
-                                "poblacion_2017_abs": 409344,
-                                "poblacion_2017_por": 1.4
-                            }
-                        ],
                         columns: [
-                            {"data": "rangos"},
-                            {"data": "provincias_2007_abs"},
-                            {"data": "provincias_2007_por"},
-                            {"data": "poblacion_2007_abs"},
-                            {"data": "poblacion_2007_por"},
-                            {"data": "provincias_2017_abs"},
-                            {"data": "provincias_2017_por"},
-                            {"data": "poblacion_2017_abs"},
-                            {"data": "poblacion_2017_por"}
+                            {"data": "cod_tematico"},
+                            {"data": "absoluto_territorio_01"},
+                            {"data": "porcentaje_territorio_01"},
+                            {"data": "absoluto_01"},
+                            {"data": "porcentaje_01"},
+                            {"data": "absoluto_territorio_03"},
+                            {"data": "porcentaje_territorio_03"},
+                            {"data": "absoluto_03"},
+                            {"data": "porcentaje_03"},
+                            {"data": "orden", visible: false}
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 0,
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('textAlignLeft');
+                                },
+                                render: function (data, type, row) {
+                                    return _titulos.tematico(data, 'P014000');
+                                }
+                            },
+                            {
+                                targets: [3,7],
+                                createdCell: function (td, cellData, rowData, row, col) {
+                                    $(td).addClass('millones');
+                                }
+                            },
+                            {
+                                targets: [1,3,5,7],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                }
+                            },
+                            {
+                                targets: [2,4,6,8],
+                                render: function (data, type, row) {
+                                    return utils.round(data,1).toFixed(1);
+                                }
+                            }
                         ],
                         fuente: 'Nota: En 2007 autoridades no permitieron censo en el distrito de Carmen Alto, provincia de Huamanga, departamento de Ayacucho.<br />\n' +
                         '<b>Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda</b>',
@@ -1810,6 +878,7 @@ App.utils.dashboard = (function (utils, service) {
                             '<th rowspan="2">DISTRITO</th>\n' +
                             '<th colspan="3">POBLACIÓN</th>\n' +
                             '<th colspan="2">TASA DE CRECIMIENTO PROMEDIO ANUAL (%)</th>\n'+
+                            '<th rowspan="2" style="display: none;">ORDEN</th>\n'+
                             '</tr>\n'+
                             '<tr>\n' +
                             '<th>1993</th>\n' +
@@ -1819,7 +888,42 @@ App.utils.dashboard = (function (utils, service) {
                             '<th>1993-2017</th>\n' +
                             '</tr>\n',
 
-                            data: [],
+                            columns: [
+                                {"data": "cod_territorio"},
+                                {"data": "cod_territorio"},
+                                {"data": "absoluto_p010100_09"},
+                                {"data": "absoluto_p010100_01"},
+                                {"data": "absoluto_p010100_03"},
+                                {"data": "porcentaje_p013700_01"},
+                                {"data": "porcentaje_p013700_03"},
+                                {"data": "orden", visible: false}
+                            ],
+                            columnDefs: [
+                                {
+                                    targets: 1,
+                                    render: function (data, type, row) {
+                                        return _titulos.territorio(data, '00')
+                                    },
+                                    createdCell: function (td, cellData, rowData, row, col) {
+                                        $(td).addClass('textAlignLeft');
+                                    }
+                                },
+                                {
+                                    targets: [2,3,4],
+                                    render: function (data, type, row) {
+                                        return utils.numberFormat(data);
+                                    },
+                                    createdCell: function (td, cellData, rowData, row, col) {
+                                        $(td).addClass('millones');
+                                    }
+                                },
+                                {
+                                    targets: [5,6],
+                                    render: function (data, type, row) {
+                                        return utils.round(data,1).toFixed(1);
+                                    }
+                                }
+                            ],
                             fuente: 'Fuente: Instituto Nacional de Estadística e Informática - Censos Nacionales de Población y Vivienda.',
                         }
                     },
@@ -1876,96 +980,105 @@ App.utils.dashboard = (function (utils, service) {
         $("#"+uiId+" .BarraHerramientas").html(html);
     };
 
+    var _titulos = {
+        tematico: function (data, total) {
+            if (data == total) {
+                return "Total";
+            }
+            else {
+                if (appData.tituloIndicadores.hasOwnProperty(data)) {
+                    return appData["tituloIndicadores"][data].titulo;
+                }else {
+                    return '';
+                }
+            }
+        },
+
+        territorio: function (data, total) {
+            if (data == total) {
+                return "TOTAL"
+            }else {
+                if (appData.titulo.hasOwnProperty('U'+data)) {
+                    return appData.titulo['U'+data];
+                }else {
+                    return '';
+                }
+            }
+        },
+
+        fuente: function(data) {
+            var fuentes = {
+                "05": "1940", "06": "1961", "07": "1972", "08": "1981","09": "1993", "01": "2007", "03": "2017"
+            };
+            return fuentes[data];
+        }
+    };
+    var crearTabla = function (objtabla, bloque, cuadro, tabla, titulo, fuente) {
+        $(tabla+" tbody").removeClass("hijoNegro");
+        service.dashboard.getCuadro( cuadro.codigo, function (datos) {
+            if (data[bloque][objtabla] !== undefined) {
+                data[bloque][objtabla].clear().draw();
+                data[bloque][objtabla].destroy();
+            }
+
+            $(fuente).html(cuadro.fuente);
+            $(titulo).html(cuadro.titulo);
+            $(tabla).children('thead').html(cuadro.cabecera);
+
+            if (cuadro.clase !== undefined) {
+                $(tabla+" tbody").addClass(cuadro.clase);
+            }
+
+            data[bloque][objtabla] = $(tabla).DataTable({
+                data: datos,
+                columns: cuadro.columns,
+                columnDefs: (cuadro.columnDefs !== undefined) ? cuadro.columnDefs : [],
+                paging: false,
+                info: false,
+                ordering: true,
+                searching: false
+
+            }).columns(-1).order('asc').draw();
+        });
+    };
+
+    var assignmentBloque = function (bloque, vista, seleccion, content) {
+        var cuadro = data[bloque][vista].widgets.assignment;
+        if (cuadro.codigo !== undefined) {
+            var tabla = "#table_"+seleccion+"_"+bloque;
+            var titulo = "#titulo_"+seleccion+"_"+bloque;
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+
+            crearTabla('tabla', bloque, cuadro, tabla, titulo, fuente);
+
+            if (cuadro.secundario !== undefined) {
+                var cuadro2 = cuadro.secundario;
+                var tabla2 = "#table_"+seleccion+"_"+bloque+"_2";
+                var titulo2 = "#titulo_"+seleccion+"_"+bloque+"_2";
+                var fuente2 = "#fuente_"+seleccion+"_"+bloque+"_2";
+
+                $(tabla2).show();
+                $(titulo2).show();
+                $(fuente2).show();
+                crearTabla("tabla_secundaria", bloque, cuadro2, tabla2, titulo2, fuente2);
+            }
+        }
+    };
+
     var uiBarraHerramientas= {
         assignmentBloque1: function (bloque, vista, seleccion, content) {
-            var tabla = "#table_"+seleccion+"_"+bloque;
-            var titulo = "#titulo_"+seleccion+"_"+bloque;
-
-            if (data[bloque].tabla !== undefined) {
-                data[bloque].tabla.clear().draw();
-                data[bloque].tabla.destroy();
-            }
-            var fuente = "#fuente_"+seleccion+"_"+bloque;
-            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
-            $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
-            $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
-            data[bloque].tabla = $(tabla).DataTable({
-                data: data[bloque][vista].widgets.assignment.data,
-                columns: data[bloque][vista].widgets.assignment.columns,
-                columnDefs: data[bloque][vista].widgets.assignment.columnDefs,
-                paging: false,
-                info: false,
-                ordering: false,
-                searching: false
-
-            });
+            assignmentBloque(bloque, vista, seleccion, content);
         },
         assignmentBloque2: function (bloque, vista, seleccion, content) {
-            var tabla = "#table_"+seleccion+"_"+bloque;
-            var titulo = "#titulo_"+seleccion+"_"+bloque;
-            if (data[bloque].tabla !== undefined) {
-                data[bloque].tabla.clear().draw();
-                data[bloque].tabla.destroy();
-            }
-            var fuente = "#fuente_"+seleccion+"_"+bloque;
-            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
-            $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
-            $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
-            data[bloque].tabla = $(tabla).DataTable({
-                data: data[bloque][vista].widgets.assignment.data,
-                columns: data[bloque][vista].widgets.assignment.columns,
-                columnDefs: (data[bloque][vista].widgets.assignment.columnDefs !== undefined) ? data[bloque][vista].widgets.assignment.columnDefs: [],
-                paging: false,
-                info: false,
-                ordering: false,
-                searching: false
-
-            });
+            assignmentBloque(bloque, vista, seleccion, content);
         },
+
         assignmentBloque3: function (bloque, vista, seleccion, content) {
-            var tabla = "#table_"+seleccion+"_"+bloque;
-            var titulo = "#titulo_"+seleccion+"_"+bloque;
-            if (data[bloque].tabla !== undefined) {
-                data[bloque].tabla.clear().draw();
-                data[bloque].tabla.destroy();
-            }
-            var fuente = "#fuente_"+seleccion+"_"+bloque;
-            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
-            $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
-            $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
-
-            data[bloque].tabla = $(tabla).DataTable({
-                data: data[bloque][vista].widgets.assignment.data,
-                columns: data[bloque][vista].widgets.assignment.columns,
-                columnDefs: (data[bloque][vista].widgets.assignment.columnDefs !== undefined) ? data[bloque][vista].widgets.assignment.columnDefs: [],
-                paging: false,
-                info: false,
-                ordering: false,
-                searching: false
-
-            });
+            assignmentBloque(bloque, vista, seleccion, content);
         },
         assignmentBloque4: function (bloque, vista, seleccion, content) {
-            var tabla = "#table_"+seleccion+"_"+bloque;
-            var titulo = "#titulo_"+seleccion+"_"+bloque;
-            if (data[bloque].tabla !== undefined) {
-                data[bloque].tabla.clear().draw();
-                data[bloque].tabla.destroy();
-            }
-            var fuente = "#fuente_"+seleccion+"_"+bloque;
-            $(fuente).html(data[bloque][vista].widgets.assignment.fuente);
-            $(titulo).html(data[bloque][vista].widgets.assignment.titulo);
-            $(tabla).children('thead').html(data[bloque][vista].widgets.assignment.cabecera);
-            data[bloque].tabla = $(tabla).DataTable({
-                data: data[bloque][vista].widgets.assignment.data,
-                columns: data[bloque][vista].widgets.assignment.columns,
-                columnDefs: (data[bloque][vista].widgets.assignment.columnDefs !== undefined) ? data[bloque][vista].widgets.assignment.columnDefs: [],
-                paging: false,
-                info: false,
-                ordering: false,
-                searching: false
+            assignmentBloque(bloque, vista, seleccion, content);
 
-            });
         },
         infoBloque1: function (bloque, vista, seleccion, content) {
             content.html(data[bloque][vista].widgets.info);
@@ -1984,6 +1097,10 @@ App.utils.dashboard = (function (utils, service) {
         "bar_chartBloque1": function (bloque, vista, seleccion, content) {
             var charId = seleccion+"_"+bloque;
             var charId2 = seleccion+"_2_"+bloque;
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            var titulo = "#titulo_"+seleccion+"_"+bloque;
+            $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo);
+            $(fuente).html(data[bloque][vista].widgets.bar_chart.fuente);
 
             $("#"+charId2).hide();
             // Vista 1
@@ -1991,10 +1108,6 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId, {
                     chart: {
                         zoomType: 'xy'
-                    },
-
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
                         text: ''
@@ -2120,11 +1233,6 @@ App.utils.dashboard = (function (utils, service) {
             else if (vista == 'vista2') {
 
                 Highcharts.chart(charId, {
-
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
-                    },
-
                     subtitle: {
                         text: ''
                     },
@@ -2155,9 +1263,6 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId, {
                     chart: {
                         type: 'bar'
-                    },
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
                     },
                     subtitle: {
                         text: "América del Sur"
@@ -2200,9 +1305,6 @@ App.utils.dashboard = (function (utils, service) {
                     chart: {
                         type: 'bar'
                     },
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
                         text: "América Latina"
                     },
@@ -2243,11 +1345,6 @@ App.utils.dashboard = (function (utils, service) {
             }
             else if (vista == 'vista4') {
                 Highcharts.chart(charId, {
-
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
-                    },
-
                     subtitle: {
                         text: ''
                     },
@@ -2267,6 +1364,8 @@ App.utils.dashboard = (function (utils, service) {
                 });
             }
 
+
+
         },
 
         "bar_chartBloque2": function (bloque, vista, seleccion, content) {
@@ -2274,6 +1373,10 @@ App.utils.dashboard = (function (utils, service) {
             var charId2 = seleccion+"_2_"+bloque;
             var charId3 = seleccion+"_3_"+bloque;
             var charId4 = seleccion+"_4_"+bloque;
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            var titulo = "#titulo_"+seleccion+"_"+bloque;
+            $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo);
+            $(fuente).html(data[bloque][vista].widgets.bar_chart.fuente);
 
             $("#"+charId2).hide();
             $("#"+charId3).hide();
@@ -2286,9 +1389,6 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'column'
                     },
                     colors: ['#dcf7f8', '#00ccff'],
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
-                    },
                     subtitle: {
                         text: ''
                     },
@@ -2347,9 +1447,6 @@ App.utils.dashboard = (function (utils, service) {
                     chart: {
                         type: 'bar'
                     },
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
-                    },
                     subtitle: {
                         text: '2017'
                     },
@@ -2391,29 +1488,53 @@ App.utils.dashboard = (function (utils, service) {
                     tooltip: {
                         formatter: function () {
                             return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                                'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                                'Población (%): ' + Math.abs(Math.round(this.point.y*10)/10);
                         }
                     },
 
                     series: [{
                         name: 'Hombres',
                         data: [
-                            -2.2, -2.2, -2.4,
-                            -2.7, -3.0,  -3.2,
-                            -2.9, -3.5, -4.4,
-                            -4.1, -3.4, -2.7,
-                            -2.2, -1.6, -0.3,
-                            -0.2, -0.1
+                            -4.319811487,
+                            -4.573617539,
+                            -4.505847889,
+                            -4.144009281,
+                            -4.194152424,
+                            -3.94887884,
+                            -3.731105194,
+                            -3.515274922,
+                            -3.227019071,
+                            -2.809619016,
+                            -2.471533139,
+                            -2.095355764,
+                            -1.700102008,
+                            -1.326021163,
+                            -1.0262378,
+                            -0.730875529,
+                            -0.86307944
+
+
                         ] // 17
                     }, {
                         name: 'Mujeres',
                         data: [
-                            2.1,  2.1, 2.3,
-                            2.6, 2.9, 3.2,
-                            3.1,  3.4,4.3,
-                            4.0,  2.9, 2.5,
-                            2.7, 2.2, 1.1,
-                            0.2, 0.1
+                            4.165066474,
+                            4.429079497,
+                            4.38786022,
+                            4.103137158,
+                            4.349860615,
+                            4.175726104,
+                            3.952680502,
+                            3.710163719,
+                            3.419389308,
+                            3.002632506,
+                            2.64410206,
+                            2.224537405,
+                            1.833827266,
+                            1.423101391,
+                            1.09756066,
+                            0.811843788,
+                            1.08689082
                         ] //17
                     }]
                 });
@@ -2421,9 +1542,6 @@ App.utils.dashboard = (function (utils, service) {
                 Highcharts.chart(charId2, {
                     chart: {
                         type: 'bar'
-                    },
-                    title: {
-                        text: ""
                     },
                     subtitle: {
                         text: '2007'
@@ -2466,46 +1584,74 @@ App.utils.dashboard = (function (utils, service) {
                     tooltip: {
                         formatter: function () {
                             return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                                'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+                                'Población (%): ' + Math.abs(Math.round(this.point.y*10)/10);
                         }
                     },
 
                     series: [{
                         name: 'Hombres',
                         data: [
-                            -2.2, -2.2, -2.4,
-                            -2.7, -3.0,  -3.2,
-                            -2.9, -3.5, -4.4,
-                            -4.1, -3.4, -2.7,
-                            -2.2, -1.6, -0.3,
-                            -0.2, -0.1
+                            -5.067999574
+                            ,-4.986878632
+                            , -5.484190828,
+                            -5.010090961
+                            , -4.58098208
+                            ,  -4.113620099
+                            ,
+                            -3.705129808
+                            , -3.305321796
+                            , -2.947057395
+                            ,
+                            -2.450821364
+                            , -2.046653972
+                            , -1.600614647
+                            ,
+                            -1.313887849
+                            , -1.038170765
+                            , -0.804285485
+                            ,
+                            -0.610820228
+                            , -0.629089495
+
                         ] // 17
-                    },
-                        {
+                    }, {
                         name: 'Mujeres',
                         data: [
-                            2.1,  2.1, 2.3,
-                            2.6, 2.9, 3.2,
-                            3.1,  3.4,4.3,
-                            4.0,  2.9, 2.5,
-                            2.7, 2.2, 1.1,
-                            0.2, 0.1
+                            4.871459039
+                            ,  4.804134895
+                            , 5.273754999
+                            ,
+                            4.951857674
+                            , 4.654168587
+                            , 4.24714115
+                            ,
+                            3.863377114
+                            ,  3.523225115
+                            ,3.043200869
+                            ,
+                            2.552013692
+                            ,  2.158221259
+                            , 1.653937704
+                            ,
+                            1.352651672
+                            , 1.075132468
+                            , 0.848258676
+                            ,
+                            0.644093787
+                            , 0.787756323
+
                         ] //17
                     }]
                 });
             }
-
             else if (vista == 'vista2') {
                 $("#"+charId2).show();
                 $("#"+charId3).show();
                 $("#"+charId4).show();
                 Highcharts.chart(charId, {
 
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
+                        text: ''
                     },
 
                     xAxis: {
@@ -2527,9 +1673,6 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'column'
                     },
                     colors: ['#dcf7f8', '#00ccff'],
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
                         text: 'COSTA'
                     },
@@ -2577,25 +1720,21 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'column'
                     },
                     colors: ['#dcf7f8', '#00ccff'],
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
                         text: 'SIERRA'
                     },
                     xAxis: {
                         categories: [
-                            'Tumbes',
-                            'Moquegua',
-                            'Región Lima 2/',
-                            'Tacna',
-                            'Piura',
-                            'Ica',
-                            'Prov. Const. del Callao',
-                            'La Libertad',
-                            'Lima',
-                            'Provincia de Lima 1/',
-                            'Lambayeque'
+                            'Pasco',
+                            'Huánuco',
+                            'Apurímac',
+                            'Ayacucho',
+                            'Puno',
+                            'Áncash',
+                            'Cajamarca',
+                            'Arequipa',
+                            'Junín',
+                            'Huancavelica'
                         ],
                         crosshair: true
                     },
@@ -2613,11 +1752,11 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     series: [{
                         name: '2007',
-                        data: [107.3, 105.4, 103.1, 100.2, 99.3, 98.6, 96.5, 97.7, 96.2, 95.4, 94.9]
+                        data: [105.8, 101.8, 98.7, 99.7, 98.6, 99.7, 99.2, 99.8, 97.0, 99.4, 97.8]
 
                     }, {
                         name: '2017',
-                        data: [102.0, 101.6, 100.9, 98.8, 98.0, 97.4, 95.5, 95.4, 95.2, 94.6, 94.2]
+                        data: [101.7, 98.2, 98.0, 98.0, 97.6, 97.3, 97.2, 96.2, 96.1, 95.6, 94.4]
 
                     }]
                 });
@@ -2627,25 +1766,16 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'column'
                     },
                     colors: ['#dcf7f8', '#00ccff'],
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
                         text: 'SELVA'
                     },
                     xAxis: {
                         categories: [
-                            'Tumbes',
-                            'Moquegua',
-                            'Región Lima 2/',
-                            'Tacna',
-                            'Piura',
-                            'Ica',
-                            'Prov. Const. del Callao',
-                            'La Libertad',
-                            'Lima',
-                            'Provincia de Lima 1/',
-                            'Lambayeque'
+                            'Madre De Dios',
+                            'San Martín',
+                            'Ucayali',
+                            'Amazonas',
+                            'Loreto'
                         ],
                         crosshair: true
                     },
@@ -2663,11 +1793,11 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     series: [{
                         name: '2007',
-                        data: [107.3, 105.4, 103.1, 100.2, 99.3, 98.6, 96.5, 97.7, 96.2, 95.4, 94.9]
+                        data: [118.9, 110.5, 105.8, 105.4, 105.1]
 
                     }, {
                         name: '2017',
-                        data: [102.0, 101.6, 100.9, 98.8, 98.0, 97.4, 95.5, 95.4, 95.2, 94.6, 94.2]
+                        data: [109.8, 104.1, 101.9, 101.7, 100.9]
 
                     }]
                 });
@@ -2683,26 +1813,36 @@ App.utils.dashboard = (function (utils, service) {
             var charId51 = seleccion+"_5_"+bloque+"_1";
             var charId52 = seleccion+"_5_"+bloque+"_2";
             var charId53 = seleccion+"_5_"+bloque+"_3";
+            var charId7 = seleccion+"_7_"+bloque;
+            var charId71 = seleccion+"_7_"+bloque+"_1";
+            var charId72 = seleccion+"_7_"+bloque+"_2";
+            var charId73 = seleccion+"_7_"+bloque+"_3";
+            var fuente = "#fuente_"+seleccion+"_"+bloque;
+            var titulo = "#titulo_"+seleccion+"_"+bloque;
+            $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo);
+            $(fuente).html(data[bloque][vista].widgets.bar_chart.fuente);
 
 
             $("#"+charId2).hide();
             $("#"+charId3).hide();
             $("#"+charId4).hide();
+            $("#"+charId5).hide();
+            //$("#"+charId6).hide();
+            $("#"+charId7).hide();
 
             if (vista == 'vista0') {
 
                 $("#"+charId2).show();
                 $("#"+charId3).show();
                 $("#"+charId4).show();
+                $("#"+charId5).show();
+                $("#"+charId7).show();
 
                 Highcharts.chart(charId, {
                     chart: {
                         type: 'column'
                     },
                     colors: ['#dcf7f8', '#00ccff'],
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
-                    },
                     subtitle: {
                         text: ''
                     },
@@ -2742,9 +1882,6 @@ App.utils.dashboard = (function (utils, service) {
                         type: 'column'
                     },
                     colors: ["#0070C0"],
-                    title: {
-                        text: ''
-                    },
                     exporting: [],
                     subtitle: {
                         text: 'COSTA'
@@ -2787,9 +1924,6 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     exporting: [],
                     colors: ["#ffd85d"],
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
                         text: 'SIERRA'
                     },
@@ -2831,9 +1965,6 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     exporting: [],
                     colors: ["#b4de86"],
-                    title: {
-                        text: ''
-                    },
                     subtitle: {
                         text: 'SELVA'
                     },
@@ -2868,6 +1999,111 @@ App.utils.dashboard = (function (utils, service) {
 
                     }]
                 });
+
+                var categoria7 = ["190-1961", "1961-1972", "1972-1981", "1981-1993", "1993-2007", "2007-2017"];
+                Highcharts.chart(charId71, {
+                    chart: {
+                        type: 'column'
+                    },
+                    colors: ["#0070C0"],
+                    exporting: [],
+                    subtitle: {
+                        text: 'COSTA'
+                    },
+                    xAxis: {
+                        categories: categoria7,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: true,
+                        max: 5,
+                        min: -1,
+                        lineWidth: 1,
+                        gridLineWidth: 0
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Costa',
+                        data: [3.8, 4.5, 3.4, 2.6, 2.2, 1.3]
+
+                    }]
+                });
+
+                Highcharts.chart(charId72, {
+                    chart: {
+                        type: 'column'
+                    },
+                    exporting: [],
+                    colors: ["#ffd85d"],
+                    subtitle: {
+                        text: 'SIERRA'
+                    },
+                    xAxis: {
+                        categories: categoria7,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: false,
+                        max: 5,
+                        min: -1
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'SIERRA',
+                        data: [1.2, 1.3, 1.4, 1.1, 1.1, -0.6]
+
+                    }]
+                });
+
+                Highcharts.chart(charId73, {
+                    chart: {
+                        type: 'column'
+                    },
+                    exporting: [],
+                    colors: ["#b4de86"],
+                    subtitle: {
+                        text: 'SELVA'
+                    },
+                    xAxis: {
+                        categories: categoria7,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        visible: false,
+                        max: 5,
+                        min: -1
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'SELVA',
+                        data: [3.6, 4.1, 3.3, 3.9, 2.2, 1.0]
+
+                    }]
+                });
             }
             else if (vista == 'vista1') {
                 $("#"+charId2).show();
@@ -2875,14 +2111,11 @@ App.utils.dashboard = (function (utils, service) {
                     chart: {
                         type: 'bar'
                     },
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.titulo
-                    },
                     subtitle: {
                         text: ''
                     },
                     xAxis: {
-                        categories: ["Brasil", "Colombia", "Argentina", "Venezuela", "Perú", "Chile", "Ecuador", "Bolivia", "Paraguay" , "Uruguay"],
+                        categories: ["Lima", "Provincia de Lima 1/", "Piura", "La Libertad", "Arequipa", "Cajamarca", "Junín", "Cusco", "Lambayeque", "Puno", "Áncash", "Prov. Const. del Callao", "Región Lima 2", "Loreto", "Ica", "San Martín", "Huánuco", "Ayacucho", "Ucayali", "Apurímac", "Amazonas", "Huancavelica", "Tacna", "Pasco", "Tumbes", "Moquegua", "Madre de Dios"],
                         title: {
                             text: null
                         }
@@ -2910,27 +2143,23 @@ App.utils.dashboard = (function (utils, service) {
                     },
                     series: [{
                         name: '(Miles de Habitantes)',
-                        data: [211175, 49059, 44121, 32121, 31237, 18209, 16624,  11071, 6805, 3456]
+                        data: [9485.4, 8575.0, 1856.8, 1778.1, 1382.7, 1341.0, 1246.0, 1205.5, 1197.3, 1172.7, 1083.5, 994.5, 910.4, 883.5, 850.8, 813.4, 721.0,  616.2, 496.5, 405.8, 379.4, 379.4, 347.6, 329.3, 254.1, 224.9, 174.9, 141.1]
                     }]
                 });
                 Highcharts.chart(charId2, {
-
-                    title: {
-                        text: data[bloque][vista].widgets.bar_chart.secundario[0].titulo
-                    },
 
                     subtitle: {
                         text: ''
                     },
 
                     xAxis: {
-                        categories: [1940, 1961, 1972, 1981, 1993, 2007, 2017]
+                        categories: ["Lima", "Provincia de Lima 1/", "Piura", "La Libertad", "Arequipa", "Cajamarca", "Junín", "Cusco", "Lambayeque", "Puno", "Áncash", "Prov. Const. del Callao", "Región Lima 2", "Loreto", "Ica", "San Martín", "Huánuco", "Ayacucho", "Ucayali", "Apurímac", "Amazonas", "Huancavelica", "Tacna", "Pasco", "Tumbes", "Moquegua", "Madre de Dios"]
                     },
 
 
                     series: [{
                         type: 'column',
-                        data: [5.5, 8.1, 11.0, 13.8, 17.6, 22.0, 24.3],
+                        data: [32.3, 27.9, 6.3, 6.1, 4.7, 4.6, 4.2, 4.1, 4.1, 4.0, 3.7, 3.4, 3.0, 3.0, 2.9, 2.8, 2.5, 2.1, 1.7, 1.4, 1.3, 1.2, 1.1, 0.9, 0.8, 0.6, 0.5],
                         dataLabels:{
                             enabled: true
                         },
@@ -2942,10 +2171,6 @@ App.utils.dashboard = (function (utils, service) {
             }
             else if (vista == 'vista2') {
                 Highcharts.chart(charId, {
-
-                    title: {
-                        text: 'PERÚ: TASA DE CRECIMIENTO PROMEDIO ANUAL, 1993-2007 Y 2007-2017'
-                    },
 
                     subtitle: {
                         text: ''
@@ -2972,23 +2197,17 @@ App.utils.dashboard = (function (utils, service) {
             }
             else if (vista == 'vista3') {
                 Highcharts.chart(charId, {
-
-                    title: {
-                        text: 'PERÚ: EVOLUCIÓN DE LA DENSIDAD POBLACIONAL, SEGÚN CENSOS, 1940 - 2017 <br />(Hab./Km2)'
-                    },
-
                     subtitle: {
                         text: ''
                     },
 
                     xAxis: {
-                        categories: [1940, 1961, 1972, 1981, 1993, 2007, 2017]
+                        categories: ["Ucayali", "Madre de Dios", "Provincia de Lima 1/", "Prov. Const. del Callao", "Lima", "Tacna", "Tumbes", "San Martín", "Lambayeque", "Ica", "Loreto", "Amazonas", "Moquegua", "La Libertad", "Píura", "Junín", "Región Lima 2/", "Huánuco", "Pasco", "Cajamarca", "Ancash", "Cusco", "Puno", "Ayacucho", "Apurímac", "Huancavelica"]
                     },
-
 
                     series: [{
                         type: 'column',
-                        data: [5.5, 8.1, 11.0, 13.8, 17.6, 22.0, 24.3],
+                        data: [24.3, 16.5, 14.3, 12.2, 11.4, 8.9, 8.8, 8.3, 6.1, 6.1, 6.0, 5.7, 5.2, 5.1, 4.6, 4.6, 4.3, 3.4, 3.1, 2.8, 2.7, 2.5, 2.5, 2.3, 1.7, 1.6, 1.4],
                         dataLabels:{
                             enabled: true
                         },
@@ -3000,6 +2219,7 @@ App.utils.dashboard = (function (utils, service) {
         }
     };
 
+    // Eventos del UI
     var dashboardWidgetChangeEvent = function (options) {
         console.log("dashboardWidgetChangeEvent >>>>", options);
     };
@@ -3017,10 +2237,12 @@ App.utils.dashboard = (function (utils, service) {
 
         /* Renderizar la vista por defecto */
     };
+
     return {
         init: init,
         uiBarraHerramientas: uiBarraHerramientas,
         dashboardWidgetChangeEvent: dashboardWidgetChangeEvent,
-        dashboardVistaChangeEvent: dashboardVistaChangeEvent
+        dashboardVistaChangeEvent: dashboardVistaChangeEvent,
+        tablaDatos: data
     }
-})(App.utils, App.service);
+})(AppConfig(), Appdata(), App.utils, App.service);
