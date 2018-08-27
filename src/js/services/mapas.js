@@ -61,12 +61,24 @@ App.service.mapas = (function (parent, config) {
         });
     };
 
+    var getTerritorio = function (ubigeos,callback){
+        parent.get({
+            url: parent.getUrlServer('dimensiones/territorio/combo_select_2/',{"u":ubigeos}),
+            success: function (data) {
+                callback(data);
+            }
+
+        })
+
+    }
+
     return {
         legenda: undefined,
         getLegenda: getLegenda,
         getMapas: getMapas,
         getMapa: getMapa,
         getDataGrafico: getDataGrafico,
+        getTerritorio:getTerritorio
     }
 
 })(App.service, AppConfig());

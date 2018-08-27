@@ -7,7 +7,7 @@
 
 <div id="legendMap" style="background-color: white"></div>
 
-<div id="list-widgets">
+<div id="list-widgets" >
     <div id="widget-nacional" class="widget-ubigeo">
         PERU
     </div>
@@ -25,15 +25,15 @@
     </div>
 </div>
 
+
+<div id="div-select-ubigeo"> <select id="select-ubigeo"  class="child" >
+
+</select></div>
+
+
+
+
 <div id="widget-select-layer">
-
-    <select id="select-ubigeo" multiple="multiple">
-        <!--
-        <option value="AL"></option>
-        <option value="WY"></option>
-        -->
-
-    </select>
 
     <button class="icon-eye b_azul f_blanco icon tooltip botonVistaMapa" data-title="Tipo de vista"></button>
     <div class="mostrarListaMapa" style="display: none">
@@ -41,6 +41,8 @@
         <div>Vista Provincial</div>
         <div>Vista Distrital</div>
     </div>
+
+
     <select id="select-layer" style="display: none">
         <option selected value="0" >
             Vista Departamental
@@ -176,15 +178,28 @@
 
     }
 
+    #div-select-ubigeo{
+        width: 40%;
+        border: transparent;
+    }
+    #select-ubigeo{
+        width: 100%;
+        margin: 0;
+    }
 
-    /*#listMiniMaps {
 
-        width:150px;
-        height:150px;
-        border: 1px solid black;
+    .esri-ui-top-left{
+        flex-flow: row wrap;
+        width: 100%;
 
     }
-*/
+    .esri-component{
+        margin-right:10px ;
+    }
+    #list-widgets{
+        width: 80%;
+    }
+
 </style>
 
 
