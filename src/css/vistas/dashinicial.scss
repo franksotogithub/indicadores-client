@@ -981,6 +981,16 @@ text.highcharts-subtitle {
   font-family: 'open_sansregular';
 }
 
+table tbody.hijoNegro tr:first-child{
+  font-weight:bold;
+}
+
+td.millones {
+  min-width:100px;
+}
+
+
+
 /*
   Tooltips
 */
