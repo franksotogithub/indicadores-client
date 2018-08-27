@@ -1,0 +1,3 @@
+App.service.config = (function () {
+
+})();

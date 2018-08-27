@@ -3,7 +3,7 @@
  * @requires {@link AppConfig}
  * @version 0.1.0
  */
-var App = (function (scope, config) {
+var App = (function (scope, config, appData) {
 
     var uiMax = {
         "mapas": false,
@@ -22,8 +22,12 @@ var App = (function (scope, config) {
      */
     var init = function (vista, ventanas) {
         // Config
-        config.highchart();
-        _hasUtils(this, 'init', {"vista": vista}, ventanas);
+        appData(this, function (app, datos) {
+            appData = datos;
+            config.highchart();
+            _hasUtils(app, 'init', {"vista": vista}, ventanas);
+        });
+
     };
 
     /**
@@ -179,4 +183,4 @@ var App = (function (scope, config) {
         uiNormalCallbackDashBoardEvent:uiNormalCallbackDashBoardEvent,
         uiResizeCallbackDashBoardEvent:uiResizeCallbackDashBoardEvent,
     };
-})(window, AppConfig());
+})(window, AppConfig(), Appdata);

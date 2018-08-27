@@ -63,9 +63,14 @@ App.service = (function (parent, config) {
         $.ajax(default_options);
     };
 
-    var list = function (object) {
+    var list = function (object, local) {
         //generico loading
-        ajax('GET', object);
+        if (local === undefined || local == false) {
+            ajax('GET', object);
+        }else {
+            return this.getLocal(object.url);
+        }
+
     };
 
     var create = function (object, datos) {
@@ -111,11 +116,28 @@ App.service = (function (parent, config) {
         return url;
     };
 
+    var url = function (slug, urlargs) {
+        return App.utils.format(slug, urlargs)
+    };
+
+    var save = function (key , value) {
+        localStorage.removeItem(key);
+        localStorage.setItem(key, JSON.stringify(value));
+    };
+
+    var getLocal = function (key) {
+        return JSON.parse(localStorage.getItem(key));
+    };
+
+
     return {
+        url: url,
         get: list,
         post: create,
         put: update,
         delete: remove,
+        save: save,
+        getLocal: getLocal,
         responseError: callback.responseError,
         getUrlServer: getUrlServer
     }
