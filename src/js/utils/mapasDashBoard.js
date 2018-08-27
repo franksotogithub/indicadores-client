@@ -790,8 +790,6 @@ App.utils.mapasDashBoard = (function (parent, config,service) {
                     datosMap.divWidgetSelect=divWidgetSelect;
                     datosMap.divLegend=divLegend;
                     datosMap.divMiniMap=divMiniMap;
-
-
                     crearMapa(datosMap);
                 });
 

@@ -161,6 +161,13 @@ var App = (function (scope, config, appData) {
         _hasUtils(this, 'uiResizeCallbackDashBoardEvent', {"list": list,"anchoPantalla":anchoPatanlla}, ['dashboard', 'mapasDashBoard']);
     }
 
+    /**
+     * Funcion para invocar los graficos para el popup del
+     * */
+    var getContenidoPopupMapaEvent = function (ubigeo,codTematico,callback) {
+        _hasUtils(this,'contenidoPopupMapaEvent',{"ubigeo" : ubigeo,"codTematico" : codTematico,"callback" :callback});
+    }
+
     return {
         ambito: 'nacional',
         categoria: 'P01',
@@ -182,5 +189,7 @@ var App = (function (scope, config, appData) {
         uiMaxCallbackDashBoardEvent: uiMaxCallbackDashBoardEvent,
         uiNormalCallbackDashBoardEvent:uiNormalCallbackDashBoardEvent,
         uiResizeCallbackDashBoardEvent:uiResizeCallbackDashBoardEvent,
+        getContenidoPopupMapaEvent: getContenidoPopupMapaEvent,
+
     };
 })(window, AppConfig(), Appdata);
