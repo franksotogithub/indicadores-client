@@ -1350,6 +1350,9 @@ table tbody.hijoNegro tr:first-child {
 td.millones {
   min-width: 100px; }
 
+td.ajustarAContenido {
+  white-space: nowrap; }
+
 /*
   Tooltips
 */
