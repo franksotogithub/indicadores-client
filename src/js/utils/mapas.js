@@ -236,6 +236,7 @@ App.utils.mapas = (function (parent, config,service) {
         return zoom;
     }
 
+    /*
     var grafPopupPop=function (div,data) {
         var edad_h = [];
         var edad_m = [];
@@ -330,35 +331,72 @@ App.utils.mapas = (function (parent, config,service) {
             }]
         });
 
-    }
+    }*/
 
-    var createContentPopup= function (ubigeo,cod_map) {
+    var createContentPopup= function (ubigeo,codTematico) {
         var content = document.createElement("div");
         var bloque1 = document.createElement("div");
         var bloque2 = document.createElement("div");
-        var bloque3 = document.createElement("div");
+
+
+        var data= {
+            "titulo":  {"total": 876542, "text":"Población Censada"},
+            "resumen": [ {"icon": "icon-user","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
+            "grafico": { }
+        }
+
+        var contenidoPopoverBloque1 = '';
+
+
+        /*
         var contenidoPopoverBloque1 = '<div class="titPopoverMap"><h3>876542</h3><p>Población Censada</p> </div> ' +
             '<div class="pobGeneroPopoverMap"><div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
             '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
+        */
 
         ////////se declaran ids a los bloques
-        bloque1.setAttribute("id","resumen");
-        bloque2.setAttribute("id","mapaGrafico");
-        bloque3.setAttribute("id","tabla");
-        bloque1.innerHTML=contenidoPopoverBloque1;
+
+
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
         content.appendChild(bloque2);
 
 
-        if (cod_map=='P01')
-        {
-            service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);
+        App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
+            console.log("datos popup>>>",data);
+            data= {
+                "titulo":  {"total": 876542, "text":"Población Censada"},
+                "resumen": [ {"icon": "icon-user","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
+                "grafico": { }
+            }
 
-        }
+            contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.total+'</h3><p>'+data.titulo.text+'</p> </div> ' ;
+            contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">'
+
+            data.resumen.forEach(function (el ){
+                contenidoPopoverBloque1+='<h3 class='+el.icon+'></h3><p>'+el.valor+'</p> </div>';
+            });
+            contenidoPopoverBloque1+='</div>'
+
+            /*contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap"><div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' ;
+                '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
+            */
+            bloque1.setAttribute("id","resumen");
+            bloque2.setAttribute("id","mapaGrafico");
+            bloque1.innerHTML=contenidoPopoverBloque1;
+
+        })
+
+
+
+        /*
+        if (cod_map=='P01')
+        {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
 
         else if (cod_map=='P02')
         {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
+        */
+
         return content;
     }
 
@@ -977,11 +1015,12 @@ App.utils.mapas = (function (parent, config,service) {
                 return definitionExpression;
             }
 
-            var createPopup=function(title,codigo,event){
+
+            var createPopup=function(title,codigo,centro){
                 popup=_this.view_map.popup.open({
                         title:title,
-                        location:event,
-                        content:createContentPopup(codigo,_this.datosMap.codMap),
+                        location:centro,
+                        content:createContentPopup(codigo,_this.datosMap.codTematico),
 
                     }
                 );
@@ -1000,13 +1039,15 @@ App.utils.mapas = (function (parent, config,service) {
                     div.style.display="none";
                 }
 
-                if (cod_map == 'P01') {
+
+                /*if (cod_map == 'P01') {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
                 }
 
                 else if (cod_map == 'P01') {
                     service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
-                }
+                }*/
+
 
             }
 
@@ -1026,18 +1067,18 @@ App.utils.mapas = (function (parent, config,service) {
             var selectedFeature=function(feature){
                 select_all.style.display="block";
                 if (feature){
-                    var codigo=feature.attributes.CODIGO;
+                    var ubigeo=feature.attributes.CODIGO;
                     var nombre='';
                     if(_this.indexSubLayer==0){nombre=feature.attributes.NOMBDEP;}
                     else if(_this.indexSubLayer==1){nombre=feature.attributes.NOMBPROV;}
                     else if(_this.indexSubLayer==2){nombre=feature.attributes.NOMBDIST;}
-                    var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(codigo);
+                    var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(ubigeo);
 
                     if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
                         _this.opc_select="select";
-                        createPopup(nombre,codigo,feature.geometry.centroid);
-                        updatePanel(codigo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
-                        _this.select_ubigeos.push(codigo);
+                        createPopup(nombre,ubigeo,feature.geometry.centroid);
+                        updatePanel(ubigeo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
+                        _this.select_ubigeos.push(ubigeo);
                         _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
                     }
                     else{
@@ -1046,7 +1087,7 @@ App.utils.mapas = (function (parent, config,service) {
                         _this.select_ubigeos.splice(indiceUbigeoEncontrado, 1);
                         _this.historic_features[_this.indexSubLayer].nombres.splice(indiceUbigeoEncontrado, 1);
                         if(_this.maximizado==true)
-                        {removerMiniMapa(codigo);}
+                        {removerMiniMapa(ubigeo);}
 
                     }
 
@@ -1360,8 +1401,9 @@ App.utils.mapas = (function (parent, config,service) {
                 zoomToLayer(_this.view_map,_this.historic_features[0].layer,"1=1");
             }
 
-            document.getElementById("select-layer").addEventListener("change", function(){
-                var index = parseInt(this.value);
+
+            $('.mostrarListaMapa').on('click', 'div',function () {
+                var index=parseInt($(this).attr('index'));
                 seleccionarVista(index);
             });
 
@@ -1479,8 +1521,11 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             setInterval(ocultarCargando,1000);
+
             changeLayer(0);
+
             actualizarSelectUbigeo(_this.select_ubigeos);
+
             desplegarWidgetsNavegacion(0);
         });
 
@@ -1567,29 +1612,6 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-    /*$('.widget-vistaInteractiva-comboToolsBox').on('click','.BarraHerramientas > button', function() {
-        var _this= $(this);
-        COMBOTOOLSBOX.event.activarButton(_this);
-
-        activarButton: function(e){
-
-        var codigoTab= e.attr("data-buttonCod");
-
-        var contenedorVentanas = e.closest(".widget-vistaInteractiva-comboToolsBox").parent().find(".contentTabs");
-        e.siblings("button").removeClass("activeButton");
-        e.addClass("activeButton");
-
-        contenedorVentanas.children(".contentData[data-buttonCod="+codigoTab+"]").siblings("div").hide();
-        contenedorVentanas.children(".contentData[data-buttonCod="+codigoTab+"]").show();
-        var bloque = e.parents('.ventana');
-        var vista = $(bloque).find('.contentListaTitulos li[data-selected="selected"]');
-        App.dashboardWidgetChangeEvent(
-            {"jqObject": bloque, "id": bloque.attr("id")},
-            {"jqObject": vista, "id": vista.attr('data-vista')},
-            codigoTab);
-    },
-
-    */
 
     var init = function (options) {
         var _this=parent.mapas;
