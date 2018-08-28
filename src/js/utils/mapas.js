@@ -338,17 +338,11 @@ App.utils.mapas = (function (parent, config,service) {
         var content = document.createElement("div");
         var bloque1 = document.createElement("div");
         var bloque2 = document.createElement("div");
-
-
         var data= {
             "titulo":  {"total": 876542, "text":"Población Censada"},
             "resumen": [ {"icon": "icon-user","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
             "grafico": { }
         }
-
-        var contenidoPopoverBloque1 = '';
-
-
 
         var contenidoPopoverBloque1 = '<div class="titPopoverMap"><h3>876542</h3><p>Población Censada</p> </div> ' +
             '<div class="pobGeneroPopoverMap">' +
@@ -370,18 +364,11 @@ App.utils.mapas = (function (parent, config,service) {
             contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.total+'</h3><p>'+data.titulo.text+'</p> </div> ' ;
             contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">'
 
-            /*data.resumen.forEach(function (el ){
-                contenidoPopoverBloque1+='<div ><div><span class='+el.icon+'></span> </div> <div>'+el.valor+'</div></div>';
-
-            });*/
-
-            contenidoPopoverBloque1+= '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
-                '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user-female"></h3><p>447 895</p> </div>';
-
+            data.resumen.forEach(function (el ){
+                contenidoPopoverBloque1+='<div class="pobGeneroPopoverMapBlock '+el.color+'"> <h3 class="'+el.icon+'"></h3><p>'+el.valor+'</p>  </div>';
+            });
 
             contenidoPopoverBloque1+='</div>'
-
-
             bloque1.setAttribute("id","resumen");
             bloque2.setAttribute("id","mapaGrafico");
             bloque1.innerHTML=contenidoPopoverBloque1;
@@ -1403,41 +1390,8 @@ App.utils.mapas = (function (parent, config,service) {
              * Evento callback de busqueda
              * **/
 
-            searchWidget.on("select-result", function(event){
-                var feature=event.result.feature;
-                var index= event.sourceIndex;
-
-                cleanVars();
-                if(index==1){
-
-                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
-                }
-
-                if(index==2){
-                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
-                    _this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
-                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
-                }
-
-                for (var i=0;i<index;i++) setLabelWidgetUbigeos(i);
-                changeIndex(index);
 
 
-                if (index<2){
-                    selectedFeature(feature,event);
-                    openFeature();
-                }
-
-                else {
-                    var i=index-1;
-                    var def=getDefinitionExpresion(_this.historic_features[1].select_features,i);
-                    updateMap(def,2,false);
-                    selectedFeature(feature);
-                    _this.view_map.goTo(feature.geometry.extent);
-                }
-            });
 
             _this.$selectUbigeo.on('select2:select', function (e) {
                 var data = e.params.data;
@@ -1452,7 +1406,6 @@ App.utils.mapas = (function (parent, config,service) {
                     if(_this.indexSubLayer<2) {openFeature();}
                 });
             });
-
 
             _this.view_map.on("click",function (event) {
                 console.log('click');
@@ -1509,6 +1462,61 @@ App.utils.mapas = (function (parent, config,service) {
                 }
             }
 
+            var seleccionarUbigeoPorBuscador= function (feature,index) {
+                cleanVars();
+                if(index==1){
+
+                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                }
+                if(index==2){
+                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                    _this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
+                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                }
+
+                for (var i=0;i<index;i++) setLabelWidgetUbigeos(i);
+                changeIndex(index);
+                if (index<2){
+                    selectedFeature(feature,event);
+                    openFeature();
+                }
+                else {
+                    var i=index-1;
+                    var def=getDefinitionExpresion(_this.historic_features[1].select_features,i);
+                    updateMap(def,2,false);
+                    selectedFeature(feature);
+                    _this.view_map.goTo(feature.geometry.extent);
+                }
+            }
+
+
+            var actualizarBuscador = function (){
+                $('#buscador-ubigeo').autocomplete({
+                    serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
+                    onSelect: function (Response) {
+
+                        var where='CODIGO='+Response.data;
+                        var index=parseInt(Response.index)-2;
+
+                        getFeaturesUbigeos(where,index,function (features) {
+                            features.forEach(function (feature) {
+                                  seleccionarUbigeoPorBuscador(feature,index);
+                                }
+                            );
+                        });
+
+                    },
+
+                });
+
+
+                console.log('buscador-ubigeo>>>',$('#buscador-ubigeo'));
+
+            }
+
+
             setInterval(ocultarCargando,1000);
             changeLayer(0);
             actualizarSelectUbigeo(_this.select_ubigeos);
@@ -1533,45 +1541,6 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-    var actualizarBuscador = function (){
-        /*var paises= [
-            {value: 'Andorra', data:'AD'},
-            {value: 'Zimbabwe', data:'ZZ'},
-            ]*/
-
-        //service.mapas.getTerritorioAutocomplete (function (data) {
-            $('#buscador-ubigeo').autocomplete({
-                serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
-                //lookup: data,
-                onSelect: function (Response) {
-                    console.log('Seleccionaste'+Response.data);
-                }
-            });
-        //});
-
-
-
-        /*
-        $('#buscador-ubigeo').autocomplete({
-            source: function (request, response) {
-            $.ajax({
-
-                url:service.getUrlServer('dimensiones/territorio/autocomplete/'),
-                data:{"term":request.term},
-                dataType: "jsonp",
-                success: function (data) {
-                    response(data);
-                }
-            });
-            },
-
-            select: function (event,ui) {
-            }
-
-        });*/
-
-
-    }
 
     var actualizarSelectUbigeo=function(ubigeos){
         var results= new Object();
