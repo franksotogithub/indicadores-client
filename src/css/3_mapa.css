@@ -347,6 +347,13 @@ div.esri-search__submit-button:focus {
 
 
 
+/* Complete */
+.autocomplete-suggestions{
+    font-size: 13px;
+    font-family: signikaregular;
+}
+
+
 
 
 
