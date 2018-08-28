@@ -285,37 +285,28 @@ div.esri-search__submit-button:focus {
     margin-top: 10px;
 }
 
-.pobGeneroPopoverMapMan, .pobGeneroPopoverMapWoman {
+.pobGeneroPopoverMapBlock{
     width: 50%;
     display: inline-block;
     text-align: center;
     font-weight: normal ;
 }
 
-.pobGeneroPopoverMapMan h3 {
-    color: #DD8D39;
+.pobGeneroPopoverMapBlock h3 {
+
     font-size: 18px;
     margin: 5px 0px !important;
 }
 
-.pobGeneroPopoverMapMan p {
-    color: #DD8D39;
+.pobGeneroPopoverMapBlock p {
+
     font-size: 16px !important;
     margin:0px !important;
 }
 
-.pobGeneroPopoverMapWoman h3 {
-    color: #F14950;
-    font-size: 18px !important;
-    margin: 5px 0px !important;
+.colorCualquiera {
+    color: #00b3ff;
 }
-
-.pobGeneroPopoverMapWoman p {
-    color: #F14950;
-    font-size: 16px !important;
-    margin: 0px !important;
-}
-
 
 
 /* Maximizado */

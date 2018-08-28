@@ -351,8 +351,9 @@ App.utils.mapas = (function (parent, config,service) {
 
 
         var contenidoPopoverBloque1 = '<div class="titPopoverMap"><h3>876542</h3><p>Población Censada</p> </div> ' +
-            '<div class="pobGeneroPopoverMap"><div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
-            '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
+            '<div class="pobGeneroPopoverMap">' +
+            '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
+            '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
 
 
         ////////se declaran ids a los bloques
@@ -374,8 +375,8 @@ App.utils.mapas = (function (parent, config,service) {
 
             });*/
 
-            contenidoPopoverBloque1+= '<div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
-                '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div>';
+            contenidoPopoverBloque1+= '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
+                '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user-female"></h3><p>447 895</p> </div>';
 
 
             contenidoPopoverBloque1+='</div>'
@@ -737,7 +738,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         data.renderer.forEach(function (el,index) {
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
-            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px;">';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
             html+='<div style="opacity: 1; background-color:'+el.color+';  width:20px;height:20px "></div>';
             html+='</div>';
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">'+el.label+'</div>';
