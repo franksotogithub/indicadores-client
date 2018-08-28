@@ -210,9 +210,10 @@ div.esri-search__submit-button:focus {
     border-radius: 5px;
 }
 .botonVistaMapa {
-    padding:9px 11px;
+    padding: 8px 11px;
     display: inline-block;
     vertical-align: middle;
+    font-size: 14px;
 }
 .mostrarListaMapa{
     font-family: 'Alegreya-Sans';
@@ -307,6 +308,46 @@ div.esri-search__submit-button:focus {
 .colorCualquiera {
     color: #00b3ff;
 }
+
+
+/* Seleect */
+
+.select2-container {
+    font-family: "signikaregular" !important;
+    font-size: 13px !important;
+}
+
+
+#buscador-ubigeo {
+    padding: 5px 7px;
+    font-family: "signikaregular";
+    font-size: 13px;
+    border-color: transparent;
+    outline: none;
+    padding-right: 34px;
+}
+
+.backSearch {
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #ffffff;
+    padding: 3px 7px;
+    /* border-radius: 5px; */
+    background-color: #1b3c71;
+    font-size: 14px;
+    vertical-align: bottom;
+    line-height: 23px;
+    display: inline-block;
+}
+
+#div-buscador-ubigeo {
+    position: relative;
+}
+
+
+
+
 
 
 /* Maximizado */
