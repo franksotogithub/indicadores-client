@@ -348,31 +348,23 @@ App.utils.mapas = (function (parent, config,service) {
             '<div class="pobGeneroPopoverMap">' +
             '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
             '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
-
-
         ////////se declaran ids a los bloques
-
 
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
         content.appendChild(bloque2);
-
-
+        bloque1.setAttribute("id","resumen");
+        bloque2.setAttribute("id","mapaGrafico");
 
         App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
-
             contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.total+'</h3><p>'+data.titulo.text+'</p> </div> ' ;
             contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">'
-
             data.resumen.forEach(function (el ){
                 contenidoPopoverBloque1+='<div class="pobGeneroPopoverMapBlock '+el.color+'"> <h3 class="'+el.icon+'"></h3><p>'+el.valor+'</p>  </div>';
             });
-
-            contenidoPopoverBloque1+='</div>'
-            bloque1.setAttribute("id","resumen");
-            bloque2.setAttribute("id","mapaGrafico");
+            contenidoPopoverBloque1+='</div>';
             bloque1.innerHTML=contenidoPopoverBloque1;
-
+            Highcharts.chart(bloque2, data.grafico);
         })
 
         return content;
@@ -1260,6 +1252,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                 else{
                     _this.select_ubigeos=[];
+
                     definitionExpression_gloabal="1=1";
                     definitionExpression_back="1=1";
                     _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_gloabal;
@@ -1267,6 +1260,8 @@ App.utils.mapas = (function (parent, config,service) {
                     zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression_back);
                     App.mapasChangeEvent(_this.select_ubigeos,['00']);
                 }
+
+                actualizarSelectUbigeo(_this.select_ubigeos);
             }
 
 
@@ -1313,18 +1308,18 @@ App.utils.mapas = (function (parent, config,service) {
                 changeLayer(0);
                 desplegarWidgetsNavegacion(0);
                 selectWidget(0);
-                actualizarSelectUbigeo(_this.select_ubigeos);
+
             });
 
             widget_dep.addEventListener("click", function(){
                 desplegarWidgetsNavegacion(1);
                 selectWidget(1);
-                actualizarSelectUbigeo(_this.select_ubigeos);
+                //actualizarSelectUbigeo(_this.select_ubigeos);
             });
 
             widget_prov.addEventListener("click", function(){
                 selectWidget(2);
-                actualizarSelectUbigeo(_this.select_ubigeos);
+                //actualizarSelectUbigeo(_this.select_ubigeos);
             });
 
             /**Selecciona la vista del mapa segun sea el caso
@@ -1463,6 +1458,8 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var seleccionarUbigeoPorBuscador= function (feature,index) {
+
+                console.log('ubigeos seleccionados>>>',_this.select_ubigeos,index );
                 cleanVars();
                 if(index==1){
 
@@ -1478,6 +1475,9 @@ App.utils.mapas = (function (parent, config,service) {
 
                 for (var i=0;i<index;i++) setLabelWidgetUbigeos(i);
                 changeIndex(index);
+
+
+
                 if (index<2){
                     selectedFeature(feature,event);
                     openFeature();
@@ -1485,10 +1485,16 @@ App.utils.mapas = (function (parent, config,service) {
                 else {
                     var i=index-1;
                     var def=getDefinitionExpresion(_this.historic_features[1].select_features,i);
-                    updateMap(def,2,false);
+
                     selectedFeature(feature);
+
+
+                    console.log('ubigeos seleccionados>>>',_this.select_ubigeos ,index);
+                    updateMap(def,2,false);
+                    actualizarSelectUbigeo(_this.select_ubigeos);
                     _this.view_map.goTo(feature.geometry.extent);
                 }
+
             }
 
 
@@ -1500,8 +1506,11 @@ App.utils.mapas = (function (parent, config,service) {
                         var where='CODIGO='+Response.data;
                         var index=parseInt(Response.index)-2;
 
+                        console.log('ubigeos seleccionados>>>');
                         getFeaturesUbigeos(where,index,function (features) {
                             features.forEach(function (feature) {
+
+                                  console.log('feature>>>',feature);
                                   seleccionarUbigeoPorBuscador(feature,index);
                                 }
                             );
@@ -1512,7 +1521,6 @@ App.utils.mapas = (function (parent, config,service) {
                 });
 
 
-                console.log('buscador-ubigeo>>>',$('#buscador-ubigeo'));
 
             }
 
@@ -1539,12 +1547,11 @@ App.utils.mapas = (function (parent, config,service) {
         });
     }
 
-
-
-
     var actualizarSelectUbigeo=function(ubigeos){
         var results= new Object();
         results["results"]='';
+
+        console.log('ubigeo>>>',ubigeos);
         service.mapas.getTerritorioSelect2(ubigeos,function(data){
             actualizarSelect2Ubigeo(data.results);
         });
