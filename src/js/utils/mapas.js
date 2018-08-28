@@ -360,10 +360,9 @@ App.utils.mapas = (function (parent, config,service) {
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
         content.appendChild(bloque2);
+        var data= new Object();
 
-
-        App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
-            console.log("datos popup>>>",data);
+        App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (datax) {
             data= {
                 "titulo":  {"total": 876542, "text":"Población Censada"},
                 "resumen": [ {"icon": "icon-user","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
@@ -386,16 +385,6 @@ App.utils.mapas = (function (parent, config,service) {
             bloque1.innerHTML=contenidoPopoverBloque1;
 
         })
-
-
-
-        /*
-        if (cod_map=='P01')
-        {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
-
-        else if (cod_map=='P02')
-        {service.mapas.getDataGrafico(ubigeo,'P01',bloque2,grafPopupPop);}
-        */
 
         return content;
     }
@@ -945,8 +934,6 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
 
-
-
             _this.view_map.ui.add( _this.datosMap.divLegend, "bottom-left");
             _this.view_map.ui.add([searchWidget,"div-select-ubigeo","list-widgets"], "top-left");
             _this.view_map.ui.add("list-maps", "bottom-right");
@@ -1020,8 +1007,7 @@ App.utils.mapas = (function (parent, config,service) {
                 popup=_this.view_map.popup.open({
                         title:title,
                         location:centro,
-                        content:createContentPopup(codigo,_this.datosMap.codTematico),
-
+                        content:createContentPopup(codigo,_this.datosMap.codMap),
                     }
                 );
                 _this.view_map.popup.dockOptions= {
@@ -1145,6 +1131,7 @@ App.utils.mapas = (function (parent, config,service) {
                     updateMap(definitionExpression_gloabal,_this.indexSubLayer,true);
                     _this.select_ubigeos=[];
                 }
+
                 _this.view_map.popup.close();
                 select_all.style.display="none";
             }
@@ -1219,6 +1206,7 @@ App.utils.mapas = (function (parent, config,service) {
                         {sublayer.visible=false;}
                     });
                 });
+
                 _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
                 _this.layerBack.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
 
@@ -1293,7 +1281,8 @@ App.utils.mapas = (function (parent, config,service) {
                 }
 
                 else{
-                    _this.select_ubigeos=['00'];
+                    //_this.select_ubigeos=['00'];
+                    _this.select_ubigeos=[];
                     definitionExpression_gloabal="1=1";
                     definitionExpression_back="1=1";
                     _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_gloabal;
@@ -1460,9 +1449,10 @@ App.utils.mapas = (function (parent, config,service) {
                 getFeaturesUbigeos(where,_this.indexSubLayer,function (features) {
                     features.forEach(function (feature) {
                         selectedFeature(feature);
+                        //zoomToLayer(_this.view_map,_this.historic_features[_this.indexSubLayer]);
                         }
                     );
-                    if(_this.indexSubLayer<2) openFeature();
+                    if(_this.indexSubLayer<2) {openFeature();}
                 });
             });
 
@@ -1521,11 +1511,9 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             setInterval(ocultarCargando,1000);
-
             changeLayer(0);
-
             actualizarSelectUbigeo(_this.select_ubigeos);
-
+            actualizarBuscador();
             desplegarWidgetsNavegacion(0);
         });
 
@@ -1543,10 +1531,33 @@ App.utils.mapas = (function (parent, config,service) {
         });
     }
 
+    var actualizarBuscador = function (){
+        $('#buscador-ubigeo').autocomplete({
+            source: function (request, response) {
+            $.ajax({
+
+                url:service.getUrlServer('dimensiones/territorio/autocomplete/'),
+                data:{"term":request.term},
+                dataType: "jsonp",
+                success: function (data) {
+                    response(data);
+                }
+            });
+            },
+
+            select: function (event,ui) {
+                //ui.item.label
+            }
+
+        });
+
+
+    }
+
     var actualizarSelectUbigeo=function(ubigeos){
         var results= new Object();
         results["results"]='';
-        service.mapas.getTerritorio(ubigeos,function(data){
+        service.mapas.getTerritorioSelect2(ubigeos,function(data){
             actualizarSelect2Ubigeo(data.results);
         });
     }
@@ -1598,6 +1609,7 @@ App.utils.mapas = (function (parent, config,service) {
     var requireEvents = function () {
         cambiarMapa(codMap,codTematico,url,titulo);
     };
+
 
     var categoriaChangeEvent = function (options) {
         var cod_mapa=options.categoria;

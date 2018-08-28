@@ -61,7 +61,7 @@ App.service.mapas = (function (parent, config) {
         });
     };
 
-    var getTerritorio = function (ubigeos,callback){
+    var getTerritorioSelect2 = function (ubigeos,callback){
         parent.get({
             url: parent.getUrlServer('dimensiones/territorio/combo_select_2/',{"u":ubigeos}),
             success: function (data) {
@@ -71,6 +71,17 @@ App.service.mapas = (function (parent, config) {
         })
 
     }
+    var getTerritorioAutocomplete = function (term,callback){
+        parent.get({
+            url: parent.getUrlServer('dimensiones/territorio/autocomplete/',{"term":term}),
+            success: function (data) {
+                callback(data);
+            }
+        })
+
+    }
+    
+    
 
     return {
         legenda: undefined,
@@ -78,7 +89,7 @@ App.service.mapas = (function (parent, config) {
         getMapas: getMapas,
         getMapa: getMapa,
         getDataGrafico: getDataGrafico,
-        getTerritorio:getTerritorio
+        getTerritorioSelect2:getTerritorioSelect2
     }
 
 })(App.service, AppConfig());
