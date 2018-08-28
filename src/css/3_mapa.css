@@ -136,9 +136,10 @@
 .widget-ubigeo {
     background-color: white;
     border-radius: 8px;
-    padding: 8px;
+    padding: 6px;
     opacity: 1;
     margin-right: 5px;
+    font-size: 13px;
 }
 
 
