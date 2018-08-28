@@ -165,8 +165,8 @@ var App = (function (scope, config, appData) {
      * Funcion para invocar los graficos para el popup del
      * */
     var getContenidoPopupMapaEvent = function (ubigeo,codTematico,callback) {
-        _hasUtils(this,'contenidoPopupMapaEvent',{"ubigeo" : ubigeo,"codTematico" : codTematico,"callback" :callback});
-    }
+        _hasUtils(this,'getContenidoPopupMapaEvent',{"ubigeo" : ubigeo,"codTematico" : codTematico,"callback" :callback});
+    };
 
     return {
         ambito: 'nacional',

@@ -143,9 +143,9 @@ App.utils.highcharts = (function (service, config) {
         });
     };
 
-    var mediaLuna = function (data, options) {
+    var mediaLuna = function (data, options, render) {
         var defaultcolors = Highcharts.getOptions().colors;
-        return Highcharts.chart(options.uiId, {
+        var values = {
             chart: {
                 plotBackgroundColor: null,
                 backgroundColor: {
@@ -171,7 +171,8 @@ App.utils.highcharts = (function (service, config) {
                 innerSize: '50%',
                 data: data
             }]
-        });
+        };
+        return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
     };
 
     var graficoBarra = function () {

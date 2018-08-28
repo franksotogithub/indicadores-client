@@ -73,9 +73,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             var colspan = (v.colspan !== undefined) ? ' colspan="'+v.colspan+'"' : '';
             var clase = '';
             if (v.codigo == '01') {
-                clase = ' thorden';
+                clase = ' class="thorden" style="display: none;"';
             }else if (v.codigo == '02') {
-                clase = ' thindicador';
+                clase = ' class="thindicador"';
             }
 
             var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+v.titulo+'</th>';
@@ -96,7 +96,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             }
             thead += '</tr>';
         }
-
+        console.log(thead);
         $("#tblindicadores thead").html(thead);
         $("#tblindicadores thead").hide();
         $("#tblindicadores tbody").html("");
@@ -124,10 +124,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         _crearCabecera(cabecera);
     };
 
-    var _crearTabla= function (table, data, columns) {
-        console.log("--->colums", columns);
+    var _crearTabla= function (table, data, columns, targets) {
         $(".theadindicadores").show();
-
+        console.log("targets >>>>>>", targets.absoluto, targets.porcentual);
         return $(table).DataTable({
             data: data,
             order: [[0, 'asc']],
@@ -144,19 +143,19 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                         return orden;
                     }
                 },
-
                 {
                     targets: 1,
                     "createdCell": function (td, cellData, rowData, row, col) {
                         if (appData.tituloIndicadores.hasOwnProperty(cellData)){
-                            console.log("inserta");
                             var v = appData.tituloIndicadores[cellData];
                             if (v.cod_nivel_tematico == 2) {
-                                $(td).addClass('tituloIndicador');
+                                $(td).addClass('tituloIndicador ajustarAContenido');
                             }
 
+
+
                             $(td).addClass("popover");
-                            $(td).attr('data-popover', 'hola mundo');
+                            $(td).attr('data-popover', appData.tituloIndicadores[cellData].titulo);
                         }
                     },
 
@@ -167,6 +166,32 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                             titulo = (v.cod_nivel_tematico == 2) ? v.subcategoria : v.indicador;
                         }
                         return titulo;
+                    }
+                },
+                {
+                    targets: targets.absoluto,
+                    render: function (data, type, row) {
+                        data = parent.round(data,1);
+                        if (data != 0) {
+                            return parent.numberFormat(data);
+                        }else {
+                            return "";
+                        }
+
+                    },
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('millones');
+                    }
+                },
+                {
+                    targets: targets.porcentual,
+                    render: function (data, type, row) {
+                        data = parent.round(data,1);
+                        if (data != 0) {
+                            return data.toFixed(1);;
+                        }else {
+                            return "";
+                        }
                     }
                 }
             ],
@@ -228,6 +253,20 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         return columns;
     };
 
+    var _crear_target = function (total) {
+        var i = 2;
+        var target_absoluto = [];
+        var target_porcentual = [];
+        for (i;i<=(total*2)+1;i++) {
+            if (i%2 == 0) {
+                target_absoluto.push(i);
+            }else {
+                target_porcentual.push(i);
+
+            }
+        }
+        return {"absoluto": target_absoluto, "porcentual": target_porcentual};
+    };
     /* publicos */
     var crearTablaUigeos = function (ubigeos, historico) {
         /*
@@ -235,7 +274,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             ----
             1. Cargando
          */
-        console.log("historico >>>>", ubigeos, historico);
 
         var datos = ubigeos.slice(0);
 
@@ -265,16 +303,21 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         var callback = function () {
             // Crear cabecera de la tabla segun los ubigeos indicadors
-            console.log(">>>>> ejecutar crear tabla calback");
             _cabeceraUigeos(datos);
-
             // Crear Estructura Json para renderizado de la tabla
 
             _this.tablaColumns = _getTalaColumn(datos);
 
+            _this.target = _crear_target(datos.length);
+            console.log("target >>>",  _this.target);
             // Instanciar el servicio
             service.cuadros.getIndicadores(datos, _this.vista, function () {
-                _this.tblIndicadores = _crearTabla('#tblindicadores', service.cuadros.indicadores[App.categoria], _this.tablaColumns);
+                _this.tblIndicadores = _crearTabla(
+                    '#tblindicadores',
+                    service.cuadros.indicadores[App.categoria],
+                    _this.tablaColumns,
+                    _this.target
+                );
                 _this.tblIndicadores.fixedColumns().relayout();
                 $("#loadindicadores").hide();
             });
@@ -283,7 +326,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         console.log(">>>>> ejecutar pre-calback");
         // Crear cabecera
         if (ubigeos.length > 1 && !this.expardirVentana) {
-            console.log(">>>>> ejecutar callback minimizar ventana");
             this.expardirVentana = true;
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)
         }else {
@@ -298,11 +340,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.tblIndicadores.destroy();
             //this.tblIndicadores.clear().draw();
         }
+        console.log("tabla categoria >>>", this.target);
         this.tblIndicadores = _crearTabla(
             '#tblindicadores',
             service.cuadros.indicadores[App.categoria],
             this.tablaColumns,
-            parent.cuadros
+            this.target
         );
 
         this.tblIndicadores.fixedColumns().relayout();
@@ -352,6 +395,26 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.crearTablaCategoria(options.categoria);
     };
 
+    var getContenidoPopupMapaEvent = function (options) {
+        console.log("ejecuta >>>>>>>>>>>>");
+        var data = {
+            "titulo":  {"total": 876542, "text":"Población Censada"},
+            "resumen": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
+            "grafico": { }
+        };
+        parent.graficos.popupMapa(data, 'G00001', '00', {
+            title: {
+                text: 'Total<br />personas',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 0,
+                style: {
+                    fontSize: "14px"
+                }
+            }
+        }, options.callback);
+    };
+
     return {
         init: init,
         tblIndicadores: undefined,
@@ -360,6 +423,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         expardirVentana: false,
         timeClikMap: undefined,
         vista: 'indicadores',
+        target: {"absoluto": [2], "porcentual": [3]},
         crearTablaUigeos: crearTablaUigeos,
         crearTablaCategoria: crearTablaCategoria,
         uiMaxCallback: uiMaxCallback,
@@ -367,6 +431,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         uiNormalCallback: uiNormalCallback,
         categoriaChangeEvent: categoriaChangeEvent,
         fixedColumnsRelayout: fixedColumnsRelayout,
-        uiReabrirVentana: uiReabrirVentana
+        uiReabrirVentana: uiReabrirVentana,
+        getContenidoPopupMapaEvent: getContenidoPopupMapaEvent
     }
 })(AppConfig(), Appdata(), App.utils, App.service);

@@ -1,4 +1,5 @@
 App.utils.graficos = (function (parent, service) {
+
     var directionPieGradient = {
         x1: 0,
         y1: 1,
@@ -24,6 +25,23 @@ App.utils.graficos = (function (parent, service) {
         ]
     }];
 
+    var init = function () {
+        $(".sliderDiv").html();
+        $(".sliderDiv").append('<div id="grafico_1_c1" class="graficoElementSlider" ></div>');
+
+        this.mediaLuna('G00001', '00', {
+            uiId: 'grafico_1_c1',
+            title: {
+                text: 'Total<br />personas',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 0,
+                style: {
+                    fontSize: "14px"
+                }
+            }
+        });
+    };
     var _htmlBotonesTop = function (options) {
         var template = '<div class="graficoWidget-top">'+
             '<div><span class="{0}"></span></div>'+
@@ -48,7 +66,18 @@ App.utils.graficos = (function (parent, service) {
             App.utils.highcharts.mediaLuna(data, options);
         });
     };
+
+    var popupMapa = function (popupvalues, codgrafico, ubigeo, options, callback) {
+        options.colors = [colorsPie[0], colorsPie[1]];
+        service.graficos.getGrafico(codgrafico, ubigeo, function (data) {
+            popupvalues.grafico = App.utils.highcharts.mediaLuna(data, options, false);
+            callback(options);
+        });
+    };
+
     return {
-        mediaLuna: mediaLuna
+        mediaLuna: mediaLuna,
+        popupMapa: popupMapa,
+        init: init
     }
 })(App.utils, App.service);

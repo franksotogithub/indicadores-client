@@ -12,7 +12,7 @@ var Appdata = function (app, callback) {
                         {"codigo": "P01", "titulo": "Población", "esActivo": true, "sistema": "indicadores"},
                         {"codigo": "P02", "titulo": "Educación", "sistema": "indicadores"},
                         {"codigo": "P03", "titulo": "Salud", "sistema": "indicadores"},
-                        {"codigo": "P04", "titulo": "Economía", "sistema": "indicadores"},
+                        //{"codigo": "P04", "titulo": "Economía", "sistema": "indicadores"},
                         {"codigo": "P05", "titulo": "Vivienda", "sistema": "indicadores"},
                         {"codigo": "P06", "titulo": "Hogar", "sistema": "indicadores"},
                         {"codigo": "P07", "titulo": "Población", "esActivo": true, "sistema": "pobreza"},
