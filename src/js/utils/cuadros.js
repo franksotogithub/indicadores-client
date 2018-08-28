@@ -396,12 +396,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var getContenidoPopupMapaEvent = function (options) {
-        console.log("ejecuta >>>>>>>>>>>>");
+
         var data = {
             "titulo":  {"total": 876542, "text":"Población Censada"},
             "resumen": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
             "grafico": { }
         };
+        /*
         parent.graficos.popupMapa(data, 'G00001', '00', {
             title: {
                 text: 'Total<br />personas',
@@ -412,7 +413,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     fontSize: "14px"
                 }
             }
-        }, options.callback);
+        }, options.callback); */
+
+        options.callback(data);
     };
 
     return {

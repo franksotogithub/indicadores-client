@@ -20,7 +20,8 @@ App.utils.mapas = (function (parent, config,service) {
     var codMap= undefined;
 
     var classBreakinfos=undefined;
-
+    
+    var $selectUbigeo=$('#select-ubigeo');
 
     var tituloLegend=undefined;
 
@@ -348,11 +349,11 @@ App.utils.mapas = (function (parent, config,service) {
         var contenidoPopoverBloque1 = '';
 
 
-        /*
+
         var contenidoPopoverBloque1 = '<div class="titPopoverMap"><h3>876542</h3><p>Población Censada</p> </div> ' +
             '<div class="pobGeneroPopoverMap"><div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
             '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
-        */
+
 
         ////////se declaran ids a los bloques
 
@@ -360,26 +361,26 @@ App.utils.mapas = (function (parent, config,service) {
         ////////se agrega los bloques al content
         content.appendChild(bloque1);
         content.appendChild(bloque2);
-        var data= new Object();
 
-        App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (datax) {
-            data= {
-                "titulo":  {"total": 876542, "text":"Población Censada"},
-                "resumen": [ {"icon": "icon-user","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
-                "grafico": { }
-            }
+
+
+        App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
 
             contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.total+'</h3><p>'+data.titulo.text+'</p> </div> ' ;
             contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">'
 
-            data.resumen.forEach(function (el ){
-                contenidoPopoverBloque1+='<h3 class='+el.icon+'></h3><p>'+el.valor+'</p> </div>';
-            });
+            /*data.resumen.forEach(function (el ){
+                contenidoPopoverBloque1+='<div ><div><span class='+el.icon+'></span> </div> <div>'+el.valor+'</div></div>';
+
+            });*/
+
+            contenidoPopoverBloque1+= '<div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
+                '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div>';
+
+
             contenidoPopoverBloque1+='</div>'
 
-            /*contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap"><div class="pobGeneroPopoverMapMan"><h3 class="icon-user"></h3><p>467 135</p> </div>' ;
-                '<div class="pobGeneroPopoverMapWoman"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
-            */
+
             bloque1.setAttribute("id","resumen");
             bloque2.setAttribute("id","mapaGrafico");
             bloque1.innerHTML=contenidoPopoverBloque1;
@@ -935,7 +936,10 @@ App.utils.mapas = (function (parent, config,service) {
 
 
             _this.view_map.ui.add( _this.datosMap.divLegend, "bottom-left");
-            _this.view_map.ui.add([searchWidget,"div-select-ubigeo","list-widgets"], "top-left");
+            //_this.view_map.ui.add([searchWidget,"div-select-ubigeo","list-widgets"], "top-left");
+
+            _this.view_map.ui.add(["div-buscador-ubigeo","div-select-ubigeo","list-widgets"], "top-left");
+
             _this.view_map.ui.add("list-maps", "bottom-right");
             _this.view_map.ui.add(["widget-select-layer"], "top-right");
             _this.view_map.ui.remove("zoom");
@@ -1024,17 +1028,6 @@ App.utils.mapas = (function (parent, config,service) {
                 else {
                     div.style.display="none";
                 }
-
-
-                /*if (cod_map == 'P01') {
-                    service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
-                }
-
-                else if (cod_map == 'P01') {
-                    service.mapas.getDataGrafico(ubigeo, 'P01', div, grafPopupPop);
-                }*/
-
-
             }
 
             var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
@@ -1124,14 +1117,11 @@ App.utils.mapas = (function (parent, config,service) {
                 if(_this.indexSubLayer>=0 && _this.indexSubLayer<=1 )
                 {
                     definitionExpression_gloabal=getDefinitionExpresion(_this.select_ubigeos,_this.indexSubLayer);
-
-                    console.log('definitionExpression_gloabal=',definitionExpression_gloabal);
                     setLabelWidgetUbigeos(_this.indexSubLayer);
                     changeIndex(_this.indexSubLayer+1);
                     updateMap(definitionExpression_gloabal,_this.indexSubLayer,true);
                     _this.select_ubigeos=[];
                 }
-
                 _this.view_map.popup.close();
                 select_all.style.display="none";
             }
@@ -1281,7 +1271,6 @@ App.utils.mapas = (function (parent, config,service) {
                 }
 
                 else{
-                    //_this.select_ubigeos=['00'];
                     _this.select_ubigeos=[];
                     definitionExpression_gloabal="1=1";
                     definitionExpression_back="1=1";
@@ -1290,8 +1279,6 @@ App.utils.mapas = (function (parent, config,service) {
                     zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression_back);
                     App.mapasChangeEvent(_this.select_ubigeos,['00']);
                 }
-
-
             }
 
 
@@ -1394,6 +1381,17 @@ App.utils.mapas = (function (parent, config,service) {
             $('.mostrarListaMapa').on('click', 'div',function () {
                 var index=parseInt($(this).attr('index'));
                 seleccionarVista(index);
+
+                if(index>0){
+                    console.log('ocultar lista de mapa');
+                    $("#div-select-ubigeo").css("display","none");
+                    //_this.$selectUbigeo.css("display","none");
+                }
+                else{
+                    console.log('mostrar lista de mapa');
+                    _this.$selectUbigeo.css("display","block");
+                    $("#div-select-ubigeo").css("display","inline");
+                }
             });
 
             document.getElementById("select-all").addEventListener("click", function(){
@@ -1435,26 +1433,25 @@ App.utils.mapas = (function (parent, config,service) {
                     var i=index-1;
                     var def=getDefinitionExpresion(_this.historic_features[1].select_features,i);
                     updateMap(def,2,false);
-
-
-                    selectedFeature(feature,event.result.extent.center);
-                    _this.view_map.goTo(event.result.extent);
+                    selectedFeature(feature);
+                    _this.view_map.goTo(feature.geometry.extent);
                 }
             });
 
-            $('#select-ubigeo').on('select2:select', function (e) {
+            _this.$selectUbigeo.on('select2:select', function (e) {
                 var data = e.params.data;
-                var codigo=data.id
+                var codigo=data.id;
                 var where=" CODIGO="+codigo;
                 getFeaturesUbigeos(where,_this.indexSubLayer,function (features) {
                     features.forEach(function (feature) {
                         selectedFeature(feature);
-                        //zoomToLayer(_this.view_map,_this.historic_features[_this.indexSubLayer]);
+                        _this.view_map.goTo(feature.geometry.extent);
                         }
                     );
                     if(_this.indexSubLayer<2) {openFeature();}
                 });
             });
+
 
             _this.view_map.on("click",function (event) {
                 console.log('click');
@@ -1500,6 +1497,7 @@ App.utils.mapas = (function (parent, config,service) {
 
             });
 
+
             function mostrarCargando(){
                 $('#cargarMapaDiv').css('display','inline');
             }
@@ -1519,11 +1517,12 @@ App.utils.mapas = (function (parent, config,service) {
 
     };
 
+
     var actualizarSelect2Ubigeo = function (data){
         var _this=parent.mapas;
         var placeholder="Seleccione una opcion";
-        $('#select-ubigeo').html('').select2({data: [{id:"",text:""}]});
-        $('#select-ubigeo').select2({
+        $selectUbigeo.html('').select2({data: [{id:"",text:""}]});
+        $selectUbigeo.select2({
             tags: "true",
             placeholder: _this.VALORES_STATIC[_this.indexSubLayer].placeholders,
             allowClear: true,
@@ -1531,7 +1530,27 @@ App.utils.mapas = (function (parent, config,service) {
         });
     }
 
+
+
     var actualizarBuscador = function (){
+        /*var paises= [
+            {value: 'Andorra', data:'AD'},
+            {value: 'Zimbabwe', data:'ZZ'},
+            ]*/
+
+        //service.mapas.getTerritorioAutocomplete (function (data) {
+            $('#buscador-ubigeo').autocomplete({
+                serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
+                //lookup: data,
+                onSelect: function (Response) {
+                    console.log('Seleccionaste'+Response.data);
+                }
+            });
+        //});
+
+
+
+        /*
         $('#buscador-ubigeo').autocomplete({
             source: function (request, response) {
             $.ajax({
@@ -1546,10 +1565,9 @@ App.utils.mapas = (function (parent, config,service) {
             },
 
             select: function (event,ui) {
-                //ui.item.label
             }
 
-        });
+        });*/
 
 
     }
@@ -1676,8 +1694,8 @@ App.utils.mapas = (function (parent, config,service) {
         legend: legend,
         indexSubLayer :indexSubLayer,
         uiMouseOutTabla:uiMouseOutTabla,
-        VALORES_STATIC: VALORES_STATIC
-
+        VALORES_STATIC: VALORES_STATIC,
+        $selectUbigeo: $selectUbigeo
     }
 
 })(App.utils, AppConfig() ,App.service );

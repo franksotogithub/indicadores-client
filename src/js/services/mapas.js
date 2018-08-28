@@ -71,9 +71,10 @@ App.service.mapas = (function (parent, config) {
         })
 
     }
-    var getTerritorioAutocomplete = function (term,callback){
+
+    var getTerritorioAutocomplete = function (callback){
         parent.get({
-            url: parent.getUrlServer('dimensiones/territorio/autocomplete/',{"term":term}),
+            url: parent.getUrlServer('dimensiones/territorio/autocomplete/'),
             success: function (data) {
                 callback(data);
             }
