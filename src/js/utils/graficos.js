@@ -25,12 +25,20 @@ App.utils.graficos = (function (parent, service) {
         ]
     }];
 
-    var init = function () {
-        $(".sliderDiv").html();
-        $(".sliderDiv").append('<div id="grafico_1_c1" class="graficoElementSlider" ></div>');
+    var botonesTop = function (botones) {
+        var b;
+        var html = '';
+        for (b in botones) {
+            var boton = botones[b];
+            html += _htmlBotonesTop(["", boton.name, parent.numberFormat(boton.y)]);
+        }
 
-        this.mediaLuna('G00001', '00', {
-            uiId: 'grafico_1_c1',
+        $("#id_graficoWidget_top").html(html);
+    };
+
+    var mediaLunaPoblacion = function (data) {
+        var options = {
+            uiId: 'grafico_1_c01',
             title: {
                 text: 'Total<br />personas',
                 align: 'center',
@@ -40,8 +48,53 @@ App.utils.graficos = (function (parent, service) {
                     fontSize: "14px"
                 }
             }
-        });
+        };
+        options.colors = [colorsPie[0], colorsPie[1]];
+        App.utils.highcharts.mediaLuna(data, options);
     };
+
+    var graficosIndicadores = {
+        "G000001": botonesTop,
+        "G000002": mediaLunaPoblacion
+    };
+
+    var init = function () {
+        /*
+            $(".sliderDiv").html();
+            $(".sliderDiv").append('<div id="grafico_1_c1" class="graficoElementSlider" ></div>');
+
+            this.mediaLuna('G00001', '00', {
+                uiId: 'grafico_1_c1',
+                title: {
+                    text: 'Total<br />personas',
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    y: 0,
+                    style: {
+                        fontSize: "14px"
+                    }
+                }
+            });
+
+        */
+    };
+
+    var initIndicador = function (indicador) {
+        var categoria = indicador.cuadrosData.categoria;
+        this.indicadores(categoria, indicador.cuadrosData.ubigeo, function (data) {
+            $(".sliderDiv").html("");
+            indicador.graficoCategoria[categoria] = data;
+            var g;
+            var c=0;
+            for (g in data) {
+                c++;
+                var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
+                $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider"></div>');
+                graficosIndicadores[g](data[g]);
+            }
+        })
+    };
+
     var _htmlBotonesTop = function (options) {
         var template = '<div class="graficoWidget-top">'+
             '<div><span class="{0}"></span></div>'+
@@ -53,31 +106,28 @@ App.utils.graficos = (function (parent, service) {
         return parent.format(template, options);
     };
 
-    var mediaLuna = function (codgrafico, ubigeo, options) {
-        var html = '';
-        html += _htmlBotonesTop(["", "Población Censada", "98 765 489"]);
-        html += _htmlBotonesTop(["icon-user hombre", "Hombres", "98 765 489"]);
-        html += _htmlBotonesTop(["icon-user-female mujer", "Mujeres", "98 765 489"]);
 
-        $("#id_graficoWidget_top").html(html);
 
-        options.colors = [colorsPie[0], colorsPie[1]];
+    var popupMapa = function (popupvalues, codgrafico, ubigeo, options, callback) {
         service.graficos.getGrafico(codgrafico, ubigeo, function (data) {
-            App.utils.highcharts.mediaLuna(data, options);
+            popupvalues.grafico = App.utils.highcharts.mediaLuna(data, options, false);
+            callback(popupvalues);
         });
     };
 
-    var popupMapa = function (popupvalues, codgrafico, ubigeo, options, callback) {
-        options.colors = [colorsPie[0], colorsPie[1]];
-        service.graficos.getGrafico(codgrafico, ubigeo, function (data) {
-            popupvalues.grafico = App.utils.highcharts.mediaLuna(data, options, false);
-            callback(options);
+    var indicadores = function (cod_categoria, ubigeo, callback) {
+        service.graficos.getIndicador(cod_categoria, ubigeo, function (data) {
+            callback(data);
         });
     };
 
     return {
-        mediaLuna: mediaLuna,
+        //mediaLuna: mediaLuna,
         popupMapa: popupMapa,
-        init: init
+        indicadores: indicadores,
+        //botonesTop: botonesTop,
+
+        init: init,
+        initIndicador: initIndicador
     }
 })(App.utils, App.service);
