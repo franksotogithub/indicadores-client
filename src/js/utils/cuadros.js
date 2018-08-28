@@ -1,11 +1,18 @@
 App.utils.cuadros = (function (config, appData, parent, service) {
     /** Atributos privados **/
+    var cuadrosData = {
+        categoria: "01",
+        ubigeo: "00",
+        poblacion: {
 
+        }
+    };
     /** Constructores **/
     var init = function (options) {
         this.vista = options.vista;
         if (options.vista == 'indicadores') {
             _initIndicadores(this, options.vista);
+            parent.graficos.initIndicador(this);
         }
         else if (options.vista == 'pobreza') {
             _initPobreza(this, options.vista);
@@ -126,14 +133,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _crearTabla= function (table, data, columns, targets) {
         $(".theadindicadores").show();
-        console.log("targets >>>>>>", targets.absoluto, targets.porcentual);
         return $(table).DataTable({
             data: data,
             order: [[0, 'asc']],
             columnDefs: [
                 {
                     targets: 0,
-                    
+
                     render: function (data, type, row) {
                         var orden = '';
                         if (appData.tituloIndicadores.hasOwnProperty(data)){
@@ -267,6 +273,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
         return {"absoluto": target_absoluto, "porcentual": target_porcentual};
     };
+
     /* publicos */
     var crearTablaUigeos = function (ubigeos, historico) {
         /*
@@ -318,7 +325,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     _this.tablaColumns,
                     _this.target
                 );
-                _this.tblIndicadores.fixedColumns().relayout();
+                //_this.tblIndicadores.fixedColumns().relayout();
                 $("#loadindicadores").hide();
             });
         };
@@ -397,13 +404,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var getContenidoPopupMapaEvent = function (options) {
 
+
         var data = {
             "titulo":  {"total": 876542, "text":"Población Censada"},
             "resumen": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
             "grafico": { }
         };
-        /*
-        parent.graficos.popupMapa(data, 'G00001', '00', {
+
+        parent.graficos.popupMapa(data, 'G000002', '00', {
             title: {
                 text: 'Total<br />personas',
                 align: 'center',
@@ -413,9 +421,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     fontSize: "14px"
                 }
             }
-        }, options.callback); */
+        }, options.callback);
 
-        options.callback(data);
+        //options.callback(data);
     };
 
     return {
@@ -435,6 +443,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         categoriaChangeEvent: categoriaChangeEvent,
         fixedColumnsRelayout: fixedColumnsRelayout,
         uiReabrirVentana: uiReabrirVentana,
-        getContenidoPopupMapaEvent: getContenidoPopupMapaEvent
+        getContenidoPopupMapaEvent: getContenidoPopupMapaEvent,
+        graficoCategoria: {},
+        cuadrosData: cuadrosData
     }
 })(AppConfig(), Appdata(), App.utils, App.service);
