@@ -210,16 +210,18 @@ App.utils.mapas = (function (parent, config,service) {
     var getAccesDirectMaps = function(){
         return [
             {id:1 ,
+                selectUbigeos:['07'],
                 where:"CCDD='07'",
                 indexLayer:2,
                 imagen:"callao.jpg"},
             {id:2 ,
-
-                where:"CCDD='15' AND CCPP='01' ",
+                selectUbigeos:['1501'],
+                where:"CCDD='15' AND CCPP='01'",
                 indexLayer:2,
                 imagen:"lima_metro.jpg"},
             {id:3 ,
-                where:"CCDD='15' AND CCPP<>'01' ",
+                selectUbigeos:['15'],
+                where:"CCDD='15' AND CCPP<>'01'",
                 indexLayer:1,
                 imagen:"lima_provincias.jpg"},
 
@@ -241,16 +243,7 @@ App.utils.mapas = (function (parent, config,service) {
         var content = document.createElement("div");
         var bloque1 = document.createElement("div");
         var bloque2 = document.createElement("div");
-        var data= {
-            "titulo":  {"total": 876542, "text":"Población Censada"},
-            "resumen": [ {"icon": "icon-user","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
-            "grafico": { }
-        }
 
-        var contenidoPopoverBloque1 = '<div class="titPopoverMap"><h3>876542</h3><p>Población Censada</p> </div> ' +
-            '<div class="pobGeneroPopoverMap">' +
-            '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user"></h3><p>467 135</p> </div>' +
-            '<div class="pobGeneroPopoverMapBlock"><h3 class="icon-user-female"></h3><p>447 895</p> </div></div>';
         ////////se declaran ids a los bloques
 
         ////////se agrega los bloques al content
@@ -267,12 +260,12 @@ App.utils.mapas = (function (parent, config,service) {
             });
             contenidoPopoverBloque1+='</div>';
             bloque1.innerHTML=contenidoPopoverBloque1;
-
+            console.log('datagrafico>>>',data.grafico);
             if(data.grafico!==undefined && data.grafico!=={}){
                 Highcharts.chart(bloque2, data.grafico);
             }
 
-        })
+        });
 
         return content;
     }
@@ -419,22 +412,34 @@ App.utils.mapas = (function (parent, config,service) {
 
     var uiMaxCallback =function () {
         var _this=parent.mapas;
+        /*
         var list_mini_maps=document.getElementById("listMiniMaps");
         _this.maximizado=true;
         visibilityAllChildDiv(_this.panelDiv,'visible');
         mostrarTodosMiniMaps();
         _this.view_map.popup.close();
-        _this.view_map.ui.move("widget-select-layer","top-left");
+        _this.view_map.ui.move("widget-select-layer","top-left");*/
+
+        //visibilityAllChildDiv(_this.panelDiv,'visible');
+
+        _this.panelDiv.style.display='inline';
+
     }
 
     var uiNormalCallback = function(){
+
         var _this=parent.mapas;
+        /*
+
         _this.maximizado=false;
         removerTodosMiniMaps();
         visibilityAllChildDiv(_this.panelDiv,'hidden');
         _this.cant_mini_maps=1;
         if(_this.opc_select=="select") _this.view_map.popup.visible=true;
-        _this.view_map.ui.move("widget-select-layer","top-right");
+        _this.view_map.ui.move("widget-select-layer","top-right");*/
+
+        _this.panelDiv.style.display='none';
+
     }
 
     var descargarMapaEvent = function(callback){
@@ -443,7 +448,6 @@ App.utils.mapas = (function (parent, config,service) {
             "esri/tasks/PrintTask",
             "esri/tasks/support/PrintTemplate",
             "esri/tasks/support/PrintParameters",
-
             "dojo/domReady!"
         ],function (PrintTask,PrintTemplate,PrintParameters){
             var _this=parent.mapas;
@@ -612,7 +616,6 @@ App.utils.mapas = (function (parent, config,service) {
         return renderOptionsSublayersBack;
     }
 
-
     var crearLegenda=function(data){
         var html=
             '<div class="esri-legend__service">'+
@@ -675,13 +678,17 @@ App.utils.mapas = (function (parent, config,service) {
         {
 
             var _this=parent.mapas;
-            var list_mini_maps=document.getElementById("listMiniMaps");
+            var listMiniMaps=document.getElementById("listMiniMaps");
+            var widgetProv=document.getElementById('widget-provincias');
+            var widgetDep=document.getElementById('widget-departamentos');
+            var widgetNacional=document.getElementById('widget-nacional');
+            var divListMaps=document.getElementById("div-list-maps");
+            var selectAll=document.getElementById("select-all");
 
-
-            _this.panelDivGrafico= document.getElementById("mapaGraficoPanel");
 
             list_maps=getAccesDirectMaps();
-            //_this.datosMap.classBreakinfos=optionsSublayers;
+
+
             /////////////*
             //
             // datos
@@ -699,8 +706,9 @@ App.utils.mapas = (function (parent, config,service) {
             url_prov=urlMap+'/1';
             url_dist=urlMap+'/2';
 
-            _this.panelDiv = document.getElementById("panel");
-            _this.panelDiv.style.visibility="hidden";
+
+            //_this.panelDiv.style.visibility="none";
+            //_this.panelDiv.style.visibility="none";
 
 
             _this.layer = new MapImageLayer({
@@ -778,6 +786,7 @@ App.utils.mapas = (function (parent, config,service) {
 
             sources=[
                 {
+
                     featureLayer: _this.historic_features[0].layer,
                     searchFields: ["NOMBDEP"],
                     displayField: "LITERAL",
@@ -799,16 +808,17 @@ App.utils.mapas = (function (parent, config,service) {
             ];
 
 
-            var div_list_maps=document.getElementById("div-list-maps");
-            div_list_maps.innerHTML='';
+
+            divListMaps.innerHTML='';
+
+
 
             list_maps.forEach(function (map,index) {
                 var newImg = document.createElement("img");
                 newImg.setAttribute("src",'/img/'+map.imagen);
                 newImg.classList.add("overviewDiv");
-
                 newImg.setAttribute("id","map_"+index);
-                div_list_maps.appendChild(newImg);
+                divListMaps.appendChild(newImg);
                 newImg.addEventListener("click",function (event) {
                     seleccionarAccesoRapido(index);
                 });
@@ -821,14 +831,11 @@ App.utils.mapas = (function (parent, config,service) {
 
             });
 
-
             _this.view_map.ui.add( _this.datosMap.divLegend, "bottom-left");
-            //_this.view_map.ui.add([searchWidget,"div-select-ubigeo","list-widgets"], "top-left");
-
-            _this.view_map.ui.add(["div-buscador-ubigeo","div-select-ubigeo","list-widgets"], "top-left");
-
+            _this.view_map.ui.add(["div-buscador-ubigeo","div-select-ubigeo","widget-select-layer","list-widgets"], "top-left");
+            //_this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
             _this.view_map.ui.add("list-maps", "bottom-right");
-            _this.view_map.ui.add(["widget-select-layer"], "top-right");
+            _this.view_map.ui.add(["panel"], "top-right");
             _this.view_map.ui.remove("zoom");
             _this.view_map.constraints.lods=lods;
 
@@ -926,8 +933,6 @@ App.utils.mapas = (function (parent, config,service) {
 
             }
 
-            _this.view_map.ui.add(_this.panelDiv, {position: "top-right"});
-
             /**
              * seleccion del feature
              * **/
@@ -970,8 +975,9 @@ App.utils.mapas = (function (parent, config,service) {
                     else { codigos_anteriores=_this.historic_features[_this.indexSubLayer-1].select_features}
 
                     _this.select_ubigeos=$.unique(_this.select_ubigeos.sort()).sort();
-                    App.mapasChangeEvent(_this.select_ubigeos,codigos_anteriores);
 
+                    console.log('select_ubigeos>>>',_this.select_ubigeos,'codigos_anteriores>>>',codigos_anteriores);
+                    App.mapasChangeEvent(_this.select_ubigeos,codigos_anteriores);
                 }
 
                 else
@@ -985,9 +991,15 @@ App.utils.mapas = (function (parent, config,service) {
             var seleccionarAccesoRapido=function(indexMap) {
                 select_all.style.display="block";
                 var index=list_maps[indexMap].indexLayer;
+                _this.select_ubigeos=list_maps[indexMap].selectUbigeos;
+                App.mapasChangeEvent(_this.select_ubigeos,["00"]);
+
                 changeLayer(index);
+
                 definitionExpression_gloabal=list_maps[indexMap].where;
                 updateMap(definitionExpression_gloabal,index,true);
+                desplegarWidgetsNavegacion(0);
+
             }
 
             var changeLayer=function(index){
@@ -1099,29 +1111,29 @@ App.utils.mapas = (function (parent, config,service) {
             var setLabelWidgetUbigeos = function(index) {
                 var nombres=_this.historic_features[index].nombres;
                 if(index==0) {
-                    document.getElementById('widget-departamentos').style.display = "block";
-                    document.getElementById('widget-provincias').style.display = "none";
+                    widgetDep.style.display = "block";
+                    widgetProv.style.display = "none";
                 }
 
                 else if (index==1){
-                    document.getElementById('widget-provincias').style.display = "block";
+                    widgetProv.style.display = "block";
                 }
 
 
                 if(nombres.length==1)
                 {
                     if (index==0)
-                    {document.getElementById("widget-departamentos").innerHTML=nombres[0]}
+                    {widgetDep.innerHTML=nombres[0]}
                     else if (index==1)
-                    {document.getElementById("widget-provincias").innerHTML=nombres[0]}
+                    {widgetProv.innerHTML=nombres[0]}
                 }
 
                 else if (nombres.length>1)
                 {
                     if (index==0)
-                    {document.getElementById("widget-departamentos").innerHTML='MULTIPLES <BR> DEPARTAMENTOS'}
+                    {widgetDep.innerHTML='MULTIPLES <BR> DEPARTAMENTOS'}
                     else if (index==1)
-                    {document.getElementById("widget-provincias").innerHTML='MULTIPLES <BR> PROVINCIAS'}
+                    {widgetProv.innerHTML='MULTIPLES <BR> PROVINCIAS'}
                 }
 
 
@@ -1197,36 +1209,32 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.view_map.graphics.removeAll();
                 _this.view_map.popup.close();
                 if (indexLayer==1){
-                    widget_prov.style.display = "none";
+                    widgetProv.style.display = "none";
                 }
 
                 else if(indexLayer==0){
-                    widget_prov.style.display = "none";
-                    widget_dep.style.display = "none";
+                    widgetProv.style.display = "none";
+                    widgetDep.style.display = "none";
                 }
                 select_all.style.display="none";
             }
 
-            var widget_prov=document.getElementById('widget-provincias');
 
-            var widget_dep=document.getElementById('widget-departamentos');
 
-            var widget_nacional=document.getElementById('widget-nacional');
-
-            widget_nacional.addEventListener("click", function(){
+            widgetNacional.addEventListener("click", function(){
                 changeLayer(0);
                 desplegarWidgetsNavegacion(0);
                 selectWidget(0);
 
             });
 
-            widget_dep.addEventListener("click", function(){
+            widgetDep.addEventListener("click", function(){
                 desplegarWidgetsNavegacion(1);
                 selectWidget(1);
                 //actualizarSelectUbigeo(_this.select_ubigeos);
             });
 
-            widget_prov.addEventListener("click", function(){
+            widgetProv.addEventListener("click", function(){
                 selectWidget(2);
                 //actualizarSelectUbigeo(_this.select_ubigeos);
             });
@@ -1238,9 +1246,8 @@ App.utils.mapas = (function (parent, config,service) {
              * **/
             var seleccionarVista = function (index) {
                 var i=parseInt(index);
-                var renderOptionSublayer= new Object();
-                cleanVars();
                 changeIndex(i);
+                selectWidget(0);
                 desplegarWidgetsNavegacion(0);
                 _this.layer.findSublayerById(i).definitionExpression="1=1";
                 _this.layerBack.findSublayerById(i).definitionExpression="1=1";
@@ -1256,6 +1263,7 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.layer.sublayers.items[i].labelsVisible=false; // se ocultan los labels
                     _this.layerBack.sublayers.items[i].labelsVisible=false; // se ocultan los labels
 
+
                 }
 
                 /**
@@ -1267,6 +1275,8 @@ App.utils.mapas = (function (parent, config,service) {
 
                 }
                 zoomToLayer(_this.view_map,_this.historic_features[0].layer,"1=1");
+
+
             }
 
 
@@ -1286,8 +1296,8 @@ App.utils.mapas = (function (parent, config,service) {
                 }
             });
 
-            document.getElementById("select-all").addEventListener("click", function(){
-                var checked=document.getElementById("select-all").checked;
+            selectAll.addEventListener("click", function(){
+                var checked=selectAll.checked;
                 selectAllFeatures(checked);
             });
             /**
@@ -1368,7 +1378,6 @@ App.utils.mapas = (function (parent, config,service) {
 
             var seleccionarUbigeoPorBuscador= function (feature,index) {
 
-                console.log('ubigeos seleccionados>>>',_this.select_ubigeos,index );
                 cleanVars();
                 if(index==1){
 
@@ -1531,6 +1540,9 @@ App.utils.mapas = (function (parent, config,service) {
         var list_mapas=[];
 
         var divLegend=document.getElementById("legendMap");
+        _this.panelDivGrafico= document.getElementById("mapaGraficoPanel");
+        _this.panelDiv= document.getElementById("panel");
+
 
         if (options.vista == 'indicadores') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
