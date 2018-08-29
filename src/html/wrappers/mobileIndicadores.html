@@ -1,0 +1,22 @@
+{% extends "../base_responsive.html" %}
+
+{% block wrapper %}
+<header class="widget-NavegacionBar ">
+    <div class="inputBuscador">
+        <input type="search">
+        <button><i class="material-icons">search</i></button>
+    </div>
+    <button><i class="material-icons">vertical_align_bottom</i></button>
+
+    <button data-block="1" class="active botonNavegar"><i class="material-icons">place</i></button>
+    <button data-block="2" class="botonNavegar"><i class="material-icons">equalizer</i></button>
+    <button data-block="3" class="botonNavegar"><i class="material-icons">assignment</i></button>
+    <button data-block="4" class="botonNavegar"><i class="material-icons">info</i></button>
+</header>
+<section class="block" data-block="1">1</section>
+<section class="block" data-block="2">2</section>
+<section class="block" data-block="3">3</section>
+<section class="block" data-block="4">4</section>
+
+
+{% endblock %}

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "gulp",
-    "scss": "node-sass src/css/vistas/dashinicial.scss -o src/css/vistas/"
+    "scss": "node-sass src/css/vistas/dashinicial.scss -o src/css/vistas/",
+    "mobile": "node-sass src/css/vistas/responsive.scss -o src/css/vistas/"
   },
   "keywords": [
     "indicadores",
