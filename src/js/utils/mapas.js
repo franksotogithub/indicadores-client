@@ -412,14 +412,14 @@ App.utils.mapas = (function (parent, config,service) {
 
     var uiMaxCallback =function () {
         var _this=parent.mapas;
+
         /*
-        var list_mini_maps=document.getElementById("listMiniMaps");
         _this.maximizado=true;
+        var list_mini_maps=document.getElementById("listMiniMaps");
         visibilityAllChildDiv(_this.panelDiv,'visible');
         mostrarTodosMiniMaps();
         _this.view_map.popup.close();
         _this.view_map.ui.move("widget-select-layer","top-left");*/
-
         //visibilityAllChildDiv(_this.panelDiv,'visible');
 
         _this.panelDiv.style.display='inline';
@@ -429,6 +429,7 @@ App.utils.mapas = (function (parent, config,service) {
     var uiNormalCallback = function(){
 
         var _this=parent.mapas;
+
         /*
 
         _this.maximizado=false;
@@ -808,7 +809,6 @@ App.utils.mapas = (function (parent, config,service) {
             ];
 
 
-
             divListMaps.innerHTML='';
 
 
@@ -992,13 +992,13 @@ App.utils.mapas = (function (parent, config,service) {
                 select_all.style.display="block";
                 var index=list_maps[indexMap].indexLayer;
                 _this.select_ubigeos=list_maps[indexMap].selectUbigeos;
+                actualizarSelectUbigeo(_this.select_ubigeos);
                 App.mapasChangeEvent(_this.select_ubigeos,["00"]);
-
                 changeLayer(index);
-
                 definitionExpression_gloabal=list_maps[indexMap].where;
                 updateMap(definitionExpression_gloabal,index,true);
                 desplegarWidgetsNavegacion(0);
+
 
             }
 
@@ -1057,7 +1057,9 @@ App.utils.mapas = (function (parent, config,service) {
             var selectAllFeatures=function(checked){
                 _this.select_ubigeos=[];
                 if (checked) {
+                    /*
                     var where="1=1";
+
                     if (_this.indexSubLayer==0){
                         where="1=1";
                         _this.historic_features[0].select_features=[];
@@ -1081,11 +1083,15 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression=where;
                     _this.select_ubigeos=selectFeaturesByQuery(where,_this.indexSubLayer);
                     parent.cuadros.crearTablaUigeos(_this.select_ubigeos);
+                    */
 
                 }
                 else {
                     _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression="1<>1";
                 }
+
+
+                //App.mapasChangeEvent(_this.select_ubigeos);
             }
 
             var updateMap = function(definitionExpression,index,opZoom) {
@@ -1135,8 +1141,6 @@ App.utils.mapas = (function (parent, config,service) {
                     else if (index==1)
                     {widgetProv.innerHTML='MULTIPLES <BR> PROVINCIAS'}
                 }
-
-
             }
 
             /**
