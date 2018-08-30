@@ -81,7 +81,15 @@ App.service.mapas = (function (parent, config) {
         })
 
     }
-    
+    var getUbigeosHijos = function (ubigeos,callback){
+        parent.get({
+            url: parent.getUrlServer('dimensiones/territorio/get_ubigeos_hijos/',{"u":ubigeos}),
+            success: function (data) {
+                callback(data);
+            }
+        })
+
+    }
     
 
     return {
@@ -90,7 +98,8 @@ App.service.mapas = (function (parent, config) {
         getMapas: getMapas,
         getMapa: getMapa,
         getDataGrafico: getDataGrafico,
-        getTerritorioSelect2:getTerritorioSelect2
+        getTerritorioSelect2:getTerritorioSelect2,
+        getUbigeosHijos:getUbigeosHijos
     }
 
 })(App.service, AppConfig());
