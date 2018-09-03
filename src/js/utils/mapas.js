@@ -565,7 +565,6 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-
     var getListSublayerTematico = function (optionsSublayers) {
         var _this=parent.mapas;
         var renderOptionSublayer = undefined;
@@ -645,8 +644,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
-
-
     var crearMapaRender = function (optionsSublayers) {
         require([
             "esri/Map",
@@ -718,7 +715,7 @@ App.utils.mapas = (function (parent, config,service) {
                 sublayers:  _this.datosMap.renderOptionsSublayers,
                 title: _this.datosMap.optionsSublayers[0].title,
                 "onsublayer-update": function (data,data2,data3) {
-                    //mostrarCargando();
+                    mostrarCargando();
                 },
             });
 
@@ -859,8 +856,6 @@ App.utils.mapas = (function (parent, config,service) {
                     });
                 }
             }
-
-
 
 
             var zoomToLayer=function(view,layer,definitionExpression) {
@@ -1055,43 +1050,36 @@ App.utils.mapas = (function (parent, config,service) {
              * Selecciona o deselecciona todos los features del layer especificado por el indexLayer
              * **/
             var selectAllFeatures=function(checked){
-                _this.select_ubigeos=[];
+                var i=_this.indexSubLayer;
+                var where='';
+                var codigosAnteriores=[];
+                if (i==0){
+                    where="1=1";
+                    codigosAnteriores=["00"];
+                }
+                else{
+                    where=getDefinitionExpresion(_this.historic_features[i-1].select_features,i-1);
+                    codigosAnteriores=_this.historic_features[i-1].select_features;
+                }
+
                 if (checked) {
-                    /*
-                    var where="1=1";
-
-                    if (_this.indexSubLayer==0){
-                        where="1=1";
-                        _this.historic_features[0].select_features=[];
-                        _this.historic_features[1].select_features=[];
-                        _this.historic_features[2].select_features=[];
-                    }
-                    else if(_this.indexSubLayer==1){
-
-                        where=getDefinitionExpresion(_this.historic_features[0].select_features,0);
-                        _this.historic_features[1].select_features=[];
-                        _this.historic_features[2].select_features=[];
-
-                    }
-
-                    else if (_this.indexSubLayer==2){
-                        where=getDefinitionExpresion(_this.historic_features[1].select_features,1);
-                        _this.historic_features[2].select_features=[];
-                    }
-
-
-                    _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression=where;
-                    _this.select_ubigeos=selectFeaturesByQuery(where,_this.indexSubLayer);
-                    parent.cuadros.crearTablaUigeos(_this.select_ubigeos);
-                    */
+                    _this.layer.findSublayerById(i).definitionExpression=where;
+                    service.mapas.getUbigeosHijos(codigosAnteriores,function (data){
+                        var datos=data.results;
+                        _this.select_ubigeos=[];
+                        datos.forEach(function (el) {
+                            _this.select_ubigeos.push(el.id);
+                        });
+                        App.mapasChangeEvent(_this.select_ubigeos,codigosAnteriores);
+                    })
 
                 }
                 else {
-                    _this.layer.findSublayerById(parseInt(_this.indexSubLayer)).definitionExpression="1<>1";
+                    _this.select_ubigeos=[];
+                    App.mapasChangeEvent(_this.select_ubigeos,codigosAnteriores);
+                    _this.layer.findSublayerById(parseInt(i)).definitionExpression="1<>1";
+
                 }
-
-
-                //App.mapasChangeEvent(_this.select_ubigeos);
             }
 
             var updateMap = function(definitionExpression,index,opZoom) {
@@ -1111,7 +1099,6 @@ App.utils.mapas = (function (parent, config,service) {
                     zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression);
 
             }
-
 
 
             var setLabelWidgetUbigeos = function(index) {
@@ -1255,8 +1242,6 @@ App.utils.mapas = (function (parent, config,service) {
                 desplegarWidgetsNavegacion(0);
                 _this.layer.findSublayerById(i).definitionExpression="1=1";
                 _this.layerBack.findSublayerById(i).definitionExpression="1=1";
-
-
                 /**
                  * Si la vista es provincial o distrital se oculatan los labels y se visualiza las limites departamentals
                  * **/
@@ -1307,8 +1292,6 @@ App.utils.mapas = (function (parent, config,service) {
             /**
              * Evento callback de busqueda
              * **/
-
-
 
 
             _this.$selectUbigeo.on('select2:select', function (e) {
@@ -1364,7 +1347,7 @@ App.utils.mapas = (function (parent, config,service) {
                 });
             _this.view_map.watch("animation", function(response){
                 if(response && response.state === "running"){
-                    $('#cargarMapaDiv').css('display','inline');
+                //    $('#cargarMapaDiv').css('display','inline');
                 }
 
             });
@@ -1444,8 +1427,6 @@ App.utils.mapas = (function (parent, config,service) {
 
                 });
 
-
-
             }
 
 
@@ -1457,7 +1438,6 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
     };
-
 
     var actualizarSelect2Ubigeo = function (data){
         var _this=parent.mapas;
