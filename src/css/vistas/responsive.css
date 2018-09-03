@@ -853,6 +853,9 @@ button {
 .marginLeft-25 {
   margin-left: 25px; }
 
+.floatRight {
+  float: right; }
+
 .mayusculas {
   text-transform: uppercase; }
 
@@ -1100,8 +1103,13 @@ footer > a {
 /* Componente Widget Navegacion Bar */
 .widget-NavegacionBar {
   display: block;
-  padding: 10px;
-  position: absolute; }
+  padding: 10px 0px;
+  position: absolute;
+  width: 100%; }
+  .widget-NavegacionBar > :first-child {
+    margin-left: 10px; }
+  .widget-NavegacionBar > :last-child {
+    margin-right: 10px; }
   .widget-NavegacionBar > div, .widget-NavegacionBar > button {
     display: inline-block; }
   .widget-NavegacionBar > div.inputBuscador {
@@ -1119,12 +1127,12 @@ footer > a {
       right: 0;
       background: #1b3c71;
       color: white;
-      padding: 7px 10px; }
-  .widget-NavegacionBar > button {
+      padding: 6px 10px; }
+  .widget-NavegacionBar > button, .widget-NavegacionBar .blockNavegacion > button {
     padding: 6px 10px;
     background-color: #e6e6e6;
     color: #1b3c71; }
-  .widget-NavegacionBar > button.active, .widget-NavegacionBar > button:hover {
+  .widget-NavegacionBar > button.active, .widget-NavegacionBar > button:hover, .widget-NavegacionBar .blockNavegacion > button.active, .widget-NavegacionBar .blockNavegacion > button:hover {
     background-color: #1b3c71;
     color: #ffffff; }
 
