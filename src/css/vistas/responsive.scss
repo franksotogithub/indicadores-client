@@ -345,10 +345,12 @@ $colorGris66: #4D4D4D;
 .marginLeft-20{margin-left: 20px}
 .marginLeft-25{margin-left:25px}
 
+.floatRight {float:right}
+
+
 .mayusculas {text-transform: uppercase;}
-.vAlignMid{
-  vertical-align: middle;
-}
+.vAlignMid{   vertical-align: middle;}
+
 
 
 
@@ -679,8 +681,15 @@ footer > a {
 
 .widget-NavegacionBar {
   display: $b;
-  padding: 10px;
+  padding: 10px 0px;
   position: absolute;
+  width:100%;
+  >:first-child {
+    margin-left:10px;
+  }
+  >:last-child{
+    margin-right: 10px;
+  }
   >div, >button {
     display: inline-block;
   }
@@ -700,17 +709,17 @@ footer > a {
       right: 0;
       background: #1b3c71;
       color: white;
-      padding: 7px 10px;
+      padding: 6px 10px;
     }
   }
 
-  >button{
+  >button , .blockNavegacion > button{
     padding: 6px 10px;
     background-color: #e6e6e6;
     color: #1b3c71;
 
   }
-  >button.active, >button:hover{
+  >button.active, >button:hover, .blockNavegacion > button.active , .blockNavegacion > button:hover{
     background-color: #1b3c71;
     color: #ffffff;
   }
