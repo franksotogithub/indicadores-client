@@ -90,7 +90,14 @@ App.service.mapas = (function (parent, config) {
         })
 
     }
-    
+    var ordenarListaUbigeosSeleccionados = function (ubigeos,callback){
+        parent.get({
+            url: parent.getUrlServer('mapa/ubigeos/ordenar_lista_ubigeos_seleccionados/',{"u":ubigeos}),
+            success: function (data) {
+                callback(data);
+            }
+        })
+    }
 
     return {
         legenda: undefined,
@@ -99,7 +106,8 @@ App.service.mapas = (function (parent, config) {
         getMapa: getMapa,
         getDataGrafico: getDataGrafico,
         getTerritorioSelect2:getTerritorioSelect2,
-        getUbigeosHijos:getUbigeosHijos
+        getUbigeosHijos:getUbigeosHijos,
+        ordenarListaUbigeosSeleccionados:ordenarListaUbigeosSeleccionados
     }
 
 })(App.service, AppConfig());
