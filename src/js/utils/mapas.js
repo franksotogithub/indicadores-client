@@ -989,6 +989,8 @@ App.utils.mapas = (function (parent, config,service) {
 
                     service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
                         console.log('ubigeosOrd>>>',ubigeosOrd);
+                        App.mapasChangeEvent(ubigeosOrd);
+
                     })
 
                     //generarListaUbigeosSeleccionados();
