@@ -923,7 +923,6 @@ body > header {
     display: inline-block;
     vertical-align: middle; }
   body > header > img {
-    padding-left: 25px;
     height: 70%; }
   body > header > h1 {
     font-size: 18px;
@@ -1117,9 +1116,9 @@ footer > a {
     position: relative;
     border: none; }
     .widget-NavegacionBar > div.inputBuscador > input {
-      border: none;
+      border: solid #3c5a8a 1px;
       outline: none;
-      padding: 9px;
+      padding: 8px 9px;
       margin-right: 42px; }
     .widget-NavegacionBar > div.inputBuscador > button {
       position: absolute;
@@ -1136,6 +1135,68 @@ footer > a {
     background-color: #1b3c71;
     color: #ffffff; }
 
+/* ComboTitulo con Barra de herramientas */
+.contentComboTitulos {
+  margin: 5px;
+  padding: 8px;
+  border: solid #CCC 1px;
+  position: relative;
+  padding-right: 55px;
+  cursor: pointer; }
+  .contentComboTitulos h5 {
+    height: 18px;
+    vertical-align: middle;
+    display: table-cell; }
+
+.botonDesplegarTitulos {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  width: 50px;
+  background: #1b3c71;
+  color: white; }
+
+.contentListaTitulos {
+  position: relative;
+  padding: 0px 8px;
+  width: 100%;
+  display: none; }
+  .contentListaTitulos ul {
+    position: absolute;
+    width: 100%;
+    left: -10px;
+    list-style: none;
+    margin: 0px;
+    padding: 0px 0px;
+    font-size: 14px;
+    top: 8px;
+    z-index: 1;
+    background-color: white; }
+    .contentListaTitulos ul li {
+      padding: 5px 8px;
+      cursor: pointer;
+      border-bottom: #CCC solid 1px; }
+    .contentListaTitulos ul li:hover {
+      background-color: #0079c9;
+      color: white; }
+
+.BarraHerramientas {
+  margin: 5px;
+  text-align: right; }
+  .BarraHerramientas button {
+    background-color: #e6e6e6;
+    padding: 5px 10px;
+    color: #1b3c71; }
+  .BarraHerramientas button:hover, .BarraHerramientas button.activeButton {
+    color: white;
+    background-color: #0079c9; }
+
 .block {
   display: none;
   background-color: white; }
+
+/* Responsive */
+@media screen and (max-width: 1020px) {
+  body > header h1 {
+    font-size: 14px; } }

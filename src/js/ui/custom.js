@@ -16,10 +16,10 @@ function altosAutomaticos(){
     });
     if(contador !== undefined){
         $('.contenedorMetadatos').css({"height":(altoVentana-572)+"px", "overflow":"auto"});
-        console.log(contador);
+        //console.log(contador);
     }else{
         $('.contenedorMetadatos').css({"height":(altoVentana-482)+"px", "overflow":"auto"});
-        console.log(contador);
+        //console.log(contador);
     }
 
 }
@@ -176,12 +176,18 @@ function restaurarImpresion(e) {
 
 function altoVentanas() {
     var alto = $(window).height();
+    var ancho = $(window).width();
 
-    alto = alto - 135;
+    /* Si es menor a 1281 se tiene que ocupar pantalla completa */
+    if(ancho < 1281){
+        alto = alto -48;
+    } else {
+        alto = alto - 135;
+    }
+
     $(".contenidoMapa").css("height",alto+"px");
     $(".contenidoCuadro").css("height",alto+"px");
     $(".contenidoGrafico").css("height",alto+"px");
-
 
 
 }
@@ -645,7 +651,9 @@ $(document).ready(function() {
     });
 
    
-
+    $(document).on('click','.menuResponsive', function () {
+        $('nav.nav-vertical').toggle();
+    });
 
     $('.contenedorVentana').on('click','.descargarGrafico', function() {
 
