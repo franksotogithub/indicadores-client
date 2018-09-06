@@ -203,6 +203,13 @@ button.ocultaBus{
     max-width: 415px;
 }
 
+td.tituloIndicador {
+    font-weight: bold !important;
+    text-indent: 0px;
+    /*white-space: nowrap;*/
+    min-width: 300px;
+    max-width: 415px;
+}
 
 
 .cuadroPobreza .DTFC_LeftWrapper th, .cuadroPobreza .dataTables_scrollHead th, .cuadroPobreza #tblindicadores th{
