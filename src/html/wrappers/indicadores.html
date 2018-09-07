@@ -2,11 +2,10 @@
 {% block menutitulo %} Principales indicadores {% endblock %}
 {% block wrapper %}
 
-<header class="widget-NavegacionBar " style="display: none">
-
-    <div class="col-5-10">
+<header class="widget-NavegacionBar navResponsiveIndicadores " style="display: none">
+    <div class="col-3-10" style="vertical-align: top">
         <div role="wraper" class="contentComboTitulos">
-            <h5 class="mayusculas">1.1 Población a través de los censos</h5>
+            <h5 class="mayusculas">Población</h5>
             <button class="botonDesplegarTitulos">
                 <i class="material-icons">
                     keyboard_arrow_down </i>
@@ -23,9 +22,15 @@
             </div>
         </div>
     </div>
-    <div class="inputBuscador">
-        <input type="search">
-        <button><i class="material-icons">search</i></button>
+
+
+    <div class="botonSim"><i class="material-icons">map</i>
+        <div class="contentBuscadorUbigeoResponsive" style="display: none">
+            <div class="inputBuscador">
+                <input type="search">
+                <button><i class="material-icons">search</i></button>
+            </div>
+        </div>
     </div>
     <button><i class="material-icons">vertical_align_bottom</i></button>
 

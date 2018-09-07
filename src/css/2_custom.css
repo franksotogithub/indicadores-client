@@ -705,6 +705,7 @@ td.ajustarAContenido {
 /* Componente Responsive navegacion */
 /* Componente Widget Navegacion Bar */
 .widget-NavegacionBar {
+    font-family: 'open_sansregular';
     display: block;
     padding: 10px 0px;
     /*position: absolute;*/
@@ -713,21 +714,21 @@ td.ajustarAContenido {
     margin-left: 10px; }
 .widget-NavegacionBar > :last-child {
     margin-right: 10px; }
-.widget-NavegacionBar > div, .widget-NavegacionBar > button {
+.widget-NavegacionBar > div, .widget-NavegacionBar > button, .botonSim {
     display: inline-block; }
-.widget-NavegacionBar > div.inputBuscador {
+.widget-NavegacionBar  div.inputBuscador {
     background: white;
     position: relative;
     border: none; }
-.widget-NavegacionBar > div.inputBuscador > input {
+.widget-NavegacionBar  div.inputBuscador > input {
     border: solid #3c5a8a 1px;
     outline: none;
     padding: 8px 9px;
     margin-right: 42px; }
-.widget-NavegacionBar > div.inputBuscador > button i {
+.widget-NavegacionBar  div.inputBuscador > button i {
     font-size: 20px;
 }
-.widget-NavegacionBar > div.inputBuscador > button {
+.widget-NavegacionBar  div.inputBuscador > button {
     position: absolute;
     top: 0;
     right: 0;
@@ -735,21 +736,33 @@ td.ajustarAContenido {
     color: white;
 
     padding: 6px 12px; }
-.widget-NavegacionBar > button, .widget-NavegacionBar .blockNavegacion > button {
+.widget-NavegacionBar > button, .widget-NavegacionBar .blockNavegacion > button, .botonSim {
     padding: 6px 10px;
     background-color: #e6e6e6;
-    color: #1b3c71; }
-.widget-NavegacionBar > button.active, .widget-NavegacionBar > button:hover, .widget-NavegacionBar .blockNavegacion > button.active, .widget-NavegacionBar .blockNavegacion > button:hover {
+    color: #1b3c71;
+    box-shadow: #999999 0 0 5px;
+}
+.botonSim:hover , .widget-NavegacionBar > button.active, .widget-NavegacionBar > button:hover, .widget-NavegacionBar .blockNavegacion > button.active, .widget-NavegacionBar .blockNavegacion > button:hover {
     background-color: #1b3c71;
+    cursor: pointer;
     color: #ffffff; }
+
+.contentBuscadorUbigeoResponsive {
+    position: absolute;
+    z-index: 99;
+    padding: 10px;
+}
+
+
 
 /* ComboTitulo con Barra de herramientas */
 .contentComboTitulos {
-    margin: 5px;
+    background: white;
     padding: 8px;
     border: solid #CCC 1px;
     position: relative;
     padding-right: 55px;
+    box-shadow: #999999 0 0 5px;
     cursor: pointer; }
 .contentComboTitulos h5 {
     height: 18px;
@@ -1078,6 +1091,20 @@ td.ajustarAContenido {
 
 @media screen and (max-width: 1281px) {
 
+    #div-buscador-ubigeo, #div-select-ubigeo {
+        opacity: 0;
+    }
+    #widget-select-layer{
+        display: none;
+    }
+    .floatRight {float: right;}
+    header.navResponsiveIndicadores {
+        display: block !important;
+        text-align:left;
+        position: absolute;
+        z-index: 99;
+
+    }
     body div.sectMenuBarTitulo { display: none ;}
     body div.secLogoTitulo{ width:100%;}
     /* Contenedor principal */
