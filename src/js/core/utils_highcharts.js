@@ -66,9 +66,9 @@ App.utils.highcharts = (function (service, config) {
             pie: {
                 dataLabels: {
                     enabled: true,
+                    format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
                     x:0,
                     y: 70,
-                    format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
                     distance: -10,
                     style: {
                         fontWeight: 'bold',
@@ -76,7 +76,6 @@ App.utils.highcharts = (function (service, config) {
                         textShadow: null,
                         textOutline: 0,
                         fontSize: "14px"
-
                     }
                 },
                 startAngle: -90,
@@ -89,7 +88,14 @@ App.utils.highcharts = (function (service, config) {
             if (typeof options === 'string' ) {
                 plote.pie.dataLabels.format = options;
             }else {
-                plote = _optionsJson(tooltip, options);
+                plote = _optionsJson(plote, options);
+                /* Revisar el particionado */
+                if (plote.pie !== undefined) {
+                    plote.pie.startAngle = -90;
+                    plote.pie.endAngle = 90;
+                    plote.pie.center = ['50%', '65%'];
+
+                }
             }
         }
         return plote;
@@ -165,7 +171,7 @@ App.utils.highcharts = (function (service, config) {
             },
             title: _chartsTitle(options.title),
             tooltip: _chartsTooltip(options.tooltip),
-            plotOptions: ploteMediaLuna(options.plot),
+            plotOptions: ploteMediaLuna(options.plotOptions),
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
             series: [{
                 innerSize: '50%',

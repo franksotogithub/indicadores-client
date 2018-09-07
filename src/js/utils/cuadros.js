@@ -155,7 +155,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                         if (appData.tituloIndicadores.hasOwnProperty(cellData)){
                             var v = appData.tituloIndicadores[cellData];
                             if (v.cod_nivel_tematico == 2) {
-                                $(td).addClass('tituloIndicador ajustarAContenido');
+                                $(td).addClass('tituloIndicador');
                             }
 
 
@@ -347,7 +347,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.tblIndicadores.destroy();
             //this.tblIndicadores.clear().draw();
         }
-        console.log("tabla categoria >>>", this.target);
+
         this.tblIndicadores = _crearTabla(
             '#tblindicadores',
             service.cuadros.indicadores[App.categoria],
@@ -360,17 +360,20 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var mapasChangeEvent = function (options) {
+
         var _this = this;
-        console.log(">>>> ejecutar evento --> mapasChangeEvent");
         if (this.timeClikMap !== undefined) {
             clearTimeout(this.timeClikMap);
         }
 
         this.timeClikMap = setTimeout(function(){
-            console.log(">>>> ejecutar timeout ---> mapasChangeEvent");
-            _this.crearTablaUigeos(options.ubigeo, options.historico);
+            _this.crearTablaUigeos(options.ubigeo, []);
             _this.timeClikMap = undefined;
         }, 1200);
+
+        this.cuadrosData.ubigeo = options.ubigeo.slice()[0];
+        parent.graficos.comboIndicaDores(options.ubigeo);
+        parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
 
     var uiMaxCallback = function (options) {
@@ -399,7 +402,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var categoriaChangeEvent = function (options) {
-        this.crearTablaCategoria(options.categoria);
+        // Fixme: temporalmente se quitara el P para dejar solo 2 digitos de codigo
+        var categoria = options.categoria.substring(1,3);
+        this.cuadrosData.categoria = categoria;
+        this.crearTablaCategoria(categoria);
+        parent.graficos.indicadores(this);
+
     };
 
     var getContenidoPopupMapaEvent = function (options) {
@@ -411,14 +419,24 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             "grafico": { }
         };
 
-        parent.graficos.popupMapa(data, 'G000002', '00', {
+        parent.graficos.popupMapa(data, '002', '00', {
             title: {
-                text: 'Total<br />personas',
-                align: 'center',
-                verticalAlign: 'middle',
-                y: 0,
-                style: {
-                    fontSize: "14px"
+                text: ''
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                        x:0,
+                        y: 50,
+                        distance: -10,
+                        style: {
+                            textShadow: null,
+                            textOutline: 0,
+                            fontSize: "10px"
+                        }
+                    }
                 }
             }
         }, options.callback);

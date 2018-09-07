@@ -19,8 +19,11 @@ var config = {
             return this.src + 'html/wrappers/*.html'
         },
         js:   function () {
-            return [ this.src+'js/location/*.js', this.src+'js/ui/*.js', this.src+'js/config.js', this.src+'js/data.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
+            return [ this.src+'js/location/*.js', this.src+'js/config.js', this.src+'js/data.js', this.src+'js/app.js', this.src+'js/core/*.js', this.src+'js/services/*.js',
                 this.src+'js/utils/*.js', this.src+'js/events/*.js']
+        },
+        uijs: function () {
+          return [this.src+'js/ui/*.js']
         },
         css:  function () {
             return [this.src + 'css/*.css']
@@ -139,6 +142,14 @@ gulp.task('js', function () {
         .pipe(browserSync.reload({stream:true}));
 });
 
+gulp.task('uijs', function () {
+    return gulp.src(config.source.uijs())
+        //.pipe(concat(config.output.concat.js))
+        //.pipe(config.debug ? util.noop() : uglify())
+        //.pipe(config.debug ? util.noop() : stripDebug())
+        .pipe(gulp.dest(config.output.js()))
+        .pipe(browserSync.reload({stream:true}));
+});
 
 /* IMAGENES */
 gulp.task('img', function () {
@@ -195,4 +206,4 @@ gulp.task('browser-sync', ['html', 'css', 'js'], function() {
 
 gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg', 'asslibs']);
 
-gulp.task('default', ['html', 'css', 'vistascss', 'js', 'img', 'assets', 'browser-sync']);
+gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'img', 'assets', 'browser-sync']);

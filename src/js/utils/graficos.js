@@ -1,4 +1,4 @@
-App.utils.graficos = (function (parent, service) {
+App.utils.graficos = (function (parent, service, appData) {
 
     var directionPieGradient = {
         x1: 0,
@@ -25,20 +25,21 @@ App.utils.graficos = (function (parent, service) {
         ]
     }];
 
-    var botonesTop = function (botones) {
+    var botonesTop = function (uiId, botones) {
         var b;
         var html = '';
         for (b in botones) {
             var boton = botones[b];
-            html += _htmlBotonesTop(["", boton.name, parent.numberFormat(boton.y)]);
+            html += _htmlBotonesTop([boton.adicional, boton.name, parent.numberFormat(boton.y)]);
         }
 
-        $("#id_graficoWidget_top").html(html);
+        //$("#id_graficoWidget_top").html(html);
+        $("#"+uiId).html(html);
     };
 
-    var mediaLunaPoblacion = function (data) {
+    var mediaLunaPoblacion = function (uiId, data) {
         var options = {
-            uiId: 'grafico_1_c01',
+            uiId: uiId,
             title: {
                 text: 'Total<br />personas',
                 align: 'center',
@@ -50,49 +51,19 @@ App.utils.graficos = (function (parent, service) {
             }
         };
         options.colors = [colorsPie[0], colorsPie[1]];
+        console.log("media luna >>><", data);
         App.utils.highcharts.mediaLuna(data, options);
     };
 
     var graficosIndicadores = {
-        "G000001": botonesTop,
-        "G000002": mediaLunaPoblacion
+        "001": { "callback": botonesTop, "tipo": 1},
+        "002": { "callback": mediaLunaPoblacion, "tipo": 2}
     };
 
-    var init = function () {
-        /*
-            $(".sliderDiv").html();
-            $(".sliderDiv").append('<div id="grafico_1_c1" class="graficoElementSlider" ></div>');
-
-            this.mediaLuna('G00001', '00', {
-                uiId: 'grafico_1_c1',
-                title: {
-                    text: 'Total<br />personas',
-                    align: 'center',
-                    verticalAlign: 'middle',
-                    y: 0,
-                    style: {
-                        fontSize: "14px"
-                    }
-                }
-            });
-
-        */
-    };
+    var init = function () {};
 
     var initIndicador = function (indicador) {
-        var categoria = indicador.cuadrosData.categoria;
-        this.indicadores(categoria, indicador.cuadrosData.ubigeo, function (data) {
-            $(".sliderDiv").html("");
-            indicador.graficoCategoria[categoria] = data;
-            var g;
-            var c=0;
-            for (g in data) {
-                c++;
-                var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
-                $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider"></div>');
-                graficosIndicadores[g](data[g]);
-            }
-        })
+        this.indicadores(indicador.cuadrosData.categoria, indicador.cuadrosData.ubigeo);
     };
 
     var _htmlBotonesTop = function (options) {
@@ -115,9 +86,46 @@ App.utils.graficos = (function (parent, service) {
         });
     };
 
-    var indicadores = function (cod_categoria, ubigeo, callback) {
-        service.graficos.getIndicador(cod_categoria, ubigeo, function (data) {
-            callback(data);
+    var comboIndicaDores = function (ubigeos) {
+        console.log(">>> combo", ubigeos);
+        $("#cmb_ubigeo select").html("");
+        if (ubigeos.length > 1) {
+            var html = '';
+            var u;
+            for (u in ubigeos) {
+                html += parent.format('<option value="{0}">{1}</option>', [ubigeos[u], appData.titulo["U"+ubigeos[u]]]);
+            }
+
+            console.log("html combo>>> ", html);
+            $("#cmb_ubigeo select").html(html);
+            $("#cmb_ubigeo").show();
+        }else {
+            $("#cmb_ubigeo").hide();
+        }
+    };
+
+    var indicadores = function (categoria, ubigeo, ubigeos) {
+        //var categoria = indicador.cuadrosData.categoria;
+        $(".sliderDiv").html("");
+        service.graficos.getIndicador(categoria, ubigeo, function (data) {
+            //indicador.graficoCategoria[categoria] = data;
+            var g;
+            var c=0;
+            for (g in data) {
+                var grafico = graficosIndicadores[g];
+                if (grafico.tipo== 1) {
+                    var uiId = "id_graficoWidget_top";
+                }else {
+                    c++;
+                    var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
+                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider"></div>');
+                }
+
+                // Invocar al callback por cada grafico
+                grafico['callback'](uiId, data[g]);
+
+
+            }
         });
     };
 
@@ -125,9 +133,8 @@ App.utils.graficos = (function (parent, service) {
         //mediaLuna: mediaLuna,
         popupMapa: popupMapa,
         indicadores: indicadores,
-        //botonesTop: botonesTop,
-
+        comboIndicaDores: comboIndicaDores,
         init: init,
         initIndicador: initIndicador
     }
-})(App.utils, App.service);
+})(App.utils, App.service, Appdata());

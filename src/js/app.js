@@ -149,7 +149,7 @@ var App = (function (scope, config, appData) {
      */
     var uiMaxCallbackDashBoardEvent= function (bloque,vista) {
         _hasUtils(this, 'uiMaxCallbackDashBoardEvent', {"bloque": bloque , "vista": vista}, ['dashboard', 'mapasDashBoard']);
-    }
+    };
 
     /**
      * Restaurar ventana de dashboard
@@ -170,7 +170,7 @@ var App = (function (scope, config, appData) {
 
     return {
         ambito: 'nacional',
-        categoria: 'P01',
+        categoria: '01',
         ubigeo: '00',
         uiMax: uiMax,
         init: init,

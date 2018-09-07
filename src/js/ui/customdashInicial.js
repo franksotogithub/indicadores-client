@@ -255,6 +255,7 @@ $(document).ready(function(){
         App.uiMaxCallbackDashBoardEvent(bloque,vista);
         //console.log('maximizado-->',_this);
     });
+
     $('.ventana').on('click','button.locationInfo', function() {
         $(this).find('div.boxInfoMap').toggle();
     });
