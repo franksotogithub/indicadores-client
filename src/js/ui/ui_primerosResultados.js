@@ -292,9 +292,10 @@ $(document).ready(function(){
         COMBOTOOLSBOX.event.desplegarLista(_this);
     });
     */
-    $('.widget-vistaInteractiva-comboToolsBox').on('click','div.contentComboTitulos', function() {
+    $(document).on('click','div.contentComboTitulos', function() {
         var _this= $(this);
         COMBOTOOLSBOX.event.desplegarListaContent(_this);
+        console-log(_this);
     });
 
 
