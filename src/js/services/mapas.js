@@ -83,7 +83,7 @@ App.service.mapas = (function (parent, config) {
     }
     var getUbigeosHijos = function (ubigeos,callback){
         parent.get({
-            url: parent.getUrlServer('dimensiones/territorio/get_ubigeos_hijos/',{"u":ubigeos}),
+            url: parent.getUrlServer('mapa/territorio/get_ubigeos_hijos/',{"u":ubigeos}),
             success: function (data) {
                 callback(data);
             }
@@ -92,7 +92,17 @@ App.service.mapas = (function (parent, config) {
     }
     var ordenarListaUbigeosSeleccionados = function (ubigeos,callback){
         parent.get({
-            url: parent.getUrlServer('mapa/ubigeos/ordenar_lista_ubigeos_seleccionados/',{"u":ubigeos}),
+            url: parent.getUrlServer('mapa/territorio/ordenar_lista_ubigeos_seleccionados/',{"u":ubigeos}),
+            success: function (data) {
+                callback(data);
+            }
+        })
+    }
+
+
+    var getUbigeos = function (ubigeos,callback) {
+        parent.get({
+            url: parent.getUrlServer('mapa/territorio/get_ubigeos/',{"u":ubigeos}),
             success: function (data) {
                 callback(data);
             }
@@ -107,7 +117,8 @@ App.service.mapas = (function (parent, config) {
         getDataGrafico: getDataGrafico,
         getTerritorioSelect2:getTerritorioSelect2,
         getUbigeosHijos:getUbigeosHijos,
-        ordenarListaUbigeosSeleccionados:ordenarListaUbigeosSeleccionados
+        ordenarListaUbigeosSeleccionados:ordenarListaUbigeosSeleccionados,
+        getUbigeos:getUbigeos
     }
 
 })(App.service, AppConfig());
