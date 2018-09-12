@@ -210,11 +210,9 @@ App.utils.mapas = (function (parent, config,service) {
         return renderer;
     };
 
-
-
     var getAccesDirectMaps = function(callbackAccesoDirecto ){
         var dataReturn=[];
-        var ubigeosAccesos=['07','26','27'];
+        var ubigeosAccesos=['07','26','27'];  // ubigeos accesos directos
 
         service.mapas.getUbigeos(ubigeosAccesos,function (data) {
             data.forEach(function (el,index) {
@@ -276,7 +274,6 @@ App.utils.mapas = (function (parent, config,service) {
         }else if(tamW <= 714){zoom=4;}
         return zoom;
     }
-
 
     var createContentPopup= function (ubigeo,codTematico) {
         var content = document.createElement("div");
@@ -404,7 +401,6 @@ App.utils.mapas = (function (parent, config,service) {
         });
     }
 
-
     var insertarNuevoMiniMapa = function (ubigeo) {
         var _this=parent.mapas;
         var index=_this.indexSubLayer
@@ -429,7 +425,6 @@ App.utils.mapas = (function (parent, config,service) {
             _this.cant_mini_maps++;
         }
     }
-
 
     var removerMiniMapa = function (ubigeo){
         var _this=parent.mapas;
@@ -476,6 +471,7 @@ App.utils.mapas = (function (parent, config,service) {
     //}
     var uiMaxCallback= undefined;
     var uiNormalCallback= undefined;
+    var actualizarMapaPorUbigeos = undefined;
 
     var descargarMapaEvent = function(callback){
         require([
@@ -527,7 +523,7 @@ App.utils.mapas = (function (parent, config,service) {
     };
 
 
-    var getFeaturesUbigeos= function(queryText,index,callback){
+    var getFeaturesUbigeos = function(queryText,index,callback){
         _this=parent.mapas;
         require(["esri/layers/FeatureLayer","esri/Graphic","esri/tasks/support/Query","esri/tasks/QueryTask","dojo/domReady!"],function (FeatureLayer,Graphic,Query,QueryTask) {
             var queryTask = new QueryTask({
@@ -546,6 +542,30 @@ App.utils.mapas = (function (parent, config,service) {
             });
         });
     }
+
+    ///agrega un sombreado de un ubigeo
+    //ejemplo: seleccionarUbigeo(options)   : options.ubigeo=[
+
+    var seleccionarUbigeosMapa = function (options) {
+        _this=parent.mapas;
+        var ubigeos=options.ubigeos;
+        var index=options.nivel;
+
+        require(["esri/layers/FeatureLayer","esri/Graphic","dojo/domReady!"],function (FeatureLayer,Graphic) {
+            var queryText=getDefinitionExpresion(ubigeos,index);
+            _this.view_map.graphics.removeAll();
+            getFeaturesUbigeos(queryText,index,function (features) {
+                features.forEach( function (feature) {
+                    var graphic= new Graphic({
+                            geometry : feature.geometry,
+                            symbol: symbolSombreado,
+                    });
+                    _this.view_map.graphics.add(graphic);
+                });
+            });
+        });
+    }
+
 
     /*
     var uiMouseOverTabla = function (options){
@@ -691,6 +711,8 @@ App.utils.mapas = (function (parent, config,service) {
         });
 
     }
+
+
 
 
     var crearMapaRender = function (optionsSublayers) {
@@ -879,7 +901,7 @@ App.utils.mapas = (function (parent, config,service) {
                         ubigeosHijos=map.hijos;
                         seleccionarAccesoRapido(map.hijos,map.nivelHijo);
                         actualizarDatosComboUbigeo(dataSelect2);
-                        _this.historic_features[0].select_features=[map.ubigeo];
+                        _this.historic_features[map.nivel].select_features=[map.ubigeo];
                         actualizarTablasyGraficos([map.ubigeo],[map.ubigeo],map.nivel);
                     });
                  });
@@ -901,9 +923,15 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.view_map.ui.move("widget-select-layer","top-right");*/
                 _this.panelDiv.style.display='none';
                 _this.maximizado=false;
+
             }
 
 
+            _this.actualizarMapaPorUbigeos = function (options) {
+                seleccionarAccesoRapido(options.ubigeos,options.nivel);
+                actualizarComboUbigeo(options.ubigeos);
+
+            }
 
             /**
              * funcion que actualiza el mapa con algun acceso rapido seleccionado
@@ -911,13 +939,11 @@ App.utils.mapas = (function (parent, config,service) {
             var seleccionarAccesoRapido=function(selectUbigeos,indexLayer) {
                 var where='';
                 where=getDefinitionExpresion(selectUbigeos,indexLayer);
-
                 definitionExpression_gloabal=where;
-                updateMap(where,indexLayer,true);
-                //desplegarWidgetsNavegacion(0);
-                desplegarWidgetsNavegacion(0);
-                changeLayer(indexLayer);
-                wigdetSelectAll.style.display="none";
+                updateMap(where,indexLayer,true);  // actualizando el mapa
+                desplegarWidgetsNavegacion(0);  //limpiando widgets
+                changeLayer(indexLayer);  // cambiado la capa del mapa
+                wigdetSelectAll.style.display="none"; // ocultando el checkbox de seleccion completa
             }
 
             searchWidget = new Search({
@@ -1549,7 +1575,6 @@ App.utils.mapas = (function (parent, config,service) {
         });
     }
 
-
     var actualizarComboUbigeo=function(ubigeos){ //
         var results= new Object();
         results["results"]='';
@@ -1688,7 +1713,9 @@ App.utils.mapas = (function (parent, config,service) {
         uiMouseOutTabla:uiMouseOutTabla,
         VALORES_STATIC: VALORES_STATIC,
         $selectUbigeo: $selectUbigeo,
-        ubigeos: ubigeos
+        ubigeos: ubigeos,
+        actualizarMapaPorUbigeos:actualizarMapaPorUbigeos,
+        seleccionarUbigeosMapa: seleccionarUbigeosMapa
     }
 
 })(App.utils, AppConfig() ,App.service );
