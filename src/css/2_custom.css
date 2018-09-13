@@ -715,7 +715,7 @@ td.ajustarAContenido {
 .widget-NavegacionBar > :last-child {
     margin-right: 10px; }
 .widget-NavegacionBar > div, .widget-NavegacionBar > button, .botonSim {
-    display: inline-block; }
+    display: inline-block; position: relative;}
 .widget-NavegacionBar  div.inputBuscador {
     background: white;
     position: relative;
@@ -751,6 +751,9 @@ td.ajustarAContenido {
     position: absolute;
     z-index: 99;
     padding: 10px;
+    left: 0;
+    top: 39px;
+    background-color:#e6e6e6 ;
 }
 
 

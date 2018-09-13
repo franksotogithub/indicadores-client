@@ -138,7 +138,29 @@ $(document).ready(function () {
     $(document).on('click', function(e) {
         COMBOTOOLSBOX.event.replegarLista(e);
     });
+    $(document).on('click','.botonSim', function(e) {
+        var _this = $(this);
+        var buscador = _this.find('.contentBuscadorUbigeoResponsive');
 
 
+        var excluir = buscador;
+
+
+        if ( !excluir.is(e.target) && excluir.has(e.target).length === 0) {
+            console.log("aqui no puede entrar");
+            if(buscador.is(":visible")){
+                console.log("estas abierto");
+                buscador.toggle();
+            }else{
+                buscador.toggle();
+            }
+
+        }else{
+            console.log("No abrira ");
+
+        }
+
+
+    });
 
 });

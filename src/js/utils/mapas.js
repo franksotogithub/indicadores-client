@@ -1491,8 +1491,8 @@ App.utils.mapas = (function (parent, config,service) {
                 }
             }
 
-            var actualizarBuscador = function (){
-                $('#buscador-ubigeo').autocomplete({
+            var actualizarBuscador = function (buscador){
+                $(buscador).autocomplete({
                     serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
                     onSelect: function (Response) {
                         var ubigeo=Response.data;
@@ -1557,7 +1557,9 @@ App.utils.mapas = (function (parent, config,service) {
             setInterval(ocultarCargando,1000);
             changeLayer(0);
             actualizarComboUbigeo(_this.select_ubigeos);
-            actualizarBuscador();
+
+            actualizarBuscador('#buscador-ubigeo');
+            actualizarBuscador('#buscador-ubigeo2');
             desplegarWidgetsNavegacion(0);
         });
 
