@@ -97,9 +97,27 @@ $(document).ready(function () {
     var altoVentana = $(window).height();
     $(document).on('click','.widget-NavegacionBar > div button.botonNavegar', function() {
         var _this= $(this);
-        var block = _this.attr('data-block');
+        var ventana = _this.attr('data-codevent');
         _this.addClass('active').siblings('button').removeClass('active');
-        $('section.block[data-block='+block+']').show().siblings('section.block').hide();
+
+            var infoGrapf = _this.attr('data-disc');
+            if(infoGrapf == "graph"){
+                $("#id_graficoWidget_top").removeClass("off").addClass("on");
+                $("#contenedor_grafico").removeClass("off").addClass("onInline");
+                $(".widgetMetadatos").removeClass("on").addClass("off");
+
+            }else {
+                $("#id_graficoWidget_top").removeClass("on").addClass("off");
+                $("#contenedor_grafico").removeClass("onInline").addClass("off");
+                $(".widgetMetadatos").removeClass("off").addClass("on");
+            }
+
+            $('div.contenedorVentana[data-codevent='+ventana+']').removeClass("off").addClass("on").siblings('div' +
+                '.contenedorVentana').removeClass("on").addClass("off");
+
+
+
+        console.log(ventana);
     });
 
     $('section.block').css('height',(altoVentana-60)+'px');

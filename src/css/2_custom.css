@@ -759,7 +759,7 @@ td.ajustarAContenido {
 .contentComboTitulos {
     background: white;
     padding: 8px;
-    border: solid #CCC 1px;
+
     position: relative;
     padding-right: 55px;
     box-shadow: #999999 0 0 5px;
@@ -767,7 +767,10 @@ td.ajustarAContenido {
 .contentComboTitulos h5 {
     height: 18px;
     vertical-align: middle;
-    display: table-cell; }
+    display: table-cell;
+    line-height:22px;
+}
+
 
 .botonDesplegarTitulos {
     position: absolute;
@@ -810,7 +813,9 @@ td.ajustarAContenido {
 .BarraHerramientas button {
     background-color: #e6e6e6;
     padding: 5px 10px;
-    color: #1b3c71; }
+    color: #1b3c71;
+    height: 32px;
+}
 .BarraHerramientas button:hover, .BarraHerramientas button.activeButton {
     color: white;
     background-color: #0079c9; }
@@ -867,8 +872,36 @@ td.ajustarAContenido {
 }
 
 
+.busquedaCuadro {
+    width: 100%;
+
+    position: relative;
+    font-family: "signikaregular";
+    display: block;
+}
+
+.widgetMetadatos {
+    border-top: #D0E6F0 solid 10px;
+    font-family: "signikaregular";
+    padding: 10px;
+    text-align: right;
+}
 
 
+body *.off {
+    display:none !important;
+}
+
+body *.on {
+    display:block !important;
+}
+body *.onInline{
+    display: inline-block !important;
+}
+
+.textoBotonTop {
+    font-size: 14px;
+}
 
 
 /* Responsive */
@@ -1090,6 +1123,21 @@ td.ajustarAContenido {
 }
 
 @media screen and (max-width: 1281px) {
+    .widgetMetadatos{
+        border-top:none;
+        display: none;
+    }
+
+    #id_graficoWidget_top,#contenedor_grafico{
+        display: none;
+    }
+    #tabsCategoria, .busquedaCuadro {
+        display: none;
+    }
+
+    .cuadroMinimizado{
+        margin-top: 60px;
+    }
 
     #div-buscador-ubigeo, #div-select-ubigeo {
         opacity: 0;
@@ -1103,6 +1151,7 @@ td.ajustarAContenido {
         text-align:left;
         position: absolute;
         z-index: 99;
+        top: 52px;
 
     }
     body div.sectMenuBarTitulo { display: none ;}
@@ -1111,9 +1160,15 @@ td.ajustarAContenido {
     .contenedorVentana > section > header {
         display: none;
     }
-    .contenedorVentana {
+    div[class^='col-'].contenedorVentana {
         width:100%;
+        display: block ;
     }
+    div.contenedorVentana {
+        width:100%;
+        display: block ;
+    }
+
     .contenedorVentana > section {
         margin: 0px;
     }
@@ -1126,6 +1181,10 @@ td.ajustarAContenido {
     }
     button.menuResponsive {
         display: inline-block;
+    }
+    .contenidoGrafico {
+        padding-top: 55px;
+        width: 100%;
     }
 
 }

@@ -43,16 +43,37 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'">'+dato.titulo+'</button>';
         };
 
+            // Agregado por DMK
+
+            var listaTemplate = function (dato) {
+                var clase='';
+                if (dato.esActivo) {
+                    clase = 'selected';
+                }
+                return '<li data-selected="'+clase+'" data-categoria="'+dato.codigo+'">'+dato.titulo+'</li>';
+            };
+
+
         var html = '';
+        var html2 = '';
         for (var i=0;i<datos.length;i++) {
             if (datos[i]["sistema"] == vista) {
                 html += tabsTemplate(datos[i]);
+                html2 += listaTemplate(datos[i]);
             }
-
         }
 
         $("#tabsCategoria").html(html);
+        $("#comboCategoria ul").html(html2);
+
+
+
     };
+
+
+
+
+
 
     var _cabeceraTemplate = function (ubigeo) {
         return {

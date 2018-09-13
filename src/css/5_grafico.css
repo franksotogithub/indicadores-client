@@ -44,12 +44,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0 );
 }
 
-.widgetMetadatos {
-    border-top: #D0E6F0 solid 10px;
-    font-family: "signikaregular";
-    padding: 10px;
-    text-align: right;
-}
+
 
 .widgetMetadatos h1 {
     text-align: right;

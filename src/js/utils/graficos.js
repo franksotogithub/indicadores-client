@@ -71,7 +71,7 @@ App.utils.graficos = (function (parent, service, appData) {
             '<div><span class="{0}"></span></div>'+
             '<div>'+
             '<div class="">{1}</div>'+
-            '<div id="id_w_h" class="hombre">{2}</div>'+
+            '<div id="id_w_h" class="hombre textoBotonTop">{2}</div>'+
             '</div>'+
             '</div>';
         return parent.format(template, options);

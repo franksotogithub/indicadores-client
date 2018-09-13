@@ -6,6 +6,11 @@
             App.categoriaChangeEvent(categoria);
         });
 
+        $("#comboCategoria").on('click','li',function (e) {
+            var categoria = $.trim($(this).attr('data-categoria'));
+            App.categoriaChangeEvent(categoria);
+        });
+
 
     });
 
@@ -15,3 +20,5 @@
         }
     });
 })(App.service, App.utils);
+
+

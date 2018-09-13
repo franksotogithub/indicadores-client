@@ -14,13 +14,22 @@ function altosAutomaticos(){
     $('#id_graficoWidget_top > div').each(function(i,v) {
         contador=i;
     });
-    if(contador !== undefined){
-        $('.contenedorMetadatos').css({"height":(altoVentana-572)+"px", "overflow":"auto"});
-        //console.log(contador);
+
+    var altoWin = $(window).height();
+
+    if($(window).width() > 1281){
+        if(contador !== undefined){
+            $('.contenedorMetadatos').css({"height":(altoVentana-562)+"px", "overflow":"auto"});
+            //console.log(contador);
+        }else{
+            //$('.contenedorMetadatos').css({"height":(altoVentana-482)+"px", "overflow":"auto"});
+            $('.contenedorMetadatos').css({"height":(altoVentana-562)+"px", "overflow":"auto"});
+            //console.log(contador);
+        }
     }else{
-        $('.contenedorMetadatos').css({"height":(altoVentana-482)+"px", "overflow":"auto"});
-        //console.log(contador);
+        $('.contenedorMetadatos').css({"height":(altoWin-190)+"px", "overflow":"auto"});
     }
+
 
 }
 
@@ -178,6 +187,13 @@ function altoVentanas() {
     var alto = $(window).height();
     var ancho = $(window).width();
 
+    var contador;
+
+    /* Verificar si existen botonResumen */
+    $('#id_graficoWidget_top > div').each(function(i,v) {
+        contador=i;
+    });
+
     /* Si es menor a 1281 se tiene que ocupar pantalla completa */
     if(ancho < 1281){
         alto = alto -48;
@@ -185,9 +201,39 @@ function altoVentanas() {
         alto = alto - 135;
     }
 
+
     $(".contenidoMapa").css("height",alto+"px");
     $(".contenidoCuadro").css("height",alto+"px");
     $(".contenidoGrafico").css("height",alto+"px");
+
+
+
+    if($(window).width() > 1281 ){
+
+        $('*').removeClass("off");
+        $('*').removeClass("on");
+        $('*').removeClass("onInline");
+
+
+        if(contador !== undefined){
+            $('.contenedorMetadatos').css({"height":(alto-432)+"px", "overflow":"auto"});
+            //console.log(contador);
+        }else{
+            //$('.contenedorMetadatos').css({"height":(altoVentana-482)+"px", "overflow":"auto"});
+            $('.contenedorMetadatos').css({"height":(alto-432)+"px", "overflow":"auto"});
+            //console.log(contador);
+
+        }
+
+
+    }else {
+        $(".contenedorVentana").css("display", " ");
+        //$(".contenedorMetadatos").css("height",(alto - 540) +"px" );
+        $('.contenedorMetadatos').css({"height":(alto-150)+"px", "overflow":"auto"});
+    }
+
+
+
 
 
 }
@@ -535,7 +581,9 @@ $(document).ready(function() {
 
     });
 
-    $('.contenedorVentana').on('click','button.tablaTabButton', function() {
+
+
+    $('.blockNavegacion').on('click','button.botonNavegar', function() {
         $(this).siblings("button").removeClass("btnTabTabla-activo");
         $(this).addClass("btnTabTabla-activo");
 
