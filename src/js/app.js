@@ -102,8 +102,8 @@ var App = (function (scope, config, appData) {
      * @param ubigeo
      * @param historico
      */
-    var mapasChangeEvent = function (ubigeo, historico) {
-        _hasUtils(this, 'mapasChangeEvent', {"ubigeo": ubigeo, "historico": historico});
+    var mapasChangeEvent = function (options) {
+        _hasUtils(this, 'mapasChangeEvent', options);
     };
 
     /**

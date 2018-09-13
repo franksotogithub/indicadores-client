@@ -199,7 +199,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     targets: targets.absoluto,
                     render: function (data, type, row) {
                         data = parent.round(data,1);
-                        if (data != 0) {
+                        if (data != null) {
                             return parent.numberFormat(data);
                         }else {
                             return "";
@@ -214,10 +214,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     targets: targets.porcentual,
                     render: function (data, type, row) {
                         data = parent.round(data,1);
-                        if (data != 0) {
+                        if (data != null) {
                             return data.toFixed(1);;
                         }else {
-                            return "";
+                            return "--";
                         }
                     }
                 }
@@ -388,13 +388,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
 
         this.timeClikMap = setTimeout(function(){
-            _this.crearTablaUigeos(options.ubigeo, []);
+            _this.crearTablaUigeos(options.ubigeosOdenados, []);
             _this.timeClikMap = undefined;
         }, 1200);
 
-        this.cuadrosData.ubigeo = options.ubigeo.slice()[0];
-        parent.graficos.comboIndicaDores(options.ubigeo);
-        parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
+        //this.cuadrosData.ubigeo = options.ubigeo.slice()[0];
+        //parent.graficos.comboIndicaDores(options.ubigeo);
+        //parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
+        console.log("mapasChangeEvent >>", options.ubigeosOdenados);
     };
 
     var uiMaxCallback = function (options) {
