@@ -706,12 +706,11 @@ App.utils.mapas = (function (parent, config,service) {
                 'ubigeosSeleccionados':selectUbigeos,
                 'nivel': index,
             }
-            console.log('options>>>',options);
+            //console.log('options>>>',options);
             App.mapasChangeEvent(options);
         });
 
     }
-
 
 
 
@@ -1259,7 +1258,7 @@ App.utils.mapas = (function (parent, config,service) {
             var selectWidget = function(index){
                 var definitionExpression_back;
                 var selectHistorico=[];
-
+                var ubigeosDes=['00'];
                 if(index>0){
                     var  indexLocal=index-1;
                     changeIndex(indexLocal);
@@ -1284,8 +1283,8 @@ App.utils.mapas = (function (parent, config,service) {
                         selectHistorico=['00'];
 
 
-                    var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features);
-                    actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+                    ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features);
+                    //actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
 
                     //App.mapasChangeEvent(_this.select_ubigeos,selectHistorico);
 
@@ -1299,10 +1298,10 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_gloabal;
                     _this.layerBack.findSublayerById(parseInt(index)).definitionExpression=definitionExpression_back;
                     zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression_back);
-
-
+                    //actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,index);
                 }
 
+                actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,index);
                 actualizarComboUbigeo(_this.select_ubigeos);
             }
 
