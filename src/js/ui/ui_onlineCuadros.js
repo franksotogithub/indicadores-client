@@ -583,6 +583,12 @@ $(document).ready(function() {
 
 
 
+    $('.tablaTabs').on('click','button.tablaTabButton', function() {
+        $(this).siblings("button").removeClass("btnTabTabla-activo");
+        $(this).addClass("btnTabTabla-activo");
+
+    });
+
     $('.blockNavegacion').on('click','button.botonNavegar', function() {
         $(this).siblings("button").removeClass("btnTabTabla-activo");
         $(this).addClass("btnTabTabla-activo");
