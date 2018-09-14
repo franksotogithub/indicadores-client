@@ -21,7 +21,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
-        _this.crearTablaUigeos([], []);
+        _this.crearTablaUigeos(['00'], []);
     };
 
     var _initPobreza = function (_this, vista) {
@@ -92,6 +92,18 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         };
     };
 
+    var _tituloNivel = function (ubigeo, titulo) {
+        if (ubigeo.length == 2 && ubigeo !="00") {
+            return "DPTO<br />"+titulo;
+        }else if (ubigeo.length == 4) {
+            return "PROV<br />"+titulo;
+        }else if (ubigeo.length == 6) {
+            return "DIST<br />"+titulo;
+        }else {
+            return titulo;
+        }
+    };
+
     var _crearCabecera = function (cabecera) {
         var thead = '<tr>';
         var childrens = [];
@@ -106,7 +118,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 clase = ' class="thindicador"';
             }
 
-            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+v.titulo+'</th>';
+            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+_tituloNivel(v.ubigeo, v.titulo)+'</th>';
 
             thead += th;
 
@@ -199,7 +211,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     targets: targets.absoluto,
                     render: function (data, type, row) {
                         data = parent.round(data,1);
-                        if (data != null) {
+                        if (data != 0) {
                             return parent.numberFormat(data);
                         }else {
                             return "";
@@ -214,7 +226,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     targets: targets.porcentual,
                     render: function (data, type, row) {
                         data = parent.round(data,1);
-                        if (data != null) {
+                        if (data != 0) {
                             return data.toFixed(1);;
                         }else {
                             return "--";
@@ -236,7 +248,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             scrollY: _getAltoTabla('px'),
             processing: true,
             serverSide: false
-        });
+        }).fixedColumns().relayout();
     };
 
     var _getAltoTabla = function (px) {
@@ -258,7 +270,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var _destruirTabla = function (_this) {
         if (_this.tblIndicadores !== undefined) {
             _this.tblIndicadores.destroy();
-            //this.tblIndicadores.clear().draw();
+            _this.tblIndicadores.clear().draw();
         }
     };
 
@@ -303,56 +315,35 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             1. Cargando
          */
 
-        var datos = ubigeos.slice(0);
-
-        if (historico.length == 1) {
-            if (historico[0] != '00') {
-                if (historico[0].length == 4) {
-                    datos.unshift(historico[0])
-                }
-                datos.unshift(historico[0].substring(0,2))
-            }
-        }
-
-        if (ubigeos.length > 0) {
-            if (ubigeos[0] != '00') {
-                datos.unshift('00');
-            }
-        }else {
-            datos.unshift('00');
-        }
-
-
-
         var _this = this;
+
 
         _cargandoTabla();
         _destruirTabla(this);
 
         var callback = function () {
             // Crear cabecera de la tabla segun los ubigeos indicadors
-            _cabeceraUigeos(datos);
+            _cabeceraUigeos(ubigeos);
             // Crear Estructura Json para renderizado de la tabla
 
-            _this.tablaColumns = _getTalaColumn(datos);
+            _this.tablaColumns = _getTalaColumn(ubigeos);
+            _this.target = _crear_target(ubigeos.length);
 
-            _this.target = _crear_target(datos.length);
-            console.log("target >>>",  _this.target);
             // Instanciar el servicio
-            service.cuadros.getIndicadores(datos, _this.vista, function () {
+            service.cuadros.getIndicadores(ubigeos, _this.vista, function () {
                 _this.tblIndicadores = _crearTabla(
                     '#tblindicadores',
                     service.cuadros.indicadores[App.categoria],
                     _this.tablaColumns,
                     _this.target
                 );
-                //_this.tblIndicadores.fixedColumns().relayout();
+
                 $("#loadindicadores").hide();
             });
         };
 
-        console.log(">>>>> ejecutar pre-calback");
         // Crear cabecera
+
         if (ubigeos.length > 1 && !this.expardirVentana) {
             this.expardirVentana = true;
             minimizarVentana($(".ventanaGrafico .minimizar"), callback)
@@ -395,7 +386,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         //this.cuadrosData.ubigeo = options.ubigeo.slice()[0];
         //parent.graficos.comboIndicaDores(options.ubigeo);
         //parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
-        console.log("mapasChangeEvent >>", options.ubigeosOdenados);
+        console.log("mapasChangeEvent >>", options);
     };
 
     var uiMaxCallback = function (options) {
