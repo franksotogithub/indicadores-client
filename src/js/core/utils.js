@@ -1,4 +1,13 @@
+/**
+ * Si existe el namespace App lo hereda sino lo crea
+ * @type {{}}
+ */
 var App = App || {};
+
+/**
+ *
+ *@memberOf
+ */
 App.utils = {
     /* String y Fornato */
     numberFormat: function (num) {

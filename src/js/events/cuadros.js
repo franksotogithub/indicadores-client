@@ -15,9 +15,7 @@
     });
 
     $(window).resize(function(){
-        if (App.utils.cuadros.tblIndicadores !== undefined) {
-            App.utils.cuadros.tblIndicadores.fixedColumns().relayout();
-        }
+        utils.cuadros.reiniciarTabla();
     });
 })(App.service, App.utils);
 
