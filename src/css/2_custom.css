@@ -52,6 +52,27 @@ body {
 }
 
 
+/* margenes */
+
+body .marginLeft-10, body section.marginLeft-10 {
+    margin-left: 10px !important;
+}
+body .marginRight-10, body section.marginRight-10 {
+    margin-right: 10px !important;
+}
+body .marginTop-10, body section.marginTop-10 {
+    margin-top: 10px !important;
+}
+
+body .marginTop-0, body section.marginTop-0 {
+    margin-top: 0px !important;
+}
+
+
+body .marginBottom-10, body section.marginBottom-10 {
+    margin-bottom: 10px !important;
+}
+
 
 /* Botones de busqeudas */
 
@@ -906,6 +927,20 @@ body *.onInline{
     font-size: 14px;
 }
 
+div.contenedorVentana.ventanaCE{
+    vertical-align: top;
+
+}
+
+div.contenedorVentana.ventanaCE  > section{
+    vertical-align: top;
+    margin: 10px 0px;
+    margin-bottom: 0px !important;
+    background-color: white;
+}
+
+
+
 
 /* Responsive */
 
@@ -1170,7 +1205,10 @@ body *.onInline{
     div.contenedorVentana {
         width:100%;
         display: block ;
+        vertical-align: top;
     }
+
+
 
     .contenedorVentana > section {
         margin: 0px;
@@ -1338,4 +1376,60 @@ span.expandirLista {
     position: absolute;
     line-height: 55px;
     right: 20px;
+}
+
+
+
+
+.contenedorListaCE {
+
+}
+
+.contenedorListaCE ul {
+    padding: 0px;
+    margin:0px
+
+}
+
+.contenedorListaCE ul li {
+    list-style: none;
+    text-align: left;
+    display: block;
+    line-height: 52px;
+    color: white;
+    font-family: "signikaregular";
+    font-size: 15px;
+    position: relative;
+    cursor: pointer;
+}
+
+.contenedorListaCE ul li:hover {
+    background-color: #1b3c71;
+}
+
+.contenedorListaCE ul li span:first-child {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+}
+
+span.expandirListaCE {
+    position: absolute;
+    line-height: 55px;
+    right: 20px;
+
+}
+
+.contenedorListaCE > ul > li > ul.subListaCE {
+    background-color: #00b3ff;
+
+}
+.contenedorListaCE > ul > li > ul.subListaCE li {
+    padding-left: 20px;
+
+}
+
+ul.listaIndicadoresCE {
+    list-style: none;
+    margin: 0;
 }

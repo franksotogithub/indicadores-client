@@ -1,8 +1,8 @@
 {% extends "../base.html" %}
 {% block menutitulo %} Cuadros Estadisticos {% endblock %}
 {% block wrapper %}
-<div class="col-2-10  contenedorVentana" >
-    <section >
+<div class="col-2-10 ventanaCE  contenedorVentana"  >
+    <section class="marginTop-0" >
         <header class="b_grissuave">
             <div class="col-2-2 contennedorTituloVentana">
                 <h2 class="tituloIndiceTematico"> <span class="dripicons-view-list"></span>
@@ -27,6 +27,11 @@
                         <span class="dripicons-view-thumb"></span>
                         <span>HOGAR</span>
                         <span class=" expandirLista dripicons-chevron-right"></span>
+                        <ul class="subListaCE">
+                            <li> item 1</li>
+                            <li> item 2</li>
+                            <li> item 3</li>
+                        </ul>
                     </li>
                     <li>
                         <span class="icon-users"></span>
@@ -57,33 +62,25 @@
         </div>
     </section>
 </div><!--
-         --><div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
-    <section >
-        <header class="b_grissuave">
-            <div class="col-6-10 contennedorTituloVentana">
-                <h2> <span data-icon="&#xe012;"></span>
-                    Mapa temático</h2>
-            </div><!--
-                     --><div class="col-4-10 contenedorBotonesVentana ">
-            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
-            <button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>
-
-        </div>
-        </header>
-        <div class="contenidoMapa" >
-            {% include 'indicadores/mapa.html' %}
-        </div>
+        --><div class="col-2-10 ventanaCE  contenedorVentana" >
+    <section class="marginTop-0">
+        <ul class="listaIndicadoresCE">
+            <li> item</li>
+            <li> item</li>
+            <li> item</li>
+            <li> item</li>
+        </ul>
     </section>
 </div><!--
-         --><div class="col-4-10 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
-    <section >
+         --><div class="col-4-10 ventanaCE contenedorVentana"  id="area">
+    <section class="marginLeft-10 marginRight-10" >
         <header class="b_grissuave">
             <div class="col-7-10 contennedorTituloVentana verticalAlignTop ">
                 <div class="col-2-2 tabSubTitulo">
                     <h2 class="activeSubTabVentana"> <span data-icon="&#xe051;"></span>
-                        Indicadores</h2><!--
-                    --><h2> <span data-icon="&#xe051;"></span>
-                        Graficos y Metadatos</h2>
+                        Cuadros</h2><!--
+                    --><h2> <span data-icon="&#xe002;"></span>
+                    Gráficos </h2>
                 </div>
 
             </div><!--
@@ -95,6 +92,24 @@
         </header>
         <div class="contenidoCuadro">
             {% include 'indicadores/cuadro.html' %}
+        </div>
+    </section>
+</div><!--
+--><div class="col-2-10 ventanaCE contenedorVentana " >
+    <section class="marginRight-10" >
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe012;"></span>
+                    Metadatos</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana ">
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>
+
+        </div>
+        </header>
+        <div class="contenidoMapa" >
+
         </div>
     </section>
 </div>
