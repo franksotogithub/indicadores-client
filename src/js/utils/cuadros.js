@@ -1,13 +1,24 @@
+/**
+ * Utils para manejar las tablas de indicadores Online
+ * @memberOf App.utils
+ */
 App.utils.cuadros = (function (config, appData, parent, service) {
-    /** Atributos privados **/
+    // Atributos privados
     var cuadrosData = {
         categoria: "01",
         ubigeo: "00",
+        ubigeos: ["00"],
         poblacion: {
 
         }
     };
-    /** Constructores **/
+
+
+    /**
+     * constructor del modululo cuadros
+     * @constructor
+     * @param {{}} options - json con la vista que llama el metodo
+     */
     var init = function (options) {
         this.vista = options.vista;
         if (options.vista == 'indicadores') {
@@ -18,6 +29,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _initPobreza(this, options.vista);
         }
     };
+
+    // Metodos privados
 
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
@@ -31,9 +44,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         _this.crearTablaUigeos([], []);
     };
 
-    /** Metodos privados **/
-
-    // Metodos UI
     var _crearTabsCategorias = function (datos, vista) {
         var tabsTemplate = function (dato) {
             var clase='';
@@ -66,15 +76,16 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $("#tabsCategoria").html(html);
         $("#comboCategoria ul").html(html2);
 
-
-
     };
 
-
-
-
-
-
+    /**
+     * @module CabeceraTabla
+     *
+     * @memberOf module:CabeceraTabla
+     * @param ubigeo
+     * @returns {{titulo: string, colspan: string, children: [null,null], ubigeo: *}}
+     * @private
+     */
     var _cabeceraTemplate = function (ubigeo) {
         return {
             "titulo": (appData.titulo.hasOwnProperty('U'+ubigeo)) ? appData.titulo['U'+ubigeo] : '',
@@ -92,6 +103,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         };
     };
 
+    /**
+     * Crea el titilo de la cabecera de la tabla segun nivel de territorio
+     * @memberOf module:CabeceraTabla
+     * @param ubigeo
+     * @param titulo
+     * @returns {*}
+     * @private
+     */
     var _tituloNivel = function (ubigeo, titulo) {
         if (ubigeo.length == 2 && ubigeo !="00") {
             return "DPTO<br />"+titulo;
@@ -104,6 +123,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
     };
 
+    /**
+     * Genera el thead de la cabecera de la tabla
+     * @param cabecera - estructura json jerárquico de la cabecera de la tabla
+     * @private
+     */
     var _crearCabecera = function (cabecera) {
         var thead = '<tr>';
         var childrens = [];
@@ -136,13 +160,18 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             }
             thead += '</tr>';
         }
-        console.log(thead);
+
         $("#tblindicadores thead").html(thead);
         $("#tblindicadores thead").hide();
         $("#tblindicadores tbody").html("");
 
     };
 
+    /**
+     * Genera la cabecera dinamicamente pivoteando por ubigeo
+     * @param ubigeos - listado de ubigeos ordenados de acuerdo a lo elegido
+     * @private
+     */
     var _cabeceraUigeos = function (ubigeos) {
         var cabecera = [
             {
@@ -164,6 +193,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         _crearCabecera(cabecera);
     };
 
+    /**
+     * Crear la tabla con datatable
+     * @param table - ID de la tabla
+     * @param data - Data del servicio
+     * @param columns - columnas dinamicas a pintar
+     * @param targets - Selectore para el columndef
+     * @private
+     */
     var _crearTabla= function (table, data, columns, targets) {
         $(".theadindicadores").show();
         return $(table).DataTable({
@@ -190,9 +227,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                             if (v.cod_nivel_tematico == 2) {
                                 $(td).addClass('tituloIndicador');
                             }
-
-
-
                             $(td).addClass("popover");
                             $(td).attr('data-popover', appData.tituloIndicadores[cellData].titulo);
                         }
@@ -227,8 +261,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     render: function (data, type, row) {
                         data = parent.round(data,1);
                         if (data != 0) {
-                            return data.toFixed(1);;
-                        }else {
+                            return data.toFixed(1);
+                        } else if (row.cod_nivel_tematico == 2) {
+                            return "";
+                        }
+                        else {
                             return "--";
                         }
                     }
@@ -248,7 +285,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             scrollY: _getAltoTabla('px'),
             processing: true,
             serverSide: false
-        }).fixedColumns().relayout();
+        });
     };
 
     var _getAltoTabla = function (px) {
@@ -307,13 +344,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         return {"absoluto": target_absoluto, "porcentual": target_porcentual};
     };
 
-    /* publicos */
+    // Metodos publicos
     var crearTablaUigeos = function (ubigeos, historico) {
-        /*
-            UI
-            ----
-            1. Cargando
-         */
 
         var _this = this;
 
@@ -367,8 +399,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.target
         );
 
-        this.tblIndicadores.fixedColumns().relayout();
+        //this.fixedColumnsRelayout();
+
         $("#loadindicadores").hide();
+    };
+
+    var reiniciarTabla = function () {
+        this.crearTablaUigeos(this.cuadrosData.ubigeos, []);
     };
 
     var mapasChangeEvent = function (options) {
@@ -378,6 +415,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             clearTimeout(this.timeClikMap);
         }
 
+        this.cuadrosData.ubigeos = options.ubigeosOdenados;
         this.timeClikMap = setTimeout(function(){
             _this.crearTablaUigeos(options.ubigeosOdenados, []);
             _this.timeClikMap = undefined;
@@ -390,18 +428,24 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiMaxCallback = function (options) {
-        this.tblIndicadores.fixedColumns().relayout();
+        console.log(">> uiMaxCallback", options);
         $(".cuadroMinimizado").removeClass("col-5-5").addClass("col-4-5");
         $(".busquedaMaximizadaCuadro").addClass("CuadroActivoBusqueda");
         $(".busquedaCuadro").hide();
+
+        var _this= this;
+
+
+        _this.fixedColumnsRelayout();
+
+        console.log("finalizar uiMaxCallback")
     };
 
     var uiNormalCallback = function (options) {
-        console.log("restaurar ventana modulo cuadros");
         $(".cuadroMinimizado").removeClass("col-4-5").addClass("col-5-5");
         $(".busquedaMaximizadaCuadro").removeClass("CuadroActivoBusqueda");
         $(".busquedaCuadro").show();
-        this.tblIndicadores.fixedColumns().relayout();
+        this.fixedColumnsRelayout();
     };
 
     var uiReabrirVentana = function () {
@@ -410,6 +454,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var fixedColumnsRelayout = function () {
         if (this.tblIndicadores !== null) {
+            this.tblIndicadores.columns.adjust().draw();
             this.tblIndicadores.fixedColumns().relayout();
         }
     };
@@ -428,7 +473,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         var data = {
             "titulo":  {"total": 876542, "text":"Población Censada"},
-            "resumen": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
+            "resufixedColumnsRelayouten": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
             "grafico": { }
         };
 
@@ -457,6 +502,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         //options.callback(data);
     };
 
+    var uiMinimizarVentana = function (options) {
+        this.fixedColumnsRelayout();
+    };
+
     return {
         init: init,
         tblIndicadores: undefined,
@@ -475,6 +524,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         fixedColumnsRelayout: fixedColumnsRelayout,
         uiReabrirVentana: uiReabrirVentana,
         getContenidoPopupMapaEvent: getContenidoPopupMapaEvent,
+        uiMinimizarVentana: uiMinimizarVentana,
+        reiniciarTabla: reiniciarTabla,
         graficoCategoria: {},
         cuadrosData: cuadrosData
     }

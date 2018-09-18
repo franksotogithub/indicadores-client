@@ -330,7 +330,7 @@ function minimizarVentana(e, callback) {
     console.log("Estoy Minimizando");
     ventanasAbiertas();
     var contadorVentanas = vAbiertas;
-    var a = e.closest(".contenedorVentana").attr("data-codevent");
+    var a = e.closest(".contenedorVentana").attr("data-codevent"); // trae nombre de la ventana
     /* Obteniendo valor para comparacion */
     var b = e.closest(".contenedorVentana");
     /* Seleccionar ventana Padre */
@@ -354,10 +354,10 @@ function minimizarVentana(e, callback) {
             adaptarVentanas(a,b);
             if (callback !== undefined) {
                 callback();
-            }
-
-            if (App.uiMaxCallback !== undefined) {
-                App.uiMaxCallback(nombreVentanaUl);
+            }else {
+                if (App.uiMinimizarVentana !== undefined) {
+                    App.uiMinimizarVentana(contadorVentanas[0]);
+                }
             }
         });
 
@@ -385,6 +385,11 @@ function minimizarVentana(e, callback) {
             adaptarVentanas(a,b);
             if (callback !== undefined) {
                 callback();
+                console.log(">>>> contadorVentanas 3")
+            }else {
+                if (App.uiMinimizarVentana !== undefined) {
+                    App.uiMinimizarVentana(contadorVentanas[0]);
+                }
             }
         });
 
@@ -398,11 +403,7 @@ function minimizarVentana(e, callback) {
                 $(this ).find("button").addClass("animacionbtn");
             }
         });
-
-
     }
-
-    App.uiMinimizarVentana(contadorVentanas[0]);
 }
 
 /* Maximizar Ventana */
@@ -412,9 +413,11 @@ function maximizarVentana(e, callback){
     var contadorVentanas = vAbiertas;
     var ventana = e.closest(".contenedorVentana");
     var dataCodevent = $(ventana).attr('data-codevent');
+
     if(contadorVentanas[0]==1){
 
-    }else if(contadorVentanas[0]==2){
+    }
+    else if(contadorVentanas[0]==2){
         var ventanaReconocida =  contadorVentanas[1] - parseInt(ventana.attr("data-cod"));
         ventanaReconocida = $(".barHerramientasHeader [data-codi="+ventanaReconocida+"]");
 
@@ -422,7 +425,8 @@ function maximizarVentana(e, callback){
         ventanaReconocida.find("button").addClass("animacionbtn");
 
 
-    }else if(contadorVentanas[0]==3){
+    }
+    else if(contadorVentanas[0]==3){
 
         //console.log(contadorVentanas[1]);
         var ventanaReconocida =  contadorVentanas[1] - parseInt(ventana.attr("data-cod"));
@@ -430,7 +434,7 @@ function maximizarVentana(e, callback){
         if( ventanaReconocida == 6){
             $(".barHerramientasHeader [data-codi=1]").css("display","inline-block").find("button").addClass("animacionbtn");
             $(".barHerramientasHeader [data-codi=5]").css("display","inline-block").find("button").addClass("animacionbtn");
-            console.log(ventanaReconocida);
+            console.log(">>>ventanaReconocida", ventanaReconocida);
         }else if( ventanaReconocida == 8){
             $(".barHerramientasHeader [data-codi=1]").css("display","inline-block").find("button").addClass("animacionbtn");
             $(".barHerramientasHeader [data-codi=7]").css("display","inline-block").find("button").addClass("animacionbtn");
@@ -444,6 +448,14 @@ function maximizarVentana(e, callback){
     e.closest(".contenedorVentana").siblings(".contenedorVentana").fadeOut(function () {
         /* Selecionar los hermanos de la ventana maximizada y ocultarlas */
           e.closest(".contenedorVentana").removeClass("col-4-10 col-35 col-1-4 col-1-2 ").addClass("col-1-1").css("display","block");
+          console.log("finalizar fadeOut");
+            if (App.uiMaxCallback!==undefined){
+                App.uiMaxCallback(dataCodevent);
+            }
+
+            if (callback !== undefined) {
+                callback();
+            }
     });
     e.attr("data-icon","4");
     e.attr("data-title","Restaurar ventana");
@@ -453,13 +465,8 @@ function maximizarVentana(e, callback){
     //Tipped.init();
     //Tipped.create('.tooltip', {size: 'large'});
 
-    if (App.uiMaxCallback!==undefined){
-        App.uiMaxCallback(dataCodevent);
-    }
 
-    if (callback !== undefined) {
-        callback();
-    }
+
 }
 
 /* Restaurar Ventana */

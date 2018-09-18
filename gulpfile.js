@@ -193,7 +193,7 @@ gulp.task('asslibs', function () {
         .pipe(gulp.dest('dist/assets'))
 });
 
-gulp.task('browser-sync', ['html', 'css', 'js'], function() {
+gulp.task('browser-sync', ['html', 'css', 'js', 'uijs'], function() {
     browserSync({
         server: {
             baseDir: "./dist/"
@@ -202,6 +202,7 @@ gulp.task('browser-sync', ['html', 'css', 'js'], function() {
     gulp.watch(['./src/html/*.html', './src/html/**/*.html' ], ['html']);
     gulp.watch('./src/css/*.css', ['css']);
     gulp.watch(config.source.js(), ['js']);
+    gulp.watch(config.source.uijs(), ['uijs']);
 });
 
 gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg', 'asslibs']);

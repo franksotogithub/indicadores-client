@@ -1,10 +1,15 @@
 /**
+ * App es el namespace principal de la aplicación, a partir de este se extendera los modulos
  * @namespace App
- * @requires {@link AppConfig}
+ * @requires js/config:AppConfig
+ * @requires js/data.js:Appdata
  * @version 0.1.0
  */
 var App = (function (scope, config, appData) {
-
+    /**
+     * fixme: Variable para controlar el maximizado de ventana (deberia ser manejado por una una modulo UI)
+     * @type {{mapas: boolean, cuadros: boolean, graficos: boolean}}
+     */
     var uiMax = {
         "mapas": false,
         "cuadros": false,
@@ -14,7 +19,7 @@ var App = (function (scope, config, appData) {
     /**
      * Constructor inicializa la aplicación, busca si existe el metodo init en los utils de cada modulo
      * @function init
-     * @memberof! App
+     * @memberof App
      * @param {string} vista
      * @param {Array} ventanas
      * @example
@@ -86,6 +91,8 @@ var App = (function (scope, config, appData) {
         if (inicial == 3) {
             this.utils.cuadros.expardirVentana = true;
         }
+
+        _hasUtils(this, 'uiMinimizarVentana', {"inicial": inicial});
     };
 
     var uiMouseOverTabla = function (ubigeo) {
