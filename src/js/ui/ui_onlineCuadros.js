@@ -740,4 +740,26 @@ $(document).ready(function() {
     });
 
 
+    /* Cuadros estadisticos */
+
+    $(".contenidoMetadatoCE").css("height",(altoVentana-138)+"px")
+    $(".contenedorIndice").css("height", (altoVentana - 118 )+"px");
+    $(".listaIndicadoresCE").css("max-height", (altoVentana - 70 )+"px");
+
+
+    $('#navegacionButtonCE').on('click','button.botonNavegar', function() {
+
+        var _this = $(this);
+        var ventana = _this.attr("data-codevent");
+
+    });
+
+    //$(".listaIndicadoresCE").niceScroll();
+
+
+    $(window).resize(function(){
+        var  altoVentana = $(window).height();
+        $(".contenedorIndice").css("height", (altoVentana - 118 )+"px");
+        $(".listaIndicadoresCE").css("max-height", (altoVentana - 70 )+"px");
+    });
 });

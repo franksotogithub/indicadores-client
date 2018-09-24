@@ -429,9 +429,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var uiMaxCallback = function (options) {
         console.log(">> uiMaxCallback", options);
-        $(".cuadroMinimizado").removeClass("col-5-5").addClass("col-4-5");
+        $(".cuadroMinimizado").removeClass("col-10-10").addClass("col-6-10");
         $(".busquedaMaximizadaCuadro").addClass("CuadroActivoBusqueda");
-        $(".busquedaCuadro").hide();
+
 
         var _this= this;
 
@@ -442,10 +442,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiNormalCallback = function (options) {
-        $(".cuadroMinimizado").removeClass("col-4-5").addClass("col-5-5");
+        $(".cuadroMinimizado").removeClass("col-6-10").addClass("col-10-10");
         $(".busquedaMaximizadaCuadro").removeClass("CuadroActivoBusqueda");
         $(".busquedaCuadro").show();
         this.fixedColumnsRelayout();
+
     };
 
     var uiReabrirVentana = function () {

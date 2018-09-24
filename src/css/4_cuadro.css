@@ -292,6 +292,18 @@ div.busquedaMaximizadaCuadro {
     padding:10px 0px;
     outline: none;
 }
+.selectOnlineMaxCuadro {
+    width: 100%;
+    padding: 10px;
+    font-family: 'signikaregular';
+    margin-bottom: 10px;
+}
+button.btnOnlineMaxIr {
+    background-color: #1b3c71;
+    color: white;
+    padding: 7px 25px;
+    margin: 0px;
+}
 
 
 

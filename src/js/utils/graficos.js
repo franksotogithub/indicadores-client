@@ -37,6 +37,19 @@ App.utils.graficos = (function (parent, service, appData) {
         $("#"+uiId).html(html);
     };
 
+
+    var uiMaxCallback = function (options) {
+        $(".ventanaGrafico .widgetMetadatos").hide();
+    };
+
+    var uiNormalCallback = function (options) {
+        $(".ventanaGrafico .widgetMetadatos").show();
+    };
+
+    var uiReabrirVentana = function () {
+        $(".ventanaGrafico .widgetMetadatos").show();
+    };
+
     var mediaLunaPoblacion = function (uiId, data) {
         var options = {
             uiId: uiId,
@@ -135,6 +148,9 @@ App.utils.graficos = (function (parent, service, appData) {
         indicadores: indicadores,
         comboIndicaDores: comboIndicaDores,
         init: init,
+        uiMaxCallback: uiMaxCallback,
+        uiNormalCallback: uiNormalCallback,
+        uiReabrirVentana: uiReabrirVentana,
         initIndicador: initIndicador
     }
 })(App.utils, App.service, Appdata());

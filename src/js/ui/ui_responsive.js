@@ -110,7 +110,11 @@ $(document).ready(function () {
                 $("#id_graficoWidget_top").removeClass("on").addClass("off");
                 $("#contenedor_grafico").removeClass("onInline").addClass("off");
                 $(".widgetMetadatos").removeClass("off").addClass("on");
+
+
+
             }
+
 
             $('div.contenedorVentana[data-codevent='+ventana+']').removeClass("off").addClass("on").siblings('div' +
                 '.contenedorVentana').removeClass("on").addClass("off");
@@ -119,6 +123,9 @@ $(document).ready(function () {
 
         console.log(ventana);
     });
+
+
+
 
     $('section.block').css('height',(altoVentana-60)+'px');
 

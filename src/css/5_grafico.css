@@ -46,7 +46,7 @@
 
 
 
-.widgetMetadatos h1 {
+.widgetMetadatos h1 , .widgetMetadatosT h1  {
     text-align: right;
     display: inline-block;
     color: #1b3c71;

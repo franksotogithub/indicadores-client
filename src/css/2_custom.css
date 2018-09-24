@@ -72,6 +72,10 @@ body .marginTop-0, body section.marginTop-0 {
 body .marginBottom-10, body section.marginBottom-10 {
     margin-bottom: 10px !important;
 }
+.borderTop-0 {
+    border-top: none !important;
+}
+
 
 
 /* Botones de busqeudas */
@@ -159,6 +163,11 @@ td.popover:hover {
 
 
 /* asd */
+
+
+.textAlignRight{
+    text-align: right !important;
+}
 
 .content_dropMenu{
     position: relative;
@@ -904,7 +913,7 @@ td.ajustarAContenido {
     display: block;
 }
 
-.widgetMetadatos {
+.widgetMetadatos, widgetMetadatosT {
     border-top: #D0E6F0 solid 10px;
     font-family: "signikaregular";
     padding: 10px;
@@ -938,6 +947,300 @@ div.contenedorVentana.ventanaCE  > section{
     margin-bottom: 0px !important;
     background-color: white;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* cuadros Estadisticos */
+
+.tabSubTitulo {
+    text-align: left;
+}
+.tabSubTitulo h2 {
+    display: inline-block;
+    padding-right:20px;
+    background-color: #B3B3B3;
+    color:#666666;
+    border-left-color: #666666 !important;
+    vertical-align: middle;
+    height: 40px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.tabSubTitulo h2:hover {
+    background-color: #d2d1d1;
+}
+
+.verticalAlignTop {
+    vertical-align: top;
+}
+
+
+.tabSubTitulo h2.activeSub {
+    background-color: #7b7b7b;
+
+}
+
+h2.activeSubTabVentana {
+    background-color: #e6e6e6 !important;
+    color:#1B3C71;
+    border-left-color: #1B3C71 !important;
+}
+
+
+.tituloIndiceTematico {
+    padding: 15px 0px !important;
+    border-left:none !important;
+}
+
+.contenedorIndice {
+    background-color:#3E4C60;
+    height: 700px;
+
+}
+
+.buscarIndicadoreTematicos > div {
+    display: block;
+    padding: 0px 10px;
+    background-color: white;
+    position: relative;
+}
+
+.buscarIndicadoreTematicos > div > input {
+    width: 100%;
+    outline: none;
+    border: none;
+    margin: 0px;
+    background-color: transparent;
+    height: 40px;
+    font-family: 'signikaregular';
+}
+
+.buscarIndicadoreTematicos > div > div {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: #12284c;
+    color: white;
+    height: 42px;
+    line-height: 42px;
+    width: 40px;
+}
+
+.contenedorLista {
+    margin-top: 20px;
+}
+
+.contenedorLista ul {
+    padding: 0px;
+    margin:0px
+
+}
+
+.contenedorLista ul li {
+    list-style: none;
+    text-align: left;
+    display: block;
+    padding-left:20px;
+    height: 55px;
+    line-height: 55px;
+    color: white;
+    font-family: "signikaregular";
+    position: relative;
+    cursor: pointer;
+}
+
+.contenedorLista ul li:hover {
+    background-color: #1b3c71;
+}
+
+.contenedorLista ul li span:first-child {
+    padding-right: 20px;
+    font-size: 20px;
+}
+
+span.expandirLista {
+    position: absolute;
+    line-height: 55px;
+    right: 20px;
+}
+
+
+
+
+.contenedorListaCE {
+
+}
+
+.contenedorListaCE ul {
+    padding: 0px;
+    margin:0px
+
+}
+
+.contenedorListaCE ul li {
+    list-style: none;
+    text-align: left;
+    display: block;
+    line-height: 52px;
+    color: white;
+    font-family: "signikaregular";
+    font-size: 15px;
+    position: relative;
+    cursor: pointer;
+}
+
+.contenedorListaCE ul li:hover {
+    background-color: #00b3ff;
+}
+.contenedorListaCE > ul > li.active {
+    background-color: #12284c;
+}
+.contenedorListaCE > ul > li.active ul > li.active {
+    background-color: #00b3ff;
+}
+
+
+.contenedorListaCE > ul >  li > span:first-child {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+}
+
+span.expandirListaCE {
+    position: absolute;
+    line-height: 55px;
+    right: 20px;
+
+}
+
+.contenedorListaCE > ul > li > ul.subListaCE {
+    /*background-color: #00b3ff;*/
+
+}
+.contenedorListaCE > ul > li > ul.subListaCE li {
+    padding-left: 20px;
+
+}
+
+ul.listaIndicadoresCE {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-right: 10px solid #d0e6f0;
+    font-family: "signikaregular";
+    max-height:700px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+ul.listaIndicadoresCE li{
+    text-align: left;
+    padding: 10px;
+    padding-left: 20px;
+    border-bottom: 2px solid #3e4c60;
+    color: white;
+    position: relative;
+    background-color: #12284c;
+    cursor: pointer;
+}
+ul.listaIndicadoresCE > li.active{
+    background: #00b3ff;
+}
+ul.listaIndicadoresCE > li.active:before{
+    content:"\A";
+    border-left: 8px solid #12284c;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    position: absolute;
+    top:50%;
+    right: -12px;
+    z-index: 99;
+    display: block;
+    transform: translate(-50%, -50%);
+}
+
+ul.listaIndicadoresCE li:hover{
+    background-color: #00b3ff;
+
+}
+
+
+ul.listaIndicadoresCEM {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: "signikaregular";
+}
+ul.listaIndicadoresCEM li{
+    text-align: left;
+    padding: 10px;
+    padding-left: 20px;
+    border-bottom: 2px solid #CCC;
+    color: #333;
+    position: relative;
+    background-color: white;
+    cursor: pointer;
+}
+ul.listaIndicadoresCEM > li.active{
+    background: #12284c;
+    color:white;
+}
+
+
+ul.listaIndicadoresCEM li:hover{
+    background-color: #12284c;
+    color:white;
+}
+
+.contenidoMetadatoCE {
+    text-align: right;
+}
+
+.contenedorMetadatosCE{
+    display:block;
+    padding: 10px;
+}
+
+
+a.LinkModalCE{
+    display: block;
+    color:#333;
+    text-decoration: none;
+}
+
+
+
+
+.tituloCuadrosCE{
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-family: "signikaregular";
+    padding: 10px 0;
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1076,6 +1379,27 @@ div.contenedorVentana.ventanaCE  > section{
     }
 
 }
+
+
+@media screen and (max-width: 1281px){
+    /* Cuadros Estadisticos*/
+
+    .ceContenedorIndice {
+        display: none !important;
+    }
+
+    .ceContenedorIndiceLista{
+        display: none !important;
+    }
+    div.contenedorVentana.ventanaCE > section{
+        margin:0px !important;
+    }
+}
+
+
+
+
+
 
 /* El ancho minimo soportado es 1280 */
 
@@ -1258,178 +1582,121 @@ div.contenedorVentana.ventanaCE  > section{
 }
 
 
-
-
-
-/* cuadros Estadisticos */
-
-.tabSubTitulo {
-    text-align: left;
+.blocker{
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:auto;
+    z-index: 100;
+    padding:20px;
+    box-sizing:border-box;
+    background-color:#000;
+    background-color:rgba(0,0,0,0.75);
+    text-align:center;
 }
-.tabSubTitulo h2 {
-    display: inline-block;
-    padding-right:20px;
-    background-color: #B3B3B3;
-    color:#666666;
-    border-left-color: #666666 !important;
-    vertical-align: middle;
-    height: 40px;
-    padding-bottom: 0px;
-    padding-top: 0px;
-    line-height: 40px;
-    cursor: pointer;
+.blocker:before{
+    content:"";
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+    margin-right:-0.05em
 }
-
-.tabSubTitulo h2:hover {
-    background-color: #d2d1d1;
+.blocker.behind{
+    background-color:transparent
 }
-
-.verticalAlignTop {
-    vertical-align: top;
+.modal{
+    display:none;
+    vertical-align:middle;
+    position:relative;
+    z-index:2;
+    max-width:500px;
+    box-sizing:border-box;
+    width:90%;
+    background:#fff;
+    padding:15px 30px;
+    -webkit-border-radius:8px;
+    -moz-border-radius:8px;
+    -o-border-radius:8px;
+    -ms-border-radius:8px;
+    border-radius:8px;
+    -webkit-box-shadow:0 0 10px #000;
+    -moz-box-shadow:0 0 10px #000;
+    -o-box-shadow:0 0 10px #000;
+    -ms-box-shadow:0 0 10px #000;
+    box-shadow:0 0 10px #000;
+    text-align:left
 }
-
-
-.tabSubTitulo h2.activeSub {
-    background-color: #7b7b7b;
-
+.modal a.close-modal{
+    position:absolute;
+    top:-12.5px;
+    right:-12.5px;
+    display:block;
+    width:30px;
+    height:30px;
+    text-indent:-9999px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-image:url('data:image/png; base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAAXNSR0IArs4c6QAAA3hJREFUaAXlm8+K00Acx7MiCIJH/yw+gA9g25O49SL4AO3Bp1jw5NvktC+wF88qevK4BU97EmzxUBCEolK/n5gp3W6TTJPfpNPNF37MNsl85/vN/DaTmU6PknC4K+pniqeKJ3k8UnkvDxXJzzy+q/yaxxeVHxW/FNHjgRSeKt4rFoplzaAuHHDBGR2eS9G54reirsmienDCTRt7xwsp+KAoEmt9nLaGitZxrBbPFNaGfPloGw2t4JVamSt8xYW6Dg1oCYo3Yv+rCGViV160oMkcd8SYKnYV1Nb1aEOjCe6L5ZOiLfF120EjWhuBu3YIZt1NQmujnk5F4MgOpURzLfAwOBSTmzp3fpDxuI/pabxpqOoz2r2HLAb0GMbZKlNV5/Hg9XJypguryA7lPF5KMdTZQzHjqxNPhWhzIuAruOl1eNqKEx1tSh5rfbxdw7mOxCq4qS68ZTjKS1YVvilu559vWvFHhh4rZrdyZ69Vmpgdj8fJbDZLJpNJ0uv1cnr/gjrUhQMuI+ANjyuwftQ0bbL6Erp0mM/ny8Fg4M3LtdRxgMtKl3jwmIHVxYXChFy94/Rmpa/pTbNUhstKV+4Rr8lLQ9KlUvJKLyG8yvQ2s9SBy1Jb7jV5a0yapfF6apaZLjLLcWtd4sNrmJUMHyM+1xibTjH82Zh01TNlhsrOhdKTe00uAzZQmN6+KW+sDa/JD2PSVQ873m29yf+1Q9VDzfEYlHi1G5LKBBWZbtEsHbFwb1oYDwr1ZiF/2bnCSg1OBE/pfr9/bWx26UxJL3ONPISOLKUvQza0LZUxSKyjpdTGa/vDEr25rddbMM0Q3O6Lx3rqFvU+x6UrRKQY7tyrZecmD9FODy8uLizTmilwNj0kraNcAJhOp5aGVwsAGD5VmJBrWWbJSgWT9zrzWepQF47RaGSiKfeGx6Szi3gzmX/HHbihwBser4B9UJYpFBNX4R6vTn3VQnez0SymnrHQMsRYGTr1dSk34ljRqS/EMd2pLQ8YBp3a1PLfcqCpo8gtHkZFHKkTX6fs3MY0blKnth66rKCnU0VRGu37ONrQaA4eZDFtWAu2fXj9zjFkxTBOo8F7t926gTp/83Kyzzcy2kZD6xiqxTYnHLRFm3vHiRSwNSjkz3hoIzo8lCKWUlg/YtGs7tObunDAZfpDLbfEI15zsEIY3U/x/gHHc/G1zltnAgAAAABJRU5ErkJggg==')}
+    .modal-spinner{
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translateY(-50%) translateX(-50%);
+    padding:12px 16px;
+    border-radius:5px;
+    background-color:#111;
+    height:20px
 }
-
-h2.activeSubTabVentana {
-    background-color: #e6e6e6 !important;
-    color:#1B3C71;
-    border-left-color: #1B3C71 !important;
+.modal-spinner>div{
+    border-radius:100px;
+    background-color:#fff;
+    height:20px;
+    width:2px;
+    margin:0 1px;
+    display:inline-block;
+    -webkit-animation:sk-stretchdelay 1.2s infinite ease-in-out;
+    animation:sk-stretchdelay 1.2s infinite ease-in-out
 }
-
-
-.tituloIndiceTematico {
-    padding: 15px 0px !important;
-    border-left:none !important;
+.modal-spinner .rect2{
+    -webkit-animation-delay:-1.1s;
+    animation-delay:-1.1s
 }
-
-.contenedorIndice {
-    background-color:#3E4C60;
-    height: 700px;
-
+.modal-spinner .rect3{
+    -webkit-animation-delay:-1.0s;
+    animation-delay:-1.0s
 }
-
-.buscarIndicadoreTematicos > div {
-    display: block;
-    padding: 0px 10px;
-    background-color: white;
-    position: relative;
+.modal-spinner .rect4{
+    -webkit-animation-delay:-0.9s;
+    animation-delay:-0.9s
 }
-
-.buscarIndicadoreTematicos > div > input {
-    width: 100%;
-    outline: none;
-    border: none;
-    margin: 0px;
-    background-color: transparent;
-    height: 40px;
-    font-family: 'signikaregular';
+@-webkit-keyframes sk-stretchdelay{
+    0%,40%,100%{
+        -webkit-transform:scaleY(0.5)
+    }
+    20%{
+        -webkit-transform:scaleY(1.0)
+    }
 }
-
-.buscarIndicadoreTematicos > div > div {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    background-color: #12284c;
-    color: white;
-    height: 42px;
-    line-height: 42px;
-    width: 40px;
-}
-
-.contenedorLista {
-    margin-top: 20px;
-}
-
-.contenedorLista ul {
-    padding: 0px;
-    margin:0px
-
-}
-
-.contenedorLista ul li {
-    list-style: none;
-    text-align: left;
-    display: block;
-    padding-left:20px;
-    height: 55px;
-    line-height: 55px;
-    color: white;
-    font-family: "signikaregular";
-    position: relative;
-    cursor: pointer;
-}
-
-.contenedorLista ul li:hover {
-    background-color: #1b3c71;
-}
-
-.contenedorLista ul li span:first-child {
-    padding-right: 20px;
-    font-size: 20px;
-}
-
-span.expandirLista {
-    position: absolute;
-    line-height: 55px;
-    right: 20px;
+@keyframes sk-stretchdelay{
+    0%,40%,100%{
+        transform:scaleY(0.5);
+        -webkit-transform:scaleY(0.5)
+    }
+    20%{
+        transform:scaleY(1.0);
+        -webkit-transform:scaleY(1.0)
+    }
 }
 
 
 
 
-.contenedorListaCE {
 
-}
 
-.contenedorListaCE ul {
-    padding: 0px;
-    margin:0px
 
-}
-
-.contenedorListaCE ul li {
-    list-style: none;
-    text-align: left;
-    display: block;
-    line-height: 52px;
-    color: white;
-    font-family: "signikaregular";
-    font-size: 15px;
-    position: relative;
-    cursor: pointer;
-}
-
-.contenedorListaCE ul li:hover {
-    background-color: #1b3c71;
-}
-
-.contenedorListaCE ul li span:first-child {
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 18px;
-}
-
-span.expandirListaCE {
-    position: absolute;
-    line-height: 55px;
-    right: 20px;
-
-}
-
-.contenedorListaCE > ul > li > ul.subListaCE {
-    background-color: #00b3ff;
-
-}
-.contenedorListaCE > ul > li > ul.subListaCE li {
-    padding-left: 20px;
-
-}
-
-ul.listaIndicadoresCE {
-    list-style: none;
-    margin: 0;
-}
