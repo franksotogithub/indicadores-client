@@ -1259,6 +1259,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                 });
             }
             else if (vista == 'vista3') {
+                $("#"+charId2).height(600);
                 $("#"+charId2).show();
                 Highcharts.chart(charId, {
                     chart: {
