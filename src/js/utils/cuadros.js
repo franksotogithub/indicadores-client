@@ -13,13 +13,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
     };
 
-
     /**
      * constructor del modululo cuadros
      * @constructor
      * @param {{}} options - json con la vista que llama el metodo
      */
     var init = function (options) {
+        appData = appData();
         this.vista = options.vista;
         if (options.vista == 'indicadores') {
             _initIndicadores(this, options.vista);
@@ -530,4 +530,4 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         graficoCategoria: {},
         cuadrosData: cuadrosData
     }
-})(AppConfig(), Appdata(), App.utils, App.service);
+})(AppConfig(), Appdata, App.utils, App.service);

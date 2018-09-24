@@ -73,7 +73,9 @@ App.utils.graficos = (function (parent, service, appData) {
         "002": { "callback": mediaLunaPoblacion, "tipo": 2}
     };
 
-    var init = function () {};
+    var init = function () {
+        appData = appData();
+    };
 
     var initIndicador = function (indicador) {
         this.indicadores(indicador.cuadrosData.categoria, indicador.cuadrosData.ubigeo);
@@ -153,4 +155,4 @@ App.utils.graficos = (function (parent, service, appData) {
         uiReabrirVentana: uiReabrirVentana,
         initIndicador: initIndicador
     }
-})(App.utils, App.service, Appdata());
+})(App.utils, App.service, Appdata);

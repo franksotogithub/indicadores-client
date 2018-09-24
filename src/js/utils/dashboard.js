@@ -135,7 +135,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                             subtitulo: "América Latina"
                         }]
                     },
-                    info: "<p>Con relación a los países de América del Sur1, el Perú es el quinto país más poblado, después de Brasil, Colombia, Argentina y Venezuela. Entre los países de América Latina (20), el Perú ocupa el sexto lugar, siendo antecedido por Brasil, México, Colombia, Argentina y Venezuela.<p>\n" +
+                    info: "<p>Con relación a los países de América del Sur<sup>1</sup>, el Perú es el quinto país más poblado, después de Brasil, Colombia, Argentina y Venezuela. Entre los países de América Latina (20), el Perú ocupa el sexto lugar, siendo antecedido por Brasil, México, Colombia, Argentina y Venezuela.<p>\n" +
                     "<p>En lo que se refiere al continente americano (39 países), el Perú ocupa el octavo lugar. El primero corresponde a Estados Unidos de Norte América, seguido de Brasil, México, Colombia, Argentina, Canadá y Venezuela.</p>\n"
                 }
             },
@@ -148,7 +148,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                         fuente: "<p>1/ INEI - Censos Nacionales 2017: XII de Población, VII de Vivienda y III de Comunidades Indígenas.</p>" +
                         "<p>Fuente: CELADE - División de Población de la CEPAL. Revisión 2017.</p>   "
                     },
-                    info: "<p>En América del Sur, el Perú, es el tercer país de mayor extensión geográfica (1’285, 215.6 Km2) después de Brasil y Argentina. En cuanto a densidad, se ubica en el quinto lugar entre los países con mayor densidad poblacional2, Ecuador y Colombia son los países más densos, con 58,6 Hab./Km2 y 43,0 Hab./ Km2, respectivamente. Por el contrario, los países con menor densidad son: Bolivia con 10,1 Hab./ Km2 y Argentina con 15,8 Hab./ Km2.</p>\n" +
+                    info: "<p>En América del Sur, el Perú, es el tercer país de mayor extensión geográfica (1’285, 215.6 Km<sup>2</sup>) después de Brasil y Argentina. En cuanto a densidad, se ubica en el quinto lugar entre los países con mayor densidad poblacional<sup>2</sup>, Ecuador y Colombia son los países más densos, con 58,6 Hab./Km<sup>2</sup> y 43,0 Hab./ Km<sup>2</sup>, respectivamente. Por el contrario, los países con menor densidad son: Bolivia con 10,1 Hab./ Km<sup>2</sup> y Argentina con 15,8 Hab./ Km<sup>2</sup>.</p>\n" +
                     "<p>Es necesario precisar, que el territorio peruano tiene características geomorfológicas que limitan las posibilidades de ocupación de gran porcentaje del territorio nacional, concretamente las grandes zonas desérticas en la Costa, o aquellas que se ubican por encima de los cuatro mil metros sobre el nivel del mar y las zonas húmedas cubiertas de vegetación de la Selva Alta y Baja.</p>"
                 }
             }
@@ -700,14 +700,20 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                             {
                                 targets: 0,
                                 createdCell: function (td, cellData, rowData, row, col) {
-                                    $(td).addClass('textAlignLeft');
+                                    $(td).addClass('textAlignLeft anchoRangoTabla');
                                 },
                                 render: function (data, type, row) {
                                     return _titulos.tematico(data, 'P015000');
                                 }
                             },
                             {
-                                targets: [1,3,5,7],
+                                targets: [1],
+                                render: function (data, type, row) {
+                                    return utils.numberFormat(data);
+                                }
+                            },
+                            {
+                                targets: [3,5,7],
                                 render: function (data, type, row) {
                                     return utils.numberFormat(data);
                                 },
@@ -841,7 +847,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                             {
                                 targets: 0,
                                 createdCell: function (td, cellData, rowData, row, col) {
-                                    $(td).addClass('textAlignLeft');
+                                    $(td).addClass('textAlignLeft anchoRangoTabla');
                                 },
                                 render: function (data, type, row) {
                                     return _titulos.tematico(data, 'P014000');
@@ -946,6 +952,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
     var listado_widgets = ['bar_chart', 'assignment', 'location_on', 'info'];
 
     var init = function () {
+        appData = appData();
         for (var bloque in data) {
             var vista_default = data[bloque]["default"];
             var vista = data[bloque][vista_default];
@@ -1376,12 +1383,14 @@ App.utils.dashboard = (function (config, appData, utils, service) {
             var charId4 = seleccion+"_4_"+bloque;
             var fuente = "#fuente_"+seleccion+"_"+bloque;
             var titulo = "#titulo_"+seleccion+"_"+bloque;
+            var titulo2 = "#titulo2_"+seleccion+"_"+bloque;
             $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo);
             $(fuente).html(data[bloque][vista].widgets.bar_chart.fuente);
 
             $("#"+charId2).hide();
             $("#"+charId3).hide();
             $("#"+charId4).hide();
+            $(titulo2).hide();
 
             if (vista == 'vista0') {
 
@@ -1649,6 +1658,8 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                 $("#"+charId2).show();
                 $("#"+charId3).show();
                 $("#"+charId4).show();
+                $(titulo2).html('PERÚ: ÍNDICE DE MASCULINIDAD, SEGÚN DEPARTAMENTO, 1993 y 2017');
+                $(titulo2).show();
                 Highcharts.chart(charId, {
 
                     subtitle: {
@@ -1820,6 +1831,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
             var charId73 = seleccion+"_7_"+bloque+"_3";
             var fuente = "#fuente_"+seleccion+"_"+bloque;
             var titulo = "#titulo_"+seleccion+"_"+bloque;
+            var titulo2 = "#titulo2_"+seleccion+"_"+bloque;
             $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo);
             $(fuente).html(data[bloque][vista].widgets.bar_chart.fuente);
 
@@ -1831,13 +1843,16 @@ App.utils.dashboard = (function (config, appData, utils, service) {
             //$("#"+charId6).hide();
             $("#"+charId7).hide();
 
-            if (vista == 'vista0') {
+            $(titulo2).hide();
 
-                $("#"+charId2).show();
+            if (vista == 'vista0') {
                 $("#"+charId3).show();
                 $("#"+charId4).show();
                 $("#"+charId5).show();
                 $("#"+charId7).show();
+                $(titulo2).html("PERÚ: EVOLUCIÓN DE LA DISTRIBUCIÓN DE LA POBLACIÓN CENSADA, POR REGIÓN NATURAL, 1940 - 2017");
+                $(titulo2).show();
+                $("#"+charId).height("auto");
 
                 Highcharts.chart(charId, {
                     chart: {
@@ -2107,7 +2122,10 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                 });
             }
             else if (vista == 'vista1') {
+                $("#"+charId).height(600);
                 $("#"+charId2).show();
+                $(titulo2).html("PERÚ: DISTRIBUCIÓN RELATIVA DE LA POBLACIÓN CENSADA, SEGÚN DEPARTAMENTO, 2017");
+                $(titulo2).show();
                 Highcharts.chart(charId, {
                     chart: {
                         type: 'bar'
@@ -2144,7 +2162,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                     },
                     series: [{
                         name: '(Miles de Habitantes)',
-                        data: [9485.4, 8575.0, 1856.8, 1778.1, 1382.7, 1341.0, 1246.0, 1205.5, 1197.3, 1172.7, 1083.5, 994.5, 910.4, 883.5, 850.8, 813.4, 721.0,  616.2, 496.5, 405.8, 379.4, 379.4, 347.6, 329.3, 254.1, 224.9, 174.9, 141.1]
+                        data: [9485.4, 8575.0, 1856.8, 1778.1, 1382.7, 1341.0, 1246.0, 1205.5, 1197.3, 1172.7, 1083.5, 994.5, 910.4, 883.5, 850.8, 813.4, 721.0,  616.2, 496.5, 405.8, 379.4, 347.6, 329.3, 254.1, 224.9, 174.9, 141.1]
                     }]
                 });
                 Highcharts.chart(charId2, {
@@ -2226,7 +2244,6 @@ App.utils.dashboard = (function (config, appData, utils, service) {
     };
 
     var dashboardVistaChangeEvent = function (options) {
-        console.log("dashboardVistaChangeEvent  >>>>", options);
         /* limpiar las vistas */
         var bloque = options.bloque.jqObject;
         bloque.find(".BarraHerramientas").html("");
@@ -2246,4 +2263,4 @@ App.utils.dashboard = (function (config, appData, utils, service) {
         dashboardVistaChangeEvent: dashboardVistaChangeEvent,
         tablaDatos: data
     }
-})(AppConfig(), Appdata(), App.utils, App.service);
+})(AppConfig(), Appdata, App.utils, App.service);

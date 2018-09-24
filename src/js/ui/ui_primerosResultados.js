@@ -295,7 +295,6 @@ $(document).ready(function(){
     $(document).on('click','div.contentComboTitulos', function() {
         var _this= $(this);
         COMBOTOOLSBOX.event.desplegarListaContent(_this);
-        console-log(_this);
     });
 
 

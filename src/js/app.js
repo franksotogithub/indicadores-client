@@ -27,11 +27,11 @@ var App = (function (scope, config, appData) {
      */
     var init = function (vista, ventanas) {
         // Config
-        appData(this, function (app, datos) {
+        appData(function (app, datos) {
             appData = datos;
             config.highchart();
             _hasUtils(app, 'init', {"vista": vista}, ventanas);
-        });
+        }, false);
 
     };
 
@@ -54,6 +54,29 @@ var App = (function (scope, config, appData) {
             if (_this.utils[utils[i]].hasOwnProperty(callback)) {
                 _this.utils[utils[i]][callback](options);
             }
+        }
+    };
+
+    var getAppData = function (url, datos, callback, es_local) {;
+        if (es_local) {
+            return this.service.get({url: url}, true);
+        }
+        else {
+            var app = this;
+            this.service.get({
+                url: this.service.getUrlServer(url),
+                success: function (data) {
+                    app.service.save(url, data);
+                    for (var k in datos) {
+                        data[k] = datos[k];
+                    }
+
+                    callback(app, data);
+                },
+                error: function () {
+                    console.log("error al extraer el config");
+                }
+            });
         }
     };
 
@@ -181,6 +204,7 @@ var App = (function (scope, config, appData) {
         ubigeo: '00',
         uiMax: uiMax,
         init: init,
+        getAppData: getAppData,
         uiMaxCallback: uiMaxCallback,
         uiNormalCallback: uiNormalCallback,
         mapasChangeEvent: mapasChangeEvent,
