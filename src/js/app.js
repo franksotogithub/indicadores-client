@@ -66,11 +66,10 @@ var App = (function (scope, config, appData) {
             this.service.get({
                 url: this.service.getUrlServer(url),
                 success: function (data) {
-                    app.service.save(url, data);
                     for (var k in datos) {
                         data[k] = datos[k];
                     }
-
+                    app.service.save(url, data);
                     callback(app, data);
                 },
                 error: function () {
