@@ -294,9 +294,9 @@ div.busquedaMaximizadaCuadro {
 }
 .selectOnlineMaxCuadro {
     width: 100%;
-    padding: 10px;
+    padding: 5px 10px;
     font-family: 'signikaregular';
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 button.btnOnlineMaxIr {
     background-color: #1b3c71;

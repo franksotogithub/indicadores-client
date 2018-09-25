@@ -429,7 +429,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var uiMaxCallback = function (options) {
         console.log(">> uiMaxCallback", options);
-        $(".cuadroMinimizado").removeClass("col-10-10").addClass("col-6-10");
+        $(".cuadroMinimizado").removeClass("col-10-10").addClass("col-7-10");
         $(".busquedaMaximizadaCuadro").addClass("CuadroActivoBusqueda");
 
 
@@ -442,7 +442,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiNormalCallback = function (options) {
-        $(".cuadroMinimizado").removeClass("col-6-10").addClass("col-10-10");
+        $(".cuadroMinimizado").removeClass("col-7-10").addClass("col-10-10");
         $(".busquedaMaximizadaCuadro").removeClass("CuadroActivoBusqueda");
         $(".busquedaCuadro").show();
         this.fixedColumnsRelayout();

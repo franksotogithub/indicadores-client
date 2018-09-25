@@ -40,10 +40,16 @@ App.utils.graficos = (function (parent, service, appData) {
 
     var uiMaxCallback = function (options) {
         $(".ventanaGrafico .widgetMetadatos").hide();
+        $(".busquedaMaximizadaCuadro").css("display","inline-block");
+        $(".contenidoGraficoMaximizado").css("display","inline-block");
+        $(".contenidoGraficoMaximizado").addClass("col-4-5").removeClass("col-5-5");
     };
 
     var uiNormalCallback = function (options) {
         $(".ventanaGrafico .widgetMetadatos").show();
+        $(".busquedaMaximizadaCuadro").css("display","none");
+        $(".contenidoGraficoMaximizado").addClass("col-5-5").removeClass("col-4-5");
+        $(".contenidoGraficoMaximizado").css("display","block");
     };
 
     var uiReabrirVentana = function () {
