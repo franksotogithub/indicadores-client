@@ -228,7 +228,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                                 $(td).addClass('tituloIndicador');
                             }
                             $(td).addClass("popover");
-                            $(td).attr('data-popover', appData.tituloIndicadores[cellData].titulo);
+                            $(td).attr('data-popover', appData.tituloIndicadores[cellData].descripcion);
+                            $(td).attr('data-indicador', cellData);
                         }
                     },
 
@@ -425,6 +426,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         //parent.graficos.comboIndicaDores(options.ubigeo);
         //parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
         console.log("mapasChangeEvent >>", options);
+    };
+
+    var uiMetaData = function () {
+
     };
 
     var uiMaxCallback = function (options) {

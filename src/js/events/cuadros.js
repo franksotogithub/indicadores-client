@@ -11,7 +11,10 @@
             App.categoriaChangeEvent(categoria);
         });
 
+        $("#tblindicadores").on('click', '.popover', function (e) {
+            var indicador = $(this).attr('data-indicador');
 
+        });
     });
 
     $(window).resize(function(){
