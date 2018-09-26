@@ -104,8 +104,10 @@
 
 .sliderDiv {
 
-    height: 220px;
-    max-height: 220px;
+    /*height: 220px;
+    max-height: 220px;*/
+    height: auto;
+    max-height: 300px;
     display: block;
     overflow: hidden;
 }
@@ -138,7 +140,7 @@
 
 
 .graficoElementSlider {
-    height: 220px;
+    height: auto;
     display: block;
 }
 
