@@ -30,6 +30,21 @@ App.utils.highcharts = (function (service, config) {
     };
     var _chartsTitle = function (options) {
         var title = {
+            text: ''
+        };
+
+        if (options !== undefined) {
+            if (typeof options === 'string' ) {
+                title.text = options;
+            }else {
+                title = _optionsJson(title, options);
+            }
+        }
+
+        return title;
+    };
+    var _chartsMediaLunaTitle = function (options) {
+        var title = {
             text: '',
             align: 'center',
             y: 10,
@@ -169,7 +184,7 @@ App.utils.highcharts = (function (service, config) {
             exporting:{
                 enabled: (options.exporting !== undefined) ? options.exporting : false
             },
-            title: _chartsTitle(options.title),
+            title: _chartsMediaLunaTitle(options.title),
             tooltip: _chartsTooltip(options.tooltip),
             plotOptions: ploteMediaLuna(options.plotOptions),
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
@@ -181,8 +196,64 @@ App.utils.highcharts = (function (service, config) {
         return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
     };
 
-    var graficoBarra = function () {
+    var columnChart = function (data, options, render) {
+        var defaultcolors = Highcharts.getOptions().colors;
 
+        var values = {
+            chart: {
+                type: 'column'
+            },
+            title: _chartsTitle(options.title),
+            subtitle: _chartsTitle(options.subtitle),
+            //xAxis: {},
+            yAxis: {
+                min: 0,
+                    title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                        borderWidth: 0
+                }
+            },
+            colors: (options.colors !== undefined) ? options.colors : defaultcolors,
+            series: [{
+                data: data
+            }]
+        };
+        return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
+    };
+
+    var barChart = function (data, options, render) {
+        var defaultcolors = Highcharts.getOptions().colors;
+
+        var values = {
+            chart: {
+                type: 'bar'
+            },
+            title: _chartsTitle(options.title),
+            subtitle: _chartsTitle(options.subtitle),
+            //xAxis: {},
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            colors: (options.colors !== undefined) ? options.colors : defaultcolors,
+            series: [{
+                data: data
+            }]
+        };
+        return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
     };
 
     var graficoLinea = function () {
@@ -195,6 +266,8 @@ App.utils.highcharts = (function (service, config) {
 
     return {
         mediaLuna: mediaLuna,
+        columnChart: columnChart,
+        barChart: barChart,
         ploteMediaLuna: ploteMediaLuna
     }
 })(App.service, AppConfig());
