@@ -24,7 +24,7 @@ App.utils.graficos = (function (parent, service, appData) {
         ]},{
         linearGradient:directionListaGradient,
         stops: [
-            [0,'#ee0979'],[1,'#ff6a00']
+                                               [0,'#ee0979'],[1,'#ff6a00']
         ]}, {
 
         linearGradient:directionListaGradient,
