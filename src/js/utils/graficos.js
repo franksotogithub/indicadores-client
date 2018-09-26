@@ -38,11 +38,11 @@ App.utils.graficos = (function (parent, service, appData) {
 
 
     var charts = {
-        botonesTop: function (uiId, botones) {
+        botonesTop: function (uiId, data) {
             var b;
             var html = '';
-            for (b in botones) {
-                var boton = botones[b];
+            for (b in data.data) {
+                var boton = data.data[b];
                 html += _htmlBotonesTop([boton.adicional, boton.name, parent.numberFormat(boton.y)]);
             }
 
@@ -63,28 +63,47 @@ App.utils.graficos = (function (parent, service, appData) {
                 }
             };
             options.colors = [colorsPie[0], colorsPie[1]];
-            App.utils.highcharts.mediaLuna(data, options);
+            App.utils.highcharts.mediaLuna(data.data, options);
         },
         column: function (uiId, data) {
             var options = {
                 uiId: uiId,
                 title: {
-                    text: 'Total<br />personas',
+                    text: data.titulo
                 }
             };
-            console.log(">>> data ", data);
-            App.utils.highcharts.columnChart(data, options);
+            options.xAxis = [];
+            var i;
+            for (i in data.data) {
+                options.xAxis.push(data.data[i].name);
+            }
+            App.utils.highcharts.columnChart(data.data, options);
         },
 
         bar: function (uiId, data) {
             var options = {
                 uiId: uiId,
                 title: {
-                    text: 'Total<br />personas',
+                    text: data.titulo,
                 }
             };
-            console.log(">>> data ", data);
-            App.utils.highcharts.barChart(data, options);
+            options.xAxis = [];
+            var i;
+            for (i in data.data) {
+                options.xAxis.push(data.data[i].name);
+            }
+            App.utils.highcharts.barChart(data.data, options);
+        },
+        
+        donut: function (uiId, data) {
+            var options = {
+                uiId: uiId,
+                title: {
+                    text: data.titulo
+                }
+            };
+
+            App.utils.highcharts.donutChart(data.data, options);
         }
     };
 
@@ -142,6 +161,7 @@ App.utils.graficos = (function (parent, service, appData) {
     var indicadores = function (categoria, ubigeo, ubigeos) {
         //var categoria = indicador.cuadrosData.categoria;
         $(".sliderDiv").html("");
+        $("#id_graficoWidget_top").html("");
         service.graficos.getIndicador(categoria, ubigeo, function (data) {
             //indicador.graficoCategoria[categoria] = data;
             var g;
@@ -152,11 +172,11 @@ App.utils.graficos = (function (parent, service, appData) {
                 }else {
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
-                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider"></div>');
+                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" ></div>');
                 }
 
                 // Invocar al callback por cada grafico
-                charts[data[g].des_tipo_grafico](uiId, data[g].data);
+                charts[data[g].des_tipo_grafico](uiId, data[g]);
             }
         });
     };

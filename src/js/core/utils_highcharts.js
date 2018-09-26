@@ -201,6 +201,11 @@ App.utils.highcharts = (function (service, config) {
 
         var values = {
             chart: {
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                },
                 type: 'column'
             },
             title: _chartsTitle(options.title),
@@ -231,11 +236,18 @@ App.utils.highcharts = (function (service, config) {
 
         var values = {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                }
             },
             title: _chartsTitle(options.title),
             subtitle: _chartsTitle(options.subtitle),
-            //xAxis: {},
+            xAxis: {
+                categories: options.xAxis
+            },
             yAxis: {
                 min: 0,
                 title: {
@@ -256,6 +268,34 @@ App.utils.highcharts = (function (service, config) {
         return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
     };
 
+    var donutChart = function (data, options, render) {
+        var defaultcolors = Highcharts.getOptions().colors;
+        var values = {
+            chart: {
+                type: 'pie',
+                backgroundColor: {
+                    style: {
+                        backgroundColor: 'transparent'
+                    }
+                }
+            },
+            title: _chartsTitle(options.title),
+            subtitle: _chartsTitle(options.subtitle),
+            plotOptions: {
+                pie: {
+                    innerSize: 50,
+                    depth: 45
+                }
+            },
+            colors: (options.colors !== undefined) ? options.colors : defaultcolors,
+            series: [{
+                data: data
+            }]
+        };
+
+        return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
+    };
+
     var graficoLinea = function () {
 
     };
@@ -268,6 +308,7 @@ App.utils.highcharts = (function (service, config) {
         mediaLuna: mediaLuna,
         columnChart: columnChart,
         barChart: barChart,
+        donutChart: donutChart,
         ploteMediaLuna: ploteMediaLuna
     }
 })(App.service, AppConfig());
