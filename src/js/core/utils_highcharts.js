@@ -83,7 +83,7 @@ App.utils.highcharts = (function (service, config) {
                     enabled: true,
                     format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
                     x:0,
-                    y: 70,
+                    y: 20,
                     distance: -10,
                     style: {
                         fontWeight: 'bold',
@@ -224,6 +224,9 @@ App.utils.highcharts = (function (service, config) {
                 }
             },
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
+            exporting:{
+                enabled: (options.exporting !== undefined) ? options.exporting : false
+            },
             series: [{
                 data: data
             }]
@@ -245,6 +248,16 @@ App.utils.highcharts = (function (service, config) {
             },
             title: _chartsTitle(options.title),
             subtitle: _chartsTitle(options.subtitle),
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -20,
+                y: 50,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
             xAxis: {
                 categories: options.xAxis
             },
@@ -259,6 +272,9 @@ App.utils.highcharts = (function (service, config) {
                     pointPadding: 0.2,
                     borderWidth: 0
                 }
+            },
+            exporting:{
+                enabled: (options.exporting !== undefined) ? options.exporting : false
             },
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
             series: [{
@@ -288,6 +304,9 @@ App.utils.highcharts = (function (service, config) {
                 }
             },
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
+            exporting:{
+                enabled: (options.exporting !== undefined) ? options.exporting : false
+            },
             series: [{
                 data: data
             }]

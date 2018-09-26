@@ -188,7 +188,10 @@ App.utils.graficos = (function (parent, service, appData) {
             var html = '';
             var u;
             for (u in ubigeos) {
-                html += parent.format('<option value="{0}">{1}</option>', [ubigeos[u], appData.titulo["U"+ubigeos[u]]]);
+                var ubigeo = ubigeos[u];
+                var titulo = appData.titulo["U"+ubigeo]; //_tituloNivel
+
+                html += parent.format('<option value="{0}">{1}</option>', [ubigeo,  parent.cuadros.tituloNivel(ubigeo, titulo, ' ')]);
             }
             $("#cmb_ubigeo select").html(html);
             $("#cmb_ubigeo").show();
@@ -211,7 +214,7 @@ App.utils.graficos = (function (parent, service, appData) {
                 }else {
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
-                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" ></div>');
+                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: 300px!important;"></div>');
                 }
 
                 // Invocar al callback por cada grafico

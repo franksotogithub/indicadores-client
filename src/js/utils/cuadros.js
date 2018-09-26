@@ -111,13 +111,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @returns {*}
      * @private
      */
-    var _tituloNivel = function (ubigeo, titulo) {
+    var tituloNivel = function (ubigeo, titulo, sepatator) {
+        sepatator = (sepatator === undefined) ? '<br />' : sepatator;
         if (ubigeo.length == 2 && ubigeo !="00") {
-            return "DPTO<br />"+titulo;
+            return "DPTO"+sepatator+titulo;
         }else if (ubigeo.length == 4) {
-            return "PROV<br />"+titulo;
+            return "PROV"+sepatator+titulo;
         }else if (ubigeo.length == 6) {
-            return "DIST<br />"+titulo;
+            return "DIST"+sepatator+titulo;
         }else {
             return titulo;
         }
@@ -142,7 +143,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 clase = ' class="thindicador"';
             }
 
-            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+_tituloNivel(v.ubigeo, v.titulo)+'</th>';
+            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+tituloNivel(v.ubigeo, v.titulo)+'</th>';
 
             thead += th;
 
@@ -422,10 +423,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _this.timeClikMap = undefined;
         }, 1200);
 
-        //this.cuadrosData.ubigeo = options.ubigeo.slice()[0];
-        //parent.graficos.comboIndicaDores(options.ubigeo);
-        //parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
-        console.log("mapasChangeEvent >>", options);
+        this.cuadrosData.ubigeo = options.ubigeosSeleccionados.slice(-1).pop();
+        parent.graficos.comboIndicaDores(options.ubigeosOdenados.slice().reverse());
+        parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
 
     var uiMetaData = function () {
@@ -532,6 +532,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         getContenidoPopupMapaEvent: getContenidoPopupMapaEvent,
         uiMinimizarVentana: uiMinimizarVentana,
         reiniciarTabla: reiniciarTabla,
+        tituloNivel: tituloNivel,
         graficoCategoria: {},
         cuadrosData: cuadrosData
     }
