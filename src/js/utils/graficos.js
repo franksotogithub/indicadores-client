@@ -1,5 +1,44 @@
 App.utils.graficos = (function (parent, service, appData) {
 
+    var directionListaGradient = {
+        x1: 0,
+        y1: 1,
+        x2: 0,
+        y2: 0
+    };
+    var colorListaGradient =Highcharts.getOptions().color;
+
+    colorListaGradient = [{
+        linearGradient:directionListaGradient,
+        stops: [
+            [0,'#000046'],[1,'#1CB5E0']
+        ]},{
+
+        linearGradient:directionListaGradient,
+        stops: [
+            [0,'#20002c'],[1,'#cbb4d4']
+        ]}, {
+        linearGradient:directionListaGradient,
+        stops: [
+            [0,'#7B920A'],[1,'#ADD100']
+        ]},{
+        linearGradient:directionListaGradient,
+        stops: [
+            [0,'#ee0979'],[1,'#ff6a00']
+        ]}, {
+
+        linearGradient:directionListaGradient,
+        stops: [
+            [0,'#8E54E9'],[1,'#4776E6']
+        ]}
+
+
+    ];
+
+
+
+
+
     var directionPieGradient = {
         x1: 0,
         y1: 1,
