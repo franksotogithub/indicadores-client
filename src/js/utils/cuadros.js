@@ -470,7 +470,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var categoria = options.categoria.substring(1,3);
         this.cuadrosData.categoria = categoria;
         this.crearTablaCategoria(categoria);
-        parent.graficos.indicadores(this);
+        parent.graficos.indicadores(categoria, '00');
 
     };
 

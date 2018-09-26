@@ -25,18 +25,68 @@ App.utils.graficos = (function (parent, service, appData) {
         ]
     }];
 
-    var botonesTop = function (uiId, botones) {
-        var b;
-        var html = '';
-        for (b in botones) {
-            var boton = botones[b];
-            html += _htmlBotonesTop([boton.adicional, boton.name, parent.numberFormat(boton.y)]);
-        }
-
-        //$("#id_graficoWidget_top").html(html);
-        $("#"+uiId).html(html);
+    var _htmlBotonesTop = function (options) {
+        var template = '<div class="graficoWidget-top">'+
+            '<div><span class="{0}"></span></div>'+
+            '<div>'+
+            '<div class="">{1}</div>'+
+            '<div id="id_w_h" class="hombre textoBotonTop">{2}</div>'+
+            '</div>'+
+            '</div>';
+        return parent.format(template, options);
     };
 
+
+    var charts = {
+        botonesTop: function (uiId, botones) {
+            var b;
+            var html = '';
+            for (b in botones) {
+                var boton = botones[b];
+                html += _htmlBotonesTop([boton.adicional, boton.name, parent.numberFormat(boton.y)]);
+            }
+
+            //$("#id_graficoWidget_top").html(html);
+            $("#"+uiId).html(html);
+        },
+        mediaLuna: function (uiId, data) {
+            var options = {
+                uiId: uiId,
+                title: {
+                    text: 'Total<br />personas',
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    y: 0,
+                    style: {
+                        fontSize: "14px"
+                    }
+                }
+            };
+            options.colors = [colorsPie[0], colorsPie[1]];
+            App.utils.highcharts.mediaLuna(data, options);
+        },
+        column: function (uiId, data) {
+            var options = {
+                uiId: uiId,
+                title: {
+                    text: 'Total<br />personas',
+                }
+            };
+            console.log(">>> data ", data);
+            App.utils.highcharts.columnChart(data, options);
+        },
+
+        bar: function (uiId, data) {
+            var options = {
+                uiId: uiId,
+                title: {
+                    text: 'Total<br />personas',
+                }
+            };
+            console.log(">>> data ", data);
+            App.utils.highcharts.barChart(data, options);
+        }
+    };
 
     var uiMaxCallback = function (options) {
         $(".ventanaGrafico .widgetMetadatos").hide();
@@ -56,29 +106,6 @@ App.utils.graficos = (function (parent, service, appData) {
         $(".ventanaGrafico .widgetMetadatos").show();
     };
 
-    var mediaLunaPoblacion = function (uiId, data) {
-        var options = {
-            uiId: uiId,
-            title: {
-                text: 'Total<br />personas',
-                align: 'center',
-                verticalAlign: 'middle',
-                y: 0,
-                style: {
-                    fontSize: "14px"
-                }
-            }
-        };
-        options.colors = [colorsPie[0], colorsPie[1]];
-        console.log("media luna >>><", data);
-        App.utils.highcharts.mediaLuna(data, options);
-    };
-
-    var graficosIndicadores = {
-        "001": { "callback": botonesTop, "tipo": 1},
-        "002": { "callback": mediaLunaPoblacion, "tipo": 2}
-    };
-
     var init = function () {
         appData = appData();
     };
@@ -86,18 +113,6 @@ App.utils.graficos = (function (parent, service, appData) {
     var initIndicador = function (indicador) {
         this.indicadores(indicador.cuadrosData.categoria, indicador.cuadrosData.ubigeo);
     };
-
-    var _htmlBotonesTop = function (options) {
-        var template = '<div class="graficoWidget-top">'+
-            '<div><span class="{0}"></span></div>'+
-            '<div>'+
-            '<div class="">{1}</div>'+
-            '<div id="id_w_h" class="hombre textoBotonTop">{2}</div>'+
-            '</div>'+
-            '</div>';
-        return parent.format(template, options);
-    };
-
 
 
     var popupMapa = function (popupvalues, codgrafico, ubigeo, options, callback) {
@@ -107,8 +122,9 @@ App.utils.graficos = (function (parent, service, appData) {
         });
     };
 
+
+
     var comboIndicaDores = function (ubigeos) {
-        console.log(">>> combo", ubigeos);
         $("#cmb_ubigeo select").html("");
         if (ubigeos.length > 1) {
             var html = '';
@@ -116,8 +132,6 @@ App.utils.graficos = (function (parent, service, appData) {
             for (u in ubigeos) {
                 html += parent.format('<option value="{0}">{1}</option>', [ubigeos[u], appData.titulo["U"+ubigeos[u]]]);
             }
-
-            console.log("html combo>>> ", html);
             $("#cmb_ubigeo select").html(html);
             $("#cmb_ubigeo").show();
         }else {
@@ -133,8 +147,7 @@ App.utils.graficos = (function (parent, service, appData) {
             var g;
             var c=0;
             for (g in data) {
-                var grafico = graficosIndicadores[g];
-                if (grafico.tipo== 1) {
+                if (data[g].cod_grafico == 1) {
                     var uiId = "id_graficoWidget_top";
                 }else {
                     c++;
@@ -143,9 +156,7 @@ App.utils.graficos = (function (parent, service, appData) {
                 }
 
                 // Invocar al callback por cada grafico
-                grafico['callback'](uiId, data[g]);
-
-
+                charts[data[g].des_tipo_grafico](uiId, data[g].data);
             }
         });
     };

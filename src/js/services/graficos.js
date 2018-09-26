@@ -12,8 +12,8 @@ App.service.graficos = (function (parent, config) {
         })
     };
 
-    var getIndicador = function (cod_caategoria, ubigeo, callback) {
-        var url = parent.url('graficos/indicadores/{0}/{1}/', [cod_caategoria, ubigeo]);
+    var getIndicador = function (cod_categoria, ubigeo, callback) {
+        var url = parent.url('graficos/indicadores/{0}/{1}/', [cod_categoria, ubigeo]);
         parent.get({
             url: parent.getUrlServer(url),
             success: function (data) {
