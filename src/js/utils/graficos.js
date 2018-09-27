@@ -212,14 +212,18 @@ App.utils.graficos = (function (parent, service, appData) {
                 if (data[g].cod_grafico == 1) {
                     var uiId = "id_graficoWidget_top";
                 }else {
+
+
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
-                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: 300px!important;"></div>');
+                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: 300px!important; display: none; "></div>');
                 }
 
                 // Invocar al callback por cada grafico
                 charts[data[g].des_tipo_grafico](uiId, data[g]);
             }
+            // Crea el slider
+            sliderGraph ();
         });
     };
 

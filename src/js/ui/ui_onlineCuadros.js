@@ -525,11 +525,13 @@ function restaurarVentana(e, callback) {
  function sliderGraph (){
 
     $(".botonesControlGrafico").html("");
+    console.log("prueba control");
     $(".sliderDiv div.graficoElementSlider").each(function (index) {
 
         if(index==0){
             $(".botonesControlGrafico").append('<button class="btnActiveSlider" data-slider="'+(index+1)+'"> </button>');
-            $(this).attr("data-slider",(index+1));
+            $(this).attr("data-slider",(index+1)).show();
+            console.log("donde estas?");
 
         }else {
             $(".botonesControlGrafico").append('<button data-slider="'+(index+1)+'"> </button>');
@@ -542,7 +544,7 @@ function restaurarVentana(e, callback) {
 $(document).ready(function() {
     
     altosAutomaticos();
-    sliderGraph ();
+    //sliderGraph ();
 
     $(document).on('click','#contentPanel .headerToolMap > button', function() {
         var dataSelect= $(this).attr('data-select');
@@ -673,8 +675,8 @@ $(document).ready(function() {
         $(this).siblings("button").removeClass("btnActiveSlider");
         $(this).addClass("btnActiveSlider");
 
-        $(".sliderDiv [data-slider="+slider+"]").siblings("div").fadeOut();
-        $(".sliderDiv [data-slider="+slider+"]").fadeIn();
+        $(".sliderDiv [data-slider="+slider+"]").siblings("div").hide();
+        $(".sliderDiv [data-slider="+slider+"]").show();
 
     });
 
