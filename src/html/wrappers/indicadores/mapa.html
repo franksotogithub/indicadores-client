@@ -1,5 +1,18 @@
+
+<!--<iframe id="iframeDescarga" ></iframe>-->
+
 <div id="viewDiv" style="position:relative;">
     <div id="cargarMapaDiv">
+
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+
+
+    <div id="cargarDescarga" >
 
         <div class="spinner">
             <div class="bounce1"></div>
@@ -176,6 +189,19 @@
         position: absolute;
         z-index: 2;
         display: block ;
+        background-color: rgba(232, 232, 232, 0.5);
+
+
+    }
+
+
+    #cargarDescarga{
+        right: 0;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        z-index: 2;
+        display: none ;
         background-color: rgba(232, 232, 232, 0.5);
 
 

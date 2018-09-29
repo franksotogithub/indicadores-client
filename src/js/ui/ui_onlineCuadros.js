@@ -693,9 +693,10 @@ $(document).ready(function() {
         App.utils.mapas.descargarMapaEvent(function (resp,error) {
 
             /**aqui pones la descarga*/
-            window.open(resp.url);
 
+            document.getElementById('iframeDescarga').scr=resp.url;
 
+            //window.open(resp.url);
         });
 
 
