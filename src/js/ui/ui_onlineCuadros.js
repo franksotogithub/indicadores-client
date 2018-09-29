@@ -696,7 +696,7 @@ $(document).ready(function() {
 
             //document.getElementById('iframeDescarga').scr=resp.url;
 
-            window.open(resp.url);
+            window.open(resp.url,'_blank');
         });
 
 
