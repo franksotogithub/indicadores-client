@@ -694,9 +694,9 @@ $(document).ready(function() {
 
             /**aqui pones la descarga*/
 
-            document.getElementById('iframeDescarga').scr=resp.url;
+            //document.getElementById('iframeDescarga').scr=resp.url;
 
-            //window.open(resp.url);
+            window.open(resp.url);
         });
 
 
