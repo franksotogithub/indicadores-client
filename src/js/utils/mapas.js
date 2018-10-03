@@ -513,16 +513,22 @@ App.utils.mapas = (function (parent, config,service) {
 
             printTask.execute(params,options).then(function(resolvedVal){
                 var url_pdf=resolvedVal.url;
+                var cadena=url_pdf.split("/");
+                var nom_pdf=cadena[cadena.length-1];
+
+                //var nom_pdf=url_pdf.reverse().split("/")[0];
                 resp['success']=true;
                 resp['url']=url_pdf;
+                resp['nom_pdf']=nom_pdf;
                 ocultarCargando();
-                console.log('resolvedVal>>>' ,resolvedVal);
+                console.log('nom_pdf >>>', nom_pdf);
+
                 return callback(resp);
             },
             function(error){
                 resp['success']=false;
                 resp['error']=error;
-                console.log('error>>>' ,error);
+                //console.log('error>>>' ,error);
                 ocultarCargando();
                 return callback(resp);
 
