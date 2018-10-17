@@ -103,14 +103,12 @@
         <div id="resumenPanel">
             <div class="row">
                 <div class="headerToolMap">
-                    <select class="selectMapa">
-                        <option value="0">Categoria: Población</option>
-                        <option value="1">Categoria: Educación</option>
-                        <option value="2">Categoria: Salud</option>
-                        <option value="3">Categoria: Economia</option>
-                        <option value="4">Categoria: vivienda</option>
-                        <option value="5">Categoria: Hogar</option>
-
+                    <select class="selectMapa" id="selectMapa">
+                        <option value="P01">Categoria: Población</option>
+                        <option value="P02">Categoria: Educación</option>
+                        <option value="P03">Categoria: Salud</option>
+                        <option value="P05">Categoria: Vivienda</option>
+                        <option value="P06">Categoria: Hogar</option>
                     </select>
 
                     <button data-icon="&#xe012;" data-select="1" class=" buttonMapTool active b_azul f_blanco icon tooltip" data-title="Mini mapas">  </button>
@@ -151,11 +149,9 @@
                 </div>
             </div>
             <div class="contentTabsBotonesMapa">
-                <div class="messageContentEmpty">
+                <div class="messageContentEmpty" id="divMessageContentEmpty">
                     <div class="back-informacion"></div>
                     <div class="texto-informacion-meta"> Por favor clickear sobre el mapa <br> para mostrar la información</div>
-
-
 
                 </div>
             </div>
@@ -182,8 +178,8 @@
 
 <style>
     .miniMap {
-        width:150px;
-        height:150px;
+        width:160px;
+        height:160px;
         border: 1px solid black;
     }
 

@@ -27,6 +27,8 @@ App.utils.mapas = (function (parent, config,service) {
 
     var datosMap = new Object();
 
+
+
     var ubigeosHijos = undefined;
 
     var layerList = undefined;
@@ -75,6 +77,8 @@ App.utils.mapas = (function (parent, config,service) {
 
 
     var list_maps=undefined;
+
+    var listMiniMapas=[];
 
     var maximizado=false;
 
@@ -182,6 +186,11 @@ App.utils.mapas = (function (parent, config,service) {
 
 
     var ubigeos=undefined;
+
+    var divMessageContentEmpty = document.getElementById('divMessageContentEmpty');
+
+
+
 
     var symbolSombreado= {
         type: "simple-fill",
@@ -369,7 +378,6 @@ App.utils.mapas = (function (parent, config,service) {
                 url: urlMap,
                 sublayers: [{
                     renderer:_this.datosMap.renderOptionsSublayers[index].renderer,
-                    //renderer: renderizadoClassBreaks(codTematico, classBreakinfos[index + ""]),
                     opacity: opacity,
                     id: parseInt(index),
                     outFields: ["*"],
@@ -381,6 +389,9 @@ App.utils.mapas = (function (parent, config,service) {
             var miniMap = new Map({
                 layers: miniLayer,
             });
+
+            _this.listMiniMapas.push(miniLayer);
+
 
             var miniView = new MapView({
                 container: div,
@@ -425,6 +436,7 @@ App.utils.mapas = (function (parent, config,service) {
             crearMinimapa(stringIndex,where,idMiniMap);
             _this.cant_mini_maps++;
         }
+        _this.divMessageContentEmpty.style.display='none';
     }
 
     var removerMiniMapa = function (ubigeo){
@@ -439,9 +451,10 @@ App.utils.mapas = (function (parent, config,service) {
 
     var removerTodosMiniMaps=function(){
         var _this=parent.mapas;
-        _this.select_ubigeos.forEach(function (ubigeo) {
-            removerMiniMapa(ubigeo);
-        });
+        var listMiniMaps=document.getElementById('listMiniMaps');
+        listMiniMaps.innerHTML="";
+        _this.divMessageContentEmpty.style.display='inline';
+        _this.listMiniMapas=[];
     }
 
     var mostrarTodosMiniMaps=function(){
@@ -455,21 +468,6 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-    //var uiMaxCallback =function () {
-        //var _this=parent.mapas;
-
-        /*
-        _this.maximizado=true;
-        var list_mini_maps=document.getElementById("listMiniMaps");
-        visibilityAllChildDiv(_this.panelDiv,'visible');
-        mostrarTodosMiniMaps();
-        _this.view_map.popup.close();
-        _this.view_map.ui.move("widget-select-layer","top-left");*/
-        //visibilityAllChildDiv(_this.panelDiv,'visible');
-
-       // _this.panelDiv.style.display='inline';
-
-    //}
     var uiMaxCallback= undefined;
     var uiNormalCallback= undefined;
     var actualizarMapaPorUbigeos = undefined;
@@ -738,8 +736,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
-
-
     var crearMapaRender = function (optionsSublayers) {
         require([
             "esri/Map",
@@ -949,6 +945,7 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.panelDiv.style.display='none';
                 _this.maximizado=false;
 
+
             }
 
 
@@ -1029,7 +1026,6 @@ App.utils.mapas = (function (parent, config,service) {
                     f.nombres=[];
                     f.select_features=[];
                 })
-
 
                 _this.view_map.graphics.removeAll();
                 _this.view_map.popup.close();
@@ -1129,8 +1125,6 @@ App.utils.mapas = (function (parent, config,service) {
             };
 
 
-
-
             var changeLayer=function(index){
                 cleanVars();
                 changeIndex(index);
@@ -1176,6 +1170,11 @@ App.utils.mapas = (function (parent, config,service) {
 
                 _this.view_map.popup.close();
                 wigdetSelectAll.style.display="none";
+
+
+
+                if(_this.maximizado)
+                    removerTodosMiniMaps();
             }
 
             /**
@@ -1632,11 +1631,21 @@ App.utils.mapas = (function (parent, config,service) {
                 {breaks=parent.getClassBreakInfoSublayerTematico(sublayer.renderer);
                  _this.layerBack.sublayers.items[j].labelsVisible=false;
                 }
+
+
                 _this.layer.sublayers.items[j].renderer=renderizadoClassBreaks(codTematico,breaks);
                 _this.layerBack.sublayers.items[j].renderer=parent.renderBack();
             });
             _this.layer.title= _this.datosMap.optionsSublayers[0].title;
             _this.datosMap.divLegend.innerHTML=htmlLengenda;
+
+            var indexMinimap=i;
+            if(indexMinimap<2){indexMinimap++;}
+            _this.listMiniMapas.forEach(function (layer) {
+                layer.url=_this.datosMap.urlMap;
+                layer.sublayers.items[0].renderer = _this.datosMap.renderOptionsSublayers[indexMinimap].renderer;
+            });
+
         });
     };
 
@@ -1739,7 +1748,9 @@ App.utils.mapas = (function (parent, config,service) {
         $selectUbigeo: $selectUbigeo,
         ubigeos: ubigeos,
         actualizarMapaPorUbigeos:actualizarMapaPorUbigeos,
-        seleccionarUbigeosMapa: seleccionarUbigeosMapa
+        seleccionarUbigeosMapa: seleccionarUbigeosMapa,
+        divMessageContentEmpty:divMessageContentEmpty,
+        listMiniMapas:listMiniMapas,
     }
 
 })(App.utils, AppConfig() ,App.service );
