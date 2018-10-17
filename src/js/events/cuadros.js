@@ -13,6 +13,16 @@
 
         $("#tblindicadores").on('click', '.popover', function (e) {
             var indicador = $(this).attr('data-indicador');
+            $(".messageContentEmpty").hide();
+            $(".cDatosTotal").show();
+            utils.cuadros.changeMetadata(indicador);
+        });
+
+        $(".inputTextBusqueda").autocomplete({
+            serviceUrl: service.getUrlServer('dimensiones/tematico/autocomplete/'),
+            onSelect: function (response) {
+                App.utils.cuadros.buscadorIndicadores(response);
+            }
 
         });
     });

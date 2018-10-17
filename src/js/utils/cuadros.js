@@ -8,8 +8,17 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         categoria: "01",
         ubigeo: "00",
         ubigeos: ["00"],
-        poblacion: {
+        poblacion: {}
+    };
 
+    var uiDocuments = {
+        clases: {
+            "meta_def": $(".contenedorMetadatos .meta_def"),
+            "meta_alg": $(".contenedorMetadatos .meta_alg"),
+            "meta_var": $(".contenedorMetadatos .meta_var"),
+            "meta_um": $(".contenedorMetadatos .meta_um"),
+            "meta_cg": $(".contenedorMetadatos .meta_cg"),
+            "meta_pt": $(".contenedorMetadatos .meta_pt")
         }
     };
 
@@ -364,10 +373,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _this.target = _crear_target(ubigeos.length);
 
             // Instanciar el servicio
-            service.cuadros.getIndicadores(ubigeos, _this.vista, function () {
+            service.cuadros.getIndicadores(ubigeos, _this.vista, function (data) {
                 _this.tblIndicadores = _crearTabla(
                     '#tblindicadores',
-                    service.cuadros.indicadores[App.categoria],
+                    data[App.categoria],
                     _this.tablaColumns,
                     _this.target
                 );
@@ -391,7 +400,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
-            //this.tblIndicadores.clear().draw();
         }
 
         this.tblIndicadores = _crearTabla(
@@ -404,6 +412,24 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         //this.fixedColumnsRelayout();
 
         $("#loadindicadores").hide();
+    };
+
+    var buscadorIndicadores = function (response){
+        console.log("response >>>>>", response);
+        /*
+        _cargandoTabla();
+        if (this.tblIndicadores !== undefined) {
+            this.tblIndicadores.destroy();
+        }
+
+
+        service.cuadros.getIndicador(response.data, this.cuadrosData.ubigeos, _this.vista, function (data) {
+            console.log("data busqueda >>>", data);
+
+            $("#loadindicadores").hide();
+        });
+        */
+
     };
 
     var reiniciarTabla = function () {
@@ -476,10 +502,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var getContenidoPopupMapaEvent = function (options) {
 
-
+        console.log("se ejecuta getContenidoPopupMapaEvent");
         var data = {
             "titulo":  {"total": 876542, "text":"Población Censada"},
-            "resufixedColumnsRelayouten": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
+            "resumen": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
             "grafico": { }
         };
 
@@ -505,12 +531,24 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             }
         }, options.callback);
 
-        //options.callback(data);
+        options.callback(data);
     };
 
     var uiMinimizarVentana = function (options) {
         this.fixedColumnsRelayout();
     };
+
+    var changeMetadata = function (indicador) {
+        var metadata = appData.tituloIndicadores[indicador];
+        this.uiDocuments.clases.meta_def.children('p').html(metadata.definicion);
+        this.uiDocuments.clases.meta_alg.children('.eq-c').html(metadata.algoritmo);
+        this.uiDocuments.clases.meta_var.children('p').html(metadata.variables);
+        this.uiDocuments.clases.meta_um.children('p').html(metadata.unidad_medida);
+        this.uiDocuments.clases.meta_cg.children('p').html(metadata.cobertura_geografica);
+        this.uiDocuments.clases.meta_pt.children('p').html(metadata.presiciones_tecnicas);
+    };
+
+
 
     return {
         init: init,
@@ -534,6 +572,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         reiniciarTabla: reiniciarTabla,
         tituloNivel: tituloNivel,
         graficoCategoria: {},
-        cuadrosData: cuadrosData
+        cuadrosData: cuadrosData,
+        changeMetadata: changeMetadata,
+        uiDocuments: uiDocuments,
+        buscadorIndicadores: buscadorIndicadores
     }
 })(AppConfig(), Appdata, App.utils, App.service);

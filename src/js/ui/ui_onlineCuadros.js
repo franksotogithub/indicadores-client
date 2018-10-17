@@ -66,9 +66,6 @@ function imprimirVentana(e) {
     setTimeout(function(){
         restaurarImpresion(e);
     }, 1100);
-
-
-
 }
 
 
@@ -113,6 +110,7 @@ function maximizarImpresion(e){
     }
     e.closest(".contenedorVentana").siblings(".contenedorVentana").fadeOut(function () { /* Selecionar los hermanos de la ventana maximizada y ocultarlas */
         e.closest(".contenedorVentana").removeClass("col-4-10 col-35 col-1-4 col-1-2 ").addClass("col-1-1").css("display","block");
+        App.utils.cuadros.fixedColumnsRelayout();
     });
     e.closest(".contenedorVentana").css("width","1100px");
     e.parent().children(".maximizar").attr("data-icon","4");
