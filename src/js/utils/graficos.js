@@ -148,9 +148,11 @@ App.utils.graficos = (function (parent, service, appData) {
 
     var uiMaxCallback = function (options) {
         $(".ventanaGrafico .widgetMetadatos").hide();
-        $(".busquedaMaximizadaCuadro").css("display","inline-block");
+        /*$(".busquedaMaximizadaCuadro").css("display","inline-block");
         $(".contenidoGraficoMaximizado").css("display","inline-block");
-        $(".contenidoGraficoMaximizado").addClass("col-4-5").removeClass("col-5-5");
+        $(".contenidoGraficoMaximizado").addClass("col-4-5").removeClass("col-5-5");*/
+
+        $(".graficosMaxTotal").show();
     };
 
     var uiNormalCallback = function (options) {
@@ -158,6 +160,7 @@ App.utils.graficos = (function (parent, service, appData) {
         $(".busquedaMaximizadaCuadro").css("display","none");
         $(".contenidoGraficoMaximizado").addClass("col-5-5").removeClass("col-4-5");
         $(".contenidoGraficoMaximizado").css("display","block");
+        $(".graficosMaxTotal").hide();
     };
 
     var uiReabrirVentana = function () {
