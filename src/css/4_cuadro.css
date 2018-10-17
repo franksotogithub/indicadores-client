@@ -275,11 +275,14 @@ div.busquedaMaximizadaCuadro {
 .contentInputGbuscar {
     display: block;
     padding: 0px 15px;
-    background-color: #e6e6e6;
+    background-color: #fafafa;
     position: relative;
     height: 38px;
     padding-right: 35px;
     margin-bottom: 10px;
+    border: solid 2px #1b3c71;
+    font-family: "signikaregular";
+    margin-top:10px;
 }
 .icoInputSearch {
     right:10px;
@@ -295,6 +298,10 @@ div.busquedaMaximizadaCuadro {
     padding:10px 0px;
     outline: none;
 }
+
+
+
+
 .selectOnlineMaxCuadro {
     width: 100%;
     padding: 5px 10px;

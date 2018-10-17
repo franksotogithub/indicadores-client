@@ -526,18 +526,28 @@ function restaurarVentana(e, callback) {
 
     $(".botonesControlGrafico").html("");
     console.log("prueba control");
-    $(".sliderDiv div.graficoElementSlider").each(function (index) {
+    var cantidad = $(".sliderDiv div.graficoElementSlider").length;
 
-        if(index==0){
-            $(".botonesControlGrafico").append('<button class="btnActiveSlider" data-slider="'+(index+1)+'"> </button>');
-            $(this).attr("data-slider",(index+1)).show();
-            console.log("donde estas?");
+    if(cantidad > 1){
+        $(".sliderDiv div.graficoElementSlider").each(function (index) {
 
-        }else {
-            $(".botonesControlGrafico").append('<button data-slider="'+(index+1)+'"> </button>');
-            $(this).attr("data-slider",(index+1));
-        }
-    })    
+            if(index==0){
+                $(".botonesControlGrafico").append('<button class="btnActiveSlider" data-slider="'+(index+1)+'"> </button>');
+                $(this).attr("data-slider",(index+1)).show();
+                console.log("donde estas?");
+
+            }else {
+                $(".botonesControlGrafico").append('<button data-slider="'+(index+1)+'"> </button>');
+                $(this).attr("data-slider",(index+1));
+            }
+        })
+    }else {
+
+        $(".sliderDiv div.graficoElementSlider").show();
+    }
+
+
+
  }
 
 
@@ -587,6 +597,7 @@ $(document).ready(function() {
     $(".buttonFlotanteBusqueda").click(function(){
         $(".buttonFlotanteBusqueda").toggleClass("ocultaBus");
         $(".contenedorInputTablaB").toggleClass("ocultaBus");
+        $(this).parent().find("input.inputTextBusqueda").focus();
 
     });
 
@@ -768,4 +779,20 @@ $(document).ready(function() {
         $(".contenedorIndice").css("height", (altoVentana - 118 )+"px");
         $(".listaIndicadoresCE").css("max-height", (altoVentana - 70 )+"px");
     });
+
+    $(document).on('click','td.popover', function () {
+        var _this = $(this);
+        var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length;
+        if(count ==1){
+            $(".modalGeneral").show();
+        }
+    });
+
+    $(".modalGeneral").click(function(e){
+        $(this).hide();
+    });
+    $(".modalGeneral .modalCentro").click(function(e){
+        e.stopPropagation();
+    });
+
 });

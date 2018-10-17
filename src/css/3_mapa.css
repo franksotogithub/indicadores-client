@@ -371,8 +371,7 @@ div.esri-search__submit-button:focus {
 
 .cTotalMinimaps {
     max-width: 100%;
-    overflow:auto;
-    max-height: 130px ;
+    min-height: 100px;
     margin-bottom:10px;
 }
 
@@ -411,6 +410,7 @@ div.esri-search__submit-button:focus {
     width: 540px;
     color: white;
     outline: none;
+    cursor:pointer;
 }
 .contentTabsBotonesMapa > div {
     padding: 20px;
