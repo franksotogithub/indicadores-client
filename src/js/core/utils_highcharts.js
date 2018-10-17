@@ -259,7 +259,7 @@ App.utils.highcharts = (function (service, config) {
                 backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
             },
             xAxis: {
-                categories: options.xAxis
+                categories: options.xAxis,
             },
             yAxis: {
                 min: 0,

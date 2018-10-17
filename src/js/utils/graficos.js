@@ -211,15 +211,17 @@ App.utils.graficos = (function (parent, service, appData) {
             //indicador.graficoCategoria[categoria] = data;
             var g;
             var c=0;
+            var alto = 320;
+            var tiene_boton = false;
             for (g in data) {
                 if (data[g].cod_grafico == 1) {
                     var uiId = "id_graficoWidget_top";
+                    tiene_boton = true;
                 }else {
-
-
+                    alto = (tiene_boton) ? alto - 100 : alto;
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
-                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: 300px!important; display: none; "></div>');
+                    $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: '+alto+'px!important; display: none; "></div>');
                 }
 
                 // Invocar al callback por cada grafico
