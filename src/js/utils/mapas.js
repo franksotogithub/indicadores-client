@@ -368,7 +368,8 @@ App.utils.mapas = (function (parent, config,service) {
             var miniLayer = new MapImageLayer({
                 url: urlMap,
                 sublayers: [{
-                    renderer: renderizadoClassBreaks(codTematico, classBreakinfos[index + ""]),
+                    renderer:_this.datosMap.renderOptionsSublayers[index].renderer,
+                    //renderer: renderizadoClassBreaks(codTematico, classBreakinfos[index + ""]),
                     opacity: opacity,
                     id: parseInt(index),
                     outFields: ["*"],
@@ -486,6 +487,8 @@ App.utils.mapas = (function (parent, config,service) {
                 url: config.utils.print,
             });
 
+            mostrarCargando();
+
             var template = new PrintTemplate({
                 format: "pdf",
                 exportOptions: {
@@ -493,8 +496,8 @@ App.utils.mapas = (function (parent, config,service) {
                 },
                 layout: "a4-portrait",
                 layoutOptions: {
-                    titleText: "Warren Wilson College Trees",
-                    authorText: "Sam"
+                    titleText: "PRINCIPALES INDICADORES/PRIMEROS RESULTADOS",
+                    authorText: "INEI"
                 }
             });
 
@@ -504,19 +507,42 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             var resp={};
+            var options={};
+            //options.responseType="blob";
 
-            printTask.execute(params).then(function(resolvedVal){
+
+            printTask.execute(params,options).then(function(resolvedVal){
                 var url_pdf=resolvedVal.url;
+                var cadena=url_pdf.split("/");
+                var nom_pdf=cadena[cadena.length-1];
+
+                //var nom_pdf=url_pdf.reverse().split("/")[0];
                 resp['success']=true;
                 resp['url']=url_pdf;
+                resp['nom_pdf']=nom_pdf;
+                ocultarCargando();
+                console.log('nom_pdf >>>', nom_pdf);
+
                 return callback(resp);
             },
             function(error){
                 resp['success']=false;
                 resp['error']=error;
+                //console.log('error>>>' ,error);
+                ocultarCargando();
                 return callback(resp);
 
             });
+
+
+            function mostrarCargando(){
+                $('#cargarDescarga').css('display','inline');
+            }
+
+            function ocultarCargando(){
+               $('#cargarDescarga').css('display','none');
+
+            }
 
         });
 
@@ -1034,7 +1060,7 @@ App.utils.mapas = (function (parent, config,service) {
                     buttonEnabled: false,
                 };
                 _this.view_map.popup.dockEnabled=false;
-                _this.view_map.popup.visible=!(_this.maximizado);
+                //_this.view_map.popup.visible=!(_this.maximizado);
             }
 
             var updateBloqueGrafico = function (ubigeo,cod_map,div) {
@@ -1047,7 +1073,7 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
-                updateBloqueGrafico(ubigeo,cod_map,div_grafico);
+                /*updateBloqueGrafico(ubigeo,cod_map,div_grafico);*/
 
                 if(_this.maximizado==true)
                 {insertarNuevoMiniMapa(ubigeo,index);}
@@ -1509,11 +1535,8 @@ App.utils.mapas = (function (parent, config,service) {
                             });
 
                         }
-
                     },
-
                 });
-
             }
 
 

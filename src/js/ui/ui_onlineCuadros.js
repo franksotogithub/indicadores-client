@@ -689,12 +689,16 @@ $(document).ready(function() {
 
 
     $('.contenedorVentana').on('click','.descargarMapa', function() {
-
+        //window.open("http://192.168.202.86:6080/arcgis/rest/directories/arcgisoutput/Utilities/PrintingTools_GPServer/_ags_63a809d5fba147829e42893932c4442f.pdf","_ags_63a809d5fba147829e42893932c4442f.pdf");
         App.utils.mapas.descargarMapaEvent(function (resp,error) {
-
             /**aqui pones la descarga*/
-            window.open(resp.url);
+            //document.getElementById('iframeDescarga').scr=resp.url;
+            //window.open(resp.url,'_ags_63a809d5fba147829e42893932c4442f.pdf');
 
+            //var nom_pdf= resp.url.reverse().split("/")[0];
+            //console.log('nom_pdf>>',nom_pdf);
+            //window.open(resp.url);
+            window.open(resp.url,resp.nom_pdf);
 
         });
 
