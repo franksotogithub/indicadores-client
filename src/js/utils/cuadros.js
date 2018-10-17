@@ -434,8 +434,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var uiMaxCallback = function (options) {
         console.log(">> uiMaxCallback", options);
-        $(".cuadroMinimizado").removeClass("col-10-10").addClass("col-8-10");
-        $(".busquedaMaximizadaCuadro").addClass("CuadroActivoBusqueda");
+        /*$(".cuadroMinimizado").removeClass("col-10-10").addClass("col-8-10");
+        $(".busquedaMaximizadaCuadro").addClass("CuadroActivoBusqueda");*/
 
 
         var _this= this;

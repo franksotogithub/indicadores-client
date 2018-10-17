@@ -278,6 +278,25 @@
 .fraction span.fdn {border-top: thin solid black;}
 .fraction span.bar {display: none;}
 
+.graficosMaxTotal {
+    display: block;
+    height: 100%;
+    padding: 10px;
+    display: none;
+    text-align: center;
+
+}
+
+.graficosMaxTotal .graphElementU{
+    display: block;
+    height: 100%;
+}
+.graficosMaxTotal .graphElementV{
+    display: inline-block;
+    height: 100%;
+    width: 48%;
+}
+
 /* Responsive */
 
 @media screen and (max-width: 1600px)  {
