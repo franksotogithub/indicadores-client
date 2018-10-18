@@ -151,8 +151,13 @@ App.utils.graficos = (function (parent, service, appData) {
         /*$(".busquedaMaximizadaCuadro").css("display","inline-block");
         $(".contenidoGraficoMaximizado").css("display","inline-block");
         $(".contenidoGraficoMaximizado").addClass("col-4-5").removeClass("col-5-5");*/
+        $(".contenidoGraficoMaximizado").css("height","100%");
+        $(".contGraficoMetadatoRespon").css("height","100%");
+        $(".contGraficoMetadatoRespon").css("max-height","100%");
+        $(".graficoElementSlider").css("display","inline-block");
+        $(".controlSliderGrafico").css("display","none");
 
-        $(".graficosMaxTotal").show();
+
     };
 
     var uiNormalCallback = function (options) {
@@ -160,7 +165,15 @@ App.utils.graficos = (function (parent, service, appData) {
         $(".busquedaMaximizadaCuadro").css("display","none");
         $(".contenidoGraficoMaximizado").addClass("col-5-5").removeClass("col-4-5");
         $(".contenidoGraficoMaximizado").css("display","block");
-        $(".graficosMaxTotal").hide();
+        $(".contenidoGraficoMaximizado").css("height","auto");
+        $(".contGraficoMetadatoRespon").css("height","350px");
+        $(".contGraficoMetadatoRespon").css("max-height","350px");
+        $(".graficoElementSlider").css("display","none");
+        $(".graficoElementSlider:first").css("display","block");
+        $(".controlSliderGrafico").css("display","block");
+
+
+
     };
 
     var uiReabrirVentana = function () {
