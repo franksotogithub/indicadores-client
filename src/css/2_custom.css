@@ -1310,6 +1310,16 @@ a.LinkModalCE{
 /* Responsive */
 
 
+
+.pobGeneroPopoverMapBlock{
+    margin-top: 10px;
+}
+.pobGeneroPopoverMapBlock:first-child, .pobGeneroPopoverMapBlock:nth-child(2){
+    margin-top: 0px;
+}
+
+
+
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 
 
