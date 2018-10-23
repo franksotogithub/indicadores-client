@@ -298,16 +298,21 @@ App.utils.mapas = (function (parent, config,service) {
         bloque2.setAttribute("id","mapaGrafico");
 
         App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
-            contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.total+'</h3><p>'+data.titulo.text+'</p> </div> ' ;
-            contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">'
+
+            console.log(">>>> getContenidoPopupMapaEvent", data);
+            contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
+            contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">';
             data.resumen.forEach(function (el ){
-                contenidoPopoverBloque1+='<div class="pobGeneroPopoverMapBlock '+el.color+'"> <h3 class="'+el.icon+'"></h3><p>'+el.valor+'</p>  </div>';
+                el.name = (el.adicional == null) ? el.name: "";
+                contenidoPopoverBloque1+='<div class="pobGeneroPopoverMapBlock '+el.color+'"> <h3 class="'+el.adicional+'">'+el.name+'</h3><p>'+parent.numberFormat(el.y    )+'</p>  </div>';
             });
             contenidoPopoverBloque1+='</div>';
             bloque1.innerHTML=contenidoPopoverBloque1;
-            console.log('datagrafico>>>',data.grafico);
-            if(data.grafico!==undefined && data.grafico!=={}){
+            if(Object.keys(data.grafico).length > 0){
+                bloque2.style.display = 'block';
                 Highcharts.chart(bloque2, data.grafico);
+            }else {
+                bloque2.style.display = 'none';
             }
 
         });

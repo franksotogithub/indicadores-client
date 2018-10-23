@@ -83,14 +83,14 @@ App.utils.highcharts = (function (service, config) {
                     enabled: true,
                     format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
                     x:0,
-                    y: 20,
+                    y: 10,
                     distance: -10,
                     style: {
                         fontWeight: 'bold',
                         color: '#333333',
                         textShadow: null,
                         textOutline: 0,
-                        fontSize: "14px"
+                        fontSize: "13px"
                     }
                 },
                 startAngle: -90,
@@ -159,7 +159,8 @@ App.utils.highcharts = (function (service, config) {
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
             series: [{
                 innerSize: '50%',
-                data: data
+                data: data,
+                name: options.seriesName
             }]
         });
     };
@@ -190,7 +191,8 @@ App.utils.highcharts = (function (service, config) {
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
             series: [{
                 innerSize: '50%',
-                data: data
+                data: data,
+                name: options.seriesName
             }]
         };
         return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
@@ -210,7 +212,6 @@ App.utils.highcharts = (function (service, config) {
             },
             title: _chartsTitle(options.title),
             subtitle: _chartsTitle(options.subtitle),
-            //xAxis: {},
             yAxis: {
                 min: 0,
                     title: {
@@ -228,7 +229,8 @@ App.utils.highcharts = (function (service, config) {
                 enabled: (options.exporting !== undefined) ? options.exporting : false
             },
             series: [{
-                data: data
+                data: data,
+                name: options.seriesName
             }]
         };
         return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
@@ -278,7 +280,8 @@ App.utils.highcharts = (function (service, config) {
             },
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
             series: [{
-                data: data
+                data: data,
+                name: options.seriesName
             }]
         };
         return (render === undefined || render == true) ? Highcharts.chart(options.uiId, values) : values;
@@ -286,6 +289,7 @@ App.utils.highcharts = (function (service, config) {
 
     var donutChart = function (data, options, render) {
         var defaultcolors = Highcharts.getOptions().colors;
+        console.log(">>>> options", options);
         var values = {
             chart: {
                 type: 'pie',
@@ -308,7 +312,8 @@ App.utils.highcharts = (function (service, config) {
                 enabled: (options.exporting !== undefined) ? options.exporting : false
             },
             series: [{
-                data: data
+                data: data,
+                name: options.seriesName
             }]
         };
 

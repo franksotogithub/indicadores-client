@@ -247,7 +247,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                         var titulo = '';
                         if (appData.tituloIndicadores.hasOwnProperty(data)){
                             var v = appData.tituloIndicadores[data];
-                            titulo = (v.cod_nivel_tematico == 2) ? v.subcategoria : v.indicador;
+                            //titulo = (v.cod_nivel_tematico == 2) ? v.subcategoria : v.indicador;
+                            titulo = v.titulo;
                         }
                         return titulo;
                     }
@@ -316,9 +317,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _destruirTabla = function (_this) {
+        console.log(">>>>> _this.tblIndicadores", _this.tblIndicadores);
         if (_this.tblIndicadores !== undefined) {
             _this.tblIndicadores.destroy();
-            _this.tblIndicadores.clear().draw();
+            $('#tblindicadores tbody').html("");
+            //_this.tblIndicadores.clear().draw();
         }
     };
 
@@ -359,7 +362,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var crearTablaUigeos = function (ubigeos, historico) {
 
         var _this = this;
-
 
         _cargandoTabla();
         _destruirTabla(this);
@@ -415,31 +417,38 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var buscadorIndicadores = function (response){
-        console.log("response >>>>>", response);
-        /*
-        _cargandoTabla();
+        var _this = this;
+        $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
+            $("#tblindicadores tbody").html();
         }
-
-
-        service.cuadros.getIndicador(response.data, this.cuadrosData.ubigeos, _this.vista, function (data) {
-            console.log("data busqueda >>>", data);
-
+        $(".contenidoCuadro").find('.tablaTabButton').removeClass('btnTabTabla-activo');
+        service.cuadros.getBusquedaIndicador(response.codigo_subcategoria, response.data, this.cuadrosData.ubigeos,
+            response.index, function (data) {
+            _this.tblIndicadores = _crearTabla(
+                '#tblindicadores',
+                data,
+                _this.tablaColumns,
+                _this.target
+            );
             $("#loadindicadores").hide();
         });
-        */
-
     };
 
     var reiniciarTabla = function () {
         this.crearTablaUigeos(this.cuadrosData.ubigeos, []);
     };
 
+    /**
+     * Metodo que desencadena el evento de click en el mapa utilizdo para generar la tabla
+     * @param options
+     */
     var mapasChangeEvent = function (options) {
-
+        console.log(">>>> Ejecuta", options);
         var _this = this;
         if (this.timeClikMap !== undefined) {
+
             clearTimeout(this.timeClikMap);
         }
 
@@ -449,7 +458,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _this.timeClikMap = undefined;
         }, 1200);
 
-        this.cuadrosData.ubigeo = options.ubigeosSeleccionados.slice(-1).pop();
+        this.cuadrosData.ubigeo = (options.ubigeosSeleccionados.length > 0) ? options.ubigeosSeleccionados.slice(-1).pop() : '00';
         parent.graficos.comboIndicaDores(options.ubigeosOdenados.slice().reverse());
         parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
@@ -491,6 +500,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }
     };
 
+    var reloadTablaResponsive = function () {
+        if (this.tblIndicadores !== null) {
+            this.tblIndicadores.columns.adjust().draw();
+        }
+    };
+
     var categoriaChangeEvent = function (options) {
         // Fixme: temporalmente se quitara el P para dejar solo 2 digitos de codigo
         var categoria = options.categoria.substring(1,3);
@@ -501,15 +516,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var getContenidoPopupMapaEvent = function (options) {
-
-        console.log("se ejecuta getContenidoPopupMapaEvent");
-        var data = {
-            "titulo":  {"total": 876542, "text":"Población Censada"},
-            "resumen": [ {"icon": "icon-user rojo","valor":  "467 135"} , { "icon":"icon-user-female", "valor":"447 895"}  ],
-            "grafico": { }
-        };
-
-        parent.graficos.popupMapa(data, '002', '00', {
+        parent.graficos.popupMapa(this.cuadrosData.categoria, options.ubigeo,{
             title: {
                 text: ''
             },
@@ -530,8 +537,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 }
             }
         }, options.callback);
-
-        options.callback(data);
     };
 
     var uiMinimizarVentana = function (options) {
@@ -575,6 +580,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         cuadrosData: cuadrosData,
         changeMetadata: changeMetadata,
         uiDocuments: uiDocuments,
-        buscadorIndicadores: buscadorIndicadores
+        buscadorIndicadores: buscadorIndicadores,
+        reloadTablaResponsive: reloadTablaResponsive
     }
 })(AppConfig(), Appdata, App.utils, App.service);

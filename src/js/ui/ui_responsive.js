@@ -105,23 +105,18 @@ $(document).ready(function () {
                 $("#id_graficoWidget_top").removeClass("off").addClass("on");
                 $("#contenedor_grafico").removeClass("off").addClass("onInline");
                 $(".widgetMetadatos").removeClass("on").addClass("off");
+                $('div.contenedorVentana[data-codevent='+ventana+']').removeClass("off").addClass("on").siblings('div' +
+                    '.contenedorVentana').removeClass("on").addClass("off");
 
             }else {
                 $("#id_graficoWidget_top").removeClass("on").addClass("off");
                 $("#contenedor_grafico").removeClass("onInline").addClass("off");
                 $(".widgetMetadatos").removeClass("off").addClass("on");
+                $('div.contenedorVentana[data-codevent='+ventana+']').removeClass("off").addClass("on").siblings('div' +
+                    '.contenedorVentana').removeClass("on").addClass("off");
 
-
-
+                App.utils.cuadros.reloadTablaResponsive();
             }
-
-
-            $('div.contenedorVentana[data-codevent='+ventana+']').removeClass("off").addClass("on").siblings('div' +
-                '.contenedorVentana').removeClass("on").addClass("off");
-
-
-
-        console.log(ventana);
     });
 
 

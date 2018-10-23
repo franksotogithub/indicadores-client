@@ -12,6 +12,19 @@ App.service.graficos = (function (parent, config) {
         })
     };
 
+    var getPopupMapa = function (cod_categoria, ubigeo, callback) {
+        parent.get({
+            url: parent.getUrlServer('graficos/popovermapa/'+cod_categoria+'/'+ubigeo+'/'),
+            success: function (data) {
+                callback(data);
+            },
+
+            error: function () {
+                console.log("Error");
+            }
+        })
+    };
+
     var getIndicador = function (cod_categoria, ubigeo, callback) {
         var url = parent.url('graficos/indicadores/{0}/{1}/', [cod_categoria, ubigeo]);
         parent.get({
@@ -28,6 +41,7 @@ App.service.graficos = (function (parent, config) {
 
     return {
         getGrafico: getGrafico,
-        getIndicador: getIndicador
+        getIndicador: getIndicador,
+        getPopupMapa: getPopupMapa
     }
 })(App.service, AppConfig());

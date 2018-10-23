@@ -28,7 +28,8 @@
     });
 
     $(window).resize(function(){
-        utils.cuadros.reiniciarTabla();
+        //utils.cuadros.reiniciarTabla();
+        utils.cuadros.fixedColumnsRelayout();
     });
 })(App.service, App.utils);
 

@@ -97,10 +97,11 @@ App.utils.graficos = (function (parent, service, appData) {
                     verticalAlign: 'middle',
                     y: 0,
                     style: {
-                        fontSize: "14px"
+                        fontSize: "13px"
                     }
                 }
             };
+            options.seriesName = data.unidad_medida;
             options.colors = [colorsPie[0], colorsPie[1]];
             App.utils.highcharts.mediaLuna(data.data, options);
         },
@@ -116,6 +117,7 @@ App.utils.graficos = (function (parent, service, appData) {
             for (i in data.data) {
                 options.xAxis.push(data.data[i].name);
             }
+            options.seriesName = data.unidad_medida;
             App.utils.highcharts.columnChart(data.data, options);
         },
 
@@ -131,6 +133,7 @@ App.utils.graficos = (function (parent, service, appData) {
             for (i in data.data) {
                 options.xAxis.push(data.data[i].name);
             }
+            options.seriesName = data.unidad_medida;
             App.utils.highcharts.barChart(data.data, options);
         },
         
@@ -142,6 +145,7 @@ App.utils.graficos = (function (parent, service, appData) {
                 }
             };
 
+            options.seriesName = data.unidad_medida;
             App.utils.highcharts.donutChart(data.data, options);
         }
     };
@@ -189,10 +193,11 @@ App.utils.graficos = (function (parent, service, appData) {
     };
 
 
-    var popupMapa = function (popupvalues, codgrafico, ubigeo, options, callback) {
-        service.graficos.getGrafico(codgrafico, ubigeo, function (data) {
-            popupvalues.grafico = App.utils.highcharts.mediaLuna(data, options, false);
-            callback(popupvalues);
+    var popupMapa = function (cod_categoria, ubigeo, options, callback) {
+
+        service.graficos.getPopupMapa(cod_categoria, ubigeo, function (data) {
+            data.grafico = App.utils.highcharts.mediaLuna(data.grafico, options, false);
+            callback(data);
         });
     };
 
@@ -231,7 +236,7 @@ App.utils.graficos = (function (parent, service, appData) {
                     var uiId = "id_graficoWidget_top";
                     tiene_boton = true;
                 }else {
-                    alto = (tiene_boton) ? alto - 100 : alto;
+                    alto = (tiene_boton) ? alto - 50 : alto;
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
                     $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: '+alto+'px!important; display: none; "></div>');

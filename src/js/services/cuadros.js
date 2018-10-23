@@ -31,10 +31,24 @@ App.service.cuadros = (function (parent, config) {
         });
     };
 
+    var getBusquedaIndicador = function (codigo_subcategoria, cod_tematico, ubigeos, cod_nivel, callback) {
+        var url = parent.url('indicadores/tabla/{0}/{1}/', [codigo_subcategoria, cod_tematico]);
+        parent.get({
+            url: parent.getUrlServer(url, {"u": ubigeos, "cod_nivel": [cod_nivel]}),
+            success: function (data) {
+                callback(data);
+            },
+
+            error: function (obj, status, otherr) {
+                parent.responseError(obj, "No existe datos a nivel Nacional");
+            }
+        });
+    };
 
     return {
         indicadores: undefined,
         getIndicadores: getIndicadores,
-        getIndicador: getIndicador
+        getIndicador: getIndicador,
+        getBusquedaIndicador: getBusquedaIndicador
     }
 })(App.service, AppConfig());
