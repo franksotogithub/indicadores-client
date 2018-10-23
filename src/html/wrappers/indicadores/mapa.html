@@ -49,31 +49,13 @@
 
 </select></div>
 
-
-
-
 <div id="widget-select-layer">
-
     <button class="icon-eye b_azul f_blanco icon tooltip botonVistaMapa" data-title="Tipo de vista"></button>
     <div class="mostrarListaMapa" style="display: none">
         <div index="0">Vista Departamental</div>
         <div index="1">Vista Provincial</div>
         <div index="2">Vista Distrital</div>
     </div>
-
-    <!--<select id="select-layer" style="display: none">
-        <option selected value="0" >
-            Vista Departamental
-        </option>
-        <option value="1">
-            Vista Provincial
-        </option>
-        <option value="2">
-            Vista Distrital
-        </option>
-    </select>-->
-
-
 </div>
 
 <div id="popup-modificable" >
@@ -155,9 +137,6 @@
 
                 </div>
             </div>
-
-
-
         </div>
         <div class="tablaMapaMaximizado">
             <table id="tblindicadores-maximizado">
@@ -165,6 +144,8 @@
                 <tbody></tbody>
             </table>
         </div>
+
+        <div id="legendaMiniMap" style="display: inline"></div>
         <div id="mapaGraficoPanel" style="display: none"></div>
         <div class="cTotalMinimaps">
             <div id="listMiniMaps">  <!--se cambio de id antes tablaPanel-->
@@ -177,11 +158,45 @@
 </div>
 
 <style>
+
     .miniMap {
         width:160px;
         height:160px;
         border: 1px solid black;
+        position: relative;
     }
+
+    .tooltipMiniMapa{
+      visibility: visible;
+      border: 1px;
+      top : 10px;
+      left : 20px;
+      z-index: 5;
+      position: absolute;
+      font-size: 10px;
+      font-family:'signikaregular';
+    }
+    .tituloMiniMapa{
+        visibility: visible;
+        border: 0px;
+        font-family:'signikaregular';
+    }
+
+
+
+    #legendaMiniMap{
+        visibility: visible;
+        border: 0px;
+        font-family:'signikaregular';
+        width: 100%;
+        height: auto;
+    }
+
+    /*
+    #legendaMiniMap > .esri-legend__layer-table--size-ramp .esri-legend__layer-row{
+        display: inline-block;
+    }
+    */
 
     #cargarMapaDiv{
         right: 0;
@@ -191,8 +206,6 @@
         z-index: 2;
         display: block ;
         background-color: rgba(232, 232, 232, 0.5);
-
-
     }
 
 

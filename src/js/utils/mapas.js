@@ -351,7 +351,7 @@ App.utils.mapas = (function (parent, config,service) {
         return definitionExpression;
     }
 
-    var crearMinimapa= function(index,where,div){
+    var crearMinimapa= function(index,where,div,tooltip){
 
         require([
             "esri/Map",
@@ -427,8 +427,6 @@ App.utils.mapas = (function (parent, config,service) {
                         });
                 });
 
-
-
             });
 
 
@@ -439,12 +437,7 @@ App.utils.mapas = (function (parent, config,service) {
             identifyParams.layerIds = [index];
 
 
-            /*identifyParams.layerOption = "top";
-            identifyParams.width = _this.view_map.width;
-            identifyParams.height = _this.view_map.height;
-            */
-
-            var localizarFeaturePorClick=function (event,callback){
+            /*var localizarFeaturePorClick=function (event,callback){
                 identifyParams.geometry = event.mapPoint;
                 identifyParams.mapExtent = miniView.extent;
                 identifyTask.execute(identifyParams).then( function (response) {
@@ -452,7 +445,7 @@ App.utils.mapas = (function (parent, config,service) {
                     var feature=results[0].feature;
                     return callback(feature);
                 });
-            }
+            }*/
 
             miniView.on('pointer-move',function (evt) {
                 var screenPoint = {
@@ -460,42 +453,54 @@ App.utils.mapas = (function (parent, config,service) {
                     y: evt.y
                 };
 
-                // the hitTest() checks to see if any graphics in the view
-                // intersect the given screen x, y coordinates
 
                 miniView.hitTest(screenPoint)
                     .then( function(response){
-                        console.log(response.results[0]);
-                        //response.results[0].graphic;
+                        var nom='';
+                        var attributes=response.results[0].graphic.attributes;
+
+                        if (attributes!==undefined)
+                            if(index==1)
+                                nom=attributes.NOMBPROV;
+                            else if (index==2)
+                                nom=attributes.NOMBDIST;
+
+
+
+                        //console.log(response.results[0]);
+
+                        //console.log(screenPoint.x);
+
+
+                        //screenPoint.x;
+                        //screenPoint.y;
+
+                        tooltip.innerHTML ="<label>"+nom+"</label>"
+                        tooltip.style.top = parseInt(evt.y)  + 'px';
+                        tooltip.style.left = parseInt(evt.x) + 'px';
 
                     });
-
-                //point.x,point.y
 
             });
 
             miniView.on('click',function (event) {
-                //console.log('holass');
+                /*
                 localizarFeaturePorClick(event,function (feature) {
                     console.log('feature>>>',feature.attributes);
                     miniView.popup.open({
-                        // Set the popup's title to the coordinates of the location
+
                         title: ""+feature.attributes.ccdd,
                         location: event.mapPoint, // Set the location of the popup to the clicked location
                     });
 
-                    /*selectedFeature(feature);
-                    openFeature();*/
-                });
 
+                });*/
             });
-
-
 
         });
     }
 
-    var insertarNuevoMiniMapa = function (ubigeo) {
+    var insertarNuevoMiniMapa = function (nombre,ubigeo) {
         var _this=parent.mapas;
         var index=_this.indexSubLayer
         if(index<2){
@@ -504,18 +509,47 @@ App.utils.mapas = (function (parent, config,service) {
         else {
             var stringIndex=String(index);
         }
+
+
+
+
+
+
+
+
+
         var where=getDefinitionExpresion([ubigeo],index);
 
         if(_this.cant_mini_maps<=cantMaxMiniMaps)
         {
+
             var idMiniMap="divMiniMap_"+ubigeo;
+            var idIniMiniMap="divIniMiniMap_"+ubigeo;
+            var divIniMiniMap = document.createElement("div");
             var divMiniMap = document.createElement("div");
+            var divTituloMiniMap = document.createElement("div");
+            var tooltip= document.createElement("div");
             var list_mini_maps=document.getElementById("listMiniMaps");
+
+            var legendaMiniMapa=document.getElementById('legendaMiniMap');
+
             divMiniMap.classList.add("miniMap");
+            tooltip.classList.add("tooltipMiniMapa");
+            divTituloMiniMap.classList.add("tituloMiniMapa");
             divMiniMap.setAttribute("id",idMiniMap);
+            divIniMiniMap.setAttribute("id",idIniMiniMap);
             divMiniMap.style.visibility = "visible";
-            list_mini_maps.appendChild(divMiniMap);
-            crearMinimapa(stringIndex,where,idMiniMap);
+            divTituloMiniMap.innerHTML="<label>"+nombre+"</label>";
+            divIniMiniMap.appendChild(divTituloMiniMap);
+            divIniMiniMap.appendChild(divMiniMap);
+            divMiniMap.appendChild(tooltip);
+            list_mini_maps.appendChild(divIniMiniMap);
+
+
+            legendaMiniMapa.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[stringIndex]);
+
+
+            crearMinimapa(stringIndex,where,idMiniMap,tooltip);
             _this.cant_mini_maps++;
         }
         _this.divMessageContentEmpty.style.display='none';
@@ -523,8 +557,11 @@ App.utils.mapas = (function (parent, config,service) {
 
     var removerMiniMapa = function (ubigeo){
         var _this=parent.mapas;
-        var idMiniMap="divMiniMap_"+ubigeo;
+
+        var idMiniMap="divIniMiniMap_"+ubigeo;
         var divMiniMap =document.getElementById(idMiniMap);
+
+
         divMiniMap.remove();
         _this.cant_mini_maps--;
 
@@ -534,6 +571,8 @@ App.utils.mapas = (function (parent, config,service) {
     var removerTodosMiniMaps=function(){
         var _this=parent.mapas;
         var listMiniMaps=document.getElementById('listMiniMaps');
+        var legendaMiniMapa=document.getElementById('legendaMiniMap');
+        legendaMiniMapa.innerHTML="";
         listMiniMaps.innerHTML="";
         _this.divMessageContentEmpty.style.display='inline';
         _this.listMiniMapas=[];
@@ -673,52 +712,6 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-    /*
-    var uiMouseOverTabla = function (options){
-        var ubigeo=options.ubigeo;
-
-        if(ubigeo!='' || ubigeo!='00'){
-
-            require(["esri/layers/FeatureLayer","esri/Graphic","esri/tasks/support/Query","esri/tasks/QueryTask","dojo/domReady!"],function (FeatureLayer,Graphic,Query,QueryTask) {
-                var _this=parent.mapas;
-                var queryText='CODIGO='+ubigeo;
-                var queryTask = new QueryTask({
-                    url: _this.historic_features[_this.indexSubLayer].url
-                });
-                var query = new Query({
-                    where: queryText,
-                    outFields: ["CODIGO"],
-                    returnGeometry : true,
-                });
-                _this.view_map.graphics.removeAll();
-                queryTask.execute(query).then(function(result){
-                    var features=result.features;
-
-
-                    features.forEach( function (feature) {
-
-                        console.log('feature seleccionado-->',feature);
-                        var graphic= new Graphic({
-                                geometry : feature.geometry,
-                                symbol: symbolSombreado,
-                                //attributes:feature.attributes,
-                            }
-                        );
-
-                        _this.view_map.graphics.add(graphic);
-
-
-                    });
-
-
-                });
-
-
-
-            });
-        }
-
-    }*/
 
     var uiMouseOutTabla = function () {
         _this.view_map.graphics.removeAll();
@@ -792,7 +785,6 @@ App.utils.mapas = (function (parent, config,service) {
             html+='<div style="opacity: 1; background-color:'+el.color+';  width:20px;height:20px "></div>';
             html+='</div>';
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">'+el.label+'</div>';
-
             html+='</div>';
         });
 
@@ -804,6 +796,34 @@ App.utils.mapas = (function (parent, config,service) {
         return html;
 
     }
+
+    /*var crearLegendaMiniMapa=function(data){
+        var html=
+            '<div class="esri-legend__service">'+
+            '<div class="esri-legend__service-label">'+data.title+'</div>'+
+            '<div class="esri-legend__layer">'+
+            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+            '<div class="esri-legend__layer-caption" >'+data.titleLayer+'</div>'+
+            '<div class="esri-legend__layer-body" >' ;
+
+        data.renderer.forEach(function (el,index) {
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:'+el.color+';  width:20px;height:20px "></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">'+el.label+'</div>';
+            html+='</div>';
+        });
+
+        html+=
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+        return html;
+
+    }*/
+
 
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
         service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
@@ -1150,11 +1170,16 @@ App.utils.mapas = (function (parent, config,service) {
                 }
             }
 
-            var updatePanel = function(ubigeo,cod_map,div_grafico,index) {
+            var updatePanel = function(nombre,ubigeo,cod_map,div_grafico,index) {
                 /*updateBloqueGrafico(ubigeo,cod_map,div_grafico);*/
 
                 if(_this.maximizado==true)
-                {insertarNuevoMiniMapa(ubigeo,index);}
+                {
+
+
+
+                    insertarNuevoMiniMapa(nombre,ubigeo,index);
+                }
 
             }
 
@@ -1174,7 +1199,7 @@ App.utils.mapas = (function (parent, config,service) {
                     if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
                         _this.opc_select="select";
                         createPopup(nombre,ubigeo,feature.geometry.centroid);
-                        updatePanel(ubigeo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
+                        updatePanel(nombre,ubigeo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
                         _this.select_ubigeos.push(ubigeo);
                         _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
                     }
