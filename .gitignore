@@ -14,3 +14,4 @@ _p*.*
 *.back
 back*
 test*
+package-lock.json

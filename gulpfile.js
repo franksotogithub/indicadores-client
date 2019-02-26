@@ -187,7 +187,7 @@ gulp.task('asscss', function () {
 gulp.task('assjs', function () {
     gulp.src(config.source.assjs())
         .pipe(concat(config.output.concat.assjs))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(stripDebug())
         .pipe(gulp.dest(config.output.assjs()))
 });
@@ -222,4 +222,4 @@ gulp.task('browser-sync', ['html', 'css', 'js', 'uijs'], function() {
 
 gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg', 'asslibs']);
 
-gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'libsjs', 'img', 'assets', 'browser-sync']);
+gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'libsjs', 'browser-sync']);
