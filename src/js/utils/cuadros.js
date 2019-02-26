@@ -459,7 +459,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         }, 1200);
 
         this.cuadrosData.ubigeo = (options.ubigeosSeleccionados.length > 0) ? options.ubigeosSeleccionados.slice(-1).pop() : '00';
-        parent.graficos.comboIndicaDores(options.ubigeosOdenados.slice().reverse());
+        //parent.graficos.comboIndicaDores(options.ubigeosOdenados.slice().reverse());
         parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
 

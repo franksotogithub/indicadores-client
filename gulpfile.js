@@ -25,6 +25,9 @@ var config = {
         uijs: function () {
           return [this.src+'js/ui/*.js']
         },
+        libsjs: function () {
+            return [this.src+'js/libs/*.js']
+        },
         css:  function () {
             return [this.src + 'css/*.css']
         },
@@ -72,8 +75,13 @@ var config = {
         html: function () {
             return this.dist
         },
-        js:   function () {
-            return this.dist + this.folders.js;
+        js: function (dirname) {
+            if (dirname === undefined) {
+                return this.dist + this.folders.js;
+            }else {
+                return this.dist + this.folders.js + dirname;
+            }
+
         },
         css:  function () {
             return this.dist + this.folders.css;
@@ -151,6 +159,12 @@ gulp.task('uijs', function () {
         .pipe(browserSync.reload({stream:true}));
 });
 
+gulp.task('libsjs', function () {
+    return gulp.src(config.source.libsjs())
+        .pipe(gulp.dest(config.output.js('libs')))
+        .pipe(browserSync.reload({stream:true}));
+});
+
 /* IMAGENES */
 gulp.task('img', function () {
     return gulp.src(config.source.img())
@@ -203,8 +217,9 @@ gulp.task('browser-sync', ['html', 'css', 'js', 'uijs'], function() {
     gulp.watch('./src/css/*.css', ['css']);
     gulp.watch(config.source.js(), ['js']);
     gulp.watch(config.source.uijs(), ['uijs']);
+    gulp.watch(config.source.libsjs(), ['libsjs']);
 });
 
 gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg', 'asslibs']);
 
-gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'img', 'assets', 'browser-sync']);
+gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'libsjs', 'img', 'assets', 'browser-sync']);

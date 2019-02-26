@@ -952,6 +952,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
     var listado_widgets = ['bar_chart', 'assignment', 'location_on', 'info'];
 
     var init = function () {
+        console.log(">>> init dashboard");
         appData = appData();
         for (var bloque in data) {
             var vista_default = data[bloque]["default"];
@@ -962,7 +963,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
     };
 
     var _barraHerramientas = function (_this, uiId, options, vista_default) {
-
+        console.log(">>> llama herramientas dashboard");
         var template = '<button data-buttonCod="{0}" class="{1}"><i class="material-icons">{0}</i></button>';
         if (options === '__all__' || options === undefined) {
             options = listado_widgets;
@@ -981,6 +982,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
             // Instanciar a funciones que generan la data
             var uiCallback = options[i]+utils.capitalizeFirstLetter(uiId);
             if (_this.uiBarraHerramientas.hasOwnProperty(uiCallback)) {
+                console.log("2>>>>>>>",uiCallback);
                 _this.uiBarraHerramientas[uiCallback](uiId, vista_default, options[i], content);
             }
         }
@@ -1174,7 +1176,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                             name: 'Población Total',
                             type: 'column',
                             data: [7023.1, null, 10420.4, null, 14121.6, null, 17762.2, null, 22639.4, null, 28220.8, null, 31237.4],
-                            color: data[bloque][vista].widgets.bar_chart.colors[0]
+                            //color: data[bloque][vista].widgets.bar_chart.colors[0]
 
                         },
                         {
@@ -1377,6 +1379,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
         },
 
         "bar_chartBloque2": function (bloque, vista, seleccion, content) {
+            console.log(">>>> loque 2")
             var charId = seleccion+"_"+bloque;
             var charId2 = seleccion+"_2_"+bloque;
             var charId3 = seleccion+"_3_"+bloque;
@@ -1384,7 +1387,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
             var fuente = "#fuente_"+seleccion+"_"+bloque;
             var titulo = "#titulo_"+seleccion+"_"+bloque;
             var titulo2 = "#titulo2_"+seleccion+"_"+bloque;
-            $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo);
+            $(titulo).html(data[bloque][vista].widgets.bar_chart.titulo+"arroz");
             $(fuente).html(data[bloque][vista].widgets.bar_chart.fuente);
 
             $("#"+charId2).hide();
@@ -1398,7 +1401,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                     chart: {
                         type: 'column'
                     },
-                    colors: ['#dcf7f8', '#00ccff'],
+                    //colors: ['#dcf7f8', '#00ccff'],
                     subtitle: {
                         text: ''
                     },
@@ -1684,7 +1687,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                     chart: {
                         type: 'column'
                     },
-                    colors: ['#dcf7f8', '#00ccff'],
+                    //colors: ['#dcf7f8', '#00ccff'],
                     subtitle: {
                         text: 'COSTA'
                     },
@@ -1731,7 +1734,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                     chart: {
                         type: 'column'
                     },
-                    colors: ['#dcf7f8', '#00ccff'],
+                    //colors: ['#dcf7f8', '#00ccff'],
                     subtitle: {
                         text: 'SIERRA'
                     },
@@ -1777,7 +1780,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                     chart: {
                         type: 'column'
                     },
-                    colors: ['#dcf7f8', '#00ccff'],
+                    //colors: ['#dcf7f8', '#00ccff'],
                     subtitle: {
                         text: 'SELVA'
                     },
@@ -1858,7 +1861,7 @@ App.utils.dashboard = (function (config, appData, utils, service) {
                     chart: {
                         type: 'column'
                     },
-                    colors: ['#dcf7f8', '#00ccff'],
+                    //colors: ['#dcf7f8', '#00ccff'],
                     subtitle: {
                         text: ''
                     },

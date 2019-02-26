@@ -1007,6 +1007,7 @@ App.utils.mapas = (function (parent, config,service) {
             getAccesDirectMaps(function (data) {
                  data.forEach(function (map,index) {
                     var newImg = document.createElement("img");
+                    console.log(">>>> ", map.imagen);
                     newImg.setAttribute("src",map.imagen);
                     newImg.classList.add("overviewDiv");
                     newImg.setAttribute("id","map_"+map.id);
