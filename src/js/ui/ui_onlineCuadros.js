@@ -728,7 +728,7 @@ $(document).ready(function() {
 
    
     $(document).on('click','.menuResponsive', function () {
-        $('nav.nav-vertical').toggle();
+        $('nav.nav-vertical').toggle("slow");
     });
 
     $('.contenedorVentana').on('click','.descargarGrafico', function() {

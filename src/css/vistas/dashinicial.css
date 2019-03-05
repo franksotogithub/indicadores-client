@@ -948,7 +948,7 @@ body > header {
   body > header > button.menuResponsive {
     float: left;
     margin-right: 5px;
-    display: none; }
+    display: inline-block; }
   body > header > a > button:hover, body > header > button:hover {
     background-color: rgba(0, 0, 0, 0.25); }
 
@@ -957,12 +957,13 @@ body > header {
   Los Nav, deberian ir siempre dentro de la etiqueta main
 */
 nav.nav-vertical {
-  display: inline-block;
+  display: none;
   background-color: #3E4C60;
   color: white;
   vertical-align: top;
   height: 100%;
-  position: relative; }
+  position: absolute;
+  z-index: 99;}
   nav.nav-vertical > :first-child {
     margin-top: 3px; }
   nav.nav-vertical button {
@@ -1401,9 +1402,6 @@ td.anchoRangoTabla {
     footer > a p {
       display: none; } }
 
-@media screen and (min-width: 1281px) {
-  nav.nav-vertical {
-    display: inline-block !important; } }
 
 @media screen and (min-width: 200px) and (max-width: 1280px) {
   body > header > h1 {
