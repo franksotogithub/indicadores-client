@@ -629,7 +629,7 @@ $(document).ready(function() {
     $(document).on('mouseover','.popover', function (e) {
         var titleTool = $(this).attr("data-popover");
 
-        $('#contenedorPopover').css({'top':($(this).offset().top - 30)+'px','left':($(this).offset().left - 203)+'px'});
+        $('#contenedorPopover').css({'top':($(this).offset().top - 30)+'px','left':($(this).offset().left - 202)+'px'});
         $('#contenedorPopover').append( "<span class='popovertext'>" + titleTool + "</span>");
 
 
@@ -728,7 +728,7 @@ $(document).ready(function() {
 
    
     $(document).on('click','.menuResponsive', function () {
-        $('nav.nav-vertical').toggle();
+        $('nav.nav-vertical').toggle("slow");
     });
 
     $('.contenedorVentana').on('click','.descargarGrafico', function() {

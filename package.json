@@ -27,8 +27,7 @@
     "gulp-strip-debug": "^3.0.0",
     "gulp-twig": "^1.2.0",
     "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
-    "node-sass": "^4.9.2"
+    "gulp-util": "^3.0.8"
   },
   "dependencies": {}
 }

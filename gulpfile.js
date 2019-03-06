@@ -222,4 +222,4 @@ gulp.task('browser-sync', ['html', 'css', 'js', 'uijs'], function() {
 
 gulp.task('assets', ['asscss', 'assjs', 'fonts', 'assimg', 'asslibs']);
 
-gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'libsjs', 'browser-sync']);
+gulp.task('default', ['html', 'css', 'vistascss', 'uijs', 'js', 'libsjs', 'img', 'browser-sync']);

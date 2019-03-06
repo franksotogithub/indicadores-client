@@ -100,6 +100,7 @@ button.ubigeoGenerado:active{
 #contenedorPopover {
     position: absolute;
     z-index: 999;
+    pointer-events: none;
 }
 
 
@@ -235,7 +236,7 @@ button.menuResponsive{
     color: white;
     background: transparent;
     font-size: 20px;
-    display: none;
+    /*display: none;*/
 }
 button.menuResponsive:hover {
     background-color: #12284c;
@@ -691,9 +692,12 @@ nav.nav-vertical {
     color: white;
     vertical-align: top;
     height: 100%;
-    position: relative;
+
     font-size: 12px;
     font-family: "open_sansregular";
+    position: absolute;
+    width: 180px;
+    z-index: 99;
 
 }
 
@@ -1320,6 +1324,26 @@ a.LinkModalCE{
 
 
 
+/*
+    Adiciones 2019
+
+ */
+
+
+    .menu-all-left {
+        background-color: transparent;
+        color: white;
+        height: 70px;
+        width: 50px;
+    }
+
+
+
+/*
+    Final
+*/
+
+
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 
 
@@ -1373,6 +1397,10 @@ a.LinkModalCE{
     }
 
 }
+
+
+
+
 
 @media screen and (min-width: 1370px) and (max-width: 1500px) {
 
