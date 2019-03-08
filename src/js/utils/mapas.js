@@ -39,13 +39,21 @@ App.utils.mapas = (function (parent, config,service) {
 
     var identifyTask;
 
+    var identifyTaskBaseNacional;
+
     var identifyParams;
+
+    var identifyParamsBaseNacional;
 
     var legend;
 
     var layer;
 
     var layerBack;
+
+    var ccppLyr;
+
+    var layerBaseNacional;
 
     var popup=undefined;
 
@@ -63,6 +71,8 @@ App.utils.mapas = (function (parent, config,service) {
 
     var select_ubigeos=[];
 
+    var listCcpp=[];
+
     var definitionExpression_gloabal="1=1";
 
     var opacity=0.8;
@@ -73,6 +83,7 @@ App.utils.mapas = (function (parent, config,service) {
         {0:{"placeholders":"Seleccione un Departamento"},
          1:{"placeholders":"Seleccione una Provincia"},
          2:{"placeholders":"Seleccione un Distrito"},
+         3:{"placeholders":"Seleccione una Centro Poblado"},
         };
 
 
@@ -188,6 +199,9 @@ App.utils.mapas = (function (parent, config,service) {
     var ubigeos=undefined;
 
     var divMessageContentEmpty = document.getElementById('divMessageContentEmpty');
+
+    var url_ccpp=undefined;
+
 
 
 
@@ -436,6 +450,7 @@ App.utils.mapas = (function (parent, config,service) {
 
 
             var identifyTask = new IdentifyTask(urlMap);
+
             var identifyParams = new IdentifyParameters();
             identifyParams.tolerance = 3;
             identifyParams.returnGeometry = true;
@@ -802,34 +817,6 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
-    /*var crearLegendaMiniMapa=function(data){
-        var html=
-            '<div class="esri-legend__service">'+
-            '<div class="esri-legend__service-label">'+data.title+'</div>'+
-            '<div class="esri-legend__layer">'+
-            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
-            '<div class="esri-legend__layer-caption" >'+data.titleLayer+'</div>'+
-            '<div class="esri-legend__layer-body" >' ;
-
-        data.renderer.forEach(function (el,index) {
-            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
-            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
-            html+='<div style="opacity: 1; background-color:'+el.color+';  width:20px;height:20px "></div>';
-            html+='</div>';
-            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">'+el.label+'</div>';
-            html+='</div>';
-        });
-
-        html+=
-            '</div>'+
-            '</div>'+
-            '</div>'+
-            '</div>';
-        return html;
-
-    }*/
-
-
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
         service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
 
@@ -881,7 +868,20 @@ App.utils.mapas = (function (parent, config,service) {
             var widgetNacional=document.getElementById('widget-nacional');
             var divListMaps=document.getElementById("div-list-maps");
             var selectAll=document.getElementById("select-all");
+            var selectGraphics=[];
 
+
+            var symbolMarker = {
+              type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+              style: "circle",
+              color: [ 255, 255, 0,0.5 ],
+              size: "12px",  // pixels
+
+              outline: {  // autocasts as new SimpleLineSymbol()
+                color: [ 255, 255, 0, 1 ],
+                width: 1  // points
+              }
+            };
 
             /////////////*
             //
@@ -899,6 +899,7 @@ App.utils.mapas = (function (parent, config,service) {
             url_dep=urlMap+'/0';
             url_prov=urlMap+'/1';
             url_dist=urlMap+'/2';
+            url_ccpp=_this.datosMap.urlMapBaseNacional+'/0'
 
 
             //_this.panelDiv.style.visibility="none";
@@ -921,6 +922,24 @@ App.utils.mapas = (function (parent, config,service) {
                 sublayers: _this.datosMap.renderOptionsSublayersBack,
 
             });
+
+            _this.layerBaseNacional = new MapImageLayer({
+                url: _this.datosMap.urlMapBaseNacional,
+                outFields:["*"],
+                sublayers: [{ id: 0,
+                            visible : false,
+                }],
+            });
+
+
+
+            _this.ccppLyr = new FeatureLayer({
+                url: url_ccpp,
+                outFields:["*"],
+                visible : true,
+                labelsVisible :true,
+            });
+
 
             layers_inicial = [_this.layerBack,_this.layer];
 
@@ -952,7 +971,8 @@ App.utils.mapas = (function (parent, config,service) {
 
             map = new Map({
                 basemap: "osm",
-                layers: layers_inicial,
+                //layers: layers_inicial,
+                layers: [_this.layerBack,_this.layer,_this.layerBaseNacional,_this.ccppLyr]
             });
 
             _this.view_map = new MapView({
@@ -965,6 +985,7 @@ App.utils.mapas = (function (parent, config,service) {
 
             identifyTask = new IdentifyTask(urlMap);
             identifyParams = new IdentifyParameters();
+
             identifyParams.tolerance = 3;
             identifyParams.returnGeometry = true;
             identifyParams.layerIds = [0];
@@ -972,10 +993,20 @@ App.utils.mapas = (function (parent, config,service) {
             identifyParams.width = _this.view_map.width;
             identifyParams.height = _this.view_map.height;
 
+
+            identifyTaskBaseNacional = new IdentifyTask(_this.datosMap.urlMapBaseNacional);
+            identifyParamsBaseNacional = new IdentifyParameters();
+
+            identifyParamsBaseNacional.returnGeometry = true;
+            identifyParamsBaseNacional.layerIds = [0];
+
+
             _this.historic_features=[
                 {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep ,label:'$feature.NOMBDEP',placeholders:'Seleccione un Departamento'},
                 {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov,label:'$feature.NOMBPROV',placeholders:'Seleccione una Provincia'},
                 {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist,label:'$feature.NOMBDIST',placeholders:'Seleccione un Distrito'},
+                {'select_features':[],'where':'','layer':ccppLyr,'nombres':[],url:url_ccpp,label:'$feature.DESCRIPCION',placeholders:'Seleccione un Centro Poblado'},
+                
             ];
 
             sources=[
@@ -1095,10 +1126,11 @@ App.utils.mapas = (function (parent, config,service) {
              * **/
             var changeIndex=function(newIndex) {
                 var i = parseInt(newIndex);
-                if(newIndex<_this.historic_features.length)
+                _this.indexSubLayer=i;
+                if(newIndex<3)
                 {
                     var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
-                    _this.indexSubLayer=i;
+
                     identifyParams.layerIds = [i];
                     _this.datosMap.divLegend.innerHTML=htmlLengenda;
                     layers_inicial.forEach(function (layer) {
@@ -1107,7 +1139,22 @@ App.utils.mapas = (function (parent, config,service) {
                         });
                         layer.sublayers.items[i].visible=true;
                     });
+
+                    _this.layerBaseNacional.sublayers.forEach(function (sublayer) {
+                        sublayer.visible=false;
+                    });
+                    _this.ccppLyr.visible=false;
+
                 }
+
+
+                else{
+                    _this.ccppLyr.visible=true;
+                    _this.layerBaseNacional.sublayers.forEach(function (sublayer) {
+                            sublayer.visible=true;
+                    });
+                }
+
             }
 
 
@@ -1116,16 +1163,17 @@ App.utils.mapas = (function (parent, config,service) {
                 query.where = definitionExpression;
                 return layer.queryExtent(query)
                     .then(function(response) {
-                        view.goTo(response.extent).then(function(resp){
-                            console.log('zoomToLayer>>>',view.zoom);
-                            if(view.zoom>14){
-                                view.zoom=14;
+                        if(response){
+                                view.goTo(response.extent).then(function(resp){
+                                console.log('zoomToLayer>>>',view.zoom);
+                                if(view.zoom>14){
+                                    view.zoom=14;
 
-                            }
-                     });
+                                }
+                            });
+                        }
                });
             };
-
 
 
             var cleanVars=function(){
@@ -1181,9 +1229,6 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if(_this.maximizado==true)
                 {
-
-
-
                     insertarNuevoMiniMapa(nombre,ubigeo,index);
                 }
 
@@ -1193,8 +1238,9 @@ App.utils.mapas = (function (parent, config,service) {
              * seleccion del feature
              * **/
             var selectedFeature=function(feature){
+
                 wigdetSelectAll.style.display="block";
-                if (feature){
+                if (feature && _this.indexSubLayer<3){
                     var ubigeo=feature.attributes.CODIGO;
                     var nombre='';
                     if(_this.indexSubLayer==0){nombre=feature.attributes.NOMBDEP;}
@@ -1232,8 +1278,54 @@ App.utils.mapas = (function (parent, config,service) {
 
                 }
 
-                else
-                {console.log('feature no encontrado');}
+                else if(_this.indexSubLayer>=3 )
+                {
+
+
+                    var symbol ='';
+                    var ubigeo = feature.attributes.CODIGO;
+                    var grupo = feature.attributes.COD_GRUPO;
+                    var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(ubigeo);
+
+                    var gruposCcpp =[];
+                    if(feature.geometry.type=='point')
+                    {
+                        symbol=symbolMarker;
+                    }
+
+                    var graphic= new Graphic({
+                        geometry: feature.geometry,   // Add the geometry created in step 4
+                        symbol: symbol,   // Add the symbol created in step 5
+                        attributes: feature.attributes,
+                    });
+
+                    if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
+                        _this.select_ubigeos.push(ubigeo);
+                        _this.listCcpp.push({ubigeo:ubigeo,grupo:grupo});
+                        _this.view_map.graphics.add(graphic);
+                    }
+
+                    else{
+                        _this.select_ubigeos.splice(indiceUbigeoEncontrado, 1);
+                        var remove=_this.view_map.graphics.items.find(x=>x.attributes.CODIGO==ubigeo);
+                        _this.view_map.graphics.remove(remove);
+                    }
+
+
+                    _this.listCcpp.forEach(function (value) {
+                        gruposCcpp.push(value.grupo);
+                    });
+
+                    var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features
+                        , gruposCcpp
+                    );
+                    console.log(ubigeosDes);
+                    //actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+                }
+
+                else{
+                 console.log('feature no encontrado');
+                }
 
             };
 
@@ -1255,7 +1347,6 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if(_this.indexSubLayer>=0 && _this.indexSubLayer<=1 )
                 {
-
                     ubigeosHijos=[];
 
 
@@ -1270,16 +1361,20 @@ App.utils.mapas = (function (parent, config,service) {
                         actualizarComboUbigeo(_this.select_ubigeos); // actualizamos el combo select2 : select-ubigeos
                         definitionExpression_gloabal=getDefinitionExpresion(ubigeosHijos,_this.indexSubLayer);
                         setLabelWidgetUbigeos(_this.indexSubLayer);
-                        changeIndex(_this.indexSubLayer+1);
-                        updateMap(definitionExpression_gloabal,_this.indexSubLayer,true);
+                        //changeIndex(_this.indexSubLayer+1);
+                        updateMap(definitionExpression_gloabal,_this.indexSubLayer+1,true);
                         _this.select_ubigeos=[];
-
-
                     });
 
-
-
                 }
+
+                else if(_this.indexSubLayer==2){
+                    actualizarComboUbigeo(_this.select_ubigeos);
+                    definitionExpression_gloabal=getDefinitionExpresion(_this.select_ubigeos,_this.indexSubLayer);
+                    updateMap(definitionExpression_gloabal,_this.indexSubLayer+1,true);
+                    _this.select_ubigeos=[];
+                }
+
 
                 _this.view_map.popup.close();
                 wigdetSelectAll.style.display="none";
@@ -1290,29 +1385,7 @@ App.utils.mapas = (function (parent, config,service) {
                     removerTodosMiniMaps();
             }
 
-            /**
-             * Selecciona mediante query los features de un layer especificado por el index
-             * **/
 
-            /*var selectFeaturesByQuery = function (query,index,callback) {
-                var resultados=[];
-                var queryCitiesTask = new QueryTask({
-                    url: _this.historic_features[index].url
-                });
-                var query = new Query({
-                    where: query,
-                    outFields: ["CODIGO"],
-                });
-
-                queryCitiesTask.execute(query).then(function(result){
-                    var features=result.features;
-                    features.forEach( function (feature) {
-                        resultados.push(feature.attributes.CODIGO);
-                    });
-                    callback(resultados);
-                });
-
-            }*/
 
             /**
              * Selecciona o deselecciona todos los features del layer especificado por el indexLayer
@@ -1343,20 +1416,22 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var updateMap = function(definitionExpression,index,opZoom) {
-                layers_inicial.forEach(function (layer) {
-                    layer.sublayers.forEach(function (sublayer) {
-                        if(parseInt(sublayer.id)=== parseInt(index))
-                        {sublayer.visible=true;}
-                        else
-                        {sublayer.visible=false;}
-                    });
-                });
+                    changeIndex(index);
+                    if(index<=2){
+                        _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
+                        _this.layerBack.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
+                        if (opZoom)
+                            zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression);
+                        }
 
-                _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
-                _this.layerBack.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
+                    else {
+                        var origen="cpv2017_v2";
+                        _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
+                        _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
+                        if (opZoom)
+                            zoomToLayer(_this.view_map,_this.historic_features[2].layer,definitionExpression);
 
-                if (opZoom)
-                    zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression);
+                    }
 
             }
 
@@ -1406,10 +1481,13 @@ App.utils.mapas = (function (parent, config,service) {
                     if (indexLocal<=0) {
                         definitionExpression_back="1=1";
                     }
+
                     else {
                         var index_old=parseInt(indexLocal)-1;
                         definitionExpression_back=getDefinitionExpresion(_this.historic_features[index_old].select_features,index_old);
                     }
+
+
 
                     _this.layer.findSublayerById(parseInt(indexLocal)).definitionExpression=definitionExpression_gloabal;
                     _this.layerBack.findSublayerById(parseInt(indexLocal)).definitionExpression=definitionExpression_back;
@@ -1423,9 +1501,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features);
                     //actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
-
                     //App.mapasChangeEvent(_this.select_ubigeos,selectHistorico);
-
 
                 }
 
@@ -1445,13 +1521,36 @@ App.utils.mapas = (function (parent, config,service) {
 
 
             var localizarFeaturePorClick=function (event,callback){
-                identifyParams.geometry = event.mapPoint;
-                identifyParams.mapExtent = _this.view_map.extent;
-                identifyTask.execute(identifyParams).then( function (response) {
-                    var results=response.results;
-                    var feature=results[0].feature;
-                    return callback(feature);
-                });
+
+                if(_this.indexSubLayer<3){
+                    identifyParams.geometry = event.mapPoint;
+                    identifyParams.mapExtent = _this.view_map.extent;
+
+                    identifyTask.execute(identifyParams).then( function (response) {
+                        var results=response.results;
+
+
+
+                        var feature=results[0].feature;
+
+                        return callback(feature);
+                    });
+                }
+
+                else {
+                    var screenPoint = {
+                          x: event.x,
+                          y: event.y
+                        };
+                    _this.view_map.hitTest(screenPoint).then(function (response) {
+                        var results=response.results;
+                        var graphic=results[0].graphic;
+                        return callback(graphic);
+                    });
+
+                }
+
+
             }
 
             /**
@@ -1520,6 +1619,9 @@ App.utils.mapas = (function (parent, config,service) {
 
                 }
 
+
+
+
                 /**
                     Si la vista es departamental se reinician los layers con su version original (sin limites departamentales y con ancho  de 1 en los  limites de cada sublayer)
                  **/
@@ -1570,9 +1672,16 @@ App.utils.mapas = (function (parent, config,service) {
             _this.view_map.on("click",function (event) {
                 console.log('click');
                 localizarFeaturePorClick(event,function (feature) {
+
+
+                      console.log('feature>>>',feature);
                       selectedFeature(feature);
                 });
             });
+
+            _this.view_map.graphics.on('click',function (event) {
+                console.log('click graphics',event);
+            })
 
             _this.view_map.on('double-click',function (event) {
                 if (_this.select_ubigeos.length==0 || ( _this.select_ubigeos.length==2 && _this.select_ubigeos[0]=='00')){
@@ -1758,6 +1867,8 @@ App.utils.mapas = (function (parent, config,service) {
                 layer.sublayers.items[0].renderer = _this.datosMap.renderOptionsSublayers[indexMinimap].renderer;
             });
 
+            var legend=document.getElementById("legendaMiniMap");
+            legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap]);
         });
     };
 
@@ -1789,19 +1900,6 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
 
-    /*var buscarNodo= function(listaUbigeos,ubigeo){
-        if(ubigeo=='00')
-            return listaUbigeos.children;
-        else {
-            listaUbigeos.children.forEach(function (el) {
-                if (el.ubigeo == ubigeo)
-                    return el.children;
-            });
-        }
-    }*/
-
-    //var ubigeos=['00'];
-
 
     var init = function (options) {
         var _this=parent.mapas;
@@ -1820,6 +1918,7 @@ App.utils.mapas = (function (parent, config,service) {
                 service.mapas.getMapa(el.cod_mapa,function (data) {
                     _this.datosMap.codMap=el.cod_mapa;
                     _this.datosMap.urlMap=data.url;
+                    _this.datosMap.urlMapBaseNacional="https://devindica.inei.gob.pe/mapa/arcgis/rest/services/CARTOGRAFIA_BASE_INEI/BASE_NACIONAL/MapServer";
                     _this.datosMap.codTematico=data.cod_tematico_default;
                     _this.datosMap.tituloLegend=data.descripcion;
                     _this.datosMap.div=el.div;
@@ -1836,6 +1935,7 @@ App.utils.mapas = (function (parent, config,service) {
         requireEvents: requireEvents,
         historic_features: historic_features,
         select_ubigeos: select_ubigeos,
+        listCcpp: listCcpp,
         uiMaxCallback : uiMaxCallback,
         uiNormalCallback : uiNormalCallback,
         maximizado : maximizado,
@@ -1851,6 +1951,8 @@ App.utils.mapas = (function (parent, config,service) {
         panelDivGrafico:panelDivGrafico,
         layer:layer,
         layerBack: layerBack,
+        ccppLyr: ccppLyr,
+        layerBaseNacional : layerBaseNacional,
         cod_map:codMap,
         datosMap: datosMap,
         legend: legend,

@@ -81,6 +81,7 @@ App.service.mapas = (function (parent, config) {
         })
 
     }
+
     var getUbigeosHijos = function (ubigeos,callback){
         parent.get({
             url: parent.getUrlServer('mapa/territorio/get_ubigeos_hijos/',{"u":ubigeos}),
