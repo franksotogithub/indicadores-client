@@ -44,6 +44,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
         _this.crearTablaUigeos(['00'], []);
+        //_this.crearTablaUigeos(['01','02','03','04','05','06','07','08'], []);
     };
 
     var _initPobreza = function (_this, vista) {
@@ -147,7 +148,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             var colspan = (v.colspan !== undefined) ? ' colspan="'+v.colspan+'"' : '';
             var clase = '';
             if (v.codigo == '01') {
-                clase = ' class="thorden" style="display: none;"';
+                clase = ' class="thorden"'; //style="display: none;"
             }else if (v.codigo == '02') {
                 clase = ' class="thindicador"';
             }
@@ -217,6 +218,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             data: data,
             order: [[0, 'asc']],
             columnDefs: [
+                { orderable: false, targets: '_all' },
                 {
                     targets: 0,
 
@@ -287,7 +289,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             paging: false,
             info: false,
             columns: columns,
-            ordering: false,
+            //ordering: false,
             searching: false,
             scrollX:   true,
             scrollCollapse: true,
@@ -331,7 +333,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _getTalaColumn = function (ubigeos) {
         var columns = [
-            {"data": "cod_tematico", visible: false},
+            {"data": "cod_tematico", visible: false },
             {"data": "cod_tematico"}
         ];
         for (var i=0; i<ubigeos.length; i++) {
@@ -375,10 +377,12 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _this.target = _crear_target(ubigeos.length);
 
             // Instanciar el servicio
-            service.cuadros.getIndicadores(ubigeos, _this.vista, function (data) {
+            service.cuadros.getIndicadores(ubigeos, appData, _this.vista, function (data) {
+                console.log('cata_cuadro.js', data);
                 _this.tblIndicadores = _crearTabla(
                     '#tblindicadores',
-                    data[App.categoria],
+                    //data[App.categoria],
+                    data['pob'],                //Cambiar después de actualizar App.categoria a codigo
                     _this.tablaColumns,
                     _this.target
                 );
@@ -552,8 +556,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.uiDocuments.clases.meta_cg.children('p').html(metadata.cobertura_geografica);
         this.uiDocuments.clases.meta_pt.children('p').html(metadata.presiciones_tecnicas);
     };
-
-
 
     return {
         init: init,
