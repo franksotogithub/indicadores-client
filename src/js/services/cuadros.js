@@ -6,8 +6,9 @@ App.service.cuadros = (function (service, config) {
             //url: parent.getUrlServer('indicadores/tabla/', {"u": ubigeos, "vista": [vista]}),
             url: service.getUrlServer('principales/', {"u": ubigeos, "vista": [vista]}),
             success: function (data) {
-                _this.indicadores = data;
-                callback(pivotData(data, appdata));
+                var dataPivot = pivotData(data, appdata);
+                _this.indicadores = dataPivot.data;
+                callback(dataPivot.data, dataPivot.titulos);
             },
 
             error: function (obj, status, otherr) {
@@ -17,27 +18,32 @@ App.service.cuadros = (function (service, config) {
     };
 
     var pivotData = function(data, appdata){
-        var response = {};
+        var response = {
+            "data": {}, "titulos": {}
+        };
         data.forEach( ubigeo => {
             for (var propierty in ubigeo) {
                 if(typeof ubigeo[propierty] == 'object'){
-                    if(!response.hasOwnProperty(propierty)){
-                        response[propierty] = {};
+                    if(!response.data.hasOwnProperty(propierty)){
+                        response.data[propierty] = {};
                     }
                     for (var indicator in ubigeo[propierty]) {
-                        if(!response[propierty].hasOwnProperty(indicator)){
-                            response[propierty][indicator] = [];
-                            response[propierty][indicator]['cod_tematico'] = indicator;
+                        if(!response.data[propierty].hasOwnProperty(indicator)){
+                            response.data[propierty][indicator] = [];
+                            response.data[propierty][indicator]['cod_tematico'] = indicator;
                         }
-                        response[propierty][indicator]['absoluto_'+ubigeo.cod_territorio] = ubigeo[propierty][indicator].abs;
-                        response[propierty][indicator]['porcentaje_'+ubigeo.cod_territorio] = ubigeo[propierty][indicator].porcent;
-                        response[propierty][indicator]['titulo_'+ubigeo.cod_territorio] = ubigeo.titulo;
+                        response.data[propierty][indicator]['absoluto_'+ubigeo.cod_territorio] = ubigeo[propierty][indicator].abs;
+                        response.data[propierty][indicator]['porcentaje_'+ubigeo.cod_territorio] = ubigeo[propierty][indicator].porcent;
+                        response.data[propierty][indicator]['titulo_'+ubigeo.cod_territorio] = ubigeo.titulo;
+                        if(!response.titulos.hasOwnProperty(ubigeo.cod_territorio)){
+                            response.titulos[ubigeo.cod_territorio] = ubigeo.titulo;
+                        }
                     }
                 }
             }
         });
-        for(var prop in response){
-            response[prop] = Object.values(response[prop]);
+        for(var prop in response.data){
+            response.data[prop] = Object.values(response.data[prop]);
         }
         return response;
     };
