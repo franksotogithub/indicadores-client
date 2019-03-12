@@ -4,7 +4,8 @@ Frontend del sistema online de publicación de resultados del Censo2017 incluye 
 
 ##Modulos
 
-* Indicadores
+* Princiaples Indicadores
+* Primeros resultados del CPV
 * Cuadros estadisticos
 
 
@@ -51,3 +52,29 @@ npm install
     urlServer: "http://192.168.34.14:8001/",
     ```
 
+### Carga de los assets
+- Copiar la carpeta de assets del proyecto 
+```bash
+\\JRAMIREZ1\fileserver\online\desarrollo\
+```
+- pegarla en los src del proyecto
+
+```bash
+proyecto/src/
+```
+
+- Dependiendo del entorno de trabajo y de la url de publicación modificar la ruta del arcgis SDK. 
+Ejemplo: si el proyecto se visualiza en http://localhost:300 modificar los archivo
+
+```bash
+proyecto/src/assets/libs/arcgis/4.7/init.js
+proyecto/src/assets/libs/arcgis/4.7/dojo/dojo.js
+```
+- buscar la variable baseUrl (buscar: baseUrl:"http:) y modificar el valor por nuestro ambiente
+
+
+### Generar el dist
+```bash
+gulp
+gulp assets
+```

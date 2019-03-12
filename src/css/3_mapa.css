@@ -315,6 +315,7 @@ div.esri-search__submit-button:focus {
 .select2-container {
     font-family: "signikaregular" !important;
     font-size: 13px !important;
+    width: 300px !important;
 }
 
 
@@ -351,6 +352,7 @@ div.esri-search__submit-button:focus {
 .autocomplete-suggestions{
     font-size: 13px;
     font-family: signikaregular;
+    width: 300px!important;
 }
 
 

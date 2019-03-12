@@ -5,7 +5,7 @@
 App.utils.cuadros = (function (config, appData, parent, service) {
     // Atributos privados
     var cuadrosData = {
-        categoria: "01",
+        categoria: "P01",
         ubigeo: "00",
         ubigeos: ["00"],
         poblacion: {}
@@ -44,6 +44,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
         _this.crearTablaUigeos(['00'], []);
+        //_this.crearTablaUigeos(['01','02','03','04','05','06','07','08'], []);
     };
 
     var _initPobreza = function (_this, vista) {
@@ -95,9 +96,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @returns {{titulo: string, colspan: string, children: [null,null], ubigeo: *}}
      * @private
      */
-    var _cabeceraTemplate = function (ubigeo) {
+    var _cabeceraTemplate = function (ubigeo, titulos) {
         return {
-            "titulo": (appData.titulo.hasOwnProperty('U'+ubigeo)) ? appData.titulo['U'+ubigeo] : '',
+            "titulo": (titulos.hasOwnProperty(ubigeo)) ? titulos[ubigeo] : '',
             "colspan": "2",
             "children": [
                 {
@@ -147,7 +148,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             var colspan = (v.colspan !== undefined) ? ' colspan="'+v.colspan+'"' : '';
             var clase = '';
             if (v.codigo == '01') {
-                clase = ' class="thorden" style="display: none;"';
+                clase = ' class="thorden"'; //style="display: none;"
             }else if (v.codigo == '02') {
                 clase = ' class="thindicador"';
             }
@@ -182,7 +183,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param ubigeos - listado de ubigeos ordenados de acuerdo a lo elegido
      * @private
      */
-    var _cabeceraUigeos = function (ubigeos) {
+    var _cabeceraUigeos = function (ubigeos, titulos) {
         var cabecera = [
             {
                 "codigo": "01",
@@ -198,7 +199,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             }
         ];
         for (var i=0;i<ubigeos.length;i++) {
-            cabecera.push(_cabeceraTemplate(ubigeos[i]));
+            cabecera.push(_cabeceraTemplate(ubigeos[i], titulos));
         }
         _crearCabecera(cabecera);
     };
@@ -217,6 +218,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             data: data,
             order: [[0, 'asc']],
             columnDefs: [
+                { orderable: false, targets: '_all' },
                 {
                     targets: 0,
 
@@ -287,7 +289,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             paging: false,
             info: false,
             columns: columns,
-            ordering: false,
+            //ordering: false,
             searching: false,
             scrollX:   true,
             scrollCollapse: true,
@@ -331,7 +333,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _getTalaColumn = function (ubigeos) {
         var columns = [
-            {"data": "cod_tematico", visible: false},
+            {"data": "cod_tematico", visible: false },
             {"data": "cod_tematico"}
         ];
         for (var i=0; i<ubigeos.length; i++) {
@@ -368,17 +370,18 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         var callback = function () {
             // Crear cabecera de la tabla segun los ubigeos indicadors
-            _cabeceraUigeos(ubigeos);
+            //_cabeceraUigeos(ubigeos);
             // Crear Estructura Json para renderizado de la tabla
 
             _this.tablaColumns = _getTalaColumn(ubigeos);
             _this.target = _crear_target(ubigeos.length);
 
             // Instanciar el servicio
-            service.cuadros.getIndicadores(ubigeos, _this.vista, function (data) {
+            service.cuadros.getIndicadores(ubigeos, appData, _this.vista, function (data, titulos) {
+                _cabeceraUigeos(ubigeos, titulos);
                 _this.tblIndicadores = _crearTabla(
                     '#tblindicadores',
-                    data[App.categoria],
+                    data[_this.cuadrosData.categoria],
                     _this.tablaColumns,
                     _this.target
                 );
@@ -398,7 +401,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var crearTablaCategoria = function (categoria) {
-        App.categoria = categoria;
+        console.log("categoria >>> ", categoria);
+        console.log("servicios >>>", service.cuadros.indicadores);
+        this.cuadrosData.categoria = categoria;
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
@@ -406,7 +411,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         this.tblIndicadores = _crearTabla(
             '#tblindicadores',
-            service.cuadros.indicadores[App.categoria],
+            service.cuadros.indicadores[this.cuadrosData.categoria],
             this.tablaColumns,
             this.target
         );
@@ -508,10 +513,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var categoriaChangeEvent = function (options) {
         // Fixme: temporalmente se quitara el P para dejar solo 2 digitos de codigo
-        var categoria = options.categoria.substring(1,3);
-        this.cuadrosData.categoria = categoria;
-        this.crearTablaCategoria(categoria);
-        parent.graficos.indicadores(categoria, '00');
+        //var categoria = options.categoria.substring(1,3);
+        this.crearTablaCategoria(options.categoria);
+        parent.graficos.indicadores(options.categoria, '00');
 
     };
 
@@ -552,8 +556,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.uiDocuments.clases.meta_cg.children('p').html(metadata.cobertura_geografica);
         this.uiDocuments.clases.meta_pt.children('p').html(metadata.presiciones_tecnicas);
     };
-
-
 
     return {
         init: init,
