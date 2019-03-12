@@ -29,7 +29,7 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-    var ubigeosHijos = undefined;
+    var ubigeosHijos = [];
 
     var layerList = undefined;
 
@@ -703,6 +703,11 @@ App.utils.mapas = (function (parent, config,service) {
 
             queryTask.execute(query).then(function(result){
                 var features=result.features;
+                console.log('getFeaturesUbigeos result>>>',result);
+                console.log('queryText>>',queryText);
+                console.log('url>>',_this.historic_features[index].url);
+                console.log('features>>',features);
+
                 callback(features);
             });
         });
@@ -818,7 +823,15 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
-        service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
+        if(ubigeosDes.indexOf('00')<0){ubigeosDes.unshift('00')}
+
+        var options= {'ubigeosOdenados':ubigeosDes,
+                'ubigeosSeleccionados':selectUbigeos,
+                'nivel': index,
+            }
+
+        App.mapasChangeEvent(options);
+        /*service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
 
             var options= {'ubigeosOdenados':ubigeosOrd,
                 'ubigeosSeleccionados':selectUbigeos,
@@ -826,7 +839,7 @@ App.utils.mapas = (function (parent, config,service) {
             }
             //console.log('options>>>',options);
             App.mapasChangeEvent(options);
-        });
+        });*/
 
     }
 
@@ -865,6 +878,7 @@ App.utils.mapas = (function (parent, config,service) {
             var listMiniMaps=document.getElementById("listMiniMaps");
             var widgetProv=document.getElementById('widget-provincias');
             var widgetDep=document.getElementById('widget-departamentos');
+            var widgetDist=document.getElementById('widget-distritos');
             var widgetNacional=document.getElementById('widget-nacional');
             var divListMaps=document.getElementById("div-list-maps");
             var selectAll=document.getElementById("select-all");
@@ -1098,8 +1112,8 @@ App.utils.mapas = (function (parent, config,service) {
              * funcion que actualiza el mapa con algun acceso rapido seleccionado
              * **/
             var seleccionarAccesoRapido=function(selectUbigeos,indexLayer) {
-                var where='';
-                where=getDefinitionExpresion(selectUbigeos,indexLayer);
+                //var where='';
+                var where=getDefinitionExpresion(selectUbigeos,indexLayer);
                 definitionExpression_gloabal=where;
                 updateMap(where,indexLayer,true);  // actualizando el mapa
                 desplegarWidgetsNavegacion(0);  //limpiando widgets
@@ -1130,7 +1144,6 @@ App.utils.mapas = (function (parent, config,service) {
                 if(newIndex<3)
                 {
                     var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
-
                     identifyParams.layerIds = [i];
                     _this.datosMap.divLegend.innerHTML=htmlLengenda;
                     layers_inicial.forEach(function (layer) {
@@ -1144,9 +1157,8 @@ App.utils.mapas = (function (parent, config,service) {
                         sublayer.visible=false;
                     });
                     _this.ccppLyr.visible=false;
-
+                    _this.view_map.graphics.removeAll();
                 }
-
 
                 else{
                     _this.ccppLyr.visible=true;
@@ -1158,21 +1170,34 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
 
-            var zoomToLayer=function(view,layer,definitionExpression) {
-                var query = new Query();
-                query.where = definitionExpression;
-                return layer.queryExtent(query)
-                    .then(function(response) {
-                        if(response){
-                                view.goTo(response.extent).then(function(resp){
-                                console.log('zoomToLayer>>>',view.zoom);
-                                if(view.zoom>14){
-                                    view.zoom=14;
+            var zoomToLayer=function(view,layer,definitionExpression,featurePoint) {
+                if(featurePoint==undefined)
+                {
+                    var query = new Query();
+                    query.where = definitionExpression;
+                    return layer.queryExtent(query)
+                        .then(function(response) {
 
-                                }
-                            });
-                        }
-               });
+                            console.log('zoomToLayer response>>>', response);
+                            if(response){
+
+                                    view.goTo(response.extent).then(function(resp){
+                                    console.log('zoomToLayer>>>',view.zoom);
+                                    if(view.zoom>14){
+                                        view.zoom=14;
+
+                                    }
+                                });
+                            }
+                   });
+                }
+
+                else{
+
+                    //console.log('featurePoint>>>',featurePoint)
+                    /*view.center=featurePoint.geometry.point;
+                    view.zoom=view.zoom+2;*/
+                }
             };
 
 
@@ -1316,11 +1341,13 @@ App.utils.mapas = (function (parent, config,service) {
                         gruposCcpp.push(value.grupo);
                     });
 
+                    var grupos=Array.from(new Set(gruposCcpp));
+
                     var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features
-                        , gruposCcpp
+                        , grupos
                     );
-                    console.log(ubigeosDes);
-                    //actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+
+                    actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
                 }
 
                 else{
@@ -1344,33 +1371,36 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.cant_mini_maps=1;
 
 
-
                 if(_this.indexSubLayer>=0 && _this.indexSubLayer<=1 )
                 {
-                    ubigeosHijos=[];
 
 
+
+/*
                     service.mapas.getUbigeos(_this.select_ubigeos,function (data){
                         data.forEach(function (el) {
                             var hijos=el.hijos;
                             hijos.forEach(function (hijo) {
                                 ubigeosHijos.push(hijo.ubigeo);
                             });
-                        });
+                        });*/
 
-                        actualizarComboUbigeo(_this.select_ubigeos); // actualizamos el combo select2 : select-ubigeos
+
+
+                        //actualizarComboUbigeo(_this.select_ubigeos); // actualizamos el combo select2 : select-ubigeos
                         definitionExpression_gloabal=getDefinitionExpresion(ubigeosHijos,_this.indexSubLayer);
                         setLabelWidgetUbigeos(_this.indexSubLayer);
                         //changeIndex(_this.indexSubLayer+1);
                         updateMap(definitionExpression_gloabal,_this.indexSubLayer+1,true);
                         _this.select_ubigeos=[];
-                    });
+                    //});
 
                 }
 
                 else if(_this.indexSubLayer==2){
-                    actualizarComboUbigeo(_this.select_ubigeos);
+                    //actualizarComboUbigeo(_this.select_ubigeos);
                     definitionExpression_gloabal=getDefinitionExpresion(_this.select_ubigeos,_this.indexSubLayer);
+                    setLabelWidgetUbigeos(_this.indexSubLayer);
                     updateMap(definitionExpression_gloabal,_this.indexSubLayer+1,true);
                     _this.select_ubigeos=[];
                 }
@@ -1393,26 +1423,97 @@ App.utils.mapas = (function (parent, config,service) {
             var selectAllFeatures=function(checked){
                 var i=_this.indexSubLayer;
                 var where='';
-
+                var gruposCCpp=[];
                 if (i==0){
                     where="1=1";
                 }
                 else{
-                    where=getDefinitionExpresion(ubigeosHijos,i);
+                    where=getDefinitionExpresion(_this.historic_features[i-1].select_features,i);
                 }
 
                 if(checked) {
-                    _this.select_ubigeos=ubigeosHijos;
-                    _this.layer.findSublayerById(i).definitionExpression=where;
-                }
-                else {
-                    _this.select_ubigeos=[];
-                    _this.layer.findSublayerById(parseInt(i)).definitionExpression="1<>1";
+
+
+                    //_this.select_ubigeos=ubigeosHijos;
+
+
+                    if(i<3) {
+                        _this.select_ubigeos=ubigeosHijos;
+                        _this.layer.findSublayerById(i).definitionExpression=where;
+                    }
+
+
+                    else{
+                        //_this.select_ubigeos=ubigeosHijos;
+
+                        //_this.select_ubigeos=ubigeosHijos;
+                        _this.select_ubigeos=[];
+                        var conjunto=[];
+                        ubigeosHijos.forEach(function (value) {
+                              conjunto.push(value.grupo);
+                        });
+                        gruposCCpp=Array.from(new Set(conjunto));
+
+                        console.log('where select all features>>>',where);
+
+                        getFeaturesUbigeos(where,i,function (features) {
+                            features.forEach(function (feature) {
+                                    console.log('feature>>>',feature);
+                                    var ubigeo = feature.attributes.CODIGO;
+                                    var grupo = feature.attributes.COD_GRUPO;
+                                    var symbol='';
+                                    //var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(ubigeo);
+                                    if(feature.geometry.type=='point')
+                                    {
+                                        symbol=symbolMarker;
+                                    }
+                                    var graphic= new Graphic({
+                                        geometry: feature.geometry,   // Add the geometry created in step 4
+                                        symbol: symbol,   // Add the symbol created in step 5
+                                        attributes: feature.attributes,
+                                    });
+                                    //console.log('centros poblados',graphic);
+
+                                    //if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
+                                        //_this.select_ubigeos.push(grupo);
+                                        //_this.listCcpp.push({ubigeo:ubigeo,grupo:grupo});
+                                        _this.view_map.graphics.add(graphic);
+                                    //}
+
+
+                                }
+                            );
+                        });
+
+                    }
 
                 }
+
+                else {
+                    _this.select_ubigeos = [];
+                    if(i<3) {
+                        _this.layer.findSublayerById(parseInt(i)).definitionExpression = "1<>1";
+                    }
+                    else{
+                        _this.view_map.graphics.removeAll();
+                        _this.listCcpp=[]
+                    }
+
+                }
+
+
                 _this.historic_features[i].select_features=_this.select_ubigeos;
-                var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features);
-                actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+
+                var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features,gruposCCpp);
+
+                //console.log('ubigeosDes>>',ubigeosDes);
+                if(i<3){
+                    actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+                }
+                else{
+                    actualizarTablasyGraficos(ubigeosDes,gruposCCpp,_this.indexSubLayer);
+                }
+
             }
 
             var updateMap = function(definitionExpression,index,opZoom) {
@@ -1420,6 +1521,7 @@ App.utils.mapas = (function (parent, config,service) {
                     if(index<=2){
                         _this.layer.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
                         _this.layerBack.findSublayerById(parseInt(index)).definitionExpression=definitionExpression;
+
                         if (opZoom)
                             zoomToLayer(_this.view_map,_this.historic_features[parseInt(index)].layer,definitionExpression);
                         }
@@ -1428,6 +1530,7 @@ App.utils.mapas = (function (parent, config,service) {
                         var origen="cpv2017_v2";
                         _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
                         _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
+
                         if (opZoom)
                             zoomToLayer(_this.view_map,_this.historic_features[2].layer,definitionExpression);
 
@@ -1441,10 +1544,16 @@ App.utils.mapas = (function (parent, config,service) {
                 if(index==0) {
                     widgetDep.style.display = "block";
                     widgetProv.style.display = "none";
+                    widgetDist.style.display = "none";
                 }
 
                 else if (index==1){
                     widgetProv.style.display = "block";
+                    widgetDist.style.display = "none";
+                }
+                else if (index==2){
+                    widgetDist.style.display = "block";
+
                 }
 
 
@@ -1454,6 +1563,8 @@ App.utils.mapas = (function (parent, config,service) {
                     {widgetDep.innerHTML=nombres[0]}
                     else if (index==1)
                     {widgetProv.innerHTML=nombres[0]}
+                    else if (index==2)
+                    {widgetDist.innerHTML=nombres[0]}
                 }
 
                 else if (nombres.length>1)
@@ -1462,6 +1573,8 @@ App.utils.mapas = (function (parent, config,service) {
                     {widgetDep.innerHTML='MULTIPLES <BR> DEPARTAMENTOS'}
                     else if (index==1)
                     {widgetProv.innerHTML='MULTIPLES <BR> PROVINCIAS'}
+                    else if (index==2)
+                    {widgetProv.innerHTML='MULTIPLES <BR> DISTRITOS'}
                 }
             }
 
@@ -1486,7 +1599,6 @@ App.utils.mapas = (function (parent, config,service) {
                         var index_old=parseInt(indexLocal)-1;
                         definitionExpression_back=getDefinitionExpresion(_this.historic_features[index_old].select_features,index_old);
                     }
-
 
 
                     _this.layer.findSublayerById(parseInt(indexLocal)).definitionExpression=definitionExpression_gloabal;
@@ -1565,11 +1677,19 @@ App.utils.mapas = (function (parent, config,service) {
                 });
                 _this.view_map.graphics.removeAll();
                 _this.view_map.popup.close();
+
+                if (indexLayer==2){
+                    widgetDist.style.display = "none";
+                }
+
+
                 if (indexLayer==1){
+                    widgetDist.style.display = "none";
                     widgetProv.style.display = "none";
                 }
 
                 else if(indexLayer==0){
+                    widgetDist.style.display = "none";
                     widgetProv.style.display = "none";
                     widgetDep.style.display = "none";
                 }
@@ -1590,9 +1710,14 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             widgetProv.addEventListener("click", function(){
+                desplegarWidgetsNavegacion(2);
                 selectWidget(2);
                 //actualizarSelectUbigeo(_this.select_ubigeos);
             });
+            widgetDist.addEventListener("click", function(){
+                selectWidget(3);
+            });
+
 
             /**Selecciona la vista del mapa segun sea el caso
              * 0 departamental
@@ -1658,23 +1783,30 @@ App.utils.mapas = (function (parent, config,service) {
                 var data = e.params.data;
                 var codigo=data.id;
                 var where=" CODIGO="+codigo;
+                var origen='cpv2017_v2';
+                (_this.indexSubLayer==3)?where=" CODIGO='"+codigo+"' and origen='"+origen+"'": where= " CODIGO="+codigo;
+
                 getFeaturesUbigeos(where,_this.indexSubLayer,function (features) {
                     features.forEach(function (feature) {
                         selectedFeature(feature);
-                        zoomToLayer(_this.view_map,_this.historic_features[_this.indexSubLayer].layer,where);
-
+                        if(_this.indexSubLayer==3){
+                                var point=[feature.geometry.x,feature.geometry.y];
+                                _this.view_map.center=point;
+                                _this.view_map.zoom=14;
+                            }
                         }
                     );
-                    if(_this.indexSubLayer<2) {openFeature();}
+                    if(_this.indexSubLayer<3) {
+                        //openFeature();
+                        actualizarComboUbigeo(_this.select_ubigeos,1);
+                    }
                 });
             });
 
             _this.view_map.on("click",function (event) {
-                console.log('click');
+                //console.log('click');
                 localizarFeaturePorClick(event,function (feature) {
-
-
-                      console.log('feature>>>',feature);
+                      //console.log('feature>>>',feature);
                       selectedFeature(feature);
                 });
             });
@@ -1687,11 +1819,13 @@ App.utils.mapas = (function (parent, config,service) {
                 if (_this.select_ubigeos.length==0 || ( _this.select_ubigeos.length==2 && _this.select_ubigeos[0]=='00')){
                     localizarFeaturePorClick(event,function (feature) {
                         selectedFeature(feature);
-                        openFeature();
+                        actualizarComboUbigeo(_this.select_ubigeos,1);
+                        //openFeature();
                     });
                 }
                 else {
-                    openFeature();
+                    actualizarComboUbigeo(_this.select_ubigeos,1);
+                    //openFeature();
                 }
 
             });
@@ -1699,6 +1833,9 @@ App.utils.mapas = (function (parent, config,service) {
             var seleccionarUbigeoPorBuscador= function (feature,index) {
 
                 cleanVars();
+
+                console.log('feature>>',feature);
+
                 if(index==1){
 
                     _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
@@ -1711,40 +1848,102 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
                 }
 
+                if(index==3){
+                    _this.historic_features[0].nombres.push(feature.attributes.DEPARTAMENTO);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                    _this.historic_features[1].nombres.push(feature.attributes.PROVINCIA);
+                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                    _this.historic_features[2].nombres.push(feature.attributes.DISTRITO);
+                    _this.historic_features[2].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP+feature.attributes.CCDI);
+                }
+
                 for (var i=0;i<index;i++) setLabelWidgetUbigeos(i);
-                changeIndex(index);
+
 
 
                 /**
                  * Tratamiento a nivel Departamental y Provincial
                  * **/
 
-                if (index<2){
+                if (index<3){
+                    changeIndex(index);
                     selectedFeature(feature,event);
-                    openFeature();
+                    actualizarComboUbigeo(_this.select_ubigeos);
+                    //openFeature();
                 }
 
                 /**Tratamiento especial a nivel Distrital
                  * **/
+
+
+                /*else {
+                    var i=index-1;
+                    var def=getDefinitionExpresion(_this.historic_features[2].select_features,i);
+                    updateMap(def,2,false);
+                    selectedFeature(feature);
+                    actualizarComboUbigeo(_this.historic_features[2].select_features);
+                }*/
+
                 else {
+                    var i=index-1;
+                    var def=getDefinitionExpresion(_this.historic_features[2].select_features,i);
+                    updateMap(def,2,false);
+                    changeIndex(index);
+                    selectedFeature(feature,event);
+                    actualizarComboUbigeo(_this.historic_features[2].select_features);
+                    //console.log('feature>>',feature);
+                }
+
+                /*else {
                     var i=index-1;
                     var def=getDefinitionExpresion(_this.historic_features[1].select_features,i);
                     updateMap(def,2,false);
                     selectedFeature(feature);
                     //_this.view_map.goTo(feature.geometry.extent);
                     actualizarComboUbigeo(_this.historic_features[1].select_features);
-                }
+                }*/
             }
 
             var actualizarBuscador = function (buscador){
                 $(buscador).autocomplete({
                     serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
                     onSelect: function (Response) {
-                        var ubigeo=Response.data;
-                        var where='CODIGO='+ubigeo;
+                        var codigo=Response.data;
+                        var where=" CODIGO="+codigo;
                         var index=parseInt(Response.index)-2;
-                        var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(ubigeo);
+                        var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(codigo);
+                        var origen='cpv2017_v2';
+                        (index==3)?where=" CODIGO='"+codigo+"' and origen='"+origen+"'": where= " CODIGO="+codigo;
 
+                        if(indiceUbigeoEncontrado<0){
+
+                            getFeaturesUbigeos(where,index,function (features) {
+                                features.forEach(function (feature) {
+                                        seleccionarUbigeoPorBuscador(feature,index);
+                                        if(index==3){
+                                                var point=[feature.geometry.x,feature.geometry.y];
+                                                _this.view_map.center=point;
+                                                _this.view_map.zoom=14;
+                                            }
+                                        else{
+                                            zoomToLayer(_this.view_map,_this.historic_features[_this.indexSubLayer].layer,where);
+                                        }
+
+                                    }
+
+                                );
+
+                            });
+
+                        }
+
+
+
+
+
+
+
+/*
                         if (indiceUbigeoEncontrado==-1){
                             getFeaturesUbigeos(where,index,function (features) {
                                 features.forEach(function (feature) {
@@ -1754,14 +1953,15 @@ App.utils.mapas = (function (parent, config,service) {
                                 );
                             });
 
-                        }
+                        }*/
                     },
                 });
             }
 
 
             _this.view_map.popup.on("trigger-action", function(event) {
-                openFeature();
+                actualizarComboUbigeo(_this.select_ubigeos);
+                //openFeature();
             });
 
             _this.view_map.when(function () {
@@ -1795,6 +1995,59 @@ App.utils.mapas = (function (parent, config,service) {
                 }
             }
 
+            var actualizarDatosComboUbigeo = function (data,i){
+                //var _this=parent.mapas;
+                var placeholder="Seleccione una opcion";
+                $selectUbigeo.html('').select2({data: [{id:"",text:""}]});
+                $selectUbigeo.select2({
+                    tags: "true",
+                    placeholder: _this.VALORES_STATIC[i].placeholders,
+                    allowClear: true,
+                    data:data
+                });
+            }
+
+    var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
+        var results= new Object();
+        results["results"]='';
+        service.mapas.getTerritorioSelect2(ubigeos,function(data){
+
+            ubigeosHijos=[];
+            if(ubigeos.length==0)
+            {
+                actualizarDatosComboUbigeo(data.results,0);
+                data.results.forEach(function (hijo) {
+                ubigeosHijos.push(hijo.id.trim());
+                });
+            }
+
+
+            else {
+                actualizarDatosComboUbigeo(data.results,_this.indexSubLayer+1);
+                data.results.forEach(function (padres) {
+                    padres.children.forEach(function (hijo) {
+                        if(hijo.id.trim().length>6){
+                            ubigeosHijos.push({ubigeo:hijo.id.trim(),grupo:hijo.cod_grupo.trim()});
+                        }
+
+                        else{
+                            ubigeosHijos.push(hijo.id.trim());
+                        }
+                    });
+                });
+                if(flagAbrir) openFeature();
+            }
+
+
+
+
+
+            //console.log('ubigeosHijos>>>',ubigeosHijos);
+
+            });
+        }
+
+
 
             setInterval(ocultarCargando,1000);
             changeLayer(0);
@@ -1803,29 +2056,14 @@ App.utils.mapas = (function (parent, config,service) {
             actualizarBuscador('#buscador-ubigeo');
             actualizarBuscador('#buscador-ubigeo2');
             desplegarWidgetsNavegacion(0);
+
+
+
+
         });
 
     };
 
-    var actualizarDatosComboUbigeo = function (data){
-        var _this=parent.mapas;
-        var placeholder="Seleccione una opcion";
-        $selectUbigeo.html('').select2({data: [{id:"",text:""}]});
-        $selectUbigeo.select2({
-            tags: "true",
-            placeholder: _this.VALORES_STATIC[_this.indexSubLayer].placeholders,
-            allowClear: true,
-            data:data
-        });
-    }
-
-    var actualizarComboUbigeo=function(ubigeos){ //
-        var results= new Object();
-        results["results"]='';
-        service.mapas.getTerritorioSelect2(ubigeos,function(data){
-            actualizarDatosComboUbigeo(data.results);
-        });
-    }
 
     var cambiarMapaRender = function (optionsSublayers) {
 
