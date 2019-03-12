@@ -823,12 +823,18 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
+
+
+
         if(ubigeosDes.indexOf('00')<0){ubigeosDes.unshift('00')}
+
+
 
         var options= {'ubigeosOdenados':ubigeosDes,
                 'ubigeosSeleccionados':selectUbigeos,
                 'nivel': index,
             }
+
 
         App.mapasChangeEvent(options);
         /*service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
@@ -1074,7 +1080,7 @@ App.utils.mapas = (function (parent, config,service) {
                         dataSelect2.push(el);
                         ubigeosHijos=map.hijos;
                         seleccionarAccesoRapido(map.hijos,map.nivelHijo);
-                        actualizarDatosComboUbigeo(dataSelect2);
+                        actualizarDatosComboUbigeo(dataSelect2,map.nivelHijo);
                         _this.historic_features[map.nivel].select_features=[map.ubigeo];
                         actualizarTablasyGraficos([map.ubigeo],[map.ubigeo],map.nivel);
                     });
@@ -1955,13 +1961,13 @@ App.utils.mapas = (function (parent, config,service) {
 
                         }*/
                     },
+                    width:"flex",
                 });
             }
 
 
             _this.view_map.popup.on("trigger-action", function(event) {
-                actualizarComboUbigeo(_this.select_ubigeos);
-                //openFeature();
+                actualizarComboUbigeo(_this.select_ubigeos,1);
             });
 
             _this.view_map.when(function () {

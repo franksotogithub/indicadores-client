@@ -352,7 +352,7 @@ div.esri-search__submit-button:focus {
 .autocomplete-suggestions{
     font-size: 13px;
     font-family: signikaregular;
-    width: 300px!important;
+    /*width: 300px!important;*/
 }
 
 
