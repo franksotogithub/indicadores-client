@@ -268,14 +268,14 @@ button.menuResponsive:hover {
 }
 .secLogoTitulo img {
     height: 50px;
-    padding: 7px 20px;
+    padding: 7px 12px;
 }
 
 .secLogoTitulo h1 {
     font-size: 22px;
     font-family: 'signikaregular';
     font-weight: normal;
-    padding: 0px 40px;
+    padding: 0px 20px;
     text-transform: uppercase;
 
 }
@@ -309,7 +309,7 @@ button.menuResponsive:hover {
 /* Barra de herramientas del Header */
 .barHerramientasHeader{ /* Fijando alto */
     height: 70px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .barHerramientasHeader button{
@@ -674,17 +674,6 @@ div.contenidoMapa{
 .resp-sharing-button--telegram:hover {
     background-color: #4B97D1;}
 
-nav.nav-vertical button.cbutt1 {
-    background-color: #2F6ABC; }
-
-nav.nav-vertical button.cbutt2 {
-    background-color: #2a5a9c; }
-
-nav.nav-vertical button.cbutt3 {
-    background-color: #30A36B; }
-
-nav.nav-vertical button.cbutt4 {
-    background-color: #22896E; }
 
 nav.nav-vertical {
     display: inline-block;
@@ -704,7 +693,7 @@ nav.nav-vertical {
 nav.nav-vertical > :first-child {
     margin-top: 3px; }
 nav.nav-vertical button {
-    background-color: #334051;
+    background-color: #009ae0;
     display: block;
     width: 100%;
     padding: 0;
@@ -720,10 +709,16 @@ nav.nav-vertical button a {
     width: 100%;
 }
 nav.nav-vertical button:hover {
-    background-color: #359bc8;
+    background-color: #dc8300;
     opacity: 1; }
 nav.nav-vertical button a h4 {
     margin: 7px 0px;
+}
+
+nav.nav-vertical button.activeItemMenu {
+    background-color: #dc8300;
+    color: white;
+    opacity: 1;
 }
 
 
@@ -1337,6 +1332,22 @@ a.LinkModalCE{
         width: 50px;
     }
 
+    #btnMapaPeru{
+        background-image: url("../img/icoperuBn.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: auto 60%;
+
+    }
+    .mapapequeBn {
+        background-image: url("../img/icoperuBn2.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: auto 100%;
+        padding: 1px 16px !important;
+        margin-right: 6px;
+        margin-left: 3px;
+    }
 
 
 /*
