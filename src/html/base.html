@@ -95,7 +95,7 @@
             <div>
                 <img src="img/logo_inei.png" />
             </div>
-            <h1>PUBLICACIóN DE RESULTADOS CPV 2017</h1>
+            <h1>{% block menutitulo %} {% endblock %} </h1>
             <div>
                 <img src="img/logo_censo.png" />
             </div>
@@ -104,17 +104,15 @@
              --><div class="col-1-2 sectMenuBarTitulo">
         <div class="row">
             <div class="col-6-10 tabHeader" >
-                <div>
-                    <button class="tabActivo"> {% block menutitulo %} {% endblock %}  </button><!--
-                             -->
 
-                </div>
             </div><!--
                      --><div class="col-4-10 barHerramientasHeader">
             <div>
                 <div class="col-1-4 btnMapa" data-codevent="mapas" data-codi="1">
                     <div>
-                        <button data-icon="&#xe012;" class="btnReabrir b_azul f_blanco icon tooltip miniTop" data-title="Mostrar Mapa">  </button>
+                        <button id="btnMapaPeru"  class="btnReabrir b_azul f_blanco icon tooltip miniTop" data-title="Mostrar Mapa">
+
+                        </button>
                     </div>
                 </div><!--
                              --><div class="col-1-4 btnIndicadores " data-codevent="cuadros" data-codi="5">
@@ -124,7 +122,7 @@
             </div><!--
                              --><div class="col-1-4 btnGraficos" data-codevent="graficos" data-codi="7">
                 <div>
-                    <button data-icon="&#xe002;" class=" btnReabrir b_azul f_blanco icon tooltip miniTop " data-title="Mostrar Gráficos y metadatos">  </button>
+                    <button data-icon="&#xe000;" class=" btnReabrir b_azul f_blanco icon tooltip miniTop " data-title="Mostrar Gráficos y metadatos">  </button>
                 </div>
             </div><!--
                              --><div class="col-1-4">

@@ -554,6 +554,8 @@ $(document).ready(function() {
     altosAutomaticos();
     //sliderGraph ();
 
+
+
     $(document).on('click','#contentPanel .headerToolMap > button', function() {
         var dataSelect= $(this).attr('data-select');
         $('#contentPanel .headerToolMap > button').removeClass('active');
@@ -592,12 +594,22 @@ $(document).ready(function() {
         $( ".esri-ui-bottom-right" ).toggleClass("subirMiniMap");
     });
 
+    // Abrir cerrar busqueda en CUadros
     $(".buttonFlotanteBusqueda").click(function(){
         $(".buttonFlotanteBusqueda").toggleClass("ocultaBus");
         $(".contenedorInputTablaB").toggleClass("ocultaBus");
+        $(".buttonFlotanteBusqueda span").toggleClass("dripicons-search dripicons-chevron-up");
+
         $(this).parent().find("input.inputTextBusqueda").focus();
 
     });
+
+    // Limpiar busqueda en cuadros
+    $("html").on('click','.contenedorInputTablaB > div > button', function() {
+        $( "input.inputTextBusqueda" ).val("");
+    });
+
+
 
 
 
@@ -626,7 +638,7 @@ $(document).ready(function() {
     });
 
 
-    $(document).on('mouseover','.popover', function (e) {
+    /*$(document).on('mouseover','.popover', function (e) {
         var titleTool = $(this).attr("data-popover");
 
         $('#contenedorPopover').css({'top':($(this).offset().top - 30)+'px','left':($(this).offset().left - 202)+'px'});
@@ -639,12 +651,9 @@ $(document).ready(function() {
 
 
 
-        /*App.utils.mapas.descargarMapaEvent(function (resp,error) {
-
-
-        });*/
-
-    });
+        /*App.utils.mapas.descargarMapaEvent(function (resp,error) {});*/
+/*
+    });*/
 
     $("#tblindicadores").on('mouseover','th', function (e) {
 

@@ -81,14 +81,26 @@
     overflow: hidden;
     display: block;
     height: 37px;
-    background-color: #cad3e0;
+    background-color: #eff8ff;
     transition:all 500ms;
 }
 
 .contenedorInputTablaB > div{
 
     padding-left: 15px ;
-    padding-right: 52px;
+    padding-right: 70px;
+
+}
+
+.contenedorInputTablaB > div > button{
+
+    position: absolute;
+    right: 40px;
+    z-index: 9;
+    height: 37px;
+    width: 28px;
+    background-color: transparent;
+    color: #0080b9;
 
 }
 
@@ -137,7 +149,7 @@ button.ocultaBus{
     padding: 0px 12px;
     height: 37px;
     color: #FFF;
-    background-color: #1b3c71;
+    background-color: #009ae0 ;
     transition:all 300ms;
 }
 
@@ -315,7 +327,27 @@ button.btnOnlineMaxIr {
     margin: 0px;
 }
 
+.selectCuadros {
+    text-align: left;
+    margin:5px 0;
+    font-family: 'Alegreya-Sans', 'open_sansregular';
+}
 
+.selectCuadros > label {
+    margin-right: 10px;
+    color: #1B3C71;
+    font-weight: 400;
+}
+
+.selectCuadros > select {
+    color: white;
+    background: #009ae0;
+    border: none;
+    padding: 3px 7px;
+    border-right: 3px solid #009ae0;
+    outline: none;
+    cursor: pointer;
+}
 
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 

@@ -4,6 +4,11 @@
         $("#tabsCategoria").on('click', '.tablaTabButton', function (e) {
             var categoria = $.trim($(this).attr('data-categoria'));
             App.categoriaChangeEvent(categoria);
+            if( categoria === "P01" || categoria === "P02" || categoria === "P03" ){
+                $(".selectCuadros").show();
+            }else {
+                $(".selectCuadros").hide();
+            }
         });
 
         $("#comboCategoria").on('click','li',function (e) {
