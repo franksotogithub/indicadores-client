@@ -9,8 +9,8 @@
 
 		<div class="main_container">
 			<div class="header_logo">
-				<img id="logo1" src="./img/portada_logo_inei.png">
-				<img id="logo2" src="./img/portada_logo_cpv.png">
+				<img class="logo1" src="./img/portada_logo_inei.png">
+				<img class="logo2" src="./img/portada_logo_cpv.png">
 			</div>
 			<div class="contenttextotitulo">
 				<img class="titulocentralportada" src="./img/tituloPortada.png">
@@ -48,7 +48,7 @@
 
 			<div class="bloquemenuingM" style="display: none">
 				<div class="contenedorItemMenuM">
-					<a href="#" class="itemMenublM activo">
+					<a href="indicadores.html" class="itemMenublM activo">
 						<img class="off" src="../../img/im1.png" />
 						<img class="inline" src="../../img/im12.png" />
 					</a>
@@ -68,7 +68,7 @@
 
 				</div>
 				<div class="contenedorItemMenuM ">
-					<a href="#" class="itemMenublM ">
+					<a href="http://censos2017.inei.gob.pe/redatam/" class="itemMenublM ">
 						<img class="inline" src="../../img/im4.png" />
 						<img class="off" src="../../img/im42.png" />
 					</a>
@@ -92,15 +92,41 @@
             var alto = $(window).height();
             var ancho = $(window).width();
 
-            if(alto/ancho>1){}
+            if(ancho/alto < 1.2){
+                $(".bloquemenuingM").show();
+                $(".bloquemenuing").hide();
+
+                $("body").addClass("movil");
+                $(".contenttextotitulo").addClass("contenttextotituloM");
+                $(".contenttextotituloM").removeClass("contenttextotitulo");
+
+                $(".logo1").addClass("logo1M");
+                $(".logo2").addClass("logo2M");
+                $(".logo1M").removeClass("logo1");
+                $(".logo2M").removeClass("logo2");
+
+			}else{
+                $(".bloquemenuingM").hide();
+                $(".bloquemenuing").show();
+                $("body").removeClass("movil");
+                $(".contenttextotituloM").addClass("contenttextotitulo");
+                $(".contenttextotitulo").removeClass("contenttextotituloM");
+
+                $(".logo1M").addClass("logo1");
+                $(".logo2M").addClass("logo2");
+                $(".logo1").removeClass("logo1M");
+                $(".logo2").removeClass("logo2M");
+
+			}
 		}
 
 		$(window).resize(function () {
-			//responsiveInicial();
+			relacion();
 		});
 
 
 		$(document).ready( function(){
+            relacion();
 
             $(".itemMenubl").hover(function () {
 
@@ -113,10 +139,6 @@
                 $(this).children("img.off").show();
 
             });
-
-
-
-
 
 		});
 	</script>
