@@ -816,6 +816,35 @@ App.utils.mapas = (function (parent, config,service) {
 
     }
 
+    //var ubigeosOrdenados=[];
+
+    var esPadre= function(ubigeoPadre,ubigeoHijo){
+        var tamPadre=ubigeoPadre.length;
+        var tamHijo=ubigeoHijo.length;
+        var esPadre=false;
+        if(ubigeoPadre=='00' && tamHijo==2 ) esPadre =true;
+        if(tamPadre==2 && tamHijo==4 && ubigeoHijo.substring(0,2)== ubigeoPadre) esPadre=true;
+        if(tamPadre==4 && tamHijo==6 && ubigeoHijo.substring(0,4)== ubigeoPadre) esPadre=true;
+        if(tamPadre==6 && tamHijo>6 && ubigeoHijo.substring(0,6)== ubigeoPadre) esPadre=true;
+        return esPadre;
+    }
+
+    var ordenarUbigeos=function (ubigeosDesordenados,ubigeosOrdenados,ubigeoPadre) {
+        var ubigeos= ubigeosDesordenados;
+        if(ubigeos.length>0)
+        {
+            ubigeos.forEach(function (ubigeo) {
+                if(ubigeo=="00" || esPadre(ubigeoPadre,ubigeo)){
+                    var indice = ubigeosDesordenados.indexOf(ubigeo);
+                    ubigeosDesordenados.splice(indice,1);
+                    ubigeosOrdenados.push(ubigeo);
+                    ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeo);
+                }
+            });
+            ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeos[0]);
+        }
+    }
+
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
 
         console.log("ubigeosDes>>>",ubigeosDes);
@@ -1053,7 +1082,6 @@ App.utils.mapas = (function (parent, config,service) {
             getAccesDirectMaps(function (data) {
                  data.forEach(function (map,index) {
                     var newImg = document.createElement("img");
-                    console.log(">>>> ", map.imagen);
                     newImg.setAttribute("src",map.imagen);
                     newImg.classList.add("overviewDiv");
                     newImg.setAttribute("id","map_"+map.id);
@@ -1062,7 +1090,6 @@ App.utils.mapas = (function (parent, config,service) {
                         var dataSelect2=[];
                         var el= new Object();
                         var children=[];
-                        console.log('map>>>',map);
                         map.hijos2.forEach(function (hijo) {
                             var child=new Object();
                             child.id=hijo.cod_territorio;
@@ -1075,8 +1102,6 @@ App.utils.mapas = (function (parent, config,service) {
                         dataSelect2.push(el);
                         ubigeosHijos=map.hijos;
                         seleccionarAccesoRapido(map.hijos,map.nivelHijo);
-
-
                         actualizarDatosComboUbigeo(dataSelect2,map.nivelHijo);
                         _this.historic_features[map.nivel].select_features=[map.cod_territorio.trim()];
                         actualizarTablasyGraficos([map.cod_territorio.trim()],[map.cod_territorio.trim()],map.nivel);
@@ -2211,6 +2236,7 @@ App.utils.mapas = (function (parent, config,service) {
         seleccionarUbigeosMapa: seleccionarUbigeosMapa,
         divMessageContentEmpty:divMessageContentEmpty,
         listMiniMapas:listMiniMapas,
+        ordenarUbigeos:ordenarUbigeos,
     }
 
 })(App.utils, AppConfig() ,App.service );
