@@ -33,6 +33,17 @@ function altosAutomaticos(){
 
 }
 
+/* Intro de la ayuda */
+function startIntro(){
+    intro = introJs();
+    intro.setOptions({
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'Salir',
+        doneLabel: 'Hecho'
+    });
+    intro.start();
+}
 
 
 /* Exportar graficos */
@@ -556,6 +567,9 @@ $(document).ready(function() {
 
 
 
+
+
+
     $(document).on('click','#contentPanel .headerToolMap > button', function() {
         var dataSelect= $(this).attr('data-select');
         $('#contentPanel .headerToolMap > button').removeClass('active');
@@ -801,5 +815,9 @@ $(document).ready(function() {
     $(".modalGeneral .modalCentro").click(function(e){
         e.stopPropagation();
     });
+
+
+    setTimeout(function(){ startIntro(); }, 2500);
+
 
 });
