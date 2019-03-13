@@ -951,7 +951,9 @@ div.contenedorVentana.ventanaCE  > section{
 
 
 
-
+.introjs-tooltiptext {
+    font-family: "Segoe UI", "sans-serif" !important;
+}
 
 
 
