@@ -203,7 +203,7 @@ App.utils.mapas = (function (parent, config,service) {
     var url_ccpp=undefined;
 
 
-
+    var ubigeosOrdenadosFinal=[];
 
 
     var symbolSombreado= {
@@ -822,39 +822,57 @@ App.utils.mapas = (function (parent, config,service) {
         var tamPadre=ubigeoPadre.length;
         var tamHijo=ubigeoHijo.length;
         var esPadre=false;
-        if(ubigeoPadre=='00' && tamHijo==2 ) esPadre =true;
+        if(ubigeoPadre=='00' && (ubigeoHijo!='00' && tamHijo==2) ) esPadre =true;
         if(tamPadre==2 && tamHijo==4 && ubigeoHijo.substring(0,2)== ubigeoPadre) esPadre=true;
         if(tamPadre==4 && tamHijo==6 && ubigeoHijo.substring(0,4)== ubigeoPadre) esPadre=true;
         if(tamPadre==6 && tamHijo>6 && ubigeoHijo.substring(0,6)== ubigeoPadre) esPadre=true;
         return esPadre;
     }
 
+
+
     var ordenarUbigeos=function (ubigeosDesordenados,ubigeosOrdenados,ubigeoPadre) {
+        var _this=parent.mapas;
         var ubigeos= ubigeosDesordenados;
+        var encontrado=false;
+        var indice =-1;
+
         if(ubigeos.length>0)
         {
             ubigeos.forEach(function (ubigeo) {
+
                 if(ubigeo=="00" || esPadre(ubigeoPadre,ubigeo)){
                     var indice = ubigeosDesordenados.indexOf(ubigeo);
-                    ubigeosDesordenados.splice(indice,1);
                     ubigeosOrdenados.push(ubigeo);
+                    ubigeosDesordenados.splice(indice,1);
+                    encontrado=true;
                     ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeo);
                 }
             });
-            ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeos[0]);
+
+            if(!(encontrado))
+            {
+                ubigeosOrdenados.push(ubigeos[0]);
+                ubigeosDesordenados.splice(0,1);
+                ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeos[0]);
+            }
         }
+        else{
+
+               _this.ubigeosOrdenadosFinal = ubigeosOrdenados;
+               console.log('_this.ubigeosOrdenadosFinal>>>', _this.ubigeosOrdenadosFinal);
+        }
+
     }
 
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
-
-        console.log("ubigeosDes>>>",ubigeosDes);
-        console.log("selectUbigeos>>>",selectUbigeos);
+        var _this=parent.mapas;
 
         if(ubigeosDes.indexOf('00')<0){ubigeosDes.unshift('00')}
 
+        ordenarUbigeos(ubigeosDes,[],"00");
 
-
-        var options= {'ubigeosOdenados':ubigeosDes,
+        var options= {'ubigeosOdenados':_this.ubigeosOrdenadosFinal,
                 'ubigeosSeleccionados':selectUbigeos,
                 'nivel': index,
             }
@@ -2237,6 +2255,7 @@ App.utils.mapas = (function (parent, config,service) {
         divMessageContentEmpty:divMessageContentEmpty,
         listMiniMapas:listMiniMapas,
         ordenarUbigeos:ordenarUbigeos,
+        ubigeosOrdenadosFinal: ubigeosOrdenadosFinal,
     }
 
 })(App.utils, AppConfig() ,App.service );
