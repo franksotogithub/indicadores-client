@@ -241,16 +241,17 @@ App.utils.mapas = (function (parent, config,service) {
             data.forEach(function (el,index) {
                 var accesoDirecto= new Object();
                 accesoDirecto.id= index+1;
-                accesoDirecto.ubigeo=el.ubigeo;
-                accesoDirecto.nombre=el.nombre;
+
+                accesoDirecto.cod_territorio=el.cod_territorio;
                 accesoDirecto.imagen= el.imagen;
                 accesoDirecto.nivel=el.nivel;
                 accesoDirecto.nivelHijo=el.nivelHijo;
                 accesoDirecto.hijos2=el.hijos;
                 accesoDirecto.hijos=[];
+                accesoDirecto.titulo=el.titulo;
 
                 el.hijos.forEach(function (hijo,index2) {
-                    accesoDirecto.hijos.push(hijo.ubigeo);
+                    accesoDirecto.hijos.push(hijo.cod_territorio);
                 });
 
 
@@ -529,13 +530,6 @@ App.utils.mapas = (function (parent, config,service) {
         else {
             var stringIndex=String(index);
         }
-
-
-
-
-
-
-
 
 
         var where=getDefinitionExpresion([ubigeo],index);
@@ -823,12 +817,19 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
+
+        console.log("ubigeosDes>>>",ubigeosDes);
+        console.log("selectUbigeos>>>",selectUbigeos);
+
         if(ubigeosDes.indexOf('00')<0){ubigeosDes.unshift('00')}
+
+
 
         var options= {'ubigeosOdenados':ubigeosDes,
                 'ubigeosSeleccionados':selectUbigeos,
                 'nivel': index,
             }
+
 
         App.mapasChangeEvent(options);
         /*service.mapas.ordenarListaUbigeosSeleccionados(ubigeosDes,function (ubigeosOrd) {
@@ -1061,22 +1062,25 @@ App.utils.mapas = (function (parent, config,service) {
                         var dataSelect2=[];
                         var el= new Object();
                         var children=[];
-
+                        console.log('map>>>',map);
                         map.hijos2.forEach(function (hijo) {
                             var child=new Object();
-                            child.id=hijo.ubigeo;
-                            child.text=hijo.nombre;
+                            child.id=hijo.cod_territorio;
+                            child.text=hijo.titulo;
                             children.push(child);
                         });
 
-                        el.text=map.nombre;
+                        el.text=map.titulo;
                         el.children=children;
                         dataSelect2.push(el);
                         ubigeosHijos=map.hijos;
                         seleccionarAccesoRapido(map.hijos,map.nivelHijo);
-                        actualizarDatosComboUbigeo(dataSelect2);
-                        _this.historic_features[map.nivel].select_features=[map.ubigeo];
-                        actualizarTablasyGraficos([map.ubigeo],[map.ubigeo],map.nivel);
+
+
+                        actualizarDatosComboUbigeo(dataSelect2,map.nivelHijo);
+                        _this.historic_features[map.nivel].select_features=[map.cod_territorio.trim()];
+                        actualizarTablasyGraficos([map.cod_territorio.trim()],[map.cod_territorio.trim()],map.nivel);
+
                     });
                  });
             });
@@ -1145,6 +1149,7 @@ App.utils.mapas = (function (parent, config,service) {
                 {
                     var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
                     identifyParams.layerIds = [i];
+                    _this.listCcpp=[];
                     _this.datosMap.divLegend.innerHTML=htmlLengenda;
                     layers_inicial.forEach(function (layer) {
                         layer.sublayers.forEach(function (sublayer) {
@@ -1156,6 +1161,7 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.layerBaseNacional.sublayers.forEach(function (sublayer) {
                         sublayer.visible=false;
                     });
+
                     _this.ccppLyr.visible=false;
                     _this.view_map.graphics.removeAll();
                 }
@@ -1477,7 +1483,7 @@ App.utils.mapas = (function (parent, config,service) {
                                     //if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
                                         //_this.select_ubigeos.push(grupo);
                                         //_this.listCcpp.push({ubigeo:ubigeo,grupo:grupo});
-                                        _this.view_map.graphics.add(graphic);
+                                    _this.view_map.graphics.add(graphic);
                                     //}
 
 
@@ -1530,6 +1536,7 @@ App.utils.mapas = (function (parent, config,service) {
                         var origen="cpv2017_v2";
                         _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
                         _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
+
 
                         if (opZoom)
                             zoomToLayer(_this.view_map,_this.historic_features[2].layer,definitionExpression);
@@ -1890,6 +1897,7 @@ App.utils.mapas = (function (parent, config,service) {
                     updateMap(def,2,false);
                     changeIndex(index);
                     selectedFeature(feature,event);
+                    updateMap(def,3,false);
                     actualizarComboUbigeo(_this.historic_features[2].select_features);
                     //console.log('feature>>',feature);
                 }
@@ -1955,13 +1963,13 @@ App.utils.mapas = (function (parent, config,service) {
 
                         }*/
                     },
+                    width:"flex",
                 });
             }
 
 
             _this.view_map.popup.on("trigger-action", function(event) {
-                actualizarComboUbigeo(_this.select_ubigeos);
-                //openFeature();
+                actualizarComboUbigeo(_this.select_ubigeos,1);
             });
 
             _this.view_map.when(function () {
