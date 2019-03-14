@@ -83,7 +83,8 @@ App.utils.mapas = (function (parent, config,service) {
         {0:{"placeholders":"Seleccione un Departamento"},
          1:{"placeholders":"Seleccione una Provincia"},
          2:{"placeholders":"Seleccione un Distrito"},
-         3:{"placeholders":"Seleccione una Centro Poblado"},
+         3:{"placeholders":"Seleccione un Centro Poblado"},
+         'origen':"cpv2017_v2"
         };
 
 
@@ -1216,6 +1217,8 @@ App.utils.mapas = (function (parent, config,service) {
                     });
                 }
 
+                /****/
+                selectAll.checked=false;
             }
 
 
@@ -1314,6 +1317,7 @@ App.utils.mapas = (function (parent, config,service) {
             var selectedFeature=function(feature){
 
                 wigdetSelectAll.style.display="block";
+
                 if (feature && _this.indexSubLayer<3){
                     var ubigeo=feature.attributes.CODIGO;
                     var nombre='';
@@ -1505,6 +1509,8 @@ App.utils.mapas = (function (parent, config,service) {
 
                         console.log('where select all features>>>',where);
 
+                        where=where+ " and origen='"+VALORES_STATIC['origen']+"' and poblacion>0";
+
                         getFeaturesUbigeos(where,i,function (features) {
                             features.forEach(function (feature) {
                                     console.log('feature>>>',feature);
@@ -1576,9 +1582,9 @@ App.utils.mapas = (function (parent, config,service) {
                         }
 
                     else {
-                        var origen="cpv2017_v2";
-                        _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
-                        _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
+
+                        _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+VALORES_STATIC['origen']+"' and poblacion>0";
+                        _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+VALORES_STATIC['origen']+"' and poblacion>0";
 
 
                         if (opZoom)
@@ -1833,8 +1839,8 @@ App.utils.mapas = (function (parent, config,service) {
                 var data = e.params.data;
                 var codigo=data.id;
                 var where=" CODIGO="+codigo;
-                var origen='cpv2017_v2';
-                (_this.indexSubLayer==3)?where=" CODIGO='"+codigo+"' and origen='"+origen+"'": where= " CODIGO="+codigo;
+
+                (_this.indexSubLayer==3)?where=" CODIGO='"+codigo+ "' and origen='"+VALORES_STATIC['origen']+"' and poblacion>0": where= " CODIGO="+codigo;
 
                 getFeaturesUbigeos(where,_this.indexSubLayer,function (features) {
                     features.forEach(function (feature) {
@@ -1918,7 +1924,7 @@ App.utils.mapas = (function (parent, config,service) {
                 if (index<3){
                     changeIndex(index);
                     selectedFeature(feature,event);
-                    actualizarComboUbigeo(_this.select_ubigeos);
+                    actualizarComboUbigeo(_this.select_ubigeos,1);
                     //openFeature();
                 }
 
@@ -1964,7 +1970,7 @@ App.utils.mapas = (function (parent, config,service) {
                         var index=parseInt(Response.index)-2;
                         var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(codigo);
                         var origen='cpv2017_v2';
-                        (index==3)?where=" CODIGO='"+codigo+"' and origen='"+origen+"'": where= " CODIGO="+codigo;
+                        (index==3)?where=" CODIGO='"+codigo+ "' and origen='"+VALORES_STATIC['origen']+"' and poblacion>0": where= " CODIGO="+codigo;
 
                         if(indiceUbigeoEncontrado<0){
 
