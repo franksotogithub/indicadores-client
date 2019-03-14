@@ -564,6 +564,8 @@ App.utils.mapas = (function (parent, config,service) {
             legendaMiniMapa.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[stringIndex]);
 
 
+
+
             crearMinimapa(stringIndex,where,idMiniMap,tooltip);
             _this.cant_mini_maps++;
         }
@@ -791,7 +793,11 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var crearLegenda=function(data){
-        var html=
+
+        var html='';
+
+        if (data){
+            html=
             '<div class="esri-legend__service">'+
             '<div class="esri-legend__service-label">'+data.title+'</div>'+
             '<div class="esri-legend__layer">'+
@@ -813,6 +819,8 @@ App.utils.mapas = (function (parent, config,service) {
             '</div>'+
             '</div>'+
             '</div>';
+        }
+
         return html;
 
     }
@@ -1194,6 +1202,7 @@ App.utils.mapas = (function (parent, config,service) {
                     var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
                     identifyParams.layerIds = [i];
                     _this.listCcpp=[];
+
                     _this.datosMap.divLegend.innerHTML=htmlLengenda;
                     layers_inicial.forEach(function (layer) {
                         layer.sublayers.forEach(function (sublayer) {
@@ -1244,12 +1253,7 @@ App.utils.mapas = (function (parent, config,service) {
                    });
                 }
 
-                else{
 
-                    //console.log('featurePoint>>>',featurePoint)
-                    /*view.center=featurePoint.geometry.point;
-                    view.zoom=view.zoom+2;*/
-                }
             };
 
 
@@ -1817,13 +1821,17 @@ App.utils.mapas = (function (parent, config,service) {
 
 
             $('.mostrarListaMapa').on('click', 'div',function () {
+                //var index=parseInt($(this).attr('index'));
                 var index=parseInt($(this).attr('index'));
                 seleccionarVista(index);
 
                 if(index>0)
                     $("#div-select-ubigeo").css("visibility","hidden");
-                else
+                else{
+                    console.log("index>>",index);
                     $("#div-select-ubigeo").css("visibility","visible");
+                }
+
 
             });
 
@@ -2153,7 +2161,9 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.layerBack.sublayers.items[j].renderer=parent.renderBack();
             });
             _this.layer.title= _this.datosMap.optionsSublayers[0].title;
-            _this.datosMap.divLegend.innerHTML=htmlLengenda;
+
+            if(i<3){_this.datosMap.divLegend.innerHTML=htmlLengenda;}
+            else if(i==3){ _this.datosMap.divLegend.innerHTML= crearLegenda(optionsSublayers[2]);}
 
             var indexMinimap=i;
             if(indexMinimap<2){indexMinimap++;}
@@ -2163,7 +2173,12 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             var legend=document.getElementById("legendaMiniMap");
-            legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap]);
+
+            if(indexMinimap<3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap]);}
+            else if(indexMinimap==3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[2]);}
+
+
+
         });
     };
 
@@ -2179,6 +2194,8 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var requireEvents = function () {
+
+        console.log('requireEvents>>>',codMap,codTematico,url,titulo);
         cambiarMapa(codMap,codTematico,url,titulo);
     };
 
