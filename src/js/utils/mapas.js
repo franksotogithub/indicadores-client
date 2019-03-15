@@ -83,7 +83,8 @@ App.utils.mapas = (function (parent, config,service) {
         {0:{"placeholders":"Seleccione un Departamento"},
          1:{"placeholders":"Seleccione una Provincia"},
          2:{"placeholders":"Seleccione un Distrito"},
-         3:{"placeholders":"Seleccione una Centro Poblado"},
+         3:{"placeholders":"Seleccione un Centro Poblado"},
+         'origen':"cpv2017_v2"
         };
 
 
@@ -203,7 +204,7 @@ App.utils.mapas = (function (parent, config,service) {
     var url_ccpp=undefined;
 
 
-
+    var ubigeosOrdenadosFinal=[];
 
 
     var symbolSombreado= {
@@ -563,6 +564,8 @@ App.utils.mapas = (function (parent, config,service) {
             legendaMiniMapa.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[stringIndex]);
 
 
+
+
             crearMinimapa(stringIndex,where,idMiniMap,tooltip);
             _this.cant_mini_maps++;
         }
@@ -790,7 +793,11 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var crearLegenda=function(data){
-        var html=
+
+        var html='';
+
+        if (data){
+            html=
             '<div class="esri-legend__service">'+
             '<div class="esri-legend__service-label">'+data.title+'</div>'+
             '<div class="esri-legend__layer">'+
@@ -812,20 +819,69 @@ App.utils.mapas = (function (parent, config,service) {
             '</div>'+
             '</div>'+
             '</div>';
+        }
+
         return html;
 
     }
 
-    var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
+    //var ubigeosOrdenados=[];
 
-        console.log("ubigeosDes>>>",ubigeosDes);
-        console.log("selectUbigeos>>>",selectUbigeos);
+    var esPadre= function(ubigeoPadre,ubigeoHijo){
+        var tamPadre=ubigeoPadre.length;
+        var tamHijo=ubigeoHijo.length;
+        var esPadre=false;
+        if(ubigeoPadre=='00' && (ubigeoHijo!='00' && tamHijo==2) ) esPadre =true;
+        if(tamPadre==2 && tamHijo==4 && ubigeoHijo.substring(0,2)== ubigeoPadre) esPadre=true;
+        if(tamPadre==4 && tamHijo==6 && ubigeoHijo.substring(0,4)== ubigeoPadre) esPadre=true;
+        if(tamPadre==6 && tamHijo>6 && ubigeoHijo.substring(0,6)== ubigeoPadre) esPadre=true;
+        return esPadre;
+    }
+
+
+
+    var ordenarUbigeos=function (ubigeosDesordenados,ubigeosOrdenados,ubigeoPadre) {
+        var _this=parent.mapas;
+        var ubigeos= ubigeosDesordenados;
+        var encontrado=false;
+        var indice =-1;
+
+        if(ubigeos.length>0)
+        {
+            ubigeos.forEach(function (ubigeo) {
+
+                if(ubigeo=="00" || esPadre(ubigeoPadre,ubigeo)){
+                    var indice = ubigeosDesordenados.indexOf(ubigeo);
+                    ubigeosOrdenados.push(ubigeo);
+                    ubigeosDesordenados.splice(indice,1);
+                    encontrado=true;
+                    ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeo);
+                }
+            });
+
+            if(!(encontrado))
+            {
+                ubigeosOrdenados.push(ubigeos[0]);
+                ubigeosDesordenados.splice(0,1);
+                ordenarUbigeos(ubigeosDesordenados,ubigeosOrdenados,ubigeos[0]);
+            }
+        }
+        else{
+
+               _this.ubigeosOrdenadosFinal = ubigeosOrdenados;
+               console.log('_this.ubigeosOrdenadosFinal>>>', _this.ubigeosOrdenadosFinal);
+        }
+
+    }
+
+    var actualizarTablasyGraficos = function(ubigeosDes,selectUbigeos,index){
+        var _this=parent.mapas;
 
         if(ubigeosDes.indexOf('00')<0){ubigeosDes.unshift('00')}
 
+        ordenarUbigeos(ubigeosDes,[],"00");
 
-
-        var options= {'ubigeosOdenados':ubigeosDes,
+        var options= {'ubigeosOdenados':_this.ubigeosOrdenadosFinal,
                 'ubigeosSeleccionados':selectUbigeos,
                 'nivel': index,
             }
@@ -1053,7 +1109,6 @@ App.utils.mapas = (function (parent, config,service) {
             getAccesDirectMaps(function (data) {
                  data.forEach(function (map,index) {
                     var newImg = document.createElement("img");
-                    console.log(">>>> ", map.imagen);
                     newImg.setAttribute("src",map.imagen);
                     newImg.classList.add("overviewDiv");
                     newImg.setAttribute("id","map_"+map.id);
@@ -1062,7 +1117,6 @@ App.utils.mapas = (function (parent, config,service) {
                         var dataSelect2=[];
                         var el= new Object();
                         var children=[];
-                        console.log('map>>>',map);
                         map.hijos2.forEach(function (hijo) {
                             var child=new Object();
                             child.id=hijo.cod_territorio;
@@ -1075,8 +1129,6 @@ App.utils.mapas = (function (parent, config,service) {
                         dataSelect2.push(el);
                         ubigeosHijos=map.hijos;
                         seleccionarAccesoRapido(map.hijos,map.nivelHijo);
-
-
                         actualizarDatosComboUbigeo(dataSelect2,map.nivelHijo);
                         _this.historic_features[map.nivel].select_features=[map.cod_territorio.trim()];
                         actualizarTablasyGraficos([map.cod_territorio.trim()],[map.cod_territorio.trim()],map.nivel);
@@ -1150,6 +1202,7 @@ App.utils.mapas = (function (parent, config,service) {
                     var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
                     identifyParams.layerIds = [i];
                     _this.listCcpp=[];
+
                     _this.datosMap.divLegend.innerHTML=htmlLengenda;
                     layers_inicial.forEach(function (layer) {
                         layer.sublayers.forEach(function (sublayer) {
@@ -1173,6 +1226,8 @@ App.utils.mapas = (function (parent, config,service) {
                     });
                 }
 
+                /****/
+                selectAll.checked=false;
             }
 
 
@@ -1198,12 +1253,7 @@ App.utils.mapas = (function (parent, config,service) {
                    });
                 }
 
-                else{
 
-                    //console.log('featurePoint>>>',featurePoint)
-                    /*view.center=featurePoint.geometry.point;
-                    view.zoom=view.zoom+2;*/
-                }
             };
 
 
@@ -1271,6 +1321,7 @@ App.utils.mapas = (function (parent, config,service) {
             var selectedFeature=function(feature){
 
                 wigdetSelectAll.style.display="block";
+
                 if (feature && _this.indexSubLayer<3){
                     var ubigeo=feature.attributes.CODIGO;
                     var nombre='';
@@ -1462,6 +1513,8 @@ App.utils.mapas = (function (parent, config,service) {
 
                         console.log('where select all features>>>',where);
 
+                        where=where+ " and origen='"+VALORES_STATIC['origen']+"' and poblacion>0";
+
                         getFeaturesUbigeos(where,i,function (features) {
                             features.forEach(function (feature) {
                                     console.log('feature>>>',feature);
@@ -1533,9 +1586,9 @@ App.utils.mapas = (function (parent, config,service) {
                         }
 
                     else {
-                        var origen="cpv2017_v2";
-                        _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
-                        _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+origen+"' and poblacion>0";
+
+                        _this.layerBaseNacional.findSublayerById(0).definitionExpression= definitionExpression + " and origen='"+VALORES_STATIC['origen']+"' and poblacion>0";
+                        _this.ccppLyr.definitionExpression= definitionExpression + " and origen='"+VALORES_STATIC['origen']+"' and poblacion>0";
 
 
                         if (opZoom)
@@ -1768,13 +1821,17 @@ App.utils.mapas = (function (parent, config,service) {
 
 
             $('.mostrarListaMapa').on('click', 'div',function () {
+                //var index=parseInt($(this).attr('index'));
                 var index=parseInt($(this).attr('index'));
                 seleccionarVista(index);
 
                 if(index>0)
                     $("#div-select-ubigeo").css("visibility","hidden");
-                else
+                else{
+                    console.log("index>>",index);
                     $("#div-select-ubigeo").css("visibility","visible");
+                }
+
 
             });
 
@@ -1790,8 +1847,8 @@ App.utils.mapas = (function (parent, config,service) {
                 var data = e.params.data;
                 var codigo=data.id;
                 var where=" CODIGO="+codigo;
-                var origen='cpv2017_v2';
-                (_this.indexSubLayer==3)?where=" CODIGO='"+codigo+"' and origen='"+origen+"'": where= " CODIGO="+codigo;
+
+                (_this.indexSubLayer==3)?where=" CODIGO='"+codigo+ "' and origen='"+VALORES_STATIC['origen']+"' and poblacion>0": where= " CODIGO="+codigo;
 
                 getFeaturesUbigeos(where,_this.indexSubLayer,function (features) {
                     features.forEach(function (feature) {
@@ -1875,7 +1932,7 @@ App.utils.mapas = (function (parent, config,service) {
                 if (index<3){
                     changeIndex(index);
                     selectedFeature(feature,event);
-                    actualizarComboUbigeo(_this.select_ubigeos);
+                    actualizarComboUbigeo(_this.select_ubigeos,1);
                     //openFeature();
                 }
 
@@ -1921,7 +1978,7 @@ App.utils.mapas = (function (parent, config,service) {
                         var index=parseInt(Response.index)-2;
                         var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(codigo);
                         var origen='cpv2017_v2';
-                        (index==3)?where=" CODIGO='"+codigo+"' and origen='"+origen+"'": where= " CODIGO="+codigo;
+                        (index==3)?where=" CODIGO='"+codigo+ "' and origen='"+VALORES_STATIC['origen']+"' and poblacion>0": where= " CODIGO="+codigo;
 
                         if(indiceUbigeoEncontrado<0){
 
@@ -2104,7 +2161,9 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.layerBack.sublayers.items[j].renderer=parent.renderBack();
             });
             _this.layer.title= _this.datosMap.optionsSublayers[0].title;
-            _this.datosMap.divLegend.innerHTML=htmlLengenda;
+
+            if(i<3){_this.datosMap.divLegend.innerHTML=htmlLengenda;}
+            else if(i==3){ _this.datosMap.divLegend.innerHTML= crearLegenda(optionsSublayers[2]);}
 
             var indexMinimap=i;
             if(indexMinimap<2){indexMinimap++;}
@@ -2114,7 +2173,12 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             var legend=document.getElementById("legendaMiniMap");
-            legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap]);
+
+            if(indexMinimap<3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap]);}
+            else if(indexMinimap==3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[2]);}
+
+
+
         });
     };
 
@@ -2130,6 +2194,8 @@ App.utils.mapas = (function (parent, config,service) {
     }
 
     var requireEvents = function () {
+
+        console.log('requireEvents>>>',codMap,codTematico,url,titulo);
         cambiarMapa(codMap,codTematico,url,titulo);
     };
 
@@ -2211,6 +2277,8 @@ App.utils.mapas = (function (parent, config,service) {
         seleccionarUbigeosMapa: seleccionarUbigeosMapa,
         divMessageContentEmpty:divMessageContentEmpty,
         listMiniMapas:listMiniMapas,
+        ordenarUbigeos:ordenarUbigeos,
+        ubigeosOrdenadosFinal: ubigeosOrdenadosFinal,
     }
 
 })(App.utils, AppConfig() ,App.service );
