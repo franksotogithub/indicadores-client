@@ -7,6 +7,11 @@
 
                 $("#tabsCategoria > button").hide();
                 $("#tabsCategoria > button[data-categoria='P01']").show();
+
+                if($("#tabsCategoria > button[data-categoria='P01']").hasClass("btnTabTabla-activo")){}else{
+                    $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
+                    $("#tabsCategoria > button[data-categoria='P01']").addClass("btnTabTabla-activo");
+                }
             }else {
                 $("#tabsCategoria > button").show();
             }
