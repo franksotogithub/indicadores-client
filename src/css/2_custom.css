@@ -152,8 +152,8 @@ button.ubigeoGenerado:active{
 }
 
 td.popover:hover {
-    color: white !important;
-    background-color: #4a6289 !important;
+    /*color: white !important;
+    background-color: #4a6289 !important;*/
     cursor: pointer;
 }
 
@@ -958,6 +958,9 @@ div.contenedorVentana.ventanaCE  > section{
 
 
 
+.hoverFila , .hoverFila > td {
+    background-color: #ffebb7 !important;
+}
 
 
 

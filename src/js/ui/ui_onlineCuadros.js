@@ -820,4 +820,31 @@ $(document).ready(function() {
     setTimeout(function(){ startIntro(); }, 2500);
 
 
+    $("html").on('mouseenter', '#tblindicadores > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().addClass("hoverFila");
+        $(".DTFC_Cloned > tbody tr:eq("+indice+")").addClass("hoverFila");
+    });
+    $("html").on('mouseleave', '#tblindicadores > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().removeClass("hoverFila");
+        $(".DTFC_Cloned > tbody tr:eq("+indice+")").removeClass("hoverFila");
+    });
+
+
+
+    $("html").on('mouseenter', '.DTFC_Cloned > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().addClass("hoverFila");
+        $("#tblindicadores > tbody tr:eq("+indice+")").addClass("hoverFila");
+    });
+    $("html").on('mouseleave', '.DTFC_Cloned > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().removeClass("hoverFila");
+        $("#tblindicadores > tbody tr:eq("+indice+")").removeClass("hoverFila");
+    });
+
+
+
+
 });
