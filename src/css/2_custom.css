@@ -26,9 +26,11 @@ body {
     top: 100%;
     left: 50%;
     margin: 0 auto;
-    left:-33px;
+    left: 50%;
     font-family: "signikaregular";
     font-size: 13px;
+    transform: translate(-50%,0%);
+    pointer-events: none;
 }
 
 .tooltip .tooltiptext::after {
@@ -47,9 +49,6 @@ body {
 
 }
 
-.tooltip.ayudaInformacion .tooltiptext, .tooltip.miniTop .tooltiptext  {
-    left:0px;
-}
 
 
 /* margenes */

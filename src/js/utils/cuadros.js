@@ -267,7 +267,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
                     },
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('millones');
+                        $(td).addClass('millones tooltip');
+                        $(td).attr('data-title','Hola');
                     }
                 },
                 {

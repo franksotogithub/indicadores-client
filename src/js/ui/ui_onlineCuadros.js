@@ -639,7 +639,18 @@ $(document).ready(function() {
 
     });
 
-    $(".tooltip").hover(function () {
+    $("html ").on( "mouseover", ".tooltip", function () {
+            var textTool = $(this).text();
+            var titleTool = $(this).attr("data-title");
+
+            $(this).html(  textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
+        });
+
+    $("html ").on( "mouseout", ".tooltip", function () {
+        $(this).find( "span" ).remove();
+    });
+
+   /* $(".tooltip").hover(function () {
         var textTool = $(this).text();
         var titleTool = $(this).attr("data-title");
 
@@ -649,7 +660,7 @@ $(document).ready(function() {
     }, function () {
         $(this).find( "span" ).remove();
 
-    });
+    });/*
 
 
     /*$(document).on('mouseover','.popover', function (e) {
