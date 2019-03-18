@@ -39,7 +39,7 @@ function startIntro(){
     intro.setOptions({
         nextLabel: 'Siguiente',
         prevLabel: 'Anterior',
-        skipLabel: 'Salir',
+        skipLabel: 'Saltar',
         doneLabel: 'Hecho'
     });
     intro.start();
@@ -827,8 +827,16 @@ $(document).ready(function() {
         e.stopPropagation();
     });
 
+    /* olcultando  Metadatos para movil */
+    var anchoWIndowT = $(window).width();
+    if(anchoWIndowT > 1279){
+        setTimeout(function(){ startIntro(); }, 2500);
+    }
 
-    setTimeout(function(){ startIntro(); }, 2500);
+
+
+
+
 
 
     $("html").on('mouseenter', '#tblindicadores > tbody > tr > td', function() {
