@@ -1,14 +1,30 @@
 (function (service, utils) {
     $(document).ready(function (e) {
 
+        $("html #comboPonderador").on("change",function(){
+            var valor = this.value;
+            if(valor == "2"){
+
+                $("#tabsCategoria > button").hide();
+                $("#tabsCategoria > button[data-categoria='P01']").show();
+
+                if($("#tabsCategoria > button[data-categoria='P01']").hasClass("btnTabTabla-activo")){}else{
+                    $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
+                    $("#tabsCategoria > button[data-categoria='P01']").addClass("btnTabTabla-activo");
+                }
+            }else {
+                $("#tabsCategoria > button").show();
+            }
+            });
+
         $("#tabsCategoria").on('click', '.tablaTabButton', function (e) {
             var categoria = $.trim($(this).attr('data-categoria'));
             App.categoriaChangeEvent(categoria);
-            if( categoria === "P01" || categoria === "P02" || categoria === "P03" ){
+            /*if( categoria === "P01" || categoria === "P02" || categoria === "P03" ){
                 $(".selectCuadros").show();
             }else {
                 $(".selectCuadros").hide();
-            }
+            }*/
         });
 
         $("#comboCategoria").on('click','li',function (e) {

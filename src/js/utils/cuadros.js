@@ -267,7 +267,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
                     },
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('millones');
+                        $(td).addClass('millones tooltip');
+                        $(td).attr('data-title','Hola');
                     }
                 },
                 {
@@ -306,17 +307,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
 
-        if( cuadrosData.categoria === "P01" || cuadrosData.categoria === "P02" || cuadrosData.categoria === "P03" ){
-            totalVentana = (tam_ventana1 - 310);
-        }else {
-            totalVentana = (tam_ventana1 - 280);
+        totalVentana = (tam_ventana1 - 310);
 
-        }
-        /*if(tam_ventana1 <= 800){
-            totalVentana = (tam_ventana1 - 310);
-        } else{
-            totalVentana=(tam_ventana1 - 310);
-        }*/
+
+
         if (px == 'px') {
             totalVentana = totalVentana.toString() + 'px';
         }

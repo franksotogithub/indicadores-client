@@ -52,17 +52,18 @@
         </div>
         <button type="button" class="buttonFlotanteBusqueda ocultaBus" title="Buscar por indicador"><span class="dripicons-search"></span> </button>
     </div>
-    <div class="tablaTabs" id="tabsCategoria" data-step="3"
-         data-intro="Aqui encontraras la información agrupada en categorias, puedes navegar entre ellas y ver la información."></div>
-
     <div class="contenedor_indicadores">
         <div class="selectCuadros" style="">
             <label> Ponderador de población:</label>
-            <select>
-                <option> Población Censada</option>
-                <option> Población Total</option>
+            <select id="comboPonderador">
+                <option selected value="1"> Población Censada</option>
+                <option value="2"> Población Total</option>
             </select>
         </div>
+    <div class="tablaTabs" id="tabsCategoria" data-step="3"
+         data-intro="Aqui encontraras la información agrupada en categorias, puedes navegar entre ellas y ver la información."></div>
+
+
     <table id="tblindicadores" style="width:100%">
         <thead class="theadindicadores"></thead>
         <tbody></tbody>

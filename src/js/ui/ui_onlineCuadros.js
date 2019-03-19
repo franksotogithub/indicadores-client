@@ -33,17 +33,51 @@ function altosAutomaticos(){
 
 }
 
-/* Intro de la ayuda */
+/* Intro de la ayuda PC */
 function startIntro(){
     intro = introJs();
     intro.setOptions({
         nextLabel: 'Siguiente',
         prevLabel: 'Anterior',
-        skipLabel: 'Salir',
+        skipLabel: 'Saltar',
         doneLabel: 'Hecho'
     });
     intro.start();
 }
+
+/* Intro de la ayuda Movil */
+
+function startIntroMovil(){
+    var intro = introJs();
+    intro.setOptions({
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'Saltar',
+        doneLabel: 'Hecho',
+        steps: [
+            {
+                intro: "Esta es una guia rápida, el mapa que ves debajo es un mapa interactivo puedes navegar en el con dos toques, al hacerlo la información mostrada sera del lugar del peru donde hayas ingresado en el mapa.  "
+            },
+            {
+                element: document.querySelectorAll('.botonSim')[0],
+                intro: "Al hacer un toque aqui, veras un cuadro de busqueda y podras buscar por departamento ó hasta un centro poblado, esto es como entrar por el mapa de manera mas sencilla."
+            },
+            {
+                element: document.querySelectorAll('.contentComboTitulos')[0],
+                intro: "La informacion  a mostrar esta dividida en categorias, al cambiar la categoria veras la información con respecto a la categoria seleccionada",
+                position: 'right'
+            },
+            {
+                element: document.querySelectorAll('.blockNavegacion')[0],
+                intro: "Estos botones te permiten ver las secciones: Mapa, Gráficos e Indicadores respectivamente",
+                position: 'right'
+            }
+        ]
+    });
+    intro.start();
+}
+
+
 
 
 /* Exportar graficos */
@@ -637,9 +671,27 @@ $(document).ready(function() {
         $(this).siblings("button").removeClass("btnTabTabla-activo");
         $(this).addClass("btnTabTabla-activo");
 
+        var mapa = $(this).attr("data-codevent");
+        if(mapa === "mapas"){
+            $("button.botonNavegar > span").css("background-image","url(../img/icoperuBn.png)");
+        }else{
+            $("button.botonNavegar > span").css("background-image","url(../img/icoperuBn2.png)");
+        }
+
     });
 
-    $(".tooltip").hover(function () {
+    $("html ").on( "mouseover", ".tooltip , .tooltipLeft", function () {
+            var textTool = $(this).text();
+            var titleTool = $(this).attr("data-title");
+
+            $(this).html(  textTool + "<span class='tooltiptext'>" + titleTool + "</span>");
+        });
+
+    $("html ").on( "mouseout", ".tooltip , .tooltipLeft", function () {
+        $(this).find( "span" ).remove();
+    });
+
+   /* $(".tooltip").hover(function () {
         var textTool = $(this).text();
         var titleTool = $(this).attr("data-title");
 
@@ -649,7 +701,7 @@ $(document).ready(function() {
     }, function () {
         $(this).find( "span" ).remove();
 
-    });
+    });/*
 
 
     /*$(document).on('mouseover','.popover', function (e) {
@@ -804,6 +856,11 @@ $(document).ready(function() {
     $(document).on('click','td.popover', function () {
         var _this = $(this);
         var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length;
+        var anchoVen = $(window).width();
+        if( anchoVen < 1280 ){
+            count = 1;
+        }
+
         if(count ==1){
             $(".modalGeneral").show();
         }
@@ -816,8 +873,56 @@ $(document).ready(function() {
         e.stopPropagation();
     });
 
+    /* olcultando  Metadatos para movil */
+    var anchoWIndowT = $(window).width();
+    var altoWIndowT = $(window).height();
+    if(anchoWIndowT > 1279){
+        setTimeout(function(){ startIntro(); }, 2500);
+    }else{
+        setTimeout(function(){ startIntroMovil(); }, 3000);
 
-    setTimeout(function(){ startIntro(); }, 2500);
 
+        /* Ocupar 100% de alto en Graficos  */
+
+        $(".contGraficoMetadatoRespon").css("height",(altoWIndowT - 114) + "px").css("max-height",(altoWIndowT - 114) + "px");
+
+    }
+
+
+
+
+
+
+
+
+
+    $("html").on('mouseenter', '#tblindicadores > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().addClass("hoverFila");
+        $(".DTFC_Cloned > tbody tr:eq("+indice+")").addClass("hoverFila");
+    });
+    $("html").on('mouseleave', '#tblindicadores > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().removeClass("hoverFila");
+        $(".DTFC_Cloned > tbody tr:eq("+indice+")").removeClass("hoverFila");
+    });
+
+
+
+    $("html").on('mouseenter', '.DTFC_Cloned > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().addClass("hoverFila");
+        $("#tblindicadores > tbody tr:eq("+indice+")").addClass("hoverFila");
+    });
+    $("html").on('mouseleave', '.DTFC_Cloned > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $(this).parent().removeClass("hoverFila");
+        $("#tblindicadores > tbody tr:eq("+indice+")").removeClass("hoverFila");
+    });
+
+
+    $("body").on("click", ".ocultarBuscadorUbigeo2", function () {
+        $(this).closest(".contentBuscadorUbigeoResponsive").hide();
+    });
 
 });

@@ -7,7 +7,7 @@ body {
 }
 
 /* Tooltip DMK */
-.tooltip {
+.tooltip, .tooltipLeft {
     position: relative;
 
 }
@@ -24,11 +24,12 @@ body {
     position: absolute;
     z-index: 1;
     top: 100%;
-    left: 50%;
     margin: 0 auto;
-    left:-33px;
+    left: 50%;
     font-family: "signikaregular";
     font-size: 13px;
+    transform: translate(-50%,0%);
+    pointer-events: none;
 }
 
 .tooltip .tooltiptext::after {
@@ -42,14 +43,60 @@ body {
     border-color: transparent transparent black transparent;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltiptext , .tooltipLeft:hover .tooltiptext {
     visibility: visible;
 
 }
 
-.tooltip.ayudaInformacion .tooltiptext, .tooltip.miniTop .tooltiptext  {
-    left:0px;
+/* TootlTip Left */
+.tooltipLeft .tooltiptext{
+    visibility: hidden;
+    max-width: 120px;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    /* left: 50%; */
+    margin: 0 auto;
+    left: 0;
+    font-family: "signikaregular";
+    font-size: 13px;
+    transform: translate(-100%,0%);
+    pointer-events: none;
 }
+
+.tooltipLeft .tooltiptext::after {
+    content: "";
+    position: absolute;
+    left: 100%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+    top: 5px;
+}
+
+
+.cerrarModalX {
+    position: absolute;
+    right: -10px;
+    pointer-events: none;
+    background: black;
+    padding: 10px 14px;
+    border-radius: 50%;
+    z-index: 99;
+    color: white;
+    border: white solid 4px;
+    font-family: segoe ui;
+    font-weight: bold;
+    box-shadow: black 0 0 9px 1px;
+    top: -46px;
+}
+
 
 
 /* margenes */
@@ -152,8 +199,8 @@ button.ubigeoGenerado:active{
 }
 
 td.popover:hover {
-    color: white !important;
-    background-color: #4a6289 !important;
+    /*color: white !important;
+    background-color: #4a6289 !important;*/
     cursor: pointer;
 }
 
@@ -780,9 +827,9 @@ td.ajustarAContenido {
     position: absolute;
     z-index: 99;
     padding: 10px;
-    left: 0;
-    top: 39px;
-    background-color:#e6e6e6 ;
+    left: -4px;
+    top: -9px;
+    background-color: #e6e6e6;
 }
 
 
@@ -958,6 +1005,9 @@ div.contenedorVentana.ventanaCE  > section{
 
 
 
+.hoverFila , .hoverFila > td {
+    background-color: #ffebb7 !important;
+}
 
 
 
@@ -1252,7 +1302,7 @@ a.LinkModalCE{
     border-radius: 8px;
     min-height:40%;
     max-height: 90%;
-    overflow: auto;
+    /*overflow: auto;*/
     position: absolute;
     left: 50%;
     top: 50%;
@@ -1326,6 +1376,9 @@ a.LinkModalCE{
 
  */
 
+#legendMap {
+    font-family: signikaregular;
+}
 
     .menu-all-left {
         background-color: transparent;
@@ -1349,6 +1402,18 @@ a.LinkModalCE{
         padding: 1px 16px !important;
         margin-right: 6px;
         margin-left: 3px;
+    }
+
+    .mapapequeBnR {
+        background-image: url(../img/icoperuBn.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: auto 80%;
+        padding: 1px 16px !important;
+        margin-right: 6px;
+        margin-left: 3px;
+        font-size: 24px;
+        display: inline;
     }
 
 
