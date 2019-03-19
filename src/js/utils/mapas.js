@@ -945,12 +945,12 @@ App.utils.mapas = (function (parent, config,service) {
             var symbolMarker = {
               type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
               style: "circle",
-              color: [ 255, 255, 0,0.5 ],
-              size: "12px",  // pixels
+              color: [ 255, 255, 0,0 ],
+              size: "10px",  // pixels
 
               outline: {  // autocasts as new SimpleLineSymbol()
-                color: [ 255, 255, 0, 1 ],
-                width: 1  // points
+                color:"#fcee21" ,
+                width: 2  // points
               }
             };
 
@@ -993,12 +993,49 @@ App.utils.mapas = (function (parent, config,service) {
                 sublayers: _this.datosMap.renderOptionsSublayersBack,
 
             });
+            var rendererCCpp= {
+                type:"class-breaks",
+                field:"POBLACION",
+                classBreakInfos:[{
+                    minValue: 0,
+                    maxValue: 150,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"circle",
+                        color:"#f15a24",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    }
+
+                },{
+                    minValue: 150,
+                    maxValue: 999999,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"circle",
+                        color:"#8fff26",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    }
+
+                }]
+            };
+
 
             _this.layerBaseNacional = new MapImageLayer({
                 url: _this.datosMap.urlMapBaseNacional,
                 outFields:["*"],
                 sublayers: [{ id: 0,
                             visible : false,
+                            //renderer:rendererCCpp
                 }],
             });
 
@@ -1009,6 +1046,7 @@ App.utils.mapas = (function (parent, config,service) {
                 outFields:["*"],
                 visible : true,
                 labelsVisible :true,
+                renderer:rendererCCpp,
             });
 
 
