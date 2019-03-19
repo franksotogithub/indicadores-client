@@ -155,6 +155,7 @@ $(document).ready(function () {
                 buscador.toggle();
             }else{
                 buscador.toggle();
+                $("#buscador-ubigeo2").focus();
             }
 
         }else{
