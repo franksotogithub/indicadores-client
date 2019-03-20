@@ -2261,6 +2261,8 @@ App.utils.mapas = (function (parent, config,service) {
 
         if (options.vista == 'indicadores') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
+        }else if (options.vista == 'pobreza') {
+            list_mapas=[{div:'viewDiv',cod_mapa:'P07'}];
         }
 
         list_mapas.forEach(

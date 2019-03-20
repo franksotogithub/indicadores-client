@@ -43,6 +43,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
+        _crearSelectPonderador(appData.ponderadores);
         _this.crearTablaUigeos(['00'], []);
         //_this.crearTablaUigeos(['01','02','03','04','05','06','07','08'], []);
     };
@@ -60,7 +61,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             if (dato.esActivo) {
                 clase = ' btnTabTabla-activo';
             }
-            return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'">'+dato.titulo+'</button>';
+            var style = '';
+            $.each(dato.style, function (k,v) {
+                style += ' style="'+k+':'+v+'"'
+            });
+            return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'" '+style+'>'+dato.titulo+'</button>';
         };
 
             // Agregado por DMK
@@ -86,6 +91,25 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $("#tabsCategoria").html(html);
         $("#comboCategoria ul").html(html2);
 
+    };
+
+    var _crearSelectPonderador = function (datos) {
+        var optionTemplate = function (dato) {
+            var attrs = '';
+            $.each(dato.attrs, function (k,v) {
+                attrs += ' '+k+'="'+v+'"';
+            });
+            return '<option value="'+dato.codigo+'" '+attrs+'>'+dato.titulo+'</option>'
+        };
+
+        var html = '';
+        $.each(datos, function (k,v) {
+            html += optionTemplate(v);
+        });
+
+        console.log(">>> ponderador html", html);
+
+        $("#comboPonderador").html(html);
     };
 
     /**
@@ -258,31 +282,46 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 {
                     targets: targets.absoluto,
                     render: function (data, type, row) {
+                        var es_cabecera = appData.tituloIndicadores[row.cod_tematico]["es_cabecera"];
                         data = parent.round(data,1);
-                        if (data != 0) {
-                            return parent.numberFormat(data);
+                        if (es_cabecera != '1') {
+                            if (data != 0) {
+                                return parent.numberFormat(data);
+                            }else {
+                                return '--';
+                            }
+
                         }else {
                             return "";
                         }
 
                     },
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('millones tooltip');
-                        $(td).attr('data-title','Hola');
+                        $(td).addClass('millones');
                     }
                 },
                 {
                     targets: targets.porcentual,
                     render: function (data, type, row) {
+                        var es_cabecera = appData.tituloIndicadores[row.cod_tematico]["es_cabecera"];
                         data = parent.round(data,1);
-                        if (data != 0) {
+                        if (es_cabecera != '1') {
                             return data.toFixed(1);
-                        } else if (row.cod_nivel_tematico == 2) {
+                        } else {
                             return "";
                         }
-                        else {
-                            return "--";
+                    },
+
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        var es_cabecera = appData.tituloIndicadores[rowData.cod_tematico]["es_cabecera"];
+                        if (es_cabecera != '1') {
+                            $(td).addClass('tooltip');
+                            $(td).attr(
+                                'data-title',
+                                appData.tituloIndicadores[rowData.cod_tematico]["descripcion_porcentaje"]
+                            );
                         }
+
                     }
                 }
             ],
@@ -451,21 +490,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param options
      */
     var mapasChangeEvent = function (options) {
-        console.log(">>>> Ejecuta", options);
-        var _this = this;
-        if (this.timeClikMap !== undefined) {
-
-            clearTimeout(this.timeClikMap);
-        }
-
         this.cuadrosData.ubigeos = options.ubigeosOdenados;
-        this.timeClikMap = setTimeout(function(){
-            _this.crearTablaUigeos(options.ubigeosOdenados, []);
-            _this.timeClikMap = undefined;
-        }, 1200);
-
+        this.crearTablaUigeos(options.ubigeosOdenados, []);
         this.cuadrosData.ubigeo = (options.ubigeosSeleccionados.length > 0) ? options.ubigeosSeleccionados.slice(-1).pop() : '00';
-        //parent.graficos.comboIndicaDores(options.ubigeosOdenados.slice().reverse());
         parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
 
@@ -513,8 +540,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var categoriaChangeEvent = function (options) {
-        // Fixme: temporalmente se quitara el P para dejar solo 2 digitos de codigo
-        //var categoria = options.categoria.substring(1,3);
         this.crearTablaCategoria(options.categoria);
         parent.graficos.indicadores(options.categoria, '00');
 

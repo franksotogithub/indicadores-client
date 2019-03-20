@@ -221,7 +221,12 @@ App.utils.highcharts = (function (service, config) {
             plotOptions: {
                 column: {
                     pointPadding: 0.2,
-                        borderWidth: 0
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+
+                    }
                 }
             },
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
@@ -270,9 +275,14 @@ App.utils.highcharts = (function (service, config) {
                 }
             },
             plotOptions: {
-                column: {
+                bar: {
                     pointPadding: 0.2,
-                    borderWidth: 0
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y} ({point.adicional.porcentaje:.1f}%)',
+
+                    }
                 }
             },
             exporting:{
@@ -304,7 +314,12 @@ App.utils.highcharts = (function (service, config) {
             plotOptions: {
                 pie: {
                     innerSize: 50,
-                    depth: 45
+                    depth: 45,
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b><br>{point.y} ({point.adicional.porcentaje:.1f}%)',
+
+                    }
                 }
             },
             colors: (options.colors !== undefined) ? options.colors : defaultcolors,
