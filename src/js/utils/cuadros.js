@@ -282,31 +282,42 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 {
                     targets: targets.absoluto,
                     render: function (data, type, row) {
+                        var es_cabecera = appData.tituloIndicadores[row.cod_tematico]["es_cabecera"];
                         data = parent.round(data,1);
-                        if (data != 0) {
-                            return parent.numberFormat(data);
+                        if (es_cabecera != '1') {
+                            if (data != 0) {
+                                return parent.numberFormat(data);
+                            }else {
+                                return '--';
+                            }
+
                         }else {
                             return "";
                         }
 
                     },
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('millones tooltip');
-                        $(td).attr('data-title','Hola');
+                        $(td).addClass('millones');
                     }
                 },
                 {
                     targets: targets.porcentual,
                     render: function (data, type, row) {
+                        var es_cabecera = appData.tituloIndicadores[row.cod_tematico]["es_cabecera"];
                         data = parent.round(data,1);
-                        if (data != 0) {
+                        if (es_cabecera != '1') {
                             return data.toFixed(1);
-                        } else if (row.cod_nivel_tematico == 2) {
+                        } else {
                             return "";
                         }
-                        else {
-                            return "--";
-                        }
+                    },
+
+                    createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).addClass('tooltip');
+                        $(td).attr(
+                            'data-title',
+                            appData.tituloIndicadores[rowData.cod_tematico]["descripcion_porcentaje"]
+                        );
                     }
                 }
             ],
