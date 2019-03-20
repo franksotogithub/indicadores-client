@@ -43,6 +43,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
+        _crearSelectPonderador(appData.ponderadores);
         _this.crearTablaUigeos(['00'], []);
         //_this.crearTablaUigeos(['01','02','03','04','05','06','07','08'], []);
     };
@@ -60,7 +61,11 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             if (dato.esActivo) {
                 clase = ' btnTabTabla-activo';
             }
-            return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'">'+dato.titulo+'</button>';
+            var style = '';
+            $.each(dato.style, function (k,v) {
+                style += ' style="'+k+':'+v+'"'
+            });
+            return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'" '+style+'>'+dato.titulo+'</button>';
         };
 
             // Agregado por DMK
@@ -86,6 +91,25 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $("#tabsCategoria").html(html);
         $("#comboCategoria ul").html(html2);
 
+    };
+
+    var _crearSelectPonderador = function (datos) {
+        var optionTemplate = function (dato) {
+            var attrs = '';
+            $.each(dato.attrs, function (k,v) {
+                attrs += ' '+k+'="'+v+'"';
+            });
+            return '<option value="'+dato.codigo+'" '+attrs+'>'+dato.titulo+'</option>'
+        };
+
+        var html = '';
+        $.each(datos, function (k,v) {
+            html += optionTemplate(v);
+        });
+
+        console.log(">>> ponderador html", html);
+
+        $("#comboPonderador").html(html);
     };
 
     /**
