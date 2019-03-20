@@ -451,21 +451,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param options
      */
     var mapasChangeEvent = function (options) {
-        console.log(">>>> Ejecuta", options);
-        var _this = this;
-        if (this.timeClikMap !== undefined) {
-
-            clearTimeout(this.timeClikMap);
-        }
-
         this.cuadrosData.ubigeos = options.ubigeosOdenados;
-        this.timeClikMap = setTimeout(function(){
-            _this.crearTablaUigeos(options.ubigeosOdenados, []);
-            _this.timeClikMap = undefined;
-        }, 1200);
-
+        this.crearTablaUigeos(options.ubigeosOdenados, []);
         this.cuadrosData.ubigeo = (options.ubigeosSeleccionados.length > 0) ? options.ubigeosSeleccionados.slice(-1).pop() : '00';
-        //parent.graficos.comboIndicaDores(options.ubigeosOdenados.slice().reverse());
         parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
 
@@ -513,8 +501,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var categoriaChangeEvent = function (options) {
-        // Fixme: temporalmente se quitara el P para dejar solo 2 digitos de codigo
-        //var categoria = options.categoria.substring(1,3);
         this.crearTablaCategoria(options.categoria);
         parent.graficos.indicadores(options.categoria, '00');
 
