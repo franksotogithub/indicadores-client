@@ -313,11 +313,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     },
 
                     createdCell: function (td, cellData, rowData, row, col) {
-                        $(td).addClass('tooltip');
-                        $(td).attr(
-                            'data-title',
-                            appData.tituloIndicadores[rowData.cod_tematico]["descripcion_porcentaje"]
-                        );
+                        var es_cabecera = appData.tituloIndicadores[rowData.cod_tematico]["es_cabecera"];
+                        if (es_cabecera != '1') {
+                            $(td).addClass('tooltip');
+                            $(td).attr(
+                                'data-title',
+                                appData.tituloIndicadores[rowData.cod_tematico]["descripcion_porcentaje"]
+                            );
+                        }
+
                     }
                 }
             ],
