@@ -8,6 +8,9 @@ App.utils.graficos = (function (parent, service, appData) {
     };
     var colorListaGradient =Highcharts.getOptions().color;
 
+    var graficoData = {
+        alto: 350
+    };
     colorListaGradient = [{
         linearGradient:directionListaGradient,
         stops: [
@@ -82,7 +85,7 @@ App.utils.graficos = (function (parent, service, appData) {
             var html = '';
             for (b in data.data) {
                 var boton = data.data[b];
-                html += _htmlBotonesTop([boton.adicional, boton.name, parent.numberFormat(boton.y)]);
+                html += _htmlBotonesTop([boton.adicional.icon, boton.name, parent.numberFormat(boton.y)]);
             }
 
             //$("#id_graficoWidget_top").html(html);
@@ -161,6 +164,10 @@ App.utils.graficos = (function (parent, service, appData) {
         $(".graficoElementSlider").css("display","inline-block");
         $(".controlSliderGrafico").css("display","none");
 
+        graficoData.alto = 600;
+
+        this.initIndicador(parent.cuadros);
+
 
     };
 
@@ -170,13 +177,15 @@ App.utils.graficos = (function (parent, service, appData) {
         $(".contenidoGraficoMaximizado").addClass("col-5-5").removeClass("col-4-5");
         $(".contenidoGraficoMaximizado").css("display","block");
         $(".contenidoGraficoMaximizado").css("height","auto");
-        $(".contGraficoMetadatoRespon").css("height","350px");
-        $(".contGraficoMetadatoRespon").css("max-height","350px");
+        $(".contGraficoMetadatoRespon").css("height","380px");
+        $(".contGraficoMetadatoRespon").css("max-height","380px");
         $(".graficoElementSlider").css("display","none");
         $(".graficoElementSlider:first").css("display","block");
         $(".controlSliderGrafico").css("display","block");
 
+        graficoData.alto = 350;
 
+        this.initIndicador(parent.cuadros);
 
     };
 
@@ -229,14 +238,14 @@ App.utils.graficos = (function (parent, service, appData) {
             //indicador.graficoCategoria[categoria] = data;
             var g;
             var c=0;
-            var alto = 320;
+            var alto = graficoData.alto;
             var tiene_boton = false;
             for (g in data) {
                 if (data[g].cod_grafico == 1) {
                     var uiId = "id_graficoWidget_top";
                     tiene_boton = true;
                 }else {
-                    alto = (tiene_boton) ? alto - 50 : alto;
+                    alto = (tiene_boton) ? alto - 40 : alto;
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
                     $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: '+alto+'px!important; display: none; "></div>');

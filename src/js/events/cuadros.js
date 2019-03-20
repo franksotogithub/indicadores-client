@@ -2,19 +2,20 @@
     $(document).ready(function (e) {
 
         $("html #comboPonderador").on("change",function(){
-            var valor = this.value;
-            if(valor == "2"){
-
-                $("#tabsCategoria > button").hide();
-                $("#tabsCategoria > button[data-categoria='P01']").show();
-
-                if($("#tabsCategoria > button[data-categoria='P01']").hasClass("btnTabTabla-activo")){}else{
-                    $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
-                    $("#tabsCategoria > button[data-categoria='P01']").addClass("btnTabTabla-activo");
+                var valor = this.value;
+                var tipo = $(this).find('option:selected').attr('data-tipo');
+                if (tipo == 'total') {
+                    $("#tabsCategoria > button").hide();
+                    $("#tabsCategoria > button[data-categoria='"+valor+"']").show();
+                }else {
+                    $("#tabsCategoria > button").show();
+                    $("#tabsCategoria > button[data-categoria='"+tipo+"']").hide();
                 }
-            }else {
-                $("#tabsCategoria > button").show();
-            }
+
+                $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
+                $("#tabsCategoria > button[data-categoria='"+valor+"']").addClass("btnTabTabla-activo");
+                utils.cuadros.categoriaChangeEvent({"categoria": valor});
+                utils.mapas.categoriaChangeEvent({"categoria": valor});
             });
 
         $("#tabsCategoria").on('click', '.tablaTabButton', function (e) {
