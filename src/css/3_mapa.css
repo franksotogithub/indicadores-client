@@ -210,27 +210,35 @@ div.esri-search__submit-button:focus {
     border-radius: 5px;
 }
 .botonVistaMapa {
-    padding: 8px 11px;
+    padding: 0px 2px;
     display: inline-block;
     vertical-align: middle;
     font-size: 14px;
+    border-radius: 5px 0 0 5px;
+    padding-top: 3px;
+}
+.botonVistaMapa > i {
+    font-size: 19px;
 }
 .mostrarListaMapa{
     font-family: 'Alegreya-Sans';
     position: absolute;
     width: 150px;
-    right: 0;
     background: white;
     cursor: pointer;
 }
 .mostrarListaMapa > div {
     padding: 10px;
+    text-align: left;
 }
 .mostrarListaMapa > div:hover {
     background-color: #009ae0;
     color: white;
 }
 
+#widget-nacional{
+    border-radius: 0 8px 8px 0;
+}
 
 #list-widgets {
     margin: 0px;

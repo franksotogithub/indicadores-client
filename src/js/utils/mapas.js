@@ -1222,7 +1222,7 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             _this.view_map.ui.add( _this.datosMap.divLegend, "bottom-left");
-            _this.view_map.ui.add(["div-buscador-ubigeo","div-select-ubigeo","widget-select-layer","list-widgets"], "top-left");
+            _this.view_map.ui.add(["div-buscador-ubigeo","div-select-ubigeo","list-widgets"], "top-left");
             _this.view_map.ui.add("list-maps", "bottom-right");
             _this.view_map.ui.add(["panel"], "top-right");
             _this.view_map.ui.remove("zoom");

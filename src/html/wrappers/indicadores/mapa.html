@@ -31,6 +31,17 @@
 <div id="legendMap" style="background-color: white;max-width:300px"></div>
 
 <div id="list-widgets" >
+    <div id="widget-select-layer" data-step="3"
+         data-intro="Aqui puedes elegir el tipo de vista a nivel Nacional, por departamentos, provincias y distritos">
+        <button class="b_azul f_blanco botonVistaMapa" data-title="Tipo de vista">
+            <i class="material-icons">more_vert </i>
+        </button>
+        <div class="mostrarListaMapa" style="display: none">
+            <div index="0">Vista Departamental</div>
+            <div index="1">Vista Provincial</div>
+            <div index="2">Vista Distrital</div>
+        </div>
+    </div>
     <div id="widget-nacional" class="widget-ubigeo">
         PERU
     </div>
@@ -55,14 +66,7 @@
 
 </select></div>
 
-<div id="widget-select-layer">
-    <button class="icon-eye b_azul f_blanco icon tooltip botonVistaMapa" data-title="Tipo de vista"></button>
-    <div class="mostrarListaMapa" style="display: none">
-        <div index="0">Vista Departamental</div>
-        <div index="1">Vista Provincial</div>
-        <div index="2">Vista Distrital</div>
-    </div>
-</div>
+
 
 <div id="popup-modificable" >
     <p>
