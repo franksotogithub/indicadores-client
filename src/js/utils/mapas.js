@@ -2171,9 +2171,20 @@ App.utils.mapas = (function (parent, config,service) {
             });
 
             _this.view_map.when(function () {
-                var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
+                var xsearch=$("[class='esri-search__sources-button esri-widget-button']");
+                var anchoWIndowT = $(window).width();
+                var altoWIndowT = $(window).height();
+
                 xsearch.css('display','none');
                 _this.datosMap.divLegend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[0],_this.indexSubLayer);
+
+
+                if(anchoWIndowT > 1279){
+                    startIntro();
+                }else {
+                        startIntroMovil();
+                }
+
             });
 
             _this.view_map.whenLayerView(_this.layer)
