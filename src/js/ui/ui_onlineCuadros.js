@@ -640,6 +640,15 @@ $(document).ready(function() {
     /* BOton abrir o ocualtar miniMapas */
     $('.contenedorVentana').on('click','.botonDesplegarMapas', function() {
         $( ".esri-ui-bottom-right" ).toggleClass("subirMiniMap");
+
+        if($(this).find(".dripicons-chevron-up").length>0){
+            $(this).find(".dripicons-chevron-up").addClass("dripicons-chevron-down").removeClass("dripicons-chevron-up");
+            console.log("Abriendo");
+        }else if($(this).find(".dripicons-chevron-down").length>0){
+            $(this).find(".dripicons-chevron-down").addClass("dripicons-chevron-up").removeClass("dripicons-chevron-down");
+            console.log("Cerrando");
+        }
+
     });
 
     // Abrir cerrar busqueda en CUadros
