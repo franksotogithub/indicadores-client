@@ -462,6 +462,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var buscadorIndicadores = function (response){
         var _this = this;
+        console.log(">>>> response", response);
+
+        /*
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
@@ -477,7 +480,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 _this.target
             );
             $("#loadindicadores").hide();
-        });
+        });*/
     };
 
     var reiniciarTabla = function () {
