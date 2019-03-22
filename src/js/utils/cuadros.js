@@ -404,7 +404,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     // Metodos publicos
     var crearTablaUigeos = function (ubigeos, historico) {
-
         var _this = this;
 
         _cargandoTabla();
@@ -580,6 +579,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.uiDocuments.clases.meta_pt.children('p').html(metadata.precisiones_tecnicas);
     };
 
+    var descargarCuadro = function () {
+        var query = '?';
+        $.each(cuadrosData.ubigeos, function (i,v) {
+           query += 'u='+v+'&'
+        });
+
+        window.open(config.urlServer+ 'exportar/xls/principales/'+query, '_blank');
+    };
+
     return {
         init: init,
         tblIndicadores: undefined,
@@ -606,6 +614,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         changeMetadata: changeMetadata,
         uiDocuments: uiDocuments,
         buscadorIndicadores: buscadorIndicadores,
-        reloadTablaResponsive: reloadTablaResponsive
+        reloadTablaResponsive: reloadTablaResponsive,
+        descargarCuadro: descargarCuadro
     }
 })(AppConfig(), Appdata, App.utils, App.service);

@@ -798,6 +798,10 @@ $(document).ready(function() {
 
     });
 
+    $('.contenedorVentana').on('click','.descargarCuadro', function() {
+        App.utils.cuadros.descargarCuadro();
+    });
+
     $('.contenedorBusquedaBotonesUbigeo').on('click','button', function() {
         $(this).remove("button");
 
