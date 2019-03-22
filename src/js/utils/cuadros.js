@@ -349,7 +349,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
 
-        totalVentana = (tam_ventana1 - 310);
+        totalVentana = (tam_ventana1 - 317);
 
 
 

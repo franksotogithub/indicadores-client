@@ -1300,9 +1300,9 @@ a.LinkModalCE{
 .modalCentro{
     background-color: white;
     border-radius: 8px;
-    min-height:40%;
+    min-height: 0;
     max-height: 90%;
-    /*overflow: auto;*/
+    height: 60%;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -1310,9 +1310,17 @@ a.LinkModalCE{
 }
 
 .contenedorModalInfo{
-    display: block;
+    display: flex;
     padding: 20px;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    max-height: calc(100% - 38px);
 }
+
+
+.listado_centros_poblados{
+    overflow:auto;}
 
 
 
@@ -1362,12 +1370,15 @@ a.LinkModalCE{
     background-color: #f3f3f3;
     display: inline-block;
     margin-left: 10px;
-    margin-right:10px;
+    margin-right: 10px;
     width: 31%;
     vertical-align: top;
     font-family: open_sansregular;
     margin-top: 10px;
     border-radius: 10px;
+    font-size: 13px;
+    text-align: center;
+    padding: 7px 0;
 }
 .contenidoGeneralCentros > p {
 

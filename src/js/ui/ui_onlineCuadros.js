@@ -19,11 +19,11 @@ function altosAutomaticos(){
 
     if($(window).width() > 1281){
         if(contador !== undefined){
-            $('.contenedorMetadatos').css({"height":(altoVentana-562)+"px", "overflow":"auto"});
+            $('.contenedorMetadatos').css({"height":(altoVentana-594)+"px", "overflow":"auto"});
             //console.log(contador);
         }else{
             //$('.contenedorMetadatos').css({"height":(altoVentana-482)+"px", "overflow":"auto"});
-            $('.contenedorMetadatos').css({"height":(altoVentana-562)+"px", "overflow":"auto"});
+            $('.contenedorMetadatos').css({"height":(altoVentana-594)+"px", "overflow":"auto"});
             //console.log(contador);
         }
     }else{
@@ -873,6 +873,13 @@ $(document).ready(function() {
         if(count ==1){
             var html = $("#plantilla_modal_metadato").html();
             $(".modalGeneral .contenedorModalInfo").html(html);
+            if($(".modalGeneral .contenedorMetadatoModal ").length > 0){
+                $(".modalCentro").css("height","auto");
+                console.log("Metadato");
+            }else{
+                $(".modalCentro").css("height","60%");
+                console.log("Centropoblado");
+            }
             $(".modalGeneral").show();
         }
     });

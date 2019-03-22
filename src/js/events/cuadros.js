@@ -55,12 +55,21 @@
                 var hijos = service.cuadros.indicadores_hijos[ubigeo]['hijos'];
                 var li = '';
                 $.each(hijos, function (i,v) {
-                    li += '<li>'+v+'</li>';
+                    li += '<div class="contenidoGeneralCentros">'+v+'</div>';
                 });
-                $("#plantilla_modal_grupo ul").html(li);
+                $("#plantilla_modal_grupo div").html(li);
                 var html = $("#plantilla_modal_grupo").html();
                 $(".modalGeneral .contenedorModalInfo").html(html);
+
+                if($(".modalGeneral .contenedorMetadatoModal ").length > 0){
+                    $(".modalCentro").css("height","auto");
+                    console.log("Metadato");
+                }else{
+                    $(".modalCentro").css("height","60%");
+                    console.log("Centropoblado");
+                }
                 $(".modalGeneral").show();
+
             }
 
         });
