@@ -206,6 +206,7 @@ App.utils.mapas = (function (parent, config,service) {
 
     var ubigeosOrdenadosFinal=[];
 
+    var ubigeo='';
 
     var symbolSombreado= {
         type: "simple-fill",
@@ -215,6 +216,16 @@ App.utils.mapas = (function (parent, config,service) {
             color: "cyan"
         }
     }
+
+    var symbolPoligon= {
+        type: "simple-fill",
+        color: [ 255, 128, 0, 0],
+        outline: {
+            width: 0,
+            color: "cyan"
+        }
+    }
+
 
     var renderizadoClassBreaks = function(indicador,classBreakinfo){
         var renderer = {
@@ -393,6 +404,7 @@ App.utils.mapas = (function (parent, config,service) {
             var miniSublayer = new FeatureLayer({
                 url: urlMap + '/' + index,
                 definitionExpression: where,
+                opacity:0
             });
 
 
@@ -1086,7 +1098,7 @@ App.utils.mapas = (function (parent, config,service) {
             departamentoLyr = new FeatureLayer({
                 url: url_dep,
                 renderer:_this.datosMap.renderOptionsSublayers[0].renderer,
-                opacity:opacity,
+                opacity:0,
                 id:"dep",
                 outFields:["*"],
                 title:'DEPARTAMENTOS',
@@ -1095,7 +1107,7 @@ App.utils.mapas = (function (parent, config,service) {
             provinciaLyr = new FeatureLayer({
                 url: url_prov,
                 renderer:_this.datosMap.renderOptionsSublayers[1].renderer,
-                opacity:opacity,
+                opacity:0,
                 outFields:["*"],
                 title:'PROVINCIAS',
             });
@@ -1103,7 +1115,7 @@ App.utils.mapas = (function (parent, config,service) {
             distritoLyr = new FeatureLayer({
                 url: url_dist,
                 renderer:_this.datosMap.renderOptionsSublayers[2].renderer,
-                opacity:opacity,
+                opacity:0,
                 outFields:["*"],
                 title:'DISTRITOS',
 
@@ -1142,10 +1154,10 @@ App.utils.mapas = (function (parent, config,service) {
 
 
             _this.historic_features=[
-                {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep ,label:'$feature.NOMBDEP',placeholders:'Seleccione un Departamento'},
-                {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov,label:'$feature.NOMBPROV',placeholders:'Seleccione una Provincia'},
-                {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist,label:'$feature.NOMBDIST',placeholders:'Seleccione un Distrito'},
-                {'select_features':[],'where':'','layer':ccppLyr,'nombres':[],url:url_ccpp,label:'$feature.DESCRIPCION',placeholders:'Seleccione un Centro Poblado'},
+                {'select_features':[],'where':'','layer':departamentoLyr,'nombres':[],url:url_dep ,label:'$feature.NOMBDEP',label2:'NOMBDEP',placeholders:'Seleccione un Departamento'},
+                {'select_features':[],'where':'','layer':provinciaLyr,'nombres':[],url:url_prov,label:'$feature.NOMBPROV',label2:'NOMBPROV',placeholders:'Seleccione una Provincia'},
+                {'select_features':[],'where':'','layer':distritoLyr,'nombres':[],url:url_dist,label:'$feature.NOMBDIST',label2:'NOMBDIST',placeholders:'Seleccione un Distrito'},
+                {'select_features':[],'where':'','layer':ccppLyr,'nombres':[],url:url_ccpp,label:'$feature.DESCRIPCION',label2:'DESCRIPCION',placeholders:'Seleccione un Centro Poblado'},
                 
             ];
 
@@ -1268,9 +1280,6 @@ App.utils.mapas = (function (parent, config,service) {
                 _this.indexSubLayer=i;
                 var htmlLengenda='';
 
-
-
-
                 if(newIndex<3)
                 {
 
@@ -1289,7 +1298,7 @@ App.utils.mapas = (function (parent, config,service) {
                     });
 
                     _this.ccppLyr.visible=false;
-                    _this.view_map.graphics.removeAll();
+
                     htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i],i);
                 }
 
@@ -1301,6 +1310,8 @@ App.utils.mapas = (function (parent, config,service) {
                     });
                     htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[2],i);
                 }
+
+                _this.view_map.graphics.removeAll();
                 _this.datosMap.divLegend.innerHTML=htmlLengenda;
                 /****/
                 selectAll.checked=false;
@@ -1398,6 +1409,24 @@ App.utils.mapas = (function (parent, config,service) {
 
                 wigdetSelectAll.style.display="block";
 
+                var symbol;
+                var ubigeosDes;
+
+                if(feature.geometry.type=='point') {
+                    symbol=symbolMarker;
+                }
+
+                else if(feature.geometry.type=='polygon'){
+                    symbol=symbolPoligon;
+                }
+
+                var graphic= new Graphic({
+                    geometry: feature.geometry,   // Add the geometry created in step 4
+                    symbol: symbol,   // Add the symbol created in step 5
+                    attributes: feature.attributes,
+                });
+
+
                 if (feature && _this.indexSubLayer<3){
                     var ubigeo=feature.attributes.CODIGO;
                     var nombre='';
@@ -1412,12 +1441,20 @@ App.utils.mapas = (function (parent, config,service) {
                         updatePanel(nombre,ubigeo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
                         _this.select_ubigeos.push(ubigeo);
                         _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
+                        _this.view_map.graphics.add(graphic);
+                        _this.ubigeo=ubigeo;
+
                     }
                     else{
+                        var remove=_this.view_map.graphics.items.find(x=>x.attributes.CODIGO==ubigeo);
                         _this.opc_select="unselect";
                         _this.view_map.popup.close();
                         _this.select_ubigeos.splice(indiceUbigeoEncontrado, 1);
                         _this.historic_features[_this.indexSubLayer].nombres.splice(indiceUbigeoEncontrado, 1);
+
+
+                        _this.view_map.graphics.remove(remove);
+
                         if(_this.maximizado==true)
                         {removerMiniMapa(ubigeo);}
 
@@ -1431,7 +1468,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     /***aqui se debe llamar a ola funcion q renderiza la tabla****/
                     console.log('_this.historic_features>>>',_this.historic_features);
-                    var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features);
+                    ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features);
                     actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
 
                 }
@@ -1439,23 +1476,12 @@ App.utils.mapas = (function (parent, config,service) {
                 else if(_this.indexSubLayer>=3 )
                 {
 
-
-                    var symbol ='';
                     var ubigeo = feature.attributes.CODIGO;
                     var grupo = feature.attributes.COD_GRUPO;
                     var indiceUbigeoEncontrado=_this.select_ubigeos.indexOf(ubigeo);
 
                     var gruposCcpp =[];
-                    if(feature.geometry.type=='point')
-                    {
-                        symbol=symbolMarker;
-                    }
 
-                    var graphic= new Graphic({
-                        geometry: feature.geometry,   // Add the geometry created in step 4
-                        symbol: symbol,   // Add the symbol created in step 5
-                        attributes: feature.attributes,
-                    });
 
                     if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
                         _this.select_ubigeos.push(ubigeo);
@@ -1476,7 +1502,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     var grupos=Array.from(new Set(gruposCcpp));
 
-                    var ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features
+                    ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features
                         , grupos
                     );
 
@@ -1955,6 +1981,45 @@ App.utils.mapas = (function (parent, config,service) {
                 console.log('click graphics',event);
             })
 
+            _this.view_map.on('pointer-move',function (evt) {
+                var screenPoint = {
+                    x: evt.x,
+                    y: evt.y
+                };
+
+                console.log("long,lat>>",evt.x,evt.y);
+                _this.view_map.hitTest(screenPoint)
+                    .then( function(response){
+                        var label=_this.historic_features[_this.indexSubLayer].label2;
+                        var attributes=response.results[0].graphic.attributes;
+                        var ubigeo=attributes.CODIGO;
+                        var nombre=attributes[label];
+
+
+                        if(_this.ubigeo!=ubigeo){
+                            _this.ubigeo=ubigeo;
+                            createPopup(nombre,ubigeo,response.results[0].graphic.geometry.centroid);
+                        }
+
+
+                        /*if (attributes!==undefined)
+                            if(index==1)
+                                nom=attributes.NOMBPROV;
+                            else if (index==2)
+                                nom=attributes.NOMBDIST;
+*/
+
+
+                        //console.log('attributes>>>',attributes);
+                        //tooltip.innerHTML ="<label>"+nom+"</label>"
+                        //tooltip.style.top = parseInt(evt.y)  + 'px';
+                        //tooltip.style.left = parseInt(evt.x) + 'px';
+
+                    });
+
+            });
+
+
             _this.view_map.on('double-click',function (event) {
                 if (_this.select_ubigeos.length==0 || ( _this.select_ubigeos.length==2 && _this.select_ubigeos[0]=='00')){
                     localizarFeaturePorClick(event,function (feature) {
@@ -2355,6 +2420,7 @@ App.utils.mapas = (function (parent, config,service) {
         listMiniMapas:listMiniMapas,
         ordenarUbigeos:ordenarUbigeos,
         ubigeosOrdenadosFinal: ubigeosOrdenadosFinal,
+        ubigeo:ubigeo,
     }
 
 })(App.utils, AppConfig() ,App.service );
