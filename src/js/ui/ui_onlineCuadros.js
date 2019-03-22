@@ -895,7 +895,7 @@ $(document).ready(function() {
     var anchoWIndowT = $(window).width();
     var altoWIndowT = $(window).height();
     if(anchoWIndowT > 1279){
-        setTimeout(function(){ startIntro(); }, 2500);
+        //setTimeout(function(){ startIntro(); }, 2500);
     }else{
         setTimeout(function(){ startIntroMovil(); }, 3000);
 
