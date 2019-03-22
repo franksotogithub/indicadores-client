@@ -1357,6 +1357,28 @@ a.LinkModalCE{
     width: 47%;
     vertical-align: top;
 }
+
+.contenedorModalInfo .contenidoGeneralCentros{
+    background-color: #f3f3f3;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right:10px;
+    width: 31%;
+    vertical-align: top;
+    font-family: open_sansregular;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+.contenidoGeneralCentros > p {
+
+    color: #000;
+    font-size: 15px;
+    padding: 15px;
+    margin: 0;
+
+}
+
+
 .contenedorModalInfo .referenciaMetadato, .contenedorModalInfo h1{ margin-right: 3%;}
 /* Responsive */
 

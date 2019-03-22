@@ -246,16 +246,33 @@
 
 /* Colores para metadato */
 .contenidoMetadato.pm1 h3 {background-color: #60947D;}
-.contenidoMetadato.pm1 p {color: #60947D;}
+.contenidoMetadato.pm1 p {color: #222222;}
 
 .contenidoMetadato.pm2 h3 {background-color: #B67437;}
-.contenidoMetadato.pm2 p {color: #B67437;}
+.contenidoMetadato.pm2 p {color: #222222;}
 
 .contenidoMetadato.pm3 h3 {background-color: #A0505F;}
-.contenidoMetadato.pm3 p {color: #A0505F;}
+.contenidoMetadato.pm3 p {color: #222222;}
 
 .contenidoMetadato.pm4 h3 {background-color: #217B93;}
-.contenidoMetadato.pm4 p {color: #217B93;}
+.contenidoMetadato.pm4 p {color: #222222;}
+
+
+/* Select Elmer*/
+
+select.selectTitulograph{
+    font-family: 'signikaregular';
+    padding: 5px 8px;
+    margin-top: 10px;
+    max-width: 95%;
+    font-size: 16px;
+    color: #4c4c4c;
+    background-color: #ffffff;
+    border: solid 2px #ccc;
+    outline:none;
+
+}
+
 
 
 
