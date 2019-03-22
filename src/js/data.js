@@ -9,7 +9,7 @@ var Appdata = function (callback, es_local) {
             //{"codigo": "P04", "titulo": "Economía", "sistema": "indicadores"},
             {"codigo": "P05", "titulo": "Vivienda", "sistema": "indicadores", "style": {}},
             {"codigo": "P06", "titulo": "Hogar", "sistema": "indicadores", "style": {}},
-            {"codigo": "P08", "titulo": "Población", "sistema": "indicadores", "style": {'display': 'none'}}, //poblacion total
+            {"codigo": "P08", "titulo": "Población Total", "sistema": "indicadores", "style": {'display': 'none'}}, //poblacion total
         ],
         "ponderadores": [
             {"codigo": "P01", "titulo": "Población Censada", "attrs":{"selected": "selected", "data-tipo": "P08"}},

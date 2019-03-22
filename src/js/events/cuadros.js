@@ -44,8 +44,8 @@
             serviceUrl: service.getUrlServer('dimensiones/tematico/autocomplete/'),
             onSelect: function (response) {
                 App.utils.cuadros.buscadorIndicadores(response);
-            }
-
+            },
+            width: 'flex'
         });
 
         $('body').on('click', '.thtitulo', function (e) {

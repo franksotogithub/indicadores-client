@@ -236,12 +236,13 @@ App.utils.graficos = (function (parent, service, appData) {
         $("#id_graficoWidget_top").html("");
         service.graficos.getIndicador(categoria, ubigeo, function (data) {
             //indicador.graficoCategoria[categoria] = data;
+            console.log("grafico data >>>", data);
             var g;
             var c=0;
             var alto = graficoData.alto;
             var tiene_boton = false;
             for (g in data) {
-                if (data[g].cod_grafico == 1) {
+                if (data[g].tipo_grafico == 1) {
                     var uiId = "id_graficoWidget_top";
                     tiene_boton = true;
                 }else {

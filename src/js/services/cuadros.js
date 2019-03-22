@@ -22,6 +22,8 @@ App.service.cuadros = (function (service, config) {
         var response = {
             "data": {}, "titulos": {}, "hijos": {}
         };
+
+        var registros = {};
         data.forEach( ubigeo => {
             for (var propierty in ubigeo) {
                 if(typeof ubigeo[propierty] == 'object'){
@@ -30,7 +32,8 @@ App.service.cuadros = (function (service, config) {
                     }
                     for (var indicator in ubigeo[propierty]) {
                         if(!response.data[propierty].hasOwnProperty(indicator)){
-                            response.data[propierty][indicator] = [];
+
+                            response.data[propierty][indicator] = {};
                             response.data[propierty][indicator]['cod_tematico'] = indicator;
                         }
                         response.data[propierty][indicator]['absoluto_'+ubigeo.cod_territorio] = ubigeo[propierty][indicator].abs;
@@ -44,13 +47,22 @@ App.service.cuadros = (function (service, config) {
                             response.hijos[ubigeo.cod_territorio] = {"tiene_hijos": ubigeo.tiene_hijos, "hijos": ubigeo.hijos};
                         }
                     }
+                    registros[propierty] = response.data[propierty];
                 }
             }
         });
-        for(var prop in response.data){
-            response.data[prop] = Object.values(response.data[prop]);
-        }
+
+        service.cuadros.indicadores_index = registros;
+        response.data = objectToArray(response.data);
         return response;
+    };
+
+    var objectToArray  = function (data) {
+
+        for(var prop in data){
+            data[prop] = Object.values(data[prop]);
+        }
+        return data;
     };
 
     var getIndicador = function (indicador, ubigeos, vista, callback) {
@@ -83,7 +95,8 @@ App.service.cuadros = (function (service, config) {
     };
 
     return {
-        indicadores: undefined,
+        indicadores: {},
+        indicadores_index: {},
         getIndicadores: getIndicadores,
         getIndicador: getIndicador,
         getBusquedaIndicador: getBusquedaIndicador
