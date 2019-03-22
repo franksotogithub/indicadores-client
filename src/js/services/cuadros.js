@@ -8,7 +8,8 @@ App.service.cuadros = (function (service, config) {
             success: function (data) {
                 var dataPivot = pivotData(data, appdata);
                 _this.indicadores = dataPivot.data;
-                callback(dataPivot.data, dataPivot.titulos);
+                _this.indicadores_hijos = dataPivot.hijos;
+                callback(dataPivot.data, dataPivot.titulos, dataPivot.hijos);
             },
 
             error: function (obj, status, otherr) {
@@ -19,7 +20,7 @@ App.service.cuadros = (function (service, config) {
 
     var pivotData = function(data, appdata){
         var response = {
-            "data": {}, "titulos": {}
+            "data": {}, "titulos": {}, "hijos": {}
         };
         data.forEach( ubigeo => {
             for (var propierty in ubigeo) {
@@ -37,6 +38,10 @@ App.service.cuadros = (function (service, config) {
                         response.data[propierty][indicator]['titulo_'+ubigeo.cod_territorio] = ubigeo.titulo;
                         if(!response.titulos.hasOwnProperty(ubigeo.cod_territorio)){
                             response.titulos[ubigeo.cod_territorio] = ubigeo.titulo;
+                        }
+
+                        if(!response.hijos.hasOwnProperty(ubigeo.cod_territorio)){
+                            response.hijos[ubigeo.cod_territorio] = {"tiene_hijos": ubigeo.tiene_hijos, "hijos": ubigeo.hijos};
                         }
                     }
                 }

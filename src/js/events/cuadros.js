@@ -47,6 +47,23 @@
             }
 
         });
+
+        $('body').on('click', '.thtitulo', function (e) {
+            var tiene_hijos = $(this).attr('data-tienehijos');
+            var ubigeo = $(this).attr('data-ubigeo');
+            if (tiene_hijos == '1') {
+                var hijos = service.cuadros.indicadores_hijos[ubigeo]['hijos'];
+                var li = '';
+                $.each(hijos, function (i,v) {
+                    li += '<li>'+v+'</li>';
+                });
+                $("#plantilla_modal_grupo ul").html(li);
+                var html = $("#plantilla_modal_grupo").html();
+                $(".modalGeneral .contenedorModalInfo").html(html);
+                $(".modalGeneral").show();
+            }
+
+        });
     });
 
     $(window).resize(function(){

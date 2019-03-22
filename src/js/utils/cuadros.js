@@ -107,8 +107,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             html += optionTemplate(v);
         });
 
-        console.log(">>> ponderador html", html);
-
         $("#comboPonderador").html(html);
     };
 
@@ -163,7 +161,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param cabecera - estructura json jerárquico de la cabecera de la tabla
      * @private
      */
-    var _crearCabecera = function (cabecera) {
+    var _crearCabecera = function (cabecera, hijos) {
+
         var thead = '<tr>';
         var childrens = [];
         for (var i=0; i<cabecera.length;i++) {
@@ -171,13 +170,17 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             var rowspan = (v.rowspan !== undefined) ? ' rowspan="'+v.rowspan+'"' : '';
             var colspan = (v.colspan !== undefined) ? ' colspan="'+v.colspan+'"' : '';
             var clase = '';
+            var data = 'data-ubigeo="'+v.ubigeo+'"';
             if (v.codigo == '01') {
                 clase = ' class="thorden"'; //style="display: none;"
             }else if (v.codigo == '02') {
                 clase = ' class="thindicador"';
+            }else {
+                clase = ' class="thtitulo"';
+                data += 'data-tienehijos="'+hijos[v.ubigeo]['tiene_hijos']+'"';
             }
 
-            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'">'+tituloNivel(v.ubigeo, v.titulo)+'</th>';
+            var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'" '+data+'>'+tituloNivel(v.ubigeo, v.titulo)+'</th>';
 
             thead += th;
 
@@ -207,7 +210,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param ubigeos - listado de ubigeos ordenados de acuerdo a lo elegido
      * @private
      */
-    var _cabeceraUigeos = function (ubigeos, titulos) {
+    var _cabeceraUigeos = function (ubigeos, titulos, hijos) {
         var cabecera = [
             {
                 "codigo": "01",
@@ -225,7 +228,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         for (var i=0;i<ubigeos.length;i++) {
             cabecera.push(_cabeceraTemplate(ubigeos[i], titulos));
         }
-        _crearCabecera(cabecera);
+        _crearCabecera(cabecera, hijos);
     };
 
     /**
@@ -315,7 +318,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     createdCell: function (td, cellData, rowData, row, col) {
                         var es_cabecera = appData.tituloIndicadores[rowData.cod_tematico]["es_cabecera"];
                         if (es_cabecera != '1') {
-                            $(td).addClass('tooltip');
+                            $(td).addClass('tooltipLeft');
                             $(td).attr(
                                 'data-title',
                                 appData.tituloIndicadores[rowData.cod_tematico]["descripcion_porcentaje"]
@@ -359,7 +362,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _destruirTabla = function (_this) {
-        console.log(">>>>> _this.tblIndicadores", _this.tblIndicadores);
         if (_this.tblIndicadores !== undefined) {
             _this.tblIndicadores.destroy();
             $('#tblindicadores tbody').html("");
@@ -417,8 +419,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             _this.target = _crear_target(ubigeos.length);
 
             // Instanciar el servicio
-            service.cuadros.getIndicadores(ubigeos, appData, _this.vista, function (data, titulos) {
-                _cabeceraUigeos(ubigeos, titulos);
+            service.cuadros.getIndicadores(ubigeos, appData, _this.vista, function (data, titulos, hijos) {
+                _cabeceraUigeos(ubigeos, titulos, hijos);
                 _this.tblIndicadores = _crearTabla(
                     '#tblindicadores',
                     data[_this.cuadrosData.categoria],
@@ -441,8 +443,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var crearTablaCategoria = function (categoria) {
-        console.log("categoria >>> ", categoria);
-        console.log("servicios >>>", service.cuadros.indicadores);
         this.cuadrosData.categoria = categoria;
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
@@ -501,7 +501,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var uiMaxCallback = function (options) {
-        console.log(">> uiMaxCallback", options);
         /*$(".cuadroMinimizado").removeClass("col-10-10").addClass("col-8-10");
         $(".busquedaMaximizadaCuadro").addClass("CuadroActivoBusqueda");*/
 
@@ -510,8 +509,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
 
         _this.fixedColumnsRelayout();
-
-        console.log("finalizar uiMaxCallback")
     };
 
     var uiNormalCallback = function (options) {
@@ -580,7 +577,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.uiDocuments.clases.meta_var.children('p').html(metadata.variables);
         this.uiDocuments.clases.meta_um.children('p').html(metadata.unidad_medida);
         this.uiDocuments.clases.meta_cg.children('p').html(metadata.cobertura_geografica);
-        this.uiDocuments.clases.meta_pt.children('p').html(metadata.presiciones_tecnicas);
+        this.uiDocuments.clases.meta_pt.children('p').html(metadata.precisiones_tecnicas);
     };
 
     return {

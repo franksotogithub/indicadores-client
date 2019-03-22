@@ -862,7 +862,7 @@ $(document).ready(function() {
         $(".listaIndicadoresCE").css("max-height", (altoVentana - 70 )+"px");
     });
 
-    $(document).on('click','td.popover', function () {
+    $(document).on('click','.popover', function () {
         var _this = $(this);
         var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length;
         var anchoVen = $(window).width();
@@ -871,6 +871,8 @@ $(document).ready(function() {
         }
 
         if(count ==1){
+            var html = $("#plantilla_modal_metadato").html();
+            $(".modalGeneral .contenedorModalInfo").html(html);
             $(".modalGeneral").show();
         }
     });
