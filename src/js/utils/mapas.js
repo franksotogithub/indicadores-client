@@ -561,7 +561,7 @@ App.utils.mapas = (function (parent, config,service) {
             list_mini_maps.appendChild(divIniMiniMap);
 
 
-            legendaMiniMapa.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[stringIndex]);
+            legendaMiniMapa.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[stringIndex],stringIndex);
 
 
 
@@ -792,11 +792,11 @@ App.utils.mapas = (function (parent, config,service) {
         return renderOptionsSublayersBack;
     }
 
-    var crearLegenda=function(data){
+    var crearLegenda=function(data,index){
 
         var html='';
 
-        if (data){
+        if (index<3){
             html=
             '<div class="esri-legend__service">'+
             '<div class="esri-legend__service-label">'+data.title+'</div>'+
@@ -819,6 +819,37 @@ App.utils.mapas = (function (parent, config,service) {
             '</div>'+
             '</div>'+
             '</div>';
+        }
+
+        else if(index==3){
+            html=
+            '<div class="esri-legend__service">'+
+            '<div class="esri-legend__service-label">'+data.title+'</div>'+
+            '<div class="esri-legend__layer">'+
+            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+            '<div class="esri-legend__layer-caption" >Centros Poblados</div>'+
+            '<div class="esri-legend__layer-body" >' ;
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#8fff26;  width:15px;height:15px;border-radius: 50%"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Poblacion Mayor a 150</div>';
+            html+='</div>';
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#f15a24;  width:15px;height:15px;border-radius: 50%"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Poblacion Menor a 150</div>';
+            html+='</div>';
+
+            html+=
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+
         }
 
         return html;
@@ -1235,13 +1266,17 @@ App.utils.mapas = (function (parent, config,service) {
             var changeIndex=function(newIndex) {
                 var i = parseInt(newIndex);
                 _this.indexSubLayer=i;
+                var htmlLengenda='';
+
+
+
+
                 if(newIndex<3)
                 {
-                    var htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
+
                     identifyParams.layerIds = [i];
                     _this.listCcpp=[];
 
-                    _this.datosMap.divLegend.innerHTML=htmlLengenda;
                     layers_inicial.forEach(function (layer) {
                         layer.sublayers.forEach(function (sublayer) {
                             sublayer.visible=false;
@@ -1255,15 +1290,18 @@ App.utils.mapas = (function (parent, config,service) {
 
                     _this.ccppLyr.visible=false;
                     _this.view_map.graphics.removeAll();
+                    htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i],i);
                 }
 
                 else{
+                    //htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i]);
                     _this.ccppLyr.visible=true;
                     _this.layerBaseNacional.sublayers.forEach(function (sublayer) {
                             sublayer.visible=true;
                     });
+                    htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[2],i);
                 }
-
+                _this.datosMap.divLegend.innerHTML=htmlLengenda;
                 /****/
                 selectAll.checked=false;
             }
@@ -2070,7 +2108,7 @@ App.utils.mapas = (function (parent, config,service) {
             _this.view_map.when(function () {
                 var xsearch=$("[class='esri-search__sources-button esri-widget-button']")
                 xsearch.css('display','none');
-                _this.datosMap.divLegend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[0]);
+                _this.datosMap.divLegend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[0],_this.indexSubLayer);
             });
 
             _this.view_map.whenLayerView(_this.layer)
@@ -2175,9 +2213,9 @@ App.utils.mapas = (function (parent, config,service) {
             "dojo/domReady!"
         ],function (Legend){
             var _this=parent.mapas;
-            var i=_this.indexSubLayer
+            var i=_this.indexSubLayer;
             var codTematico=_this.datosMap.codTematico;
-            var htmlLengenda=crearLegenda(optionsSublayers[i]);
+            //var htmlLengenda=;
             var op=_this.layer.sublayers.items[3].visible;
 
             _this.datosMap.optionsSublayers=optionsSublayers;
@@ -2200,8 +2238,8 @@ App.utils.mapas = (function (parent, config,service) {
             });
             _this.layer.title= _this.datosMap.optionsSublayers[0].title;
 
-            if(i<3){_this.datosMap.divLegend.innerHTML=htmlLengenda;}
-            else if(i==3){ _this.datosMap.divLegend.innerHTML= crearLegenda(optionsSublayers[2]);}
+            if(i<3){_this.datosMap.divLegend.innerHTML=crearLegenda(optionsSublayers[i],i);}
+            else if(i==3){ _this.datosMap.divLegend.innerHTML= crearLegenda(optionsSublayers[2],i);}
 
             var indexMinimap=i;
             if(indexMinimap<2){indexMinimap++;}
@@ -2212,8 +2250,8 @@ App.utils.mapas = (function (parent, config,service) {
 
             var legend=document.getElementById("legendaMiniMap");
 
-            if(indexMinimap<3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap]);}
-            else if(indexMinimap==3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[2]);}
+            if(indexMinimap<3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[indexMinimap],indexMinimap);}
+            else if(indexMinimap==3){legend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[2],indexMinimap);}
 
 
 
@@ -2261,8 +2299,6 @@ App.utils.mapas = (function (parent, config,service) {
 
         if (options.vista == 'indicadores') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
-        }else if (options.vista == 'pobreza') {
-            list_mapas=[{div:'viewDiv',cod_mapa:'P07'}];
         }
 
         list_mapas.forEach(
