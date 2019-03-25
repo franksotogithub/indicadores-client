@@ -1249,7 +1249,6 @@ App.utils.mapas = (function (parent, config,service) {
             _this.actualizarMapaPorUbigeos = function (options) {
                 seleccionarAccesoRapido(options.ubigeos,options.nivel);
                 actualizarComboUbigeo(options.ubigeos);
-
             }
 
             /**
@@ -1307,6 +1306,7 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.ccppLyr.visible=false;
 
                     htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i],i);
+                    if(_this.maximizado) removerTodosMiniMaps();
                 }
 
                 else{
@@ -1498,6 +1498,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     else{
                         _this.select_ubigeos.splice(indiceUbigeoEncontrado, 1);
+                        _this.listCcpp.splice(indiceUbigeoEncontrado,1);
                         var remove=_this.view_map.graphics.items.find(x=>x.attributes.CODIGO==ubigeo);
                         _this.view_map.graphics.remove(remove);
                     }
@@ -1513,6 +1514,7 @@ App.utils.mapas = (function (parent, config,service) {
                         , grupos
                     );
 
+                    console.log('gruposDes>>',ubigeosDes)
                     actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
                 }
 
@@ -1577,8 +1579,8 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-                if(_this.maximizado)
-                    removerTodosMiniMaps();
+                /*if(_this.maximizado)
+                    removerTodosMiniMaps();*/
             }
 
 
@@ -1994,7 +1996,7 @@ App.utils.mapas = (function (parent, config,service) {
                     y: evt.y
                 };
 
-                console.log("long,lat>>",evt.x,evt.y);
+                //console.log("long,lat>>",evt.x,evt.y);
                 _this.view_map.hitTest(screenPoint)
                     .then( function(response){
                         var label=_this.historic_features[_this.indexSubLayer].label2;
@@ -2003,7 +2005,7 @@ App.utils.mapas = (function (parent, config,service) {
                         var nombre=attributes[label];
 
 
-                        if(_this.ubigeo!=ubigeo){
+                        if(_this.ubigeo!=ubigeo && _this.indexSubLayer<3 ){
                             _this.ubigeo=ubigeo;
                             createPopup(nombre,ubigeo,response.results[0].graphic.geometry.centroid);
                         }
