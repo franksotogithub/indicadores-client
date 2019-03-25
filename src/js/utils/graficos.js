@@ -112,7 +112,7 @@ App.utils.graficos = (function (parent, service, appData) {
             var options = {
                 uiId: uiId,
                 title: {
-                    text: data.titulo
+                    text: ''
                 }
             };
             options.xAxis = [];
@@ -128,7 +128,7 @@ App.utils.graficos = (function (parent, service, appData) {
             var options = {
                 uiId: uiId,
                 title: {
-                    text: data.titulo,
+                    text: '',
                 }
             };
             options.xAxis = [];
@@ -144,7 +144,7 @@ App.utils.graficos = (function (parent, service, appData) {
             var options = {
                 uiId: uiId,
                 title: {
-                    text: data.titulo
+                    text: ''
                 }
             };
 
@@ -234,6 +234,8 @@ App.utils.graficos = (function (parent, service, appData) {
         //var categoria = indicador.cuadrosData.categoria;
         $(".sliderDiv").html("");
         $("#id_graficoWidget_top").html("");
+        $(".titulosDiv").hide();
+        $(".titulosSelectDiv").hide();
         service.graficos.getIndicador(categoria, ubigeo, function (data) {
             //indicador.graficoCategoria[categoria] = data;
             console.log("grafico data >>>", data);
@@ -241,6 +243,8 @@ App.utils.graficos = (function (parent, service, appData) {
             var c=0;
             var alto = graficoData.alto;
             var tiene_boton = false;
+            var titulos = '';
+            var titulo = '';
             for (g in data) {
                 if (data[g].tipo_grafico == 1) {
                     var uiId = "id_graficoWidget_top";
@@ -249,6 +253,9 @@ App.utils.graficos = (function (parent, service, appData) {
                     alto = (tiene_boton) ? alto - 40 : alto;
                     c++;
                     var uiId = parent.format("grafico_{0}_c{1}", [c, categoria]);
+                    var selected = (c == 1) ? 'selected' : '';
+                    titulos += parent.format("<option value='{0}' {1}>{2}</option>", [c, selected, data[g].titulo]);
+                    titulo = data[g].titulo;
                     $(".sliderDiv").append('<div id="'+uiId+'" class="graficoElementSlider" style="height: '+alto+'px!important; display: none; "></div>');
                 }
 
@@ -256,7 +263,7 @@ App.utils.graficos = (function (parent, service, appData) {
                 charts[data[g].des_tipo_grafico](uiId, data[g]);
             }
             // Crea el slider
-            sliderGraph ();
+            sliderSelect(titulo, titulos);
         });
     };
 
