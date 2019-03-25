@@ -326,7 +326,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         if (codTematico == 'P07') {
             // aqui codigo de probreza
-        }else {
+        }else if (codTematico == 'P01'){
             App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
                 contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
                 contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">';
@@ -344,6 +344,10 @@ App.utils.mapas = (function (parent, config,service) {
                 }
 
             });
+        }else {
+            content.style.display = "none";
+            bloque1.style.display = "none";
+            bloque2.style.display = "none";
         }
 
 
