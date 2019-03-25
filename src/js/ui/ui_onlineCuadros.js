@@ -686,12 +686,21 @@ $(document).ready(function() {
 
     // Abrir cerrar busqueda en CUadros
     $(".buttonFlotanteBusqueda").click(function(){
+        var input = $(this).parent().find("input.inputTextBusqueda");
         $(".buttonFlotanteBusqueda").toggleClass("ocultaBus");
         $(".contenedorInputTablaB").toggleClass("ocultaBus");
         $(".buttonFlotanteBusqueda span").toggleClass("dripicons-search dripicons-chevron-up");
-
-        $(this).parent().find("input.inputTextBusqueda").focus();
-
+        var default_category = 'P01';
+        if($(".buttonFlotanteBusqueda").hasClass("ocultaBus")) {
+            $(input).val("");
+            $("#tabsCategoria > button").show();
+            $("#tabsCategoria > button[data-categoria='P08']").hide();
+            $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
+            $("#tabsCategoria > button[data-categoria='"+default_category+"']").addClass("btnTabTabla-activo");
+            App.utils.cuadros.categoriaChangeEvent({"categoria": default_category});
+        }else {
+            $(input).focus();
+        }
     });
 
     // Limpiar busqueda en cuadros
