@@ -28,9 +28,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param {{}} options - json con la vista que llama el metodo
      */
     var init = function (options) {
-        appData = appData();
         this.vista = options.vista;
-        if (options.vista == 'indicadores') {
+        appData = appData(this.vista);
+        if (options.vista == 'principales') {
             _initIndicadores(this, options.vista);
             parent.graficos.initIndicador(this);
         }
@@ -56,6 +56,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _crearTabsCategorias = function (datos, vista) {
+        console.log(">>> categorias")
         var tabsTemplate = function (dato) {
             var clase='';
             if (dato.esActivo) {
@@ -82,6 +83,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var html = '';
         var html2 = '';
         for (var i=0;i<datos.length;i++) {
+            console.log(">>>> datos", datos[i]["sistema"], vista);
             if (datos[i]["sistema"] == vista) {
                 html += tabsTemplate(datos[i]);
                 html2 += listaTemplate(datos[i]);
@@ -340,7 +342,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 leftColumns: 2
             },
             scrollY: _getAltoTabla('px'),
-            processing: true,
+            //processing: true,
             serverSide: false
         });
     };
@@ -435,6 +437,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 );
 
                 $("#loadindicadores").hide();
+                _this.fixedColumnsRelayout();
             });
         };
 
@@ -462,9 +465,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.target
         );
 
-        //this.fixedColumnsRelayout();
-
         $("#loadindicadores").hide();
+        this.fixedColumnsRelayout();
     };
 
     var buscadorIndicadores = function (response){

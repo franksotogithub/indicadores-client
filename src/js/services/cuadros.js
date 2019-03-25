@@ -3,8 +3,7 @@ App.service.cuadros = (function (service, config) {
     var getIndicadores = function (ubigeos, appdata, vista, callback) {
         var _this = this;
         service.get({
-            //url: parent.getUrlServer('indicadores/tabla/', {"u": ubigeos, "vista": [vista]}),
-            url: service.getUrlServer('principales/', {"u": ubigeos, "vista": [vista]}),
+            url: service.getUrlServer(service.url('{0}/', [vista]), {"u": ubigeos}),
             success: function (data) {
                 var dataPivot = pivotData(data, appdata);
                 _this.indicadores = dataPivot.data;
