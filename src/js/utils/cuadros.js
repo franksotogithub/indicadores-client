@@ -342,7 +342,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 leftColumns: 2
             },
             scrollY: _getAltoTabla('px'),
-            processing: true,
+            //processing: true,
             serverSide: false
         });
     };
@@ -430,6 +430,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 );
 
                 $("#loadindicadores").hide();
+                _this.fixedColumnsRelayout();
             });
         };
 
@@ -457,9 +458,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.target
         );
 
-        //this.fixedColumnsRelayout();
-
         $("#loadindicadores").hide();
+        this.fixedColumnsRelayout();
     };
 
     var buscadorIndicadores = function (response){
