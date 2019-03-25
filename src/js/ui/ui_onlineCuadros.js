@@ -42,8 +42,17 @@ function startIntro(){
         skipLabel: 'Saltar',
         doneLabel: 'Hecho'
     });
+
     intro.start();
+    App.service.save('intro', {"saltar": 1});
+
 }
+
+
+
+
+
+
 
 /* Intro de la ayuda Movil */
 
@@ -75,6 +84,7 @@ function startIntroMovil(){
         ]
     });
     intro.start();
+    App.service.save('intro', {"saltar": 1});
 }
 
 
@@ -781,6 +791,14 @@ $(document).ready(function() {
         /*if(App.uiMouseOutTabla!==undefined){
             App.uiMouseOutTabla();
         }*/
+
+    });
+
+    $('.titulosSelectDiv').on('change','.selectTitulograph', function() {
+        var slider = $(this).val();
+
+        $(".sliderDiv [data-slider="+slider+"]").siblings("div").hide();
+        $(".sliderDiv [data-slider="+slider+"]").show();
 
     });
 

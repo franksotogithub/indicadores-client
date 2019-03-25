@@ -2180,10 +2180,13 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if (service.getLocal('intro') === null) {
                     if(anchoWIndowT > 1279){
+
                         startIntro();
+
                     }else {
                         startIntroMovil();
                     }
+
                 }
 
 
