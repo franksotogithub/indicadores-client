@@ -713,11 +713,15 @@ $(document).ready(function() {
         $(this).siblings("button").removeClass("btnTabTabla-activo");
         $(this).addClass("btnTabTabla-activo");
 
-        var mapa = $(this).attr("data-codevent");
-        if(mapa === "mapas"){
+        var botonData = $(this).attr("data-codevent");
+        if(botonData === "mapas"){
             $("button.botonNavegar > span").css("background-image","url(../img/icoperuBn.png)");
         }else{
             $("button.botonNavegar > span").css("background-image","url(../img/icoperuBn2.png)");
+        }
+
+        if(botonData === "cuadros"){
+            /* Poner aqui lo que quieras llamar Jose */
         }
 
     });
