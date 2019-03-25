@@ -348,8 +348,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var _getAltoTabla = function (px) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
+        var tam_ventanan2 = $(window).width();
 
-        totalVentana = (tam_ventana1 - 317);
+
+        if(tam_ventanan2 < 1280){
+            totalVentana = (tam_ventana1 - 200);
+        }else{
+            totalVentana = (tam_ventana1 - 317);
+        }
+
 
 
 
