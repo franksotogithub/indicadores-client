@@ -326,7 +326,7 @@ App.utils.mapas = (function (parent, config,service) {
 
         if (codTematico == 'P07') {
             // aqui codigo de probreza
-        }else if (codTematico == 'P01'){
+        }else if (codTematico == 'P01' && ubigeo.length <= 6){
             App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
                 contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
                 contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">';
