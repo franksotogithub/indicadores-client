@@ -919,7 +919,7 @@ $(document).ready(function() {
             var html = $("#plantilla_modal_metadato").html();
             $(".modalGeneral .contenedorModalInfo").html(html);
             if($(".modalGeneral .contenedorMetadatoModal ").length > 0){
-                $(".modalCentro").css("height","auto");
+                $(".modalCentro").css("height","60%");
                 console.log("Metadato");
             }else{
                 $(".modalCentro").css("height","60%");
