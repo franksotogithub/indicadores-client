@@ -933,18 +933,6 @@ $(document).ready(function() {
 
     }
 
-    introJs().onexit(function() {
-       
-    });
-
-
-
-
-
-
-
-
-
     $("html").on('mouseenter', '#tblindicadores > tbody > tr > td', function() {
         var indice = $(this).parent().index();
         $(this).parent().addClass("hoverFila");

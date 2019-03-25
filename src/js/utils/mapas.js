@@ -2178,12 +2178,14 @@ App.utils.mapas = (function (parent, config,service) {
                 xsearch.css('display','none');
                 _this.datosMap.divLegend.innerHTML=crearLegenda(_this.datosMap.optionsSublayers[0],_this.indexSubLayer);
 
-
-                if(anchoWIndowT > 1279){
-                    startIntro();
-                }else {
+                if (service.getLocal('intro') === null) {
+                    if(anchoWIndowT > 1279){
+                        startIntro();
+                    }else {
                         startIntroMovil();
+                    }
                 }
+
 
             });
 
