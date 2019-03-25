@@ -324,25 +324,28 @@ App.utils.mapas = (function (parent, config,service) {
         bloque1.setAttribute("id","resumen");
         bloque2.setAttribute("id","mapaGrafico");
 
-        App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
+        if (codTematico == 'P07') {
+            // aqui codigo de probreza
+        }else {
+            App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
+                contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
+                contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">';
+                data.resumen.forEach(function (el ){
+                    el.name = (el.adicional == null) ? el.name: "";
+                    contenidoPopoverBloque1+='<div class="pobGeneroPopoverMapBlock '+el.color+'"> <h3 class="'+el.adicional+'">'+el.name+'</h3><p>'+parent.numberFormat(el.y    )+'</p>  </div>';
+                });
+                contenidoPopoverBloque1+='</div>';
+                bloque1.innerHTML=contenidoPopoverBloque1;
+                if(Object.keys(data.grafico).length > 0){
+                    bloque2.style.display = 'block';
+                    Highcharts.chart(bloque2, data.grafico);
+                }else {
+                    bloque2.style.display = 'none';
+                }
 
-            console.log(">>>> getContenidoPopupMapaEvent", data);
-            contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
-            contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">';
-            data.resumen.forEach(function (el ){
-                el.name = (el.adicional == null) ? el.name: "";
-                contenidoPopoverBloque1+='<div class="pobGeneroPopoverMapBlock '+el.color+'"> <h3 class="'+el.adicional+'">'+el.name+'</h3><p>'+parent.numberFormat(el.y    )+'</p>  </div>';
             });
-            contenidoPopoverBloque1+='</div>';
-            bloque1.innerHTML=contenidoPopoverBloque1;
-            if(Object.keys(data.grafico).length > 0){
-                bloque2.style.display = 'block';
-                Highcharts.chart(bloque2, data.grafico);
-            }else {
-                bloque2.style.display = 'none';
-            }
+        }
 
-        });
 
         return content;
     }
@@ -2377,6 +2380,8 @@ App.utils.mapas = (function (parent, config,service) {
 
         if (options.vista == 'indicadores') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
+        }else if (options.vista == 'pobreza') {
+            list_mapas=[{div:'viewDiv',cod_mapa:'P07'}];
         }
 
         list_mapas.forEach(
@@ -2394,7 +2399,7 @@ App.utils.mapas = (function (parent, config,service) {
             }
         );
 
-    }
+    };
 
     return {
         init:init,
