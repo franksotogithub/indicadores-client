@@ -1308,6 +1308,7 @@ a.LinkModalCE{
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 35%;
 }
 
 .contenedorModalInfo{
@@ -1596,7 +1597,6 @@ a.LinkModalCE{
 
 @media screen and (max-width: 1281px){
     /* Cuadros Estadisticos*/
-
     .ceContenedorIndice {
         display: none !important;
     }
@@ -1606,6 +1606,12 @@ a.LinkModalCE{
     }
     div.contenedorVentana.ventanaCE > section{
         margin:0px !important;
+    }
+
+
+    /* Modal */
+    .modalCentro{
+        width:65%;
     }
 }
 
