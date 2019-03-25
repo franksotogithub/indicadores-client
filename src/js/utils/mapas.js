@@ -311,7 +311,7 @@ App.utils.mapas = (function (parent, config,service) {
         return zoom;
     }
 
-    var createContentPopup= function (ubigeo,codTematico) {
+    var createContentPopup= function (ubigeo,codTematico,feature_dat) {
         var content = document.createElement("div");
         var bloque1 = document.createElement("div");
         var bloque2 = document.createElement("div");
@@ -325,7 +325,8 @@ App.utils.mapas = (function (parent, config,service) {
         bloque2.setAttribute("id","mapaGrafico");
 
         if (codTematico == 'P07') {
-            // aqui codigo de probreza
+            contenidoPopoverBloque1='<div class="pobGeneroPopoverMap"><h3>Incidencia de Pobreza</h3><h3>Superior</h3> <h3>'+feature_dat.attributes.P070001+'%</h3> <h3>Inferior</h3> <h3>'+feature_dat.attributes.P070002+'%</h3>  </div>';
+            bloque1.innerHTML=contenidoPopoverBloque1;
         }else {
             App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
                 contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
@@ -1372,11 +1373,12 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
 
-            var createPopup=function(title,codigo,centro){
+            var createPopup=function(title,codigo,centro,feature_dat){
+
                 popup=_this.view_map.popup.open({
                         title:title,
                         location:centro,
-                        content:createContentPopup(codigo,_this.datosMap.codMap),
+                        content:createContentPopup(codigo,_this.datosMap.codMap,feature_dat),
                     }
                 );
                 _this.view_map.popup.dockOptions= {
@@ -1432,6 +1434,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if (feature && _this.indexSubLayer<3){
                     var ubigeo=feature.attributes.CODIGO;
+                     var feature_dat=feature;
                     var nombre='';
                     if(_this.indexSubLayer==0){nombre=feature.attributes.NOMBDEP;}
                     else if(_this.indexSubLayer==1){nombre=feature.attributes.NOMBPROV;}
@@ -1440,7 +1443,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
                         _this.opc_select="select";
-                        createPopup(nombre,ubigeo,feature.geometry.centroid);
+                        createPopup(nombre,ubigeo,feature.geometry.centroid,feature_dat);
                         updatePanel(nombre,ubigeo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
                         _this.select_ubigeos.push(ubigeo);
                         _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
