@@ -28,9 +28,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param {{}} options - json con la vista que llama el metodo
      */
     var init = function (options) {
-        appData = appData();
         this.vista = options.vista;
-        if (options.vista == 'indicadores') {
+        appData = appData(this.vista);
+        if (options.vista == 'principales') {
             _initIndicadores(this, options.vista);
             parent.graficos.initIndicador(this);
         }
@@ -56,6 +56,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _crearTabsCategorias = function (datos, vista) {
+        console.log(">>> categorias")
         var tabsTemplate = function (dato) {
             var clase='';
             if (dato.esActivo) {
@@ -82,6 +83,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var html = '';
         var html2 = '';
         for (var i=0;i<datos.length;i++) {
+            console.log(">>>> datos", datos[i]["sistema"], vista);
             if (datos[i]["sistema"] == vista) {
                 html += tabsTemplate(datos[i]);
                 html2 += listaTemplate(datos[i]);
@@ -340,7 +342,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 leftColumns: 2
             },
             scrollY: _getAltoTabla('px'),
-            processing: true,
+            //processing: true,
             serverSide: false
         });
     };
@@ -348,8 +350,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var _getAltoTabla = function (px) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
+        var tam_ventanan2 = $(window).width();
 
-        totalVentana = (tam_ventana1 - 317);
+
+        if(tam_ventanan2 < 1280){
+            totalVentana = (tam_ventana1 - 200);
+        }else{
+            totalVentana = (tam_ventana1 - 317);
+        }
+
 
 
 
@@ -428,6 +437,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 );
 
                 $("#loadindicadores").hide();
+                _this.fixedColumnsRelayout();
             });
         };
 
@@ -455,16 +465,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.target
         );
 
-        //this.fixedColumnsRelayout();
-
         $("#loadindicadores").hide();
+        this.fixedColumnsRelayout();
     };
 
     var buscadorIndicadores = function (response){
         var _this = this;
-        console.log(">>>> response", response);
 
-        /*
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
@@ -480,7 +487,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 _this.target
             );
             $("#loadindicadores").hide();
-        });*/
+        });
     };
 
     var reiniciarTabla = function () {

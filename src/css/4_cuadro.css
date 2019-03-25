@@ -349,6 +349,10 @@ button.btnOnlineMaxIr {
     cursor: pointer;
 }
 
+.contenedorMetadatoModal{
+    overflow: auto;
+}
+
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 
     .tablaTabButton{
@@ -469,7 +473,7 @@ button.btnOnlineMaxIr {
 }
 
 @media screen and (max-width: 1281px) {
-
+    .selectCuadros { display: none;}
     .tablaTabButton{
         padding: 12px 6px;
         background-color: #FFFFFF;
