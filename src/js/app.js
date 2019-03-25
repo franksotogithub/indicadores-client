@@ -27,8 +27,9 @@ var App = (function (scope, config, appData) {
      */
     var init = function (vista, ventanas) {
         // Config
-        appData(function (app, datos) {
-            appData = datos;
+        var _this = this;
+        appData(vista, function (app, datos) {
+            _this.appData = datos;
             config.highchart();
             _hasUtils(app, 'init', {"vista": vista}, ventanas);
         }, false);
@@ -59,7 +60,8 @@ var App = (function (scope, config, appData) {
 
     var getAppData = function (url, datos, callback, es_local) {;
         if (es_local) {
-            return this.service.get({url: url}, true);
+            //return this.service.get({url: url}, true);
+            return this.appData;
         }
         else {
             var app = this;
@@ -202,6 +204,7 @@ var App = (function (scope, config, appData) {
         categoria: '01',
         ubigeo: '00',
         uiMax: uiMax,
+        appData: {},
         init: init,
         getAppData: getAppData,
         uiMaxCallback: uiMaxCallback,
