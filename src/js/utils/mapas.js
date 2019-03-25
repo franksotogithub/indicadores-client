@@ -2378,7 +2378,7 @@ App.utils.mapas = (function (parent, config,service) {
         _this.panelDiv= document.getElementById("panel");
         _this.ubigeos = [];
 
-        if (options.vista == 'indicadores') {
+        if (options.vista == 'principales') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
         }else if (options.vista == 'pobreza') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P07'}];
