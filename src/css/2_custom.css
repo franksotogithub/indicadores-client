@@ -728,7 +728,8 @@ nav.nav-vertical {
     color: white;
     vertical-align: top;
     height: 100%;
-
+    top:67px;
+    left:0;
     font-size: 12px;
     font-family: "open_sansregular";
     position: absolute;
@@ -1670,7 +1671,9 @@ a.LinkModalCE{
         display: none;
         position: absolute;
         width: 180px;
-        z-index: 99; }
+        z-index: 99;
+        top:51px;
+    }
     nav.nav-vertical img {
         height: 30px;
         width: 32px; }
