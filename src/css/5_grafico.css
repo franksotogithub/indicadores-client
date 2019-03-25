@@ -258,6 +258,13 @@
 .contenidoMetadato.pm4 p {color: #222222;}
 
 
+
+.titulosDiv h2 {
+    color:#333333;
+    font-size:18px;
+}
+
+
 /* Select Elmer*/
 
 select.selectTitulograph{
