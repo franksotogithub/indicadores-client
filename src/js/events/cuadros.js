@@ -41,7 +41,9 @@
         });
 
         $(".inputTextBusqueda").autocomplete({
-            serviceUrl: service.getUrlServer('dimensiones/tematico/autocomplete/'),
+            serviceUrl: service.getUrlServer(
+                service.url('dimensiones/tematico/autocomplete/?category={0}', [utils.cuadros.cuadrosData.categoria])
+            ),
             onSelect: function (response) {
                 App.utils.cuadros.buscadorIndicadores(response);
             },
