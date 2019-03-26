@@ -1010,6 +1010,10 @@ div.contenedorVentana.ventanaCE  > section{
     background-color: #ffebb7 !important;
 }
 
+.clicFila , .clicFila > td {
+    background-color: #a9e4ff !important;
+}
+
 
 
 

@@ -976,6 +976,24 @@ $(document).ready(function() {
     });
 
 
+    $("html").on('click', '#tblindicadores > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $("#tblindicadores > tbody > tr").removeClass("clicFila");
+        $(".DTFC_Cloned > tbody tr").removeClass("clicFila");
+
+        $(this).parent().addClass("clicFila");
+        $(".DTFC_Cloned > tbody tr:eq("+indice+")").addClass("clicFila");
+    });
+    $("html").on('click', '.DTFC_Cloned > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $("#tblindicadores > tbody > tr").removeClass("clicFila");
+        $(".DTFC_Cloned > tbody tr").removeClass("clicFila");
+
+        $(this).parent().addClass("clicFila");
+        $("#tblindicadores > tbody tr:eq("+indice+")").addClass("clicFila");
+    });
+
+
 
     $("html").on('mouseenter', '.DTFC_Cloned > tbody > tr > td', function() {
         var indice = $(this).parent().index();
