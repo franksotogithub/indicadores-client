@@ -838,7 +838,41 @@ App.utils.mapas = (function (parent, config,service) {
         }
 
         else if(index==3){
-            html=
+
+
+           if (data.title == 'INCIDENCIA DE POBREZA'){
+
+                html=
+            '<div class="esri-legend__service">'+
+            '<div class="esri-legend__service-label">'+data.title+'</div>'+
+            '<div class="esri-legend__layer">'+
+            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+            '<div class="esri-legend__layer-caption" >Centros Poblados</div>'+
+            '<div class="esri-legend__layer-body" >' ;
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#8fff26;  width:15px;height:15px;border-radius: 50%"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Centros Poblados Con Datos</div>';
+            html+='</div>';
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#e6e6e6;  width:15px;height:15px;border-radius: 50%"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Centros Poblados Sin Datos</div>';
+            html+='</div>';
+
+            html+=
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+
+           }
+           else {
+                html=
             '<div class="esri-legend__service">'+
             '<div class="esri-legend__service-label">'+data.title+'</div>'+
             '<div class="esri-legend__layer">'+
@@ -866,6 +900,7 @@ App.utils.mapas = (function (parent, config,service) {
             '</div>'+
             '</div>';
 
+           }
         }
 
         return html;
@@ -1040,7 +1075,48 @@ App.utils.mapas = (function (parent, config,service) {
                 sublayers: _this.datosMap.renderOptionsSublayersBack,
 
             });
-            var rendererCCpp= {
+
+            if(_this.datosMap.codMap == 'P07'){
+
+                 var rendererCCpp= {
+                type:"class-breaks",
+                field:"POBLACION",
+                classBreakInfos:[{
+                    minValue: 0,
+                    maxValue: 0,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"circle",
+                        color:"#e6e6e6",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    }
+
+                },{
+                    minValue: 1,
+                    maxValue: 999999,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"circle",
+                        color:"#8fff26",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    }
+
+                }]
+            };
+
+            }else {
+
+                 var rendererCCpp= {
                 type:"class-breaks",
                 field:"POBLACION",
                 classBreakInfos:[{
@@ -1075,6 +1151,10 @@ App.utils.mapas = (function (parent, config,service) {
 
                 }]
             };
+            }
+
+
+
 
 
             _this.layerBaseNacional = new MapImageLayer({
@@ -1512,7 +1592,16 @@ App.utils.mapas = (function (parent, config,service) {
                         , grupos
                     );
 
-                    actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+                    if(_this.datosMap.codMap == 'P07'){
+                        console.log("ingresa a centro poblados de pobreza ");
+                        ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features,_this.select_ubigeos);
+                         actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+
+                    }else{
+                         actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+
+                    }
+
                 }
 
                 else{
