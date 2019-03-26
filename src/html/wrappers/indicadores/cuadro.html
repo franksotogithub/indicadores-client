@@ -53,7 +53,7 @@
         <button type="button" class="buttonFlotanteBusqueda ocultaBus" title="Buscar por indicador"><span class="dripicons-search"></span> </button>
     </div>
     <div class="contenedor_indicadores">
-        <div class="selectCuadros" style="">
+        <div class="selectCuadros" style="display: none;">
             <label> Ponderador de población:</label>
             <select id="comboPonderador">
 
@@ -63,7 +63,7 @@
          data-intro="Aqui encontraras la información agrupada en categorias, puedes navegar entre ellas y ver la información."></div>
 
 
-    <table id="tblindicadores" style="width:100%">
+    <table id="tblindicadores" class="{{ vista }}"  style="width:100%">
         <thead class="theadindicadores"></thead>
         <tbody></tbody>
     </table>
