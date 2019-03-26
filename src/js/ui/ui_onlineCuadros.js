@@ -42,8 +42,17 @@ function startIntro(){
         skipLabel: 'Saltar',
         doneLabel: 'Hecho'
     });
+
     intro.start();
+    App.service.save('intro', {"saltar": 1});
+
 }
+
+
+
+
+
+
 
 /* Intro de la ayuda Movil */
 
@@ -75,6 +84,7 @@ function startIntroMovil(){
         ]
     });
     intro.start();
+    App.service.save('intro', {"saltar": 1});
 }
 
 
@@ -676,12 +686,21 @@ $(document).ready(function() {
 
     // Abrir cerrar busqueda en CUadros
     $(".buttonFlotanteBusqueda").click(function(){
+        var input = $(this).parent().find("input.inputTextBusqueda");
         $(".buttonFlotanteBusqueda").toggleClass("ocultaBus");
         $(".contenedorInputTablaB").toggleClass("ocultaBus");
         $(".buttonFlotanteBusqueda span").toggleClass("dripicons-search dripicons-chevron-up");
-
-        $(this).parent().find("input.inputTextBusqueda").focus();
-
+        var default_category = 'P01';
+        if($(".buttonFlotanteBusqueda").hasClass("ocultaBus")) {
+            $(input).val("");
+            $("#tabsCategoria > button").show();
+            $("#tabsCategoria > button[data-categoria='P08']").hide();
+            $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
+            $("#tabsCategoria > button[data-categoria='"+default_category+"']").addClass("btnTabTabla-activo");
+            App.utils.cuadros.categoriaChangeEvent({"categoria": default_category});
+        }else {
+            $(input).focus();
+        }
     });
 
     // Limpiar busqueda en cuadros
@@ -703,11 +722,15 @@ $(document).ready(function() {
         $(this).siblings("button").removeClass("btnTabTabla-activo");
         $(this).addClass("btnTabTabla-activo");
 
-        var mapa = $(this).attr("data-codevent");
-        if(mapa === "mapas"){
+        var botonData = $(this).attr("data-codevent");
+        if(botonData === "mapas"){
             $("button.botonNavegar > span").css("background-image","url(../img/icoperuBn.png)");
         }else{
             $("button.botonNavegar > span").css("background-image","url(../img/icoperuBn2.png)");
+        }
+
+        if(botonData === "cuadros"){
+            /* Poner aqui lo que quieras llamar Jose */
         }
 
     });
@@ -781,6 +804,14 @@ $(document).ready(function() {
         /*if(App.uiMouseOutTabla!==undefined){
             App.uiMouseOutTabla();
         }*/
+
+    });
+
+    $('.titulosSelectDiv').on('change','.selectTitulograph', function() {
+        var slider = $(this).val();
+
+        $(".sliderDiv [data-slider="+slider+"]").siblings("div").hide();
+        $(".sliderDiv [data-slider="+slider+"]").show();
 
     });
 
@@ -901,7 +932,7 @@ $(document).ready(function() {
             var html = $("#plantilla_modal_metadato").html();
             $(".modalGeneral .contenedorModalInfo").html(html);
             if($(".modalGeneral .contenedorMetadatoModal ").length > 0){
-                $(".modalCentro").css("height","auto");
+                $(".modalCentro").css("height","60%");
                 console.log("Metadato");
             }else{
                 $(".modalCentro").css("height","60%");
@@ -942,6 +973,24 @@ $(document).ready(function() {
         var indice = $(this).parent().index();
         $(this).parent().removeClass("hoverFila");
         $(".DTFC_Cloned > tbody tr:eq("+indice+")").removeClass("hoverFila");
+    });
+
+
+    $("html").on('click', '#tblindicadores > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $("#tblindicadores > tbody > tr").removeClass("clicFila");
+        $(".DTFC_Cloned > tbody tr").removeClass("clicFila");
+
+        $(this).parent().addClass("clicFila");
+        $(".DTFC_Cloned > tbody tr:eq("+indice+")").addClass("clicFila");
+    });
+    $("html").on('click', '.DTFC_Cloned > tbody > tr > td', function() {
+        var indice = $(this).parent().index();
+        $("#tblindicadores > tbody > tr").removeClass("clicFila");
+        $(".DTFC_Cloned > tbody tr").removeClass("clicFila");
+
+        $(this).parent().addClass("clicFila");
+        $("#tblindicadores > tbody tr:eq("+indice+")").addClass("clicFila");
     });
 
 

@@ -212,12 +212,27 @@ button.ocultaBus{
     max-width: 415px;
 }
 
-td.tituloIndicador {
+/* td.tituloIndicador { */
+.principales .nivel2 {
     font-weight: bold !important;
     text-indent: 0px;
     /*white-space: nowrap;*/
     min-width: 280px;
     max-width: 415px;
+}
+
+.pobreza .nivel1 {
+    font-weight: bold !important;
+    text-indent: 0px;
+
+    min-width: 280px;
+    max-width: 415px;
+}
+.pobreza .nivel2 {
+    text-indent: 15px;
+}
+.pobreza .nivel3 {
+    text-indent: 30px;
 }
 
 
@@ -349,6 +364,10 @@ button.btnOnlineMaxIr {
     cursor: pointer;
 }
 
+.contenedorMetadatoModal{
+    overflow: auto;
+}
+
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 
     .tablaTabButton{
@@ -469,7 +488,7 @@ button.btnOnlineMaxIr {
 }
 
 @media screen and (max-width: 1281px) {
-
+    .selectCuadros { display: none;}
     .tablaTabButton{
         padding: 12px 6px;
         background-color: #FFFFFF;

@@ -28,9 +28,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      * @param {{}} options - json con la vista que llama el metodo
      */
     var init = function (options) {
-        appData = appData();
         this.vista = options.vista;
-        if (options.vista == 'indicadores') {
+        appData = appData(this.vista);
+        if (options.vista == 'principales') {
             _initIndicadores(this, options.vista);
             parent.graficos.initIndicador(this);
         }
@@ -45,14 +45,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         _crearTabsCategorias(appData.categorias, vista);
         _crearSelectPonderador(appData.ponderadores);
         _this.crearTablaUigeos(['00'], []);
+        $(".selectCuadros").show();
         //_this.crearTablaUigeos(['01','02','03','04','05','06','07','08'], []);
     };
 
     var _initPobreza = function (_this, vista) {
-        App.categoria = 'P07';
+        _this.cuadrosData.categoria = 'P07';
         _this.expardirVentana = true;
         _crearTabsCategorias(appData.categorias, vista);
-        _this.crearTablaUigeos([], []);
+        _this.crearTablaUigeos(['00'], []);
     };
 
     var _crearTabsCategorias = function (datos, vista) {
@@ -67,9 +68,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             });
             return '<button class="tablaTabButton'+clase+'" data-categoria="'+dato.codigo+'" '+style+'>'+dato.titulo+'</button>';
         };
-
             // Agregado por DMK
-
             var listaTemplate = function (dato) {
                 var clase='';
                 if (dato.esActivo) {
@@ -78,11 +77,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 return '<li data-selected="'+clase+'" data-categoria="'+dato.codigo+'">'+dato.titulo+'</li>';
             };
 
-
         var html = '';
         var html2 = '';
+        var cont = 0;
         for (var i=0;i<datos.length;i++) {
+            console.log(">>>> datos", datos[i]["sistema"], vista);
             if (datos[i]["sistema"] == vista) {
+                cont++;
                 html += tabsTemplate(datos[i]);
                 html2 += listaTemplate(datos[i]);
             }
@@ -90,7 +91,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
         $("#tabsCategoria").html(html);
         $("#comboCategoria ul").html(html2);
-
+        if(cont == 1){ $("#tabsCategoria").hide() };
     };
 
     var _crearSelectPonderador = function (datos) {
@@ -177,7 +178,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 clase = ' class="thindicador"';
             }else {
                 clase = ' class="thtitulo"';
-                data += 'data-tienehijos="'+hijos[v.ubigeo]['tiene_hijos']+'"';
+                data += 'data-tienehijos="'+ ( hijos.hasOwnProperty(v.ubigeo) ? hijos[v.ubigeo]['tiene_hijos']+'"' : '');
             }
 
             var th = '<th'+rowspan+colspan+clase+' ubigeo="'+v.ubigeo+'" '+data+'>'+tituloNivel(v.ubigeo, v.titulo)+'</th>';
@@ -241,6 +242,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
      */
     var _crearTabla= function (table, data, columns, targets) {
         $(".theadindicadores").show();
+        console.log(">>>> data table", data);
         return $(table).DataTable({
             data: data,
             order: [[0, 'asc']],
@@ -263,9 +265,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                     "createdCell": function (td, cellData, rowData, row, col) {
                         if (appData.tituloIndicadores.hasOwnProperty(cellData)){
                             var v = appData.tituloIndicadores[cellData];
+
+                            $(td).addClass('nivel' + v.cod_nivel_tematico);
+
+                            /*
                             if (v.cod_nivel_tematico == 2) {
                                 $(td).addClass('tituloIndicador');
                             }
+                            */
+
                             $(td).addClass("popover");
                             $(td).attr('data-popover', appData.tituloIndicadores[cellData].descripcion);
                             $(td).attr('data-indicador', cellData);
@@ -340,7 +348,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 leftColumns: 2
             },
             scrollY: _getAltoTabla('px'),
-            processing: true,
+            //processing: true,
             serverSide: false
         });
     };
@@ -348,8 +356,15 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var _getAltoTabla = function (px) {
         var tam_ventana1 = $(window).height();
         var totalVentana = 0;
+        var tam_ventanan2 = $(window).width();
 
-        totalVentana = (tam_ventana1 - 317);
+
+        if(tam_ventanan2 < 1280){
+            totalVentana = (tam_ventana1 - 200);
+        }else{
+            totalVentana = (tam_ventana1 - 317);
+        }
+
 
 
 
@@ -428,6 +443,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 );
 
                 $("#loadindicadores").hide();
+                _this.fixedColumnsRelayout();
             });
         };
 
@@ -455,16 +471,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.target
         );
 
-        //this.fixedColumnsRelayout();
-
         $("#loadindicadores").hide();
+        this.fixedColumnsRelayout();
     };
 
     var buscadorIndicadores = function (response){
         var _this = this;
-        console.log(">>>> response", response);
 
-        /*
         $("#loadindicadores").show();
         if (this.tblIndicadores !== undefined) {
             this.tblIndicadores.destroy();
@@ -480,7 +493,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                 _this.target
             );
             $("#loadindicadores").hide();
-        });*/
+        });
     };
 
     var reiniciarTabla = function () {

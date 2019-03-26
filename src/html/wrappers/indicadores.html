@@ -111,7 +111,7 @@
         </div>
         </header>
         <div class="contenidoCuadro">
-            {% include 'indicadores/cuadro.html' %}
+            {% include 'indicadores/cuadro.html'  with {'vista': 'principales'} %}
         </div>
     </section>
 </div><!--
@@ -139,7 +139,7 @@
 {% block endscript %}
 <script type="text/javascript">
     $(document).ready(function (e) {
-        App.init('indicadores', ['mapas', 'cuadros', 'graficos']);
+        App.init('principales', ['mapas', 'cuadros', 'graficos']);
     });
 </script>
 {% endblock %}

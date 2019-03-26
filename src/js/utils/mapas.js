@@ -327,7 +327,7 @@ App.utils.mapas = (function (parent, config,service) {
         if (codTematico == 'P07') {
             contenidoPopoverBloque1='<div class="pobGeneroPopoverMap"><h3>Incidencia de Pobreza</h3><h3>Superior</h3> <h3>'+feature_dat.attributes.P070001+'%</h3> <h3>Inferior</h3> <h3>'+feature_dat.attributes.P070002+'%</h3>  </div>';
             bloque1.innerHTML=contenidoPopoverBloque1;
-        }else {
+        }else if (codTematico == 'P01' && ubigeo.length <= 6){
             App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
                 contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
                 contenidoPopoverBloque1+='<div class="pobGeneroPopoverMap">';
@@ -345,6 +345,10 @@ App.utils.mapas = (function (parent, config,service) {
                 }
 
             });
+        }else {
+            content.style.display = "none";
+            bloque1.style.display = "none";
+            bloque2.style.display = "none";
         }
 
 
@@ -1326,7 +1330,6 @@ App.utils.mapas = (function (parent, config,service) {
             _this.actualizarMapaPorUbigeos = function (options) {
                 seleccionarAccesoRapido(options.ubigeos,options.nivel);
                 actualizarComboUbigeo(options.ubigeos);
-
             }
 
             /**
@@ -1384,6 +1387,7 @@ App.utils.mapas = (function (parent, config,service) {
                     _this.ccppLyr.visible=false;
 
                     htmlLengenda=crearLegenda(_this.datosMap.optionsSublayers[i],i);
+                    if(_this.maximizado) removerTodosMiniMaps();
                 }
 
                 else{
@@ -1577,6 +1581,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     else{
                         _this.select_ubigeos.splice(indiceUbigeoEncontrado, 1);
+                        _this.listCcpp.splice(indiceUbigeoEncontrado,1);
                         var remove=_this.view_map.graphics.items.find(x=>x.attributes.CODIGO==ubigeo);
                         _this.view_map.graphics.remove(remove);
                     }
@@ -1665,8 +1670,8 @@ App.utils.mapas = (function (parent, config,service) {
 
 
 
-                if(_this.maximizado)
-                    removerTodosMiniMaps();
+                /*if(_this.maximizado)
+                    removerTodosMiniMaps();*/
             }
 
 
@@ -2082,7 +2087,7 @@ App.utils.mapas = (function (parent, config,service) {
                     y: evt.y
                 };
 
-                console.log("long,lat>>",evt.x,evt.y);
+                //console.log("long,lat>>",evt.x,evt.y);
                 _this.view_map.hitTest(screenPoint)
                     .then( function(response){
                         var label=_this.historic_features[_this.indexSubLayer].label2;
@@ -2091,7 +2096,7 @@ App.utils.mapas = (function (parent, config,service) {
                         var nombre=attributes[label];
 
 
-                        if(_this.ubigeo!=ubigeo){
+                        if(_this.ubigeo!=ubigeo && _this.indexSubLayer<3 ){
                             _this.ubigeo=ubigeo;
                             createPopup(nombre,ubigeo,response.results[0].graphic.geometry.centroid);
                         }
@@ -2275,10 +2280,13 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if (service.getLocal('intro') === null) {
                     if(anchoWIndowT > 1279){
+
                         startIntro();
+
                     }else {
                         startIntroMovil();
                     }
+
                 }
 
 
@@ -2470,7 +2478,7 @@ App.utils.mapas = (function (parent, config,service) {
         _this.panelDiv= document.getElementById("panel");
         _this.ubigeos = [];
 
-        if (options.vista == 'indicadores') {
+        if (options.vista == 'principales') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P01'}];
         }else if (options.vista == 'pobreza') {
             list_mapas=[{div:'viewDiv',cod_mapa:'P07'}];
