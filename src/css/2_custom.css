@@ -205,9 +205,9 @@ td.popover:hover {
 }
 
 
-.cuadroPobreza td.popover:hover{
+/*.cuadroPobreza td.popover:hover{
     background-color: #bf1d1d !important;
-}
+}*/
 
 
 /* asd */
@@ -1014,6 +1014,9 @@ div.contenedorVentana.ventanaCE  > section{
     background-color: #a9e4ff !important;
 }
 
+.cuadroPobreza .clicFila, .cuadroPobreza .clicFila > td{
+    background-color: #ffbfc0 !important;
+}
 
 
 
