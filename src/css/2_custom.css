@@ -205,9 +205,9 @@ td.popover:hover {
 }
 
 
-.cuadroPobreza td.popover:hover{
+/*.cuadroPobreza td.popover:hover{
     background-color: #bf1d1d !important;
-}
+}*/
 
 
 /* asd */
@@ -1014,6 +1014,9 @@ div.contenedorVentana.ventanaCE  > section{
     background-color: #a9e4ff !important;
 }
 
+.cuadroPobreza .clicFila, .cuadroPobreza .clicFila > td{
+    background-color: #ffbfc0 !important;
+}
 
 
 
@@ -1375,14 +1378,14 @@ a.LinkModalCE{
 .contenedorModalInfo .contenidoGeneralCentros{
     background-color: #f3f3f3;
     display: inline-block;
-
     width: 95%;
     vertical-align: top;
     font-family: open_sansregular;
     margin-top: 10px;
     border-radius: 10px;
     font-size: 13px;
-    text-align: center;
+    text-align: left;
+    text-indent: 20px;
     padding: 9px 0;
 }
 .contenidoGeneralCentros > p {
@@ -1455,6 +1458,38 @@ a.LinkModalCE{
     }
     .thtitulo{
         cursor: pointer;}
+.ayudaInformacion{
+    position: relative;
+}
+
+.ayudaInformacion:hover .listaAyudaeInfo {
+    display: block;
+}
+
+.listaAyudaeInfo{
+    display: none;
+    top: 70px;
+    width: 142px;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    z-index: 999;
+    text-shadow: none;
+}
+.listaAyudaeInfo a{
+    font-size: 14px;
+    font-family: signikaregular;
+    color: #222222;
+    padding:10px 10px;
+    margin: 0;
+    display: block;
+    text-decoration: none;
+}
+.listaAyudaeInfo a:hover{
+    font-family: signikaregular;
+    background-color: #1B3C71;
+    color: white;
+}
 
 /*
     Final

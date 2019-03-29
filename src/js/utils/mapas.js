@@ -311,7 +311,7 @@ App.utils.mapas = (function (parent, config,service) {
         return zoom;
     }
 
-    var createContentPopup= function (ubigeo,codTematico) {
+    var createContentPopup= function (ubigeo,codTematico,feature_dat) {
         var content = document.createElement("div");
         var bloque1 = document.createElement("div");
         var bloque2 = document.createElement("div");
@@ -325,7 +325,8 @@ App.utils.mapas = (function (parent, config,service) {
         bloque2.setAttribute("id","mapaGrafico");
 
         if (codTematico == 'P07') {
-            // aqui codigo de probreza
+            contenidoPopoverBloque1='<div class="pobGeneroPopoverMap"><h3>Incidencia de Pobreza</h3><h3>Superior</h3> <h3>'+feature_dat.attributes.P070001+'%</h3> <h3>Inferior</h3> <h3>'+feature_dat.attributes.P070002+'%</h3>  </div>';
+            bloque1.innerHTML=contenidoPopoverBloque1;
         }else if (codTematico == 'P01' && ubigeo.length <= 6){
             App.getContenidoPopupMapaEvent(ubigeo,codTematico,function (data) {
                 contenidoPopoverBloque1='<div class="titPopoverMap"><h3>'+data.titulo.y+'</h3><p>'+data.titulo.name+'</p> </div> ' ;
@@ -841,7 +842,41 @@ App.utils.mapas = (function (parent, config,service) {
         }
 
         else if(index==3){
-            html=
+
+
+           if (data.title == 'INCIDENCIA DE POBREZA'){
+
+                html=
+            '<div class="esri-legend__service">'+
+            '<div class="esri-legend__service-label">'+data.title+'</div>'+
+            '<div class="esri-legend__layer">'+
+            '<div class="esri-legend__layer-table esri-legend__layer-table--size-ramp">' +
+            '<div class="esri-legend__layer-caption" >Centros Poblados</div>'+
+            '<div class="esri-legend__layer-body" >' ;
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#8fff26;  width:15px;height:15px;border-radius: 50%"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Centros Poblados Con Datos</div>';
+            html+='</div>';
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#e6e6e6;  width:15px;height:15px;border-radius: 50%"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Centros Poblados Sin Datos</div>';
+            html+='</div>';
+
+            html+=
+            '</div>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+
+           }
+           else {
+                html=
             '<div class="esri-legend__service">'+
             '<div class="esri-legend__service-label">'+data.title+'</div>'+
             '<div class="esri-legend__layer">'+
@@ -869,6 +904,7 @@ App.utils.mapas = (function (parent, config,service) {
             '</div>'+
             '</div>';
 
+           }
         }
 
         return html;
@@ -1043,7 +1079,48 @@ App.utils.mapas = (function (parent, config,service) {
                 sublayers: _this.datosMap.renderOptionsSublayersBack,
 
             });
-            var rendererCCpp= {
+
+            if(_this.datosMap.codMap == 'P07'){
+
+                 var rendererCCpp= {
+                type:"class-breaks",
+                field:"POBLACION",
+                classBreakInfos:[{
+                    minValue: 0,
+                    maxValue: 0,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"circle",
+                        color:"#e6e6e6",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    }
+
+                },{
+                    minValue: 1,
+                    maxValue: 999999,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"circle",
+                        color:"#8fff26",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    }
+
+                }]
+            };
+
+            }else {
+
+                 var rendererCCpp= {
                 type:"class-breaks",
                 field:"POBLACION",
                 classBreakInfos:[{
@@ -1078,6 +1155,10 @@ App.utils.mapas = (function (parent, config,service) {
 
                 }]
             };
+            }
+
+
+
 
 
             _this.layerBaseNacional = new MapImageLayer({
@@ -1376,11 +1457,12 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
 
-            var createPopup=function(title,codigo,centro){
+            var createPopup=function(title,codigo,centro,feature_dat){
+
                 popup=_this.view_map.popup.open({
                         title:title,
                         location:centro,
-                        content:createContentPopup(codigo,_this.datosMap.codMap),
+                        content:createContentPopup(codigo,_this.datosMap.codMap,feature_dat),
                     }
                 );
                 _this.view_map.popup.dockOptions= {
@@ -1436,6 +1518,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                 if (feature && _this.indexSubLayer<3){
                     var ubigeo=feature.attributes.CODIGO;
+                     var feature_dat=feature;
                     var nombre='';
                     if(_this.indexSubLayer==0){nombre=feature.attributes.NOMBDEP;}
                     else if(_this.indexSubLayer==1){nombre=feature.attributes.NOMBPROV;}
@@ -1444,7 +1527,7 @@ App.utils.mapas = (function (parent, config,service) {
 
                     if (indiceUbigeoEncontrado==-1 || _this.select_ubigeos.length==0) {
                         _this.opc_select="select";
-                        createPopup(nombre,ubigeo,feature.geometry.centroid);
+                        createPopup(nombre,ubigeo,feature.geometry.centroid,feature_dat);
                         updatePanel(nombre,ubigeo,_this.cod_map,_this.panelDivGrafico,_this.indexSubLayer);
                         _this.select_ubigeos.push(ubigeo);
                         _this.historic_features[_this.indexSubLayer].nombres.push(nombre);
@@ -1514,8 +1597,16 @@ App.utils.mapas = (function (parent, config,service) {
                         , grupos
                     );
 
-                    console.log('gruposDes>>',ubigeosDes)
-                    actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+                    if(_this.datosMap.codMap == 'P07'){
+                        console.log("ingresa a centro poblados de pobreza ");
+                        ubigeosDes = _this.historic_features[0].select_features.concat(_this.historic_features[1].select_features,_this.historic_features[2].select_features,_this.select_ubigeos);
+                         actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+
+                    }else{
+                         actualizarTablasyGraficos(ubigeosDes,_this.select_ubigeos,_this.indexSubLayer);
+
+                    }
+
                 }
 
                 else{
