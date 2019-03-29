@@ -154,6 +154,7 @@ App.utils.graficos = (function (parent, service, appData) {
     };
 
     var uiMaxCallback = function (options) {
+        console.log(">>>> maximiza tabla");
         $(".ventanaGrafico .widgetMetadatos").hide();
         /*$(".busquedaMaximizadaCuadro").css("display","inline-block");
         $(".contenidoGraficoMaximizado").css("display","inline-block");
@@ -238,7 +239,6 @@ App.utils.graficos = (function (parent, service, appData) {
         $(".titulosSelectDiv").hide();
         service.graficos.getIndicador(categoria, ubigeo, function (data) {
             //indicador.graficoCategoria[categoria] = data;
-            console.log("grafico data >>>", data);
             var g;
             var c=0;
             var alto = graficoData.alto;

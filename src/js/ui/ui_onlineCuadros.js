@@ -498,16 +498,15 @@ function maximizarVentana(e, callback){
         }
 
     }
+    var ventanas = e.closest(".contenedorVentana").siblings(".contenedorVentana").length;
+    var v = 0;
     e.closest(".contenedorVentana").siblings(".contenedorVentana").fadeOut(function () {
+        v += 1;
         /* Selecionar los hermanos de la ventana maximizada y ocultarlas */
           e.closest(".contenedorVentana").removeClass("col-4-10 col-35 col-1-4 col-1-2 ").addClass("col-1-1").css("display","block");
-          console.log("finalizar fadeOut");
-            if (App.uiMaxCallback!==undefined){
-                App.uiMaxCallback(dataCodevent);
-            }
 
-            if (callback !== undefined) {
-                callback();
+            if (App.uiMaxCallback !== undefined && v === ventanas) {
+                App.uiMaxCallback(dataCodevent);
             }
     });
     e.attr("data-icon","4");

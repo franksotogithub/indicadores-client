@@ -89,8 +89,8 @@ App.utils.highcharts = (function (service, config) {
                         fontWeight: 'bold',
                         color: '#333333',
                         textShadow: null,
-                        textOutline: 0,
-                        fontSize: "13px"
+                        textOutline: 0,//"0.5px contrast",
+                        fontSize: "14px"
                     }
                 },
                 startAngle: -90,

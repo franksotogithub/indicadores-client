@@ -1,55 +1,64 @@
 (function (service, utils) {
-    $(document).ready(function (e) {
+    var selector = {
+        ponderador: "html #comboPonderador",
+    };
 
-        $("html #comboPonderador").on("change",function(){
-                var valor = this.value;
-                var tipo = $(this).find('option:selected').attr('data-tipo');
-                if (tipo == 'total') {
-                    $("#tabsCategoria > button").hide();
-                    $("#tabsCategoria > button[data-categoria='"+valor+"']").show();
-                }else {
-                    $("#tabsCategoria > button").show();
-                    $("#tabsCategoria > button[data-categoria='"+tipo+"']").hide();
-                }
+    var ponderadorChange = function (callack) {
+        $(selector.ponderador).on("change",function(e){
+            var valor = $(this).val();
+            var tipo = $(this).find('option:selected').attr('data-tipo');
+            if (tipo == 'total') {
+                $("#tabsCategoria > button").hide();
+                $("#tabsCategoria > button[data-categoria='"+valor+"']").show();
+            }else {
+                $("#tabsCategoria > button").show();
+                $("#tabsCategoria > button[data-categoria='"+tipo+"']").hide();
+            }
 
-                $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
-                $("#tabsCategoria > button[data-categoria='"+valor+"']").addClass("btnTabTabla-activo");
-                utils.cuadros.categoriaChangeEvent({"categoria": valor});
-                utils.mapas.categoriaChangeEvent({"categoria": valor});
-            });
+            $("#tabsCategoria > button").removeClass("btnTabTabla-activo");
+            $("#tabsCategoria > button[data-categoria='"+valor+"']").addClass("btnTabTabla-activo");
 
+            callack(valor);
+        });
+    };
+
+    var categoriaChange = function (callback) {
+        // web
         $("#tabsCategoria").on('click', '.tablaTabButton', function (e) {
             var categoria = $.trim($(this).attr('data-categoria'));
-            App.categoriaChangeEvent(categoria);
-            /*if( categoria === "P01" || categoria === "P02" || categoria === "P03" ){
-                $(".selectCuadros").show();
-            }else {
-                $(".selectCuadros").hide();
-            }*/
+            callback(categoria);
+
         });
 
+        // movil
         $("#comboCategoria").on('click','li',function (e) {
             var categoria = $.trim($(this).attr('data-categoria'));
-            App.categoriaChangeEvent(categoria);
+            callback(categoria);
         });
+    };
 
+    var popoverShow = function (callback) {
         $("#tblindicadores").on('click', '.popover', function (e) {
             var indicador = $(this).attr('data-indicador');
             $(".messageContentEmpty").hide();
             $(".cDatosTotal").show();
-            utils.cuadros.changeMetadata(indicador);
+            callback(indicador);
         });
+    };
 
+    var indicadoresSearchAutocomplete = function (callack) {
         $(".inputTextBusqueda").autocomplete({
             serviceUrl: service.getUrlServer(
                 service.url('dimensiones/tematico/autocomplete/?category={0}', [utils.cuadros.cuadrosData.categoria])
             ),
             onSelect: function (response) {
-                App.utils.cuadros.buscadorIndicadores(response);
+                callack(response);
             },
             width: 'flex'
         });
+    };
 
+    var centropobladosagrupadosShow = function () {
         $('body').on('click', '.thtitulo', function (e) {
             var tiene_hijos = $(this).attr('data-tienehijos');
             var ubigeo = $(this).attr('data-ubigeo');
@@ -65,16 +74,38 @@
 
                 if($(".modalGeneral .contenedorMetadatoModal ").length > 0){
                     $(".modalCentro").css("height","auto");
-                    console.log("Metadato");
                 }else{
                     $(".modalCentro").css("height","60%");
-                    console.log("Centropoblado");
                 }
                 $(".modalGeneral").show();
 
             }
 
         });
+    };
+
+    // Event Call
+    $(document).ready(function (e) {
+
+        ponderadorChange(function (valor) {
+            utils.cuadros.categoriaChangeEvent({"categoria": valor});
+            utils.mapas.categoriaChangeEvent({"categoria": valor});
+        });
+
+        categoriaChange(function (categoria) {
+            App.categoriaChangeEvent(categoria);
+        });
+
+
+        popoverShow(function (indicador) {
+            utils.cuadros.changeMetadata(indicador);
+        });
+
+        indicadoresSearchAutocomplete(function () {
+            App.utils.cuadros.buscadorIndicadores(response);
+        });
+
+        centropobladosagrupadosShow();
     });
 
     $(window).resize(function(){
