@@ -1,42 +1,8 @@
 {% extends "../base.html" %}
 {% block menutitulo %} Mapa de pobreza 2017 {% endblock %}
 {% block wrapper %}
-<nav class="nav-vertical col-1-10" style="display: none">
-    <button class="cbutt1">
-        <a href="index.html">
-            <img src="img/icoHome.png" height="49" width="50"/>
-            <h4 class="marginTop-10">Inicio</h4>
-        </a>
-    </button>
-
-    <button class="cbutt1 activeItemMenu">
-        <a href="/indicadores.html">
-            <img src="img/icoPrincipales.png" height="49" width="50"/>
-            <h4 class="marginTop-10">Principales Indicadores</h4>
-        </a>
-    </button>
-    <button class="cbutt2">
-        <a href="/pobreza.html">
-            <img src="/img/icoPobre.png" height="49" width="50"/>
-            <h4 class="marginTop-10">Mapa de pobreza</h4>
-        </a>
-    </button>
-    <button class="cbutt3">
-        <a href="#">
-            <img src="img/icoCuadro.png" height="49" width="50"/>
-            <h4 class="marginTop-10">Cuadros estadisticos</h4>
-        </a>
-    </button>
-    <button class="cbutt3">
-        <a href="http://censos2017.inei.gob.pe/redatam/" target="_blank">
-            <img src="img/icoRedatam.png" height="49" width="50"/>
-            <h4 class="marginTop-10">Base de Datos REDATAM </h4>
-        </a>
-    </button>
-
-</nav>
 <div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
-    <section>
+    <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
                 <h2> <span data-icon="&#xe012;"></span>
@@ -44,8 +10,8 @@
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana ">
             <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
-            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
-            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>
+
         </div>
         </header>
         <div class="contenidoMapa" >
@@ -61,9 +27,9 @@
                     Indicadores</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana" >
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
             <button data-icon=":" data-title="Descargar" class="tooltip"></button>
-            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
-            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
+
         </div>
         </header>
         <div class="contenidoCuadro cuadroPobreza">
