@@ -13,6 +13,9 @@ var gulp = require('gulp'),
 
 var config = {
     debug: (util.env.prod === undefined) ? true : false,
+    cdn: {
+      inei: "http://cdn.inei.gob.pe/"
+    },
     source: {
         src: './src/',
         html: function () {
@@ -111,7 +114,8 @@ gulp.task('html', function () {
     return gulp.src(config.source.html())
         .pipe(twig({
             data: {
-                output: config.output
+                output: config.output,
+                cdn: config.cdn
             }
         }))
         .pipe(config.debug ? util.noop() : htmlmin({

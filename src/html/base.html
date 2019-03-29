@@ -9,25 +9,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Fuentes -->
-    <link rel="stylesheet" href="./assets/fonts/signika/stylesheet.css">
-    <link rel="stylesheet" href="./assets/fonts/alegreyasans/alegreya.css">
-    <link rel="stylesheet" href="./assets/fonts/opensans/stylesheet.css">
-    <link rel="stylesheet" href="./assets/fonts/iconfont/material-icons.css">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/signika/stylesheet.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/alegreyasans/alegreya.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/opensans/stylesheet.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/iconfont/material-icons.css' }}">
     <!-- Iconos -->
-    <link rel="stylesheet" href="./assets/fonts/dripicons/webfont.css">
-    <link rel="stylesheet" href="./assets/fonts/simplelineicons/simple-line-icons.css">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/dripicons/webfont.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/simplelineicons/simple-line-icons.css' }}">
 
     <link rel="stylesheet" href="./{{ output.assets ~ output.folders.css ~ output.concat.asscss }}">
     <!-- libs -->
-    <link rel="stylesheet" href="./{{ output.assets ~ 'datatable/css/jquery.dataTables.css' }}">
-    <link rel="stylesheet" href="./{{ output.assets ~ 'datatable/css/fixedColumns.dataTables.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'datatable/1.10/css/jquery.dataTables.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'datatable/1.10/css/fixedColumns.dataTables.css' }}">
 
     <!-- custom -->
     <link rel="stylesheet" href="./{{ output.folders.css ~ output.concat.css }}">
-    <link rel="stylesheet" href="./{{ output.assets ~ 'arcgis/4.7/esri/css/main.css' }}">
-    <link rel="stylesheet" href="./{{ output.assets ~ 'select2/css/select2.min.css' }}">
-    <link rel="stylesheet" href="./{{ output.assets ~ 'autocompleter/css/autocomplete.css' }}">
-    <link rel="stylesheet" href="./{{ output.assets ~ 'introjs/introjs.min.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'arcgis/4.7/esri/css/main.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'select2/4.0/css/select2.min.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'autocompleter/1.4/css/autocomplete.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'introjs/2.9/introjs.min.css' }}">
 
     <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--->
 
@@ -153,14 +153,14 @@
 <!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
 <!-- libs -->
 
-<script src="/{{ output.assets ~ 'select2/js/select2.min.js' }}"></script>
-<script src="/{{ output.assets ~ 'datatable/js/jquery.dataTables.js' }}"></script>
-<script src="/{{ output.assets ~ 'datatable/js/dataTables.fixedColumns.js' }}"></script>
-<script src="/{{ output.assets ~ 'highcharts/highcharts.js' }}"></script>
-<script src="/{{ output.assets ~ 'autocompleter/js/jquery.autocomplete.min.js' }}"></script>
-<script src="/{{ output.assets ~ 'highcharts/modules/exporting.js' }}"></script>
-<script src="/{{ output.assets ~ 'introjs/intro.min.js' }}"></script>
-<script src="/{{ output.assets ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
+<script src="{{ cdn.inei ~ 'select2/4.0/js/select2.min.js' }}"></script>
+<script src="{{ cdn.inei ~ 'datatable/1.10/js/jquery.dataTables.js' }}"></script>
+<script src="{{ cdn.inei ~ 'datatable/1.10/js/dataTables.fixedColumns.js' }}"></script>
+<script src="{{ cdn.inei ~ 'highcharts/6.1/highcharts.js' }}"></script>
+<script src="{{ cdn.inei ~ 'autocompleter/1.4/js/jquery.autocomplete.min.js' }}"></script>
+<script src="{{ cdn.inei ~ 'highcharts/6.1/modules/exporting.js' }}"></script>
+<script src="{{ cdn.inei ~ 'introjs/2.9/intro.min.js' }}"></script>
+<script src="{{ cdn.inei ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
 <script src="/{{ output.folders.js ~ output.concat.js }}"></script>
 <script src="/{{ output.folders.js }}ui_onlineCuadros.js"></script>
 <script src="/{{ output.folders.js }}ui_responsive.js"></script>
