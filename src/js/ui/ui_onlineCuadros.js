@@ -158,6 +158,21 @@ function startIntroMovil(){
 
 
 
+function guiaAyuda() {
+    var anchoWIndowT = $(window).width();
+    if(anchoWIndowT > 1279){
+
+        if(aplicacionIni == "pobreza"){
+            startIntroP();
+        }else{
+            startIntro();
+        }
+
+
+    }else {
+        startIntroMovil();
+    }
+}
 
 /* Exportar graficos */
 
@@ -699,6 +714,12 @@ $(document).ready(function() {
     
     altosAutomaticos();
     //sliderGraph ();
+    if(aplicacionIni=="pobreza"){
+        $("#manualdeusuario").attr("href","http://quality.inei.gob.pe/media/manualdeusuariopobreza.pdf");
+    }else{
+        $("#manualdeusuario").attr("href","http://quality.inei.gob.pe/media/manualdeusuariocpv.pdf");
+    }
+
 
 
 

@@ -2281,7 +2281,12 @@ App.utils.mapas = (function (parent, config,service) {
                 if (service.getLocal('intro') === null) {
                     if(anchoWIndowT > 1279){
 
-                        startIntro();
+                        if(aplicacionIni == "pobreza"){
+                            startIntroP();
+                        }else{
+                            startIntro();
+                        }
+
 
                     }else {
                         startIntroMovil();

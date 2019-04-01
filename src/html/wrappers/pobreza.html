@@ -62,7 +62,7 @@
                     Indicadores</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana dataalgo" >
-            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+
             <button data-icon=":" data-title="Descargar" class="tooltip"></button>
 
         </div>
@@ -79,6 +79,7 @@
 
 {% block endscript %}
 <script type="text/javascript">
+    var aplicacionIni = "pobreza";
     $(document).ready(function (e) {
         App.init('pobreza', ['mapas', 'cuadros']);
     });
