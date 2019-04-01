@@ -57,6 +57,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _crearTabsCategorias = function (datos, vista) {
+        console.log(">>> categorias")
         var tabsTemplate = function (dato) {
             var clase='';
             if (dato.esActivo) {
