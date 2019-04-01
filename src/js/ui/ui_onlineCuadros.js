@@ -922,7 +922,8 @@ $(document).ready(function() {
 
     $(document).on('click','.popover', function () {
         var _this = $(this);
-        var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length;
+        var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length
+                    || _this.closest("table.pobreza").length;
         var anchoVen = $(window).width();
         if( anchoVen < 1280 ){
             count = 1;

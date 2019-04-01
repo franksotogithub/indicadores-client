@@ -1,6 +1,41 @@
 {% extends "../base.html" %}
 {% block menutitulo %} Mapa de pobreza 2017 {% endblock %}
 {% block wrapper %}
+<nav class="nav-vertical col-1-10" style="display: none">
+    <button class="cbutt1">
+        <a href="index.html">
+            <img src="img/icoHome.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Inicio</h4>
+        </a>
+    </button>
+
+    <button class="cbutt1">
+        <a href="/indicadores.html">
+            <img src="img/icoPrincipales.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Principales Indicadores</h4>
+        </a>
+    </button>
+    <button class="cbutt2 activeItemMenu">
+        <a href="/pobreza.html">
+            <img src="/img/icoPobre.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Mapa de pobreza</h4>
+        </a>
+    </button>
+    <button class="cbutt3">
+        <a href="#">
+            <img src="img/icoCuadro.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Cuadros estadisticos</h4>
+        </a>
+    </button>
+    <button class="cbutt3">
+        <a href="http://censos2017.inei.gob.pe/redatam/" target="_blank">
+            <img src="img/icoRedatam.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Base de Datos REDATAM </h4>
+        </a>
+    </button>
+
+</nav>
+
 <div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
     <section >
         <header class="b_grissuave">
@@ -42,6 +77,9 @@
         </header>
         <div class="contenidoCuadro cuadroPobreza">
             {% include 'indicadores/cuadro.html'  with {'vista': 'pobreza'} %}
+        </div>
+        <div class="notasPobreza">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta congue nibh, quis pellentesque est tincidunt nec. Maecenas ullamcorper, enim id imperdiet congue, justo lectus auctor purus, non ultricies justo tortor eu magna. Mauris malesuada id augue sed blandit. Nullam sodales sapien quis libero gravida tempus. Quisque sagittis dui in mi aliquam, et lacinia magna tempus. Morbi ut tincidunt tellus. Duis non sem quis mi sodales condimentum vel ac massa. Vestibulum dictum ipsum id orci convallis, in ornare mi fermentum. Duis eget diam sed nunc blandit pellentesque vitae et felis. Maecenas pulvinar nisi ut orci finibus lacinia. Cras a pharetra dui. Pellentesque id rutrum elit, eu venenatis lorem. Aenean vitae porttitor ligula. Vivamus eget venenatis sem.</p>
         </div>
     </section>
 </div>

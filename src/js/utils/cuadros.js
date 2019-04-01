@@ -596,13 +596,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var descargarCuadro = function () {
-        console.log('descargar');
-        console.log(this.vista);
         var query = '?';
         $.each(cuadrosData.ubigeos, function (i,v) {
            query += 'u='+v+'&'
         });
-
         window.open(config.urlServer + 'exportar/xls/' + this.vista + '/' + query, '_blank');
     };
 
