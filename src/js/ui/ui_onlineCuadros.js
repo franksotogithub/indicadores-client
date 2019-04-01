@@ -40,7 +40,37 @@ function startIntro(){
         nextLabel: 'Siguiente',
         prevLabel: 'Anterior',
         skipLabel: 'Saltar',
-        doneLabel: 'Hecho'
+        doneLabel: 'Hecho',
+        steps: [
+            {
+                element: document.querySelectorAll('#div-buscador-ubigeo')[0],
+                intro: "En esta sección puedes buscar desde un Departamento hasta un Centro Poblado, para ver su información disponible."
+            },
+            {
+                element: document.querySelectorAll('#viewDiv')[0],
+                intro: "ó puedes navegar en el mapa haciendo un clic para seleccionar, ó doble clic para ingresar en cualquier parte del Perú"
+            },
+            {
+                element: document.querySelectorAll('#widget-select-layer')[0],
+                intro: "Aqui puedes elegir el tipo de vista a nivel Nacional, por departamentos, provincias y distritos",
+                position: 'right'
+            },
+            {
+                element: document.querySelectorAll('#tabsCategoria')[0],
+                intro: "Aqui encontraras la información agrupada en categorias, puedes navegar entre ellas y ver la información.",
+                position: 'right'
+            },
+            {
+                element: document.querySelectorAll('.dataalgo')[0],
+                intro: "Esta sección es la barra de herramientas, esta presente en la parte superior del Mapa, Indicadores y Graficos la cual tiene funciones tales como: Descargar, imprimir, minimizar, ó maximizar. no todas las funcionalidades estan disponibles en cada ventana.",
+                position: 'right'
+            },
+            {
+                element: document.querySelectorAll('.ayudaInformacion')[0],
+                intro: "Pulsa aqui cuando quieras volver a ver la ayuda, tambien apareceran las ventanas minimizadas al lado izquierdo, pulsalas para volver a verlas.",
+                position: 'right'
+            }
+        ]
     });
 
     intro.start();
@@ -49,6 +79,45 @@ function startIntro(){
 }
 
 
+/* Intro de la ayuda PC POBREZA */
+function startIntroP(){
+    intro = introJs();
+    intro.setOptions({
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'Saltar',
+        doneLabel: 'Hecho',
+        steps: [
+            {
+                element: document.querySelectorAll('#div-buscador-ubigeo')[0],
+                intro: "En esta sección puedes buscar desde un Departamento hasta un Centro Poblado, para ver su información disponible."
+            },
+            {
+                element: document.querySelectorAll('#viewDiv')[0],
+                intro: "ó puedes navegar en el mapa haciendo un clic para seleccionar, ó doble clic para ingresar en cualquier parte del Perú"
+            },
+            {
+                element: document.querySelectorAll('#widget-select-layer')[0],
+                intro: "Aqui puedes elegir el tipo de vista a nivel Nacional, por departamentos, provincias y distritos",
+                position: 'right'
+            },
+            {
+                element: document.querySelectorAll('.dataalgo')[0],
+                intro: "Esta sección es la barra de herramientas, esta presente en la parte superior del Mapa, Indicadores y Graficos la cual tiene funciones tales como: Descargar, imprimir, minimizar, ó maximizar. no todas las funcionalidades estan disponibles en cada ventana.",
+                position: 'right'
+            },
+            {
+                element: document.querySelectorAll('.ayudaInformacion')[0],
+                intro: "Pulsa aqui cuando quieras volver a ver la ayuda, tambien apareceran las ventanas minimizadas al lado izquierdo, pulsalas para volver a verlas.",
+                position: 'right'
+            }
+        ]
+    });
+
+    intro.start();
+    App.service.save('intro', {"saltar": 1});
+
+}
 
 
 
@@ -498,16 +567,15 @@ function maximizarVentana(e, callback){
         }
 
     }
+    var ventanas = e.closest(".contenedorVentana").siblings(".contenedorVentana").length;
+    var v = 0;
     e.closest(".contenedorVentana").siblings(".contenedorVentana").fadeOut(function () {
+        v += 1;
         /* Selecionar los hermanos de la ventana maximizada y ocultarlas */
           e.closest(".contenedorVentana").removeClass("col-4-10 col-35 col-1-4 col-1-2 ").addClass("col-1-1").css("display","block");
-          console.log("finalizar fadeOut");
-            if (App.uiMaxCallback!==undefined){
-                App.uiMaxCallback(dataCodevent);
-            }
 
-            if (callback !== undefined) {
-                callback();
+            if (App.uiMaxCallback !== undefined && v === ventanas) {
+                App.uiMaxCallback(dataCodevent);
             }
     });
     e.attr("data-icon","4");
@@ -922,7 +990,8 @@ $(document).ready(function() {
 
     $(document).on('click','.popover', function () {
         var _this = $(this);
-        var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length;
+        var count = _this.closest(".contenedorVentana").find(".contenedorBotonesVentana button.restaurar").length
+                    || _this.closest("table.pobreza").length;
         var anchoVen = $(window).width();
         if( anchoVen < 1280 ){
             count = 1;

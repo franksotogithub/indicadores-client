@@ -57,6 +57,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var _crearTabsCategorias = function (datos, vista) {
+        console.log(">>> categorias")
         var tabsTemplate = function (dato) {
             var clase='';
             if (dato.esActivo) {
@@ -600,8 +601,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $.each(cuadrosData.ubigeos, function (i,v) {
            query += 'u='+v+'&'
         });
-
-        window.open(config.urlServer+ 'exportar/xls/principales/'+query, '_blank');
+        window.open(config.urlServer + 'exportar/xls/' + this.vista + '/' + query, '_blank');
     };
 
     return {
