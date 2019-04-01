@@ -886,9 +886,17 @@ App.utils.mapas = (function (parent, config,service) {
 
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
             html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
+            html+='<div style="opacity: 1; background-color:#cc0000;  width:15px;height:15px;"></div>';
+            html+='</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Centro Poblado Capital</div>';
+            html+='</div>';
+
+
+            html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--symbols" style="height:20px; padding-right: 7px !important; ">';
             html+='<div style="opacity: 1; background-color:#8fff26;  width:15px;height:15px;border-radius: 50%"></div>';
             html+='</div>';
-            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Poblacion Mayor a 150</div>';
+            html+='<div class="esri-legend__layer-cell esri-legend__layer-cell--info" style="height:20px;">Poblacion Igual o Mayor a 150</div>';
             html+='</div>';
 
             html+='<div class="esri-legend__layer-row" style="height:20px; width: 180px" >';
@@ -1039,6 +1047,19 @@ App.utils.mapas = (function (parent, config,service) {
                 width: 2  // points
               }
             };
+            var symbolMarkerSquare = {
+              type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+              style: "square",
+              color: [ 255, 255, 0,0 ],
+              size: "10px",  // pixels
+
+              outline: {  // autocasts as new SimpleLineSymbol()
+                color:"#fcee21" ,
+                width: 2  // points
+              }
+            };
+
+
 
             /////////////*
             //
@@ -1121,11 +1142,12 @@ App.utils.mapas = (function (parent, config,service) {
             }else {
 
                  var rendererCCpp= {
-                type:"class-breaks",
-                field:"POBLACION",
-                classBreakInfos:[{
-                    minValue: 0,
-                    maxValue: 150,
+                type:"unique-value",
+                field:"FLAG_TIPO_CCPP",
+                uniqueValueInfos:[{
+                    value:3,
+                    //minValue: 3,
+                    //maxValue: 3,
                     symbol:{
                         type:"simple-marker",
                         style:"circle",
@@ -1139,8 +1161,9 @@ App.utils.mapas = (function (parent, config,service) {
                     }
 
                 },{
-                    minValue: 150,
-                    maxValue: 999999,
+                    value:2,
+                    //minValue: 2,
+                    //maxValue: 2,
                     symbol:{
                         type:"simple-marker",
                         style:"circle",
@@ -1151,9 +1174,33 @@ App.utils.mapas = (function (parent, config,service) {
                             width:2
                         }
 
-                    }
+                    },
 
-                }]
+
+                },
+
+
+            {
+
+                    value:1,
+                    //minValue: 1,
+                    //maxValue: 1,
+                    symbol:{
+                        type:"simple-marker",
+                        style:"square",
+                        color:"#cc0000",
+                        size:"10px",
+                        outline:{
+                            color:"#ffffff",
+                            width:2
+                        }
+
+                    },
+
+
+                },
+
+                ]
             };
             }
 
@@ -1502,7 +1549,13 @@ App.utils.mapas = (function (parent, config,service) {
                 var ubigeosDes;
 
                 if(feature.geometry.type=='point') {
-                    symbol=symbolMarker;
+                    console.log('feature>>>',feature);
+                    if (feature.attributes.FLAG_TIPO_CCPP>1)
+                        symbol=symbolMarker;
+                    else
+                        symbol=symbolMarkerSquare;
+
+
                 }
 
                 else if(feature.geometry.type=='polygon'){
