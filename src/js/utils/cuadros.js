@@ -333,7 +333,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                                 appData.tituloIndicadores[rowData.cod_tematico]["descripcion_porcentaje"]
                             );
                         }
-
                     }
                 }
             ],
