@@ -1,13 +1,12 @@
 var AppConfig = function () {
     return {
         urlServer: "http://192.168.34.14:8001/",
-        map_config:
-            { 'P01':
-                { urlMap:"http://192.168.202.86:6080/arcgis/rest/services/RESULTADO_CPV/RESULTADO_POBLACION_1/MapServer" ,
-                    cod_tematico_default:"P010100"
-                }
-            },
-
+        urlArcGis: {
+            'default': 'server',
+            'server': "//datacrim.inei.gob.pe/mapa/arcgis/rest/services/",
+            'server1': "//datacrim.inei.gob.pe/mapa1/arcgis/rest/services/",
+            'server2': "//datacrim.inei.gob.pe/mapa2/arcgis/rest/services/"
+        },
         utils:{
             print:"http://192.168.202.84:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task"
         },

@@ -2547,7 +2547,7 @@ App.utils.mapas = (function (parent, config,service) {
                 service.mapas.getMapa(el.cod_mapa,function (data) {
                     _this.datosMap.codMap=el.cod_mapa;
                     _this.datosMap.urlMap=data.url;
-                    _this.datosMap.urlMapBaseNacional="https://devindica.inei.gob.pe/mapa/arcgis/rest/services/CARTOGRAFIA_BASE_INEI/BASE_NACIONAL/MapServer";
+                    _this.datosMap.urlMapBaseNacional= service.getUrlGis("CARTOGRAFIA_BASE_INEI/BASE_NACIONAL/MapServer", 'server');
                     _this.datosMap.codTematico=data.cod_tematico_default;
                     _this.datosMap.tituloLegend=data.descripcion;
                     _this.datosMap.div=el.div;
