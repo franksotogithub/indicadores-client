@@ -101,7 +101,7 @@
             utils.cuadros.changeMetadata(indicador);
         });
 
-        indicadoresSearchAutocomplete(function () {
+        indicadoresSearchAutocomplete(function (response) {
             App.utils.cuadros.buscadorIndicadores(response);
         });
 

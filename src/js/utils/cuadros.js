@@ -479,13 +479,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var _this = this;
 
         $("#loadindicadores").show();
-        if (this.tblIndicadores !== undefined) {
-            this.tblIndicadores.destroy();
-            $("#tblindicadores tbody").html();
-        }
+
+
+        _destruirTabla(this);
         $(".contenidoCuadro").find('.tablaTabButton').removeClass('btnTabTabla-activo');
         service.cuadros.getBusquedaIndicador(response.codigo_subcategoria, response.data, this.cuadrosData.ubigeos,
             response.index, function (data) {
+
             _this.tblIndicadores = _crearTabla(
                 '#tblindicadores',
                 data,
