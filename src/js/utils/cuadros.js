@@ -4,6 +4,7 @@
  */
 App.utils.cuadros = (function (config, appData, parent, service) {
     // Atributos privados
+    var events = 'cuadros';
     var cuadrosData = {
         categoria: "P01",
         ubigeo: "00",
@@ -37,6 +38,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         else if (options.vista == 'pobreza') {
             _initPobreza(this, options.vista);
         }
+
+        // events
+        _initEvents();
     };
 
     // Metodos privados
@@ -110,6 +114,10 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         });
 
         $("#comboPonderador").html(html);
+    };
+
+    var _initEvents = function () {
+        App.events.cuadros(parent, service);
     };
 
     /**

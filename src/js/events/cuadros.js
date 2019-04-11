@@ -1,4 +1,4 @@
-(function (service, utils) {
+App.events.cuadros = function (service, utils) {
     var selector = {
         ponderador: "html #comboPonderador",
     };
@@ -112,6 +112,6 @@
         //utils.cuadros.reiniciarTabla();
         utils.cuadros.fixedColumnsRelayout();
     });
-})(App.service, App.utils);
+};
 
 

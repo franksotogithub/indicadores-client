@@ -2557,6 +2557,11 @@ App.utils.mapas = (function (parent, config,service) {
             }
         );
 
+        _initEvents();
+    };
+
+    var _initEvents = function () {
+        App.events.mapas(parent, service);
     };
 
     return {
