@@ -1,0 +1,129 @@
+<div id="map">
+    <div id="basemapGallery"></div>
+
+    <div id="legenda" class="widget-leyenda-componente" ></div>
+    <div class="widgets-navegacion">
+        <div id="div-buscador-ubigeo">
+            <input type="text" id="buscador-ubigeo" placeholder="Búsqueda por Ambito Geografico">
+            <span class="dripicons-search backSearch"></span>
+        </div>
+
+        <div id="div-select-ubigeo">
+            <select id="select-ubigeo"  class="child" >
+            </select>
+        </div>
+
+        <div id="widget-select-layer" >
+            <button class="b_azul f_blanco botonVistaMapa" data-title="Tipo de vista">
+                <i class="material-icons">more_vert </i>
+            </button>
+
+        </div>
+
+        <div class="ambitosMapa" style="display: none">
+                <div index="0">Vista Departamental</div>
+                <div index="1">Vista Provincial</div>
+                <div index="2">Vista Distrital</div>
+        </div>
+
+        <div  id="list-widgets-ubigeo" >
+        <!--    <div  class="widget-ubigeo" ambito="-1">
+                PERU
+            </div>-->
+
+        </div>
+
+        <!--
+        <div id="widget-nacional" class="widget-ubigeo">
+            PERU
+        </div>
+
+        <div id="widget-departamentos" class="widget-ubigeo">
+            DEPARTAMENTO
+        </div>
+
+        <div id="widget-provincias" class="widget-ubigeo">
+            PROVINCIA
+        </div>
+        <div id="widget-distritos" class="widget-ubigeo">
+            DISTRITO
+        </div>
+        -->
+        <div id="widget-select-all">
+            <input type="checkbox" id="select-all"> Seleccionar todos
+        </div>
+</div>
+
+</div>
+
+
+
+
+<style>
+    html, body, #map {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+    }
+
+    #map {
+        position: relative;
+    }
+
+    #basemapGallery{
+         display: none;
+
+    }
+
+    .widget-leyenda-componente {
+        display: inline-block;
+        padding: 10px;
+        border-radius: 5px;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        z-index: 2;
+        font-family:'signikaregular';
+        background-color: white;
+    }
+
+    .widgets-navegacion {
+        display: inline;
+        padding: 10px;
+        /*border-radius: 5px;*/
+        position: absolute;
+        z-index: 2;
+        top: 20px;
+        left: 20px;
+        font-family:'signikaregular';
+        background-color: white;
+    }
+
+    #map_zoom_slider{
+        display: none;
+    }
+
+    .onInline{display:inline-block;}
+
+    .box-Grafico{
+    width: 15px;
+    height: 15px;
+    background-color: darkred;
+    }
+
+    .text-item-grafico {
+    margin-left:7px;
+    }
+
+    div.leyenda-item{
+    font-size: 12px;
+    margin: 2px 0;
+    }
+
+    div.leyenda-item.marginLeft-20{
+        margin-left: 20px;
+    }
+
+
+</style>

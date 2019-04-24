@@ -2,7 +2,7 @@
  * Utils para manejar las tablas de indicadores Online
  * @memberOf App.utils
  */
-App.utils.cuadros = (function (config, appData, parent, service) {
+App.utils.cuadrosFrecuencias = (function (config, appData, parent, service) {
     // Atributos privados
     var cuadrosData = {
         categoria: "P01",
@@ -30,25 +30,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     var init = function (options) {
         this.vista = options.vista;
         appData = appData(this.vista);
-        if (options.vista == 'principales') {
+        if (options.vista == 'frecuencias') {
             _initIndicadores(this, options.vista);
             parent.graficos.initIndicador(this);
         }
-        else if (options.vista == 'pobreza') {
-            _initPobreza(this, options.vista);
-        }
-        if (options.vista == 'frecuencias') {
-            _initFrecuecuencias(this, options.vista);
-
-            parent.graficos.initIndicador(this);
-        }
-        _initEvents();
     };
 
     // Metodos privados
-    var _initEvents = function () {
-        App.events.cuadros(service, parent);
-    };
 
     var _initIndicadores = function (_this, vista) {
         _crearTabsCategorias(appData.categorias, vista);
@@ -57,19 +45,6 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         $(".selectCuadros").show();
         //_this.crearTablaUigeos(['01','02','03','04','05','06','07','08'], []);
     };
-
-
-    var _initFrecuecuencias = function (_this, vista) {
-
-        //_this.expardirVentana = true;
-        _this.crearTablaUigeos(['00'], []);
-        _crearTabsCategorias(appData.categorias, vista);
-        _crearSelectPonderador(appData.ponderadores);
-        $(".selectCuadros").show();
-
-    };
-
-
 
     var _initPobreza = function (_this, vista) {
         _this.cuadrosData.categoria = 'P07';
@@ -501,13 +476,13 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         var _this = this;
 
         $("#loadindicadores").show();
-
-
-        _destruirTabla(this);
+        if (this.tblIndicadores !== undefined) {
+            this.tblIndicadores.destroy();
+            $("#tblindicadores tbody").html();
+        }
         $(".contenidoCuadro").find('.tablaTabButton').removeClass('btnTabTabla-activo');
         service.cuadros.getBusquedaIndicador(response.codigo_subcategoria, response.data, this.cuadrosData.ubigeos,
             response.index, function (data) {
-
             _this.tblIndicadores = _crearTabla(
                 '#tblindicadores',
                 data,
@@ -530,11 +505,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.cuadrosData.ubigeos = options.ubigeosOdenados;
         this.crearTablaUigeos(options.ubigeosOdenados, []);
         this.cuadrosData.ubigeo = (options.ubigeosSeleccionados.length > 0) ? options.ubigeosSeleccionados.slice(-1).pop() : '00';
-        if(this.vista=='principales'
-        ||this.vista=='frecuencias'
-        ){parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);}
-
-
+        parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);
     };
 
     var uiMetaData = function () {
@@ -612,23 +583,14 @@ App.utils.cuadros = (function (config, appData, parent, service) {
     };
 
     var changeMetadata = function (indicador) {
-
-
+        console.log('appData.tituloIndicadores>>',appData.tituloIndicadores);
         var metadata = appData.tituloIndicadores[indicador];
-
-        if(this.vista=='principales'){
-            this.uiDocuments.clases.meta_def.children('p').html(metadata.definicion);
-            this.uiDocuments.clases.meta_alg.children('.eq-c').html(metadata.algoritmo);
-            this.uiDocuments.clases.meta_var.children('p').html(metadata.variables);
-            this.uiDocuments.clases.meta_um.children('p').html(metadata.unidad_medida);
-            this.uiDocuments.clases.meta_cg.children('p').html(metadata.cobertura_geografica);
-            this.uiDocuments.clases.meta_pt.children('p').html(metadata.precisiones_tecnicas);
-        }
-        else if(this.vista=='frecuencias'){
-            console.log('indicador>>>',indicador)
-            parent.mapasFrecuencias.actualizarMapasTematicosPorVariable(indicador);
-        }
-
+        this.uiDocuments.clases.meta_def.children('p').html(metadata.definicion);
+        this.uiDocuments.clases.meta_alg.children('.eq-c').html(metadata.algoritmo);
+        this.uiDocuments.clases.meta_var.children('p').html(metadata.variables);
+        this.uiDocuments.clases.meta_um.children('p').html(metadata.unidad_medida);
+        this.uiDocuments.clases.meta_cg.children('p').html(metadata.cobertura_geografica);
+        this.uiDocuments.clases.meta_pt.children('p').html(metadata.precisiones_tecnicas);
     };
 
     var descargarCuadro = function () {

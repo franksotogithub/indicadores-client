@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Indicadores Online</title>
+    <!--<meta charset="UTF-8">-->
+    <meta charset="UTF-8">
+    <meta name="title" content="Indicadores Online">
+    <meta name="description" content="Resultado por indicadores del Censo 2017">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fuentes -->
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/signika/stylesheet.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/alegreyasans/alegreya.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/opensans/stylesheet.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/iconfont/material-icons.css' }}">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/dripicons/webfont.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'fonts/simplelineicons/simple-line-icons.css' }}">
+
+    <link rel="stylesheet" href="./{{ output.assets ~ output.folders.css ~ output.concat.asscss }}">
+    <!-- libs -->
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'datatable/1.10/css/jquery.dataTables.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'datatable/1.10/css/fixedColumns.dataTables.css' }}">
+
+    <!-- custom -->
+    <link rel="stylesheet" href="./{{ output.folders.css ~ output.concat.css }}">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.25/esri/css/esri.css" >
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'select2/4.0/css/select2.min.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'autocompleter/1.4/css/autocomplete.css' }}">
+    <link rel="stylesheet" href="{{ cdn.inei ~ 'introjs/2.9/introjs.min.css' }}">
+
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--->
+
+
+</head>
+
+
+<body class="b_celestesuave">
+<div id="plantilla_modal_metadato" class="contenedorMetadatos" style="display: none">
+    <h1> METADATOS <span class="icon-docs  "></span></h1>
+    <div class="contenedorMetadatoModal">
+        <div class="contenidoMetadato meta_def pm1">
+            <h3>DEFINICIóN</h3>
+            <p></p>
+        </div>
+        <div class="contenidoMetadato meta_alg pm2">
+            <h3>Algoritmo</h3>
+            <p class="eq-c"></p>
+        </div>
+        <div class="contenidoMetadato meta_var pm3">
+            <h3>Variables</h3>
+            <p></p>
+        </div>
+        <div class="contenidoMetadato meta_um pm4">
+            <h3>Unidad de medida</h3>
+            <p></p>
+        </div>
+        <div class="contenidoMetadato meta_cg pm1">
+            <h3>Cobertura Geografica</h3>
+            <p></p>
+        </div>
+        <div class="contenidoMetadato meta_pt pm2">
+            <h3> Precisiones tecnicas</h3>
+            <p>Debido a las características de este indicador no se aplica ninguna fórmula.</p>
+        </div>
+    </div>
+
+</div>
+<div id="plantilla_modal_grupo" class="contenedorMetadatos" style="display: none">
+    <h1> LISTADO DE CENTROS POBLADOS <span class="icon-docs  "></span></h1>
+    <div class="listado_centros_poblados"></div>
+</div>
+
+</div>
+<div class="modalGeneral " style="display:none;">
+    <div class="modalCentro">
+        <div class="cerrarModalX">
+            X
+        </div>
+        <div class="contenedorModalInfo"></div>
+    </div>
+</div>
+<div class="row">
+    <header class="b_azul f_blanco headerPrincipal">
+
+        <div class="col-1-2 secLogoTitulo">
+
+            <button class="menuResponsive  dripicons-menu">
+
+            </button>
+            <div>
+                <img src="img/logo_inei.png" />
+            </div>
+            <h1>{% block menutitulo %} {% endblock %} </h1>
+            <div>
+                <img src="img/logo_censo.png" />
+            </div>
+
+        </div><!--
+             --><div class="col-1-2 sectMenuBarTitulo">
+        <div class="row">
+            <div class="col-6-10 tabHeader" >
+
+            </div><!--
+                     --><div class="col-4-10 barHerramientasHeader">
+            <div>
+                <div class="col-1-4 btnMapa" data-codevent="mapas" data-codi="1">
+                    <div>
+                        <button id="btnMapaPeru"  class="btnReabrir b_azul f_blanco icon tooltip miniTop" data-title="Mostrar Mapa">
+
+                        </button>
+                    </div>
+                </div><!--
+                             --><div class="col-1-4 btnIndicadores " data-codevent="cuadros" data-codi="5">
+                <div>
+                    <button data-icon="&#xe051;" class="btnReabrir b_azul f_blanco icon tooltip miniTop" data-title="Mostrar Indicadores">  </button>
+                </div>
+            </div><!--
+                             --><div class="col-1-4 btnGraficos" data-codevent="graficos" data-codi="7">
+                <div>
+                    <button data-icon="&#xe000;" class=" btnReabrir b_azul f_blanco icon tooltip miniTop " data-title="Mostrar Gráficos y metadatos">  </button>
+                </div>
+            </div><!--
+                             --><div class="col-1-4">
+                <button  data-icon="&#xe03a;" class="b_azul f_blanco icon  ayudaInformacion" data-title="Ayuda e información" >
+                    <div class="listaAyudaeInfo">
+                        <a href="#" onclick="guiaAyuda();">Guia Rápida</a>
+                        <a id="manualdeusuario" href="http://quality.inei.gob.pe/media/manualdeusuariocpv.pdf" target="_blank">Manual de Usuario</a>
+                    </div>
+                </button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+    </header>
+</div>
+<div class="row seccionPrincipal" >
+    {% block wrapper %}{% endblock %}
+</div>
+
+<div id="contenedorPopover">
+
+</div>
+
+
+<div id="contentHelpInfo"></div>
+</body>
+{% block prependscript %}{% endblock %}
+<script src="/{{ output.assets ~ output.folders.js ~ output.concat.assjs }}"></script>
+<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<!-- libs -->
+
+<script src="{{ cdn.inei ~ 'select2/4.0/js/select2.min.js' }}"></script>
+
+<script src="{{ output.assets ~ 'palette/palette.js' }}"></script>
+<script src="{{ cdn.inei ~ 'datatable/1.10/js/jquery.dataTables.js' }}"></script>
+<script src="{{ cdn.inei ~ 'datatable/1.10/js/dataTables.fixedColumns.js' }}"></script>
+<script src="{{ cdn.inei ~ 'highcharts/6.1/highcharts.js' }}"></script>
+<script src="{{ cdn.inei ~ 'autocompleter/1.4/js/jquery.autocomplete.min.js' }}"></script>
+<script src="{{ cdn.inei ~ 'highcharts/6.1/modules/exporting.js' }}"></script>
+<script src="{{ cdn.inei ~ 'introjs/2.9/intro.min.js' }}"></script>
+<script src="https://js.arcgis.com/3.25/"></script>
+<script src="/{{ output.folders.js ~ output.concat.js }}"></script>
+<script src="/{{ output.folders.js }}ui_onlineCuadros.js"></script>
+<script src="/{{ output.folders.js }}ui_responsive.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+{% block endscript %}{% endblock %}
+</html>

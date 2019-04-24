@@ -1,0 +1,146 @@
+{% extends "../base_frecuencias.html" %}
+{% block menutitulo %} Principales indicadores {% endblock %}
+{% block wrapper %}
+
+
+<header class="widget-NavegacionBar navResponsiveIndicadores " style="display: none">
+    <div class="col-3-10" style="vertical-align: top">
+        <div role="wraper" class="contentComboTitulos">
+            <h5 class="mayusculas">Población</h5>
+            <button class="botonDesplegarTitulos">
+                <i class="material-icons">
+                    keyboard_arrow_down </i>
+            </button>
+
+            <div id="comboCategoria" class="wraper contentListaTitulos">
+                <ul>
+                    <li data-selected="selected" data-vista="vista0">Población</li>
+                    <li data-vista="vista1">Educación</li>
+                    <li data-vista="vista2">Salud</li>
+                    <li data-vista="vista3">Vivienda</li>
+                    <li data-vista="vista4">Hogar</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="botonSim"><i class="material-icons">search</i>
+        <div class="contentBuscadorUbigeoResponsive" style="display: none">
+            <div class="inputBuscador">
+                <input id="buscador-ubigeo2" type="search" placeholder="Buscar por ubigeo">
+                <button class="ocultarBuscadorUbigeo2"><i class="material-icons">expand_less</i></button>
+            </div>
+        </div>
+    </div>
+    <button style="display: none;"><i class="material-icons">vertical_align_bottom</i></button>
+
+    <div class="blockNavegacion floatRight">
+        <button data-codevent="mapas" class="active botonNavegar "><span class="mapapequeBnR" ></span></button>
+        <button data-codevent="graficos" data-disc="graph" class="botonNavegar "><i class="material-icons">equalizer</i></button>
+        <button data-codevent="cuadros" class="botonNavegar "><i class="material-icons">assignment</i></button>
+        <!--<button data-codevent="graficos" data-disc="metadata"  class="botonNavegar "><i class="material-icons">info</i></button>-->
+    </div>
+</header>
+<nav class="nav-vertical col-1-10" style="display: none">
+    <button class="cbutt1">
+        <a href="index.html">
+            <img src="img/icoHome.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Inicio</h4>
+        </a>
+    </button>
+
+    <button class="cbutt1 activeItemMenu">
+        <a href="/indicadores.html">
+            <img src="img/icoPrincipales.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Principales Indicadores</h4>
+        </a>
+    </button>
+    <button class="cbutt2">
+        <a href="/pobreza.html">
+            <img src="/img/icoPobre.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Mapa de pobreza</h4>
+        </a>
+    </button>
+    <button class="cbutt3">
+        <a href="#">
+            <img src="img/icoCuadro.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Cuadros estadisticos</h4>
+        </a>
+    </button>
+    <button class="cbutt3">
+        <a href="http://censos2017.inei.gob.pe/redatam/" target="_blank">
+            <img src="img/icoRedatam.png" height="49" width="50"/>
+            <h4 class="marginTop-10">Base de Datos REDATAM </h4>
+        </a>
+    </button>
+
+</nav>
+
+<div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1"  >
+    <section >
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span class="mapapequeBn" ></span>
+                    Mapa temático</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana ">
+            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+            <!--<button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>-->
+            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
+            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar"></button>
+        </div>
+        </header>
+        <div class="contenidoMapa" >
+            {% include 'frecuencias/mapa.html' %}
+        </div>
+    </section>
+</div><!--
+         --><div class="col-35 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
+    <section >
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe051;"></span>
+                    Indicadores</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana dataalgo"  >
+            <!--<button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>-->
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarCuadro"></button>
+            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
+            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
+        </div>
+        </header>
+        <div class="contenidoCuadro">
+            {% include 'frecuencias/cuadro.html'  with {'vista': 'principales'} %}
+        </div>
+    </section>
+</div><!--
+         --><div class="col-1-4 ventanaGrafico contenedorVentana" data-codevent="graficos" data-cod="7">
+    <section>
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe000;"></span> Gráficos y metadatos</h2>
+            </div><!--
+                     --><div class="col-4-10 contenedorBotonesVentana">
+            <!--<button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>-->
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarGrafico "></button>
+            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
+            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
+        </div>
+        </header>
+        <div class="contenidoGrafico">
+            {% include 'frecuencias/graficos.html' %}
+        </div>
+
+    </section>
+</div>
+{% endblock %}
+
+
+{% block endscript %}
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        App.init('frecuencias', ['mapasFrecuencias', 'cuadros','graficos']);
+    });
+</script>
+{% endblock %}

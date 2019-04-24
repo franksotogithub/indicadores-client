@@ -220,18 +220,18 @@ div.esri-search__submit-button:focus {
 .botonVistaMapa > i {
     font-size: 19px;
 }
-.mostrarListaMapa{
+.ambitosMapa{
     font-family: 'Alegreya-Sans';
     position: absolute;
     width: 150px;
     background: white;
     cursor: pointer;
 }
-.mostrarListaMapa > div {
+.ambitosMapa > div {
     padding: 10px;
     text-align: left;
 }
-.mostrarListaMapa > div:hover {
+.ambitosMapa > div:hover {
     background-color: #009ae0;
     color: white;
 }

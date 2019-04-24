@@ -950,10 +950,10 @@ $(document).ready(function() {
 
     });
     $(document).on('click','button.botonVistaMapa', function() {
-        $(".mostrarListaMapa").toggle("slow");
+        $(".ambitosMapa").toggle("slow");
     });
 
-    $(document).on('click','.mostrarListaMapa', function() {
+    $(document).on('click','.ambitosMapa', function() {
         $(this).toggle("slow");
     });
 

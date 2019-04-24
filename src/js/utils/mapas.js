@@ -2387,7 +2387,7 @@ App.utils.mapas = (function (parent, config,service) {
                 });
             }
 
-    var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
+            var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
         var results= new Object();
         results["results"]='';
         service.mapas.getTerritorioSelect2(ubigeos,function(data){
@@ -2426,6 +2426,7 @@ App.utils.mapas = (function (parent, config,service) {
 
             });
         }
+
 
 
 
@@ -2519,7 +2520,7 @@ App.utils.mapas = (function (parent, config,service) {
         service.mapas.getMapa(cod_mapa,function (data) {
             var _this=parent.mapas;
             _this.datosMap.codMap=cod_mapa;
-            _this.datosMap.urlMap=data.url;
+            _this.datosMap.urlMap=service.getUrlGis(data.url);
             _this.datosMap.codTematico=data.cod_tematico_default;
             _this.datosMap.tituloLegend=data.descripcion;
             cambiarMapa();
