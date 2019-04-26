@@ -174,9 +174,10 @@ App.service.mapas = (function (parent, config,utils) {
         var tematico=global.capas.find(x=>x.id='tematicos');
         var layersTematicos= tematico.idLayers;
         var ambito=parseInt(layersTematicos[i]);
+        var tipoValor=(global.tipoValor==undefined)?1:parseInt(global.tipoValor);
         var colores=[];
         var rangos=[];
-        var slug = parent.url('mapa/tematico/{0}/{1}/{2}/{3}/', [proyecto, periodo,variable,(ambito)]);
+        var slug = parent.url('mapa/tematico/{0}/{1}/{2}/{3}/{4}/', [proyecto, periodo,variable,(ambito),tipoValor]);
         parent.get({
             url: parent.getUrlServer(slug),
             success: function (data) {

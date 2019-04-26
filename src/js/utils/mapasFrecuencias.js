@@ -4,6 +4,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
             cursor: $("#cursor_info")
         },
         ambito:0,
+        tipoValor:1,
         selectUbigeos:[],
         map:'',
         divMap: 'map',
@@ -54,6 +55,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         cantNiveles:5,
         colores:[],
         ambito:0,
+        ubigeosHijos:[],
         ubigeosOrdenadosFinal:[],
         VALORES_STATICOS:
         {0:{"placeholders":"Seleccione un Departamento","etiquetaWidgetMultiples":"MULTIPLES DEPATAMENTOS"},
@@ -133,7 +135,6 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
     var crearLegendaTematico = function(data,ambito){
         var html='';
-        //var display = displayLegenda(minScale,maxScale,escala);
 
         if(data.titulo==undefined) data.titulo='';
         if(data.ambito==undefined) data.ambito='';
@@ -144,7 +145,12 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         html+='<div id="legendaTematico"  minScale='+data.minScale+' maxScale='+data.maxScale+'>';
         html+='<div class="legendTituloTematico" >'+data.titulo+'</div>';
         html+='<div class="legendTituloAmbito" >'+data.ambito+'</div>';
-
+        html+='<div class="legendTituloAmbito" >' +
+            '<select id="tipoValor">' +
+            '<option value="1">ABSOLUTO</option>' +
+            '<option value="2">PORCENTAJE</option>' +
+            '</select>' +
+            '</div>';
         html+='<div class="legendBodyTematico" >';
 
         for (var x=(data.rangos.length-1);x>=0;x--){
@@ -158,7 +164,17 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         html+='</div>';
         html+='</div>';
         html+='</div>';
+        global.elementLegenda.innerHTML=html
 
+        $('#legenda').find('select').map(function(index,el){
+            //console.log('el>>>',el);
+            $(el).val(String(global.tipoValor));
+            $(el).on('change',function () {
+                global.tipoValor=parseInt(this.value);
+                service.mapas.tematico(global,0,actualizarMapasTematicos);
+            });
+
+        });
         return html;
 
     };
@@ -191,8 +207,8 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         var exp='';
         var ubigeos;
         if(ambito<1){
-            //(ambito==0)?global.selectUbigeos=datos[ambito].selectUbigeos:global.selectUbigeos=[];
-            cambiarAmbito(0);
+            (ambito==-1)?cambiarAmbito(0,true):cambiarAmbito(0,false);
+
             global.map.centerAndZoom(global.mapOptions.center, global.mapOptions.zoom);
         }
         else {
@@ -203,7 +219,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
             //datos[ambito].layer.setDefinitionExpression(exp);
             getFeaturesUbigeos(exp,url,function () {
                 console.log(ambito);
-                cambiarAmbito(ambito);
+                cambiarAmbito(ambito,false);
             });
         }
         actualizarWidgetNavegacion(ambito);
@@ -234,7 +250,6 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         });
     }
 
-
     var desplegarWidgetsNavegacion=function(){
         var ambitos=[-1].concat(global.layersTematicos);
         var html;
@@ -262,20 +277,16 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
     }
 
-
     var abrirUbigeo = function (ambito) {
         var datos=global.capas.find(x=>x.id='tematicos').datosLayers;
         var layer=datos[ambito+1].layer;
-
-        var exp='1=1';
-
+        var exp='';
         var ubigeos=datos[ambito].selectUbigeos.map(x=>x.codigo);
         exp=utils.getDefExpr(ubigeos);
         layer.setDefinitionExpression(exp);
         actualizarWidgetNavegacion(ambito);
-
         getFeaturesUbigeos(exp,layer.url,function(){
-            cambiarAmbito(ambito+1);
+            cambiarAmbito(ambito+1,true);
         });
     }
 
@@ -323,30 +334,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 });
     }
 
-
-    /*var getUniqueValuesInfosSelectUbigeo= function(ambito,SimpleFillSymbol,SimpleLineSymbol,Color){
-        var tematicos=global.capas.find(x=>x.id='tematicos');
-        var uniqueValuesInfos = [];
-        var data=tematicos.datosLayers[ambito].datos;
-        var selectUbigeos=tematicos.datosLayers[ambito].selectUbigeos;
-        var ubigeo;
-        var color;
-        var valueInfo;
-
-        data.forEach( function (el) {
-            if(selectUbigeos!==undefined && selectUbigeos.length>0){
-                ubigeo=selectUbigeos.find(x=>x.codigo==el.codigo);
-                (ubigeo!=undefined)? color=el.color : color=global.colorGris;
-            }
-            valueInfo = {
-                "value": el.codigo,
-                "symbol": crearSimbolo(color,1,SimpleFillSymbol,SimpleLineSymbol,Color)
-            };
-            uniqueValuesInfos.push(valueInfo);
-        });
-        return uniqueValuesInfos;
-    }*/
-    var getUniqueValuesInfosSelectUbigeo= function (ambito,callback) {
+    var actualizarTematicoCapa= function (ambito,cambioAmbito,callback) {
         require([
                 "esri/map",
                 "esri/renderers/SimpleRenderer", "esri/Color",
@@ -369,23 +357,34 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 var valueInfo;
 
                 data.forEach( function (el) {
+                    color=el.color;
+
                     if(selectUbigeos!==undefined && selectUbigeos.length>0){
                         ubigeo=selectUbigeos.find(x=>x.codigo==el.codigo);
                         (ubigeo!=undefined)? color=el.color : color=global.colorGris;
                     }
+
+
+
+                    else if (selectUbigeos.length==0 && $('#select-all').prop('checked')==false && cambioAmbito==false )
+                    {
+                        color=global.colorGris;
+                    }
+
+
                     valueInfo = {
                         "value": el.codigo,
                         "symbol": crearSimbolo(color,1,SimpleFillSymbol,SimpleLineSymbol,Color)
                     };
                     uniqueValuesInfos.push(valueInfo);
-                    });
+                });
 
-
+                    console.log('uniqueValuesInfos>>>',uniqueValuesInfos);
                     var layerRenderer = new UniqueValueRenderer({
                             "type": "uniqueValue",
                             "field1": "CODIGO",
                             "uniqueValueInfos": uniqueValuesInfos,
-                            "uniqueValueInfos": response,
+                            //"uniqueValueInfos": response,
                             "defaultSymbol":defaultSymbol(SimpleFillSymbol,SimpleLineSymbol,Color)
                     });
 
@@ -397,8 +396,6 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 });
 
     }
-
-
 
     var iniciarMapa = function (){
         require([
@@ -574,6 +571,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
 
                 var selectFeature = function(options,abrirPopup){
+
                     var ubigeoSelect={codigo:options['CODIGO'],desc:options['DESCRIPCION']};
                     var ambito=global.ambito;
 
@@ -588,8 +586,11 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                         tematicos.datosLayers[ambito].selectUbigeos=[ubigeoSelect];
                     }
 
+                    (tematicos.datosLayers[ambito].selectUbigeos.length>0)? $('#widget-select-all').show():$('#widget-select-all').hide();
+
+
                     /**seteando tematico**/
-                    getUniqueValuesInfosSelectUbigeo(ambito,function (response) {
+                    actualizarTematicoCapa(ambito,false,function (response) {
 
                         global.selectUbigeos=tematicos.datosLayers[ambito].selectUbigeos;
                         actualizarTablasyGraficos(ambito);
@@ -618,27 +619,25 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     var results= {};
                     results["results"]='';
                     service.mapas.getTerritorioSelect2(ubigeos,function(data){
-
-                        var ubigeosHijos=[];
+                        global.ubigeosHijos=[];
                         if(ubigeos.length==0)
                         {
                             actualizarDatosComboUbigeo(data.results,0);
                             data.results.forEach(function (hijo) {
-                            ubigeosHijos.push(hijo.id.trim());
+                                global.ubigeosHijos.push( {'codigo': hijo.id.trim() ,'desc':hijo.text.trim() });
                             });
                         }
-
 
                         else {
                             actualizarDatosComboUbigeo(data.results,global.ambito);
                             data.results.forEach(function (padres) {
                                 padres.children.forEach(function (hijo) {
                                     if(hijo.id.trim().length>6){
-                                        ubigeosHijos.push({ubigeo:hijo.id.trim(),grupo:hijo.cod_grupo.trim()});
+                                         global.ubigeosHijos.push({'codigo':hijo.id.trim(),'desc':hijo.text.trim(),grupo:hijo.cod_grupo.trim()});
                                     }
 
                                     else{
-                                        ubigeosHijos.push(hijo.id.trim());
+                                         global.ubigeosHijos.push({'codigo':hijo.id.trim(),'desc':hijo.text.trim()});
                                     }
                                 });
                             });
@@ -649,10 +648,21 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     });
                 }
 
+                var selectAllFeatures=function(checked){
+                    if(checked)
+                        tematicos.datosLayers[global.ambito].selectUbigeos=global.ubigeosHijos;
+                    else
+                        tematicos.datosLayers[global.ambito].selectUbigeos=[];
+
+                    actualizarTematicoCapa(global.ambito,false,function (res) {
+                        actualizarTablasyGraficos(global.ambito);
+                    });
+                }
+
 
                 $('.ambitosMapa').on('click', 'div',function () {
                     var ambito=parseInt($(this).attr('index'));
-                    cambiarAmbito(ambito);
+                    cambiarAmbito(ambito,true);
                 });
 
                 $('#select-ubigeo').on('select2:select', function (e) {
@@ -673,7 +683,10 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     });
                     });
 
-
+                $('#select-all').on("click", function(){
+                    var checked=$(this).prop('checked');
+                    selectAllFeatures(checked);
+                });
                 global.map.on('dbl-click',function (e) {
                     console.log('evento>>>',e);
                     var ubigeos=tematicos.datosLayers[global.ambito].selectUbigeos.map(x=>x.codigo);
@@ -683,30 +696,61 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 initFunc();
                 actualizarComboUbigeo([]);
                 desplegarWidgetsNavegacion();
+                $('#widget-select-all').hide();
 
             });
 
 
     }
 
-    var cambiarAmbito=function(ambito){
+    var cambiarAmbito=function(ambito,reset){
         var tematicos=global.capas.find(x=>x.id='tematicos');
         var datosLayers=tematicos.datosLayers;
+
         datosLayers.forEach(function (dato,index) {
                             if(index!==ambito)
+                            {
                                 dato.layer.setVisibility(false);
+
+                            }
                             else {
                                 dato.layer.setVisibility(true);
                                 dato.layer.setMaxScale(0);
                                 dato.layer.setMinScale(0);
-                                if(index>ambito){
-                                    dato.selectUbigeos=[];
+
+                            }
+
+                            if(reset){
+                                if(index>=ambito){
+                                dato.selectUbigeos=[];
+                                actualizarTematicoCapa(index,true,function (response) {
+
+                                    });
                                 }
                             }
+
+                            else{
+                                if(index>ambito){
+                                dato.selectUbigeos=[];
+                                actualizarTematicoCapa(index,true,function (response) {
+
+                                    });
+                                }
+                            }
+
+
+                            if(index>ambito){
+                                dato.layer.setDefinitionExpression("1=1");
+
+                            }
+
+
                         });
         global.ambito=ambito;
-        global.elementLegenda.innerHTML=crearLegendaTematico(datosLayers[global.ambito],global.ambito);
+        //global.elementLegenda.innerHTML=
+        crearLegendaTematico(datosLayers[global.ambito],global.ambito);
 
+        $('#widget-select-all').hide();
     }
 
     var actualizarMapasTematicos = function(){
@@ -759,6 +803,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                             layer.redraw();
                         });
                     };
+
                     var getUniqueValuesInfos=function(data, rangos,colores,borderLine,ambito){
                         var uniqueValuesInfos = [];
                         var j = 0;
@@ -813,7 +858,8 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                         return uniqueValuesInfos;
                 };
                     actualizandoCapas();
-                    global.elementLegenda.innerHTML=crearLegendaTematico(datosLayers[global.ambito],global.ambito);
+                    //global.elementLegenda.innerHTML=
+                        crearLegendaTematico(datosLayers[global.ambito],global.ambito);
 
 
             });
