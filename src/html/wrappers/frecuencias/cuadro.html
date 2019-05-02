@@ -41,7 +41,7 @@
 
 <!--
 --><div class="col-10-10 cuadroMinimizado">
-    <div class="busquedaCuadro">
+    <div class="busquedaCuadro" style="display: none">
         <div class="contenedorInputTablaB ocultaBus">
             <div>
                 <button > X </button>
@@ -52,13 +52,22 @@
         </div>
         <button type="button" class="buttonFlotanteBusqueda ocultaBus" title="Buscar por indicador"><span class="dripicons-search"></span> </button>
     </div>
-    <div class="contenedor_indicadores">
-        <div class="selectCuadros" style="display: none;">
-            <label> Ponderador de población:</label>
-            <select id="comboPonderador">
 
-            </select>
+    <div class="contenedorBusquedaFrecuencia" >
+        <div class="buscadorContene">
+            <input type="search" placeholder="Buscar por indicador" class="inputTextBusqueda">
+            <button type="button" class="botondebusquedaFrecuencia " title="Buscar por indicador"><span class="dripicons-search"></span> </button>
         </div>
+
+        <select>
+            <option>Universo: Niguno</option>
+        </select>
+        <select>
+            <option>Condicion: Ninguno </option>
+        </select>
+    </div>
+    <div class="contenedor_indicadores" >
+
     <div class="tablaTabs" id="tabsCategoria"></div>
 
 

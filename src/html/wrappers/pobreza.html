@@ -1,6 +1,28 @@
 {% extends "../base.html" %}
 {% block menutitulo %} Mapa de pobreza 2017 {% endblock %}
 {% block wrapper %}
+
+<header class="widget-NavegacionBar navResponsiveIndicadores " style="display: none">
+
+
+    <div class="botonSim"><i class="material-icons">search</i>
+        <div class="contentBuscadorUbigeoResponsive" style="display: none">
+            <div class="inputBuscador">
+                <input id="buscador-ubigeo2" type="search" placeholder="Buscar por ubigeo">
+                <button class="ocultarBuscadorUbigeo2"><i class="material-icons">expand_less</i></button>
+            </div>
+        </div>
+    </div>
+    <button style="display: none;"><i class="material-icons">vertical_align_bottom</i></button>
+
+    <div class="blockNavegacion floatRight">
+        <button data-codevent="mapas" class="active botonNavegar "><span class="mapapequeBnR" ></span></button>
+
+        <button data-codevent="cuadros" class="botonNavegar "><i class="material-icons">assignment</i></button>
+        <!--<button data-codevent="graficos" data-disc="metadata"  class="botonNavegar "><i class="material-icons">info</i></button>-->
+    </div>
+</header>
+
 <nav class="nav-vertical col-1-10" style="display: none">
     <button class="cbutt1">
         <a href="index.html">
@@ -36,7 +58,7 @@
 
 </nav>
 
-<div class="col-4-10 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
+<div class="col-1-2 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
@@ -45,7 +67,9 @@
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana ">
             <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
-            <button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>
+
+            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
+            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
 
         </div>
         </header>
@@ -54,7 +78,7 @@
         </div>
     </section>
 </div><!--
-         --><div class="col-6-10 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
+         --><div class="col-1-2 ventanaTabla contenedorVentana" data-codevent="cuadros" data-cod="5" id="area">
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
@@ -62,8 +86,10 @@
                     Indicadores</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana dataalgo" >
-            <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
+
             <button data-icon=":" data-title="Descargar" class="tooltip descargarCuadro"></button>
+            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
+            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
 
         </div>
         </header>
