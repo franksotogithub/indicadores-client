@@ -2388,59 +2388,44 @@ App.utils.mapas = (function (parent, config,service) {
             }
 
             var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
-        var results= new Object();
-        results["results"]='';
-        service.mapas.getTerritorioSelect2(ubigeos,function(data){
+                var results= new Object();
+                results["results"]='';
+                service.mapas.getTerritorioSelect2(ubigeos,function(data){
 
-            ubigeosHijos=[];
-            if(ubigeos.length==0)
-            {
-                actualizarDatosComboUbigeo(data.results,0);
-                data.results.forEach(function (hijo) {
-                ubigeosHijos.push(hijo.id.trim());
-                });
-            }
-
-
-            else {
-                actualizarDatosComboUbigeo(data.results,_this.indexSubLayer+1);
-                data.results.forEach(function (padres) {
-                    padres.children.forEach(function (hijo) {
-                        if(hijo.id.trim().length>6){
-                            ubigeosHijos.push({ubigeo:hijo.id.trim(),grupo:hijo.cod_grupo.trim()});
-                        }
-
-                        else{
-                            ubigeosHijos.push(hijo.id.trim());
-                        }
+                ubigeosHijos=[];
+                if(ubigeos.length==0)
+                {
+                    actualizarDatosComboUbigeo(data.results,0);
+                    data.results.forEach(function (hijo) {
+                    ubigeosHijos.push(hijo.id.trim());
                     });
-                });
-                if(flagAbrir) openFeature();
-            }
+                }
 
 
+                else {
+                    actualizarDatosComboUbigeo(data.results,_this.indexSubLayer+1);
+                    data.results.forEach(function (padres) {
+                        padres.children.forEach(function (hijo) {
+                            if(hijo.id.trim().length>6){
+                                ubigeosHijos.push({ubigeo:hijo.id.trim(),grupo:hijo.cod_grupo.trim()});
+                            }
 
-
-
-            //console.log('ubigeosHijos>>>',ubigeosHijos);
-
+                            else{
+                                ubigeosHijos.push(hijo.id.trim());
+                            }
+                        });
+                    });
+                    if(flagAbrir) openFeature();
+                }
             });
         }
-
-
-
 
             setInterval(ocultarCargando,1000);
             changeLayer(0);
             actualizarComboUbigeo(_this.select_ubigeos);
-
             actualizarBuscador('#buscador-ubigeo');
             actualizarBuscador('#buscador-ubigeo2');
             desplegarWidgetsNavegacion(0);
-
-
-
-
         });
 
     };
@@ -2526,8 +2511,6 @@ App.utils.mapas = (function (parent, config,service) {
             cambiarMapa();
         });
     }
-
-
 
     var init = function (options) {
         var _this=parent.mapas;
