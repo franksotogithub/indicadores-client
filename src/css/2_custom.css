@@ -1535,7 +1535,7 @@ a.LinkModalCE{
     padding: 15px;
     background: transparent;
     position: absolute;
-    z-index: 99;
+    z-index: 9;
 }
 
 .widget-navegar-mapa-frecuencia > div {
@@ -1603,7 +1603,24 @@ a.LinkModalCE{
 
 
 
+.leyendaFrecuencias select {
 
+    border: none;
+    background-color: #1B3C71;
+    color: white;
+    border-right: solid 3px #1B3C71;
+    width: 100%;
+    padding: 4px 6px;
+}
+
+.leyendaFrecuencias #legendaTematico > div:first-child{
+    color: #1B3C71;
+}
+
+
+.leyendaFrecuencias #legendaTematico > div:nth-child(2){
+    color: #333333;
+}
 
 /* FIn frecuencias */
 
