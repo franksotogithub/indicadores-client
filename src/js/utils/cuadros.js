@@ -61,7 +61,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
 
     var _initFrecuecuencias = function (_this, vista) {
 
-        //_this.expardirVentana = true;
+        _this.expardirVentana = true;
         _this.crearTablaUigeos(['00'], []);
         _crearTabsCategorias(appData.categorias, vista);
         _crearSelectPonderador(appData.ponderadores);
@@ -533,7 +533,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.crearTablaUigeos(options.ubigeosOdenados, []);
         this.cuadrosData.ubigeo = (options.ubigeosSeleccionados.length > 0) ? options.ubigeosSeleccionados.slice(-1).pop() : '00';
         if(this.vista=='principales'
-        ||this.vista=='frecuencias'
+        //||this.vista=='frecuencias'
+
         ){parent.graficos.indicadores(this.cuadrosData.categoria, this.cuadrosData.ubigeo);}
 
 

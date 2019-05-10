@@ -87,8 +87,8 @@
                      --><div class="col-4-10 contenedorBotonesVentana ">
             <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
             <!--<button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>-->
-            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
-            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar"></button>
+            <!--<button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>-->
+            <!--<button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar"></button>-->
         </div>
         </header>
         <div class="contenidoMapa" >
@@ -115,32 +115,36 @@
         </div>
     </section>
 </div><!--
-         --><div class="col-1-4 ventanaGrafico contenedorVentana" data-codevent="graficos" data-cod="7" style="display: none">
+         -->
+
+<!--
+
+<div class="col-1-4 ventanaGrafico contenedorVentana" data-codevent="graficos" data-cod="7" style="display: none">
     <section>
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
                 <h2> <span data-icon="&#xe000;"></span> Gráficos y metadatos</h2>
-            </div><!--
-                     --><div class="col-4-10 contenedorBotonesVentana">
-            <!--<button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>-->
+            </div>
+
+
+            <div class="col-4-10 contenedorBotonesVentana">
+
             <button data-icon=":" data-title="Descargar" class="tooltip descargarGrafico "></button>
             <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
             <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
-        </div>
+            </div>
         </header>
-        <div class="contenidoGrafico">
-            {% include 'frecuencias/graficos.html' %}
-        </div>
 
     </section>
 </div>
+-->
 {% endblock %}
 
 
 {% block endscript %}
 <script type="text/javascript">
     $(document).ready(function (e) {
-        App.init('frecuencias', ['mapasFrecuencias', 'cuadros','graficos']);
+        App.init('frecuencias', ['mapasFrecuencias', 'cuadros']);
     });
 </script>
 {% endblock %}

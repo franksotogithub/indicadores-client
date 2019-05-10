@@ -247,7 +247,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         $('#list-widgets-ubigeo .widget-ubigeo').map(function(index,el){
             var am= parseInt($(el).attr('ambito'));
             if(am<=ambito){
-                $(el).css('display','block');
+                $(el).css('display','inline-block');
                 (am==ambito)? $(el).text(text):true;
             }
             else{
@@ -259,11 +259,11 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
     var desplegarWidgetsNavegacion=function(){
         var ambitos=[-1].concat(global.layersTematicos);
         var html;
-        var display='';
+        var display='inline-block';
 
         ambitos.forEach(function (ambito) {
             (ambito>-1)?display='none':true;
-            html='<div class="widget-ubigeo"  ambito="'+ambito+'" >';
+            html='<div class="widget-ubigeo"  ambito="'+ambito+'"  >';
             html+= (ambito==-1)? 'PERU':global.VALORES_STATICOS[ambito]["etiquetaWidgetMultiples"];
             html+='</div>';
 

@@ -19,9 +19,10 @@
     app.uiNormalCallback = function (ventana) {
 
         if (this.uiMax.hasOwnProperty(ventana)) {
-            this.uiMax = uiMax;
+            //this.uiMax[ventana] = uiMax;
+            this.uiMax[ventana] = false;
         }
-        this.hasUtils('uiNormalCallback', {"ventana": ventana});
+        this.hasUtils('uiNormalCallback', {"ventana": ventana}, [ventana]);
 
     };
 
