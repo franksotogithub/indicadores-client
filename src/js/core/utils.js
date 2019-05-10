@@ -224,7 +224,14 @@ App.utils = {
         }
 
         return definitionExpression;
+    },
+
+
+
+    addRow : function(label, field){
+        return field ? ( (''+field).trim() != '' ? '<b>' + label + ': </b>'+ (''+field).toUpperCase() + '<br>' : '' ) : '';
     }
+
 
 
 };

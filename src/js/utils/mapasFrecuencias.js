@@ -3,12 +3,12 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         ui: {
             cursor: $("#cursor_info")
         },
+        optionsPopup:{},
         ambito:0,
         tipoValor:1,
         selectUbigeos:[],
         map:'',
         divMap: 'map',
-
         zoomLocalizacion:6,
         mapOptions:{
                    center: [-74.999999999998751, -9.304902982781664],
@@ -188,10 +188,12 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
             if(i<=ambito){
                 ubigeosDes=ubigeosDes.concat(datos[i].selectUbigeos.map(x=>x.codigo));
             }
-
         });
+
         (ubigeosDes.indexOf('00')<0)?ubigeosDes.unshift('00'):true;
+
         ordenarUbigeos(ubigeosDes,[],"00");
+
         options= {
             'ubigeosOdenados':global.ubigeosOrdenadosFinal,
             'ubigeosSeleccionados':global.selectUbigeos,
@@ -207,22 +209,26 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         var exp='';
         var ubigeos;
         if(ambito<1){
-            (ambito==-1)?cambiarAmbito(0,true):cambiarAmbito(0,false);
-
+           (ambito<0)?cambiarAmbito(0,true):cambiarAmbito(0,false);
+            actualizarComboUbigeo(datos[0].selectUbigeos.map(x=>x.codigo),0) ;
             global.map.centerAndZoom(global.mapOptions.center, global.mapOptions.zoom);
+            actualizarTablasyGraficos(0);
         }
         else {
             url=datos[ambito-1].layer.url;
             ubigeos=datos[ambito-1].selectUbigeos.map(x=>x.codigo);
             exp=utils.getDefExpr(ubigeos);
             console.log(exp,url);
-            //datos[ambito].layer.setDefinitionExpression(exp);
-            getFeaturesUbigeos(exp,url,function () {
-                console.log(ambito);
+
+            getExtentUbigeos(exp,url,function () {
+                actualizarComboUbigeo(datos[ambito].selectUbigeos.map(x=>x.codigo),0) ;
                 cambiarAmbito(ambito,false);
+                actualizarTablasyGraficos(ambito);
             });
         }
+
         actualizarWidgetNavegacion(ambito);
+
 
     }
 
@@ -270,27 +276,24 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
         });
 
-        /*$('#list-widgets-ubigeo .widget-ubigeo').map(function(index,el){
-            var am= parseInt($(el).attr('ambito'));
-            (am>=ambito)? $('#list-widgets-ubigeo').remove(el):true;
-        });*/
+
 
     }
 
     var abrirUbigeo = function (ambito) {
         var datos=global.capas.find(x=>x.id='tematicos').datosLayers;
         var layer=datos[ambito+1].layer;
-        var exp='';
+
         var ubigeos=datos[ambito].selectUbigeos.map(x=>x.codigo);
         exp=utils.getDefExpr(ubigeos);
         layer.setDefinitionExpression(exp);
         actualizarWidgetNavegacion(ambito);
-        getFeaturesUbigeos(exp,layer.url,function(){
+        getExtentUbigeos(exp,layer.url,function(){
             cambiarAmbito(ambito+1,true);
         });
     }
 
-    var getFeaturesUbigeos = function (queryText,urlService,callback){
+    var getExtentUbigeos = function (queryText,urlService,callback){
         require([
                     "esri/map", "esri/geometry/Extent",
                     "esri/layers/FeatureLayer","esri/dijit/Legend",
@@ -324,6 +327,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
                         //if(featureSet){
                             queryTask.executeForExtent(query, function (result){
+                                console.log('result>>>>',result);
                                global.map.setExtent(result.extent);
                                callback(result);
 
@@ -332,6 +336,69 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
                     //});
                 });
+    }
+
+    var getFeatureUbigeos = function (queryText,urlService,callback){
+        require([
+                    "esri/map", "esri/geometry/Extent",
+                    "esri/layers/FeatureLayer","esri/dijit/Legend",
+                    "dojo/dom","dojo/dom-construct","esri/layers/ArcGISDynamicMapServiceLayer","esri/layers/ImageParameters",
+                    "esri/arcgis/utils",
+                    "esri/dijit/LayerList",
+                    "dojo/_base/array",
+                    "esri/dijit/BasemapToggle",
+                     "esri/InfoTemplate",
+                    "esri/tasks/QueryTask",
+                    "esri/tasks/query",
+                    "dojo/domReady!",
+
+                ],
+                function ( Map, Extent,
+                           FeatureLayer,Legend,
+                           dom,domConstruct,ArcGISDynamicMapServiceLayer,ImageParameters,
+                           arcgisUtils,LayerList, arrayUtils,BasemapToggle,InfoTemplate,
+                           QueryTask,Query
+                           )
+
+                {
+
+                    var queryTask = new QueryTask(urlService);
+                    var query = new Query();
+                    query.returnGeometry = true;
+                    query.outFields = ["*"];
+                    query.where = queryText;
+
+                    queryTask.execute(query, function (featureSet){
+                        console.log('featureSet>>>',featureSet);
+                        if(featureSet){
+                            callback(featureSet.features);
+                            /*queryTask.executeForExtent(query, function (result){
+                                console.log('result>>>>',result);
+                               global.map.setExtent(result.extent);
+                               callback(result);
+
+                            });*/
+                        }
+
+                    });
+
+                });
+    }
+
+    var contentPopup = function (datoLayer,feature) {
+        var html = '';
+        html +=utils.addRow('Variable',datoLayer.titulo);
+        html +=utils.addRow('Valor ',feature.valor);
+        return html;
+    }
+
+    var abrirPopup=function(options){
+        var datos=global.capas.find(x=>x.id='tematicos').datosLayers;
+        var datoLayer=datos[global.ambito];
+        var feature=datoLayer.datos.find(x => x.codigo == options.codigo);
+        global.map.infoWindow.setTitle(options.desc);
+        global.map.infoWindow.setContent(contentPopup(datoLayer,feature));
+        global.map.infoWindow.show(options.centro);
     }
 
     var actualizarTematicoCapa= function (ambito,cambioAmbito,callback) {
@@ -395,6 +462,144 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     return callback(uniqueValuesInfos);
                 });
 
+
+
+    }
+
+    var actualizarDatosComboUbigeo = function (data,i){
+        var placeholder="Seleccione una opcion";
+        $('#select-ubigeo').html('').select2({data: [{id:"",text:""}]});
+        $('#select-ubigeo').select2({
+            tags: "true",
+            placeholder: placeholder,
+                        //placeholder: _this.VALORES_STATIC[i].placeholders,
+            allowClear: true,
+            data:data
+        });
+    }
+
+    var actualizarComboUbigeo=function(ubigeos,flagAbrir){
+        var results= {};
+        results["results"]='';
+        service.mapas.getTerritorioSelect2(ubigeos,function(data){
+                        global.ubigeosHijos=[];
+                        if(ubigeos.length==0)
+                        {
+                            actualizarDatosComboUbigeo(data.results,0);
+                            data.results.forEach(function (hijo) {
+                                global.ubigeosHijos.push( {'codigo': hijo.id.trim() ,'desc':hijo.text.trim() });
+                            });
+                        }
+
+                        else {
+                            actualizarDatosComboUbigeo(data.results,global.ambito);
+                            data.results.forEach(function (padres) {
+                                padres.children.forEach(function (hijo) {
+                                    if(hijo.id.trim().length>6){
+                                         global.ubigeosHijos.push({'codigo':hijo.id.trim(),'desc':hijo.text.trim(),grupo:hijo.cod_grupo.trim()});
+                                    }
+
+                                    else{
+                                         global.ubigeosHijos.push({'codigo':hijo.id.trim(),'desc':hijo.text.trim()});
+                                    }
+                                });
+                            });
+
+                            if(flagAbrir)abrirUbigeo(global.ambito);
+                        }
+
+                    });
+    }
+
+
+    var seleccionarUbigeoPorBuscador= function (feature,index) {
+        /*
+                if(index==1){
+
+                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                }
+                if(index==2){
+                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                    _this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
+                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                }
+
+                if(index==3){
+                    _this.historic_features[0].nombres.push(feature.attributes.DEPARTAMENTO);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                    _this.historic_features[1].nombres.push(feature.attributes.PROVINCIA);
+                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                    _this.historic_features[2].nombres.push(feature.attributes.DISTRITO);
+                    _this.historic_features[2].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP+feature.attributes.CCDI);
+                }
+
+                for (var i=0;i<index;i++) setLabelWidgetUbigeos(i);
+
+
+                if (index<3){
+                    changeIndex(index);
+                    selectedFeature(feature,event);
+                    actualizarComboUbigeo(_this.select_ubigeos,1);
+                    //openFeature();
+                }
+
+             */
+
+    }
+
+    var actualizarBuscador = function (buscador){
+        $(buscador).autocomplete({
+            serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
+            onSelect: function (Response) {
+                var codigo=Response.data;
+                var where=" CODIGO="+codigo;
+                var index=parseInt(Response.index)-2;
+                var indiceUbigeoEncontrado=global.selectUbigeos.indexOf(codigo);
+
+
+                /*(index==3)?where=" CODIGO='"+codigo+ "' and origen='"+VALORES_STATIC['origen']+"' and poblacion>0": where= " CODIGO="+codigo;
+                if(indiceUbigeoEncontrado<0){
+                    getFeaturesUbigeos(where,index,function (features) {
+                        features.forEach(function (feature) {
+                            seleccionarUbigeoPorBuscador(feature,index);
+
+                        }
+                        );
+                    });
+                }
+                */
+
+
+                /*
+
+                                    var data = e.params.data;
+                    var codigo=data.id.trim();
+                    var descripcion= data.text;
+                    var where=" CODIGO="+codigo;
+
+
+                    var url = tematicos.datosLayers[global.ambito].layer.url;
+
+
+                    getFeatureUbigeos(where,url,function (results) {
+                        var options ={};
+                        var result=results[0];
+                        options.atributos=result.attributes;
+                        options.geometry=result.geometry;
+                        selectFeature(options,0);
+                        actualizarComboUbigeo(tematicos.datosLayers[global.ambito].selectUbigeos.map(x=>x.codigo),1);
+                        });
+
+
+                * */
+
+
+
+                },
+            width:"flex",
+        });
     }
 
     var iniciarMapa = function (){
@@ -533,10 +738,13 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
                                 if(capa.tieneReporte==true){
                                     newLayer.on("click",function (event) {
-                                        var graphic=event.graphic;
-                                        var atributos=graphic.attributes;
-                                        selectFeature(atributos);
+                                        var options ={};
+                                        //options.graphic=event.graphic;
+                                        options.atributos=event.graphic.attributes;
+                                        options.geometry=event.graphic.geometry;
+                                        options.screenPoint=event.screenPoint;
 
+                                        selectFeature(options,1);
 
                                     });
                                 }
@@ -568,19 +776,35 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     });
                 }
 
-
-
-                var selectFeature = function(options,abrirPopup){
-
-                    var ubigeoSelect={codigo:options['CODIGO'],desc:options['DESCRIPCION']};
+                var selectFeature = function(options,abrir){
+                    var codigo=options.atributos['CODIGO'];
+                    var desc=options.atributos['DESCRIPCION'];
+                    var ubigeoSelect={codigo:codigo,desc:desc};
                     var ambito=global.ambito;
+                    var centro ='';
+                    var optionsPopup={};
 
+
+                    $('#select-all').prop('checked',false);
+                    global.map.infoWindow.hide();//por defecto el popup esta oculto
                     if(tematicos.datosLayers[ambito].selectUbigeos!=undefined) {
                         var item=tematicos.datosLayers[ambito].selectUbigeos.find(item => item.codigo == ubigeoSelect.codigo);
                         if(item==undefined)
+                        {
                             tematicos.datosLayers[ambito].selectUbigeos.push(ubigeoSelect);
+
+
+                            if(abrir!==undefined && abrir>0){
+                                (options.screenPoint!==undefined)?centro=options.screenPoint:true;
+                                global.optionsPopup={ codigo: codigo ,desc:desc,centro:centro };
+                                abrirPopup(global.optionsPopup);
+                            }
+
+                        }
+
                         else
                             tematicos.datosLayers[ambito].selectUbigeos = tematicos.datosLayers[ambito].selectUbigeos.filter(item => item.codigo !== ubigeoSelect.codigo);
+
                     }
                     else {
                         tematicos.datosLayers[ambito].selectUbigeos=[ubigeoSelect];
@@ -603,50 +827,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     iniciarCapas();
                 }
 
-                var actualizarDatosComboUbigeo = function (data,i){
-                    var placeholder="Seleccione una opcion";
-                    $('#select-ubigeo').html('').select2({data: [{id:"",text:""}]});
-                    $('#select-ubigeo').select2({
-                        tags: "true",
-                        placeholder: placeholder,
-                        //placeholder: _this.VALORES_STATIC[i].placeholders,
-                        allowClear: true,
-                        data:data
-                    });
-                }
 
-                var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
-                    var results= {};
-                    results["results"]='';
-                    service.mapas.getTerritorioSelect2(ubigeos,function(data){
-                        global.ubigeosHijos=[];
-                        if(ubigeos.length==0)
-                        {
-                            actualizarDatosComboUbigeo(data.results,0);
-                            data.results.forEach(function (hijo) {
-                                global.ubigeosHijos.push( {'codigo': hijo.id.trim() ,'desc':hijo.text.trim() });
-                            });
-                        }
-
-                        else {
-                            actualizarDatosComboUbigeo(data.results,global.ambito);
-                            data.results.forEach(function (padres) {
-                                padres.children.forEach(function (hijo) {
-                                    if(hijo.id.trim().length>6){
-                                         global.ubigeosHijos.push({'codigo':hijo.id.trim(),'desc':hijo.text.trim(),grupo:hijo.cod_grupo.trim()});
-                                    }
-
-                                    else{
-                                         global.ubigeosHijos.push({'codigo':hijo.id.trim(),'desc':hijo.text.trim()});
-                                    }
-                                });
-                            });
-
-                            if(flagAbrir)abrirUbigeo(global.ambito);
-                        }
-
-                    });
-                }
 
                 var selectAllFeatures=function(checked){
                     if(checked)
@@ -657,6 +838,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     actualizarTematicoCapa(global.ambito,false,function (res) {
                         actualizarTablasyGraficos(global.ambito);
                     });
+                    global.map.infoWindow.hide();
                 }
 
 
@@ -675,12 +857,14 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     var url = tematicos.datosLayers[global.ambito].layer.url;
 
 
-                    getFeaturesUbigeos(where,url,function (results) {
-                        var atributos={'CODIGO':codigo,'DESCRIPCION':descripcion};
-
-                        selectFeature(atributos,1);
+                    getFeatureUbigeos(where,url,function (results) {
+                        var options ={};
+                        var result=results[0];
+                        options.atributos=result.attributes;
+                        options.geometry=result.geometry;
+                        selectFeature(options,0);
                         actualizarComboUbigeo(tematicos.datosLayers[global.ambito].selectUbigeos.map(x=>x.codigo),1);
-                    });
+                        });
                     });
 
                 $('#select-all').on("click", function(){
@@ -688,7 +872,6 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     selectAllFeatures(checked);
                 });
                 global.map.on('dbl-click',function (e) {
-                    console.log('evento>>>',e);
                     var ubigeos=tematicos.datosLayers[global.ambito].selectUbigeos.map(x=>x.codigo);
                     actualizarComboUbigeo(ubigeos,1);
                 });
@@ -697,6 +880,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 actualizarComboUbigeo([]);
                 desplegarWidgetsNavegacion();
                 $('#widget-select-all').hide();
+                actualizarBuscador('#buscador-ubigeo');
 
             });
 
@@ -747,10 +931,11 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
                         });
         global.ambito=ambito;
-        //global.elementLegenda.innerHTML=
+
         crearLegendaTematico(datosLayers[global.ambito],global.ambito);
 
         $('#widget-select-all').hide();
+        global.map.infoWindow.hide();
     }
 
     var actualizarMapasTematicos = function(){
@@ -772,6 +957,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 "esri/geometry/Extent",
                 "esri/symbols/SimpleMarkerSymbol",
                 "esri/graphic",
+                "esri/InfoTemplate",
                 "dojo/domReady!",
 
             ],
@@ -782,11 +968,13 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                 SimpleFillSymbol, SimpleLineSymbol,
                 ArcGISDynamicMapServiceLayer,ImageParameters,
                 UniqueValueRenderer,ClassBreaksRenderer,TextSymbol,LabelClass,
-                BasemapGallery,Basemap,BasemapLayer,QueryTask,Query,Extent,SimpleMarkerSymbol,Graphic
+                BasemapGallery,Basemap,BasemapLayer,QueryTask,Query,Extent,SimpleMarkerSymbol,Graphic,
+                InfoTemplate
 
             ) {
                     var tematicos=global.capas.find(x=>x.id='tematicos');
                     var datosLayers = tematicos.datosLayers;
+                    var infoTemplate = new InfoTemplate();
 
                     var actualizandoCapas= function(){
                         datosLayers.forEach(function (dato,index) {
@@ -799,8 +987,11 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                                             "defaultSymbol":defaultSymbol(SimpleFillSymbol,SimpleLineSymbol,Color)
                             });
                             layer.setRenderer(layerRenderer);
-
                             layer.redraw();
+
+
+
+
                         });
                     };
 
@@ -858,10 +1049,8 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                         return uniqueValuesInfos;
                 };
                     actualizandoCapas();
-                    //global.elementLegenda.innerHTML=
-                        crearLegendaTematico(datosLayers[global.ambito],global.ambito);
-
-
+                    crearLegendaTematico(datosLayers[global.ambito],global.ambito);
+                    (global.map.infoWindow.isShowing)? abrirPopup(global.optionsPopup,1):true;
             });
     }
 
@@ -925,6 +1114,8 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         global.variable=variable;
         global.colores=obtenerColoresRandom();
         service.mapas.tematico(global,0,actualizarMapasTematicos);
+        //abrirPopup(global.optionsPopup);
+
     }
 
     var _initEvents = function () {
@@ -936,7 +1127,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         init: init,
         global:global,
         cambiarAmbito: cambiarAmbito,
-        //seleccionarAmbito: seleccionarAmbito,
+
         actualizarMapasTematicosPorVariable:actualizarMapasTematicosPorVariable
     }
 

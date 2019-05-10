@@ -300,6 +300,8 @@ App.utils.cuadros = (function (config, appData, parent, service) {
                             $(td).addClass("popover");
                             $(td).attr('data-popover', appData.tituloIndicadores[cellData].descripcion);
                             $(td).attr('data-indicador', cellData);
+                            $(td).attr('es_cabecera', appData.tituloIndicadores[cellData].es_cabecera);
+
                         }
                     },
 
@@ -611,8 +613,7 @@ App.utils.cuadros = (function (config, appData, parent, service) {
         this.fixedColumnsRelayout();
     };
 
-    var changeMetadata = function (indicador) {
-
+    var changeMetadata = function (indicador,es_cabecera) {
 
         var metadata = appData.tituloIndicadores[indicador];
 
@@ -625,8 +626,9 @@ App.utils.cuadros = (function (config, appData, parent, service) {
             this.uiDocuments.clases.meta_pt.children('p').html(metadata.precisiones_tecnicas);
         }
         else if(this.vista=='frecuencias'){
-            console.log('indicador>>>',indicador)
-            parent.mapasFrecuencias.actualizarMapasTematicosPorVariable(indicador);
+            console.log('es_cabecera>>>',es_cabecera);
+            if(es_cabecera!==undefined && parseInt(es_cabecera)==0)
+            {parent.mapasFrecuencias.actualizarMapasTematicosPorVariable(indicador);}
         }
 
     };
