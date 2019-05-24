@@ -132,7 +132,6 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     , new Color([0,0,0,0]));
     }
 
-
     var crearLegendaTematico = function(data,ambito){
         var html='';
 
@@ -235,20 +234,44 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
     var actualizarWidgetNavegacion = function(ambito){
         var tematicos=global.capas.find(x=>x.id='tematicos');
         var text='';
+
+
+
+        /*
+
         if(ambito==-1){
             text='PERU';
         }
 
         else{
             var nombres=tematicos.datosLayers[ambito].selectUbigeos.map(x=>x.desc);
+
             text=(nombres.length>1)? global.VALORES_STATICOS[ambito]["etiquetaWidgetMultiples"]:(nombres.length==1)?nombres[0]:'';
         }
 
+        */
+
+
+
         $('#list-widgets-ubigeo .widget-ubigeo').map(function(index,el){
             var am= parseInt($(el).attr('ambito'));
+
+            if(am==-1){
+                text='PERU';
+            }
+
+            else{
+                var nombres=tematicos.datosLayers[am].selectUbigeos.map(x=>x.desc);
+
+                text=(nombres.length>1)? global.VALORES_STATICOS[am]["etiquetaWidgetMultiples"]:(nombres.length==1)?nombres[0]:'';
+            }
+
+
             if(am<=ambito){
                 $(el).css('display','inline-block');
-                (am==ambito)? $(el).text(text):true;
+                $(el).text(text);
+
+                //(am==ambito)? $(el).text(text):true;
             }
             else{
                 $(el).css('display','none');
@@ -285,11 +308,16 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         var layer=datos[ambito+1].layer;
 
         var ubigeos=datos[ambito].selectUbigeos.map(x=>x.codigo);
-        exp=utils.getDefExpr(ubigeos);
+        var exp=utils.getDefExpr(ubigeos);
         layer.setDefinitionExpression(exp);
         actualizarWidgetNavegacion(ambito);
         getExtentUbigeos(exp,layer.url,function(){
-            cambiarAmbito(ambito+1,true);
+            var options ={};
+
+            if(ambito<2){
+                cambiarAmbito(ambito+1,true);
+            }
+
         });
     }
 
@@ -512,29 +540,56 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
     }
 
 
-    var seleccionarUbigeoPorBuscador= function (feature,index) {
-        /*
-                if(index==1){
+    var seleccionarUbigeoPorBuscador= function (feature,ambito) {
+        var datos=global.capas.find(x=>x.id='tematicos').datosLayers;
+        //datos.datosLayers[ambito].selectUbigeos
 
-                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
-                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+
+
+
+                if(ambito==0){
+
+                    datos[0].selectUbigeos.push({codigo:feature.attributes.CCDD,desc:feature.attributes.NOMBDEP});
+                    /*_this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);*/
                 }
-                if(index==2){
-                    _this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                if(ambito==1){
+                    /*_this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
                     _this.historic_features[0].select_features.push(feature.attributes.CCDD);
                     _this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
-                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
+                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);*/
+                    //datos[ambito].selectUbigeos.push({codigo:feature.attributes.CCDD,desc:feature.attributes.NOMBDEP});
+                    datos[0].selectUbigeos.push({codigo:feature.attributes.CCDD,desc:feature.attributes.NOMBDEP});
+                    datos[1].selectUbigeos.push({codigo: (feature.attributes.CCDD+feature.attributes.CCPP),desc:feature.attributes.NOMBPROV});
                 }
 
-                if(index==3){
-                    _this.historic_features[0].nombres.push(feature.attributes.DEPARTAMENTO);
+
+                if(ambito==2){
+                    /*_this.historic_features[0].nombres.push(feature.attributes.NOMBDEP);
+                    _this.historic_features[0].select_features.push(feature.attributes.CCDD);
+                    _this.historic_features[1].nombres.push(feature.attributes.NOMBPROV);
+                    _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);*/
+                    //datos[ambito].selectUbigeos.push({codigo:feature.attributes.CCDD,desc:feature.attributes.NOMBDEP});
+                    datos[0].selectUbigeos.push({codigo:feature.attributes.CCDD,desc:feature.attributes.NOMBDEP});
+                    datos[1].selectUbigeos.push({codigo: (feature.attributes.CCDD+feature.attributes.CCPP),desc:feature.attributes.NOMBPROV});
+                    datos[2].selectUbigeos.push({codigo: (feature.attributes.CCDD+feature.attributes.CCPP+feature.attributes.CCDI),desc:feature.attributes.NOMBDIST});
+
+
+                }
+
+
+
+                //if(ambito==3){
+                    /*_this.historic_features[0].nombres.push(feature.attributes.DEPARTAMENTO);
                     _this.historic_features[0].select_features.push(feature.attributes.CCDD);
                     _this.historic_features[1].nombres.push(feature.attributes.PROVINCIA);
                     _this.historic_features[1].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP);
                     _this.historic_features[2].nombres.push(feature.attributes.DISTRITO);
-                    _this.historic_features[2].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP+feature.attributes.CCDI);
-                }
+                    _this.historic_features[2].select_features.push(feature.attributes.CCDD+feature.attributes.CCPP+feature.attributes.CCDI);*/
 
+
+                //}
+                /*
                 for (var i=0;i<index;i++) setLabelWidgetUbigeos(i);
 
 
@@ -549,52 +604,102 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
 
     }
 
+
+    var selectFeature = function(options,abrir){
+                    var tematicos=global.capas.find(x=>x.id='tematicos');
+                    var codigo=options.atributos['CODIGO'];
+                    var desc=options.atributos['DESCRIPCION'];
+                    var ubigeoSelect={codigo:codigo,desc:desc};
+                    var ambito=global.ambito;
+                    var centro ='';
+                    var optionsPopup={};
+
+
+                    $('#select-all').prop('checked',false);
+                    global.map.infoWindow.hide();//por defecto el popup esta oculto
+                    if(tematicos.datosLayers[ambito].selectUbigeos!=undefined) {
+                        var item=tematicos.datosLayers[ambito].selectUbigeos.find(item => item.codigo == ubigeoSelect.codigo);
+                        if(item==undefined)
+                        {
+                            tematicos.datosLayers[ambito].selectUbigeos.push(ubigeoSelect);
+
+
+                            if(abrir!==undefined && abrir>0){
+                                (options.screenPoint!==undefined)?centro=options.screenPoint:true;
+                                global.optionsPopup={ codigo: codigo ,desc:desc,centro:centro };
+                                abrirPopup(global.optionsPopup);
+                            }
+
+                        }
+
+                        else
+                            tematicos.datosLayers[ambito].selectUbigeos = tematicos.datosLayers[ambito].selectUbigeos.filter(item => item.codigo !== ubigeoSelect.codigo);
+
+                    }
+                    else {
+                        tematicos.datosLayers[ambito].selectUbigeos=[ubigeoSelect];
+                    }
+
+                    (tematicos.datosLayers[ambito].selectUbigeos.length>0)? $('#widget-select-all').show():$('#widget-select-all').hide();
+
+
+                    /**seteando tematico**/
+                    actualizarTematicoCapa(ambito,false,function (response) {
+                        global.selectUbigeos=tematicos.datosLayers[ambito].selectUbigeos;
+                        actualizarTablasyGraficos(ambito);
+                    });
+
+
+            }
+
+
+
     var actualizarBuscador = function (buscador){
+        /*
+                var datos=global.capas.find(x=>x.id='tematicos').datosLayers;
+        var url='';
+        var exp='';
+        var ubigeos;
+        if(ambito<1){
+           (ambito<0)?cambiarAmbito(0,true):cambiarAmbito(0,false);
+            actualizarComboUbigeo(datos[0].selectUbigeos.map(x=>x.codigo),0) ;
+            global.map.centerAndZoom(global.mapOptions.center, global.mapOptions.zoom);
+            actualizarTablasyGraficos(0);
+        }
+        else {
+            url=datos[ambito-1].layer.url;
+
+
+            */
+
+         var datos=global.capas.find(x=>x.id='tematicos').datosLayers;
+
         $(buscador).autocomplete({
             serviceUrl: service.getUrlServer('dimensiones/territorio/autocomplete/'),
             onSelect: function (Response) {
                 var codigo=Response.data;
-                var where=" CODIGO="+codigo;
-                var index=parseInt(Response.index)-2;
+                var exp=" CODIGO="+codigo;
+
+                var ambito=parseInt(Response.index)-2;
+                var url=datos[ambito].layer.url;
                 var indiceUbigeoEncontrado=global.selectUbigeos.indexOf(codigo);
 
+                var ambitox=(ambito!==2)?ambito:1;
 
-                /*(index==3)?where=" CODIGO='"+codigo+ "' and origen='"+VALORES_STATIC['origen']+"' and poblacion>0": where= " CODIGO="+codigo;
-                if(indiceUbigeoEncontrado<0){
-                    getFeaturesUbigeos(where,index,function (features) {
-                        features.forEach(function (feature) {
-                            seleccionarUbigeoPorBuscador(feature,index);
+            getFeatureUbigeos(exp,url,function (results){
+                var result=results[0];
 
-                        }
-                        );
-                    });
-                }
-                */
-
-
-                /*
-
-                                    var data = e.params.data;
-                    var codigo=data.id.trim();
-                    var descripcion= data.text;
-                    var where=" CODIGO="+codigo;
+                seleccionarUbigeoPorBuscador(result,ambito);
+                actualizarTablasyGraficos(ambito);
+                //cambiarAmbito(ambitox,false);
+                console.log('ambitox>>>',ambitox);
+                abrirUbigeo(ambitox);
+                //actualizarComboUbigeo(datos[ambito].selectUbigeos.map(x=>x.codigo),false);
 
 
-                    var url = tematicos.datosLayers[global.ambito].layer.url;
 
 
-                    getFeatureUbigeos(where,url,function (results) {
-                        var options ={};
-                        var result=results[0];
-                        options.atributos=result.attributes;
-                        options.geometry=result.geometry;
-                        selectFeature(options,0);
-                        actualizarComboUbigeo(tematicos.datosLayers[global.ambito].selectUbigeos.map(x=>x.codigo),1);
-                        });
-
-
-                * */
-
+            });
 
 
                 },
@@ -776,52 +881,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
                     });
                 }
 
-                var selectFeature = function(options,abrir){
-                    var codigo=options.atributos['CODIGO'];
-                    var desc=options.atributos['DESCRIPCION'];
-                    var ubigeoSelect={codigo:codigo,desc:desc};
-                    var ambito=global.ambito;
-                    var centro ='';
-                    var optionsPopup={};
 
-
-                    $('#select-all').prop('checked',false);
-                    global.map.infoWindow.hide();//por defecto el popup esta oculto
-                    if(tematicos.datosLayers[ambito].selectUbigeos!=undefined) {
-                        var item=tematicos.datosLayers[ambito].selectUbigeos.find(item => item.codigo == ubigeoSelect.codigo);
-                        if(item==undefined)
-                        {
-                            tematicos.datosLayers[ambito].selectUbigeos.push(ubigeoSelect);
-
-
-                            if(abrir!==undefined && abrir>0){
-                                (options.screenPoint!==undefined)?centro=options.screenPoint:true;
-                                global.optionsPopup={ codigo: codigo ,desc:desc,centro:centro };
-                                abrirPopup(global.optionsPopup);
-                            }
-
-                        }
-
-                        else
-                            tematicos.datosLayers[ambito].selectUbigeos = tematicos.datosLayers[ambito].selectUbigeos.filter(item => item.codigo !== ubigeoSelect.codigo);
-
-                    }
-                    else {
-                        tematicos.datosLayers[ambito].selectUbigeos=[ubigeoSelect];
-                    }
-
-                    (tematicos.datosLayers[ambito].selectUbigeos.length>0)? $('#widget-select-all').show():$('#widget-select-all').hide();
-
-
-                    /**seteando tematico**/
-                    actualizarTematicoCapa(ambito,false,function (response) {
-
-                        global.selectUbigeos=tematicos.datosLayers[ambito].selectUbigeos;
-                        actualizarTablasyGraficos(ambito);
-                    });
-
-
-                }
 
                 var initFunc = function() {
                     iniciarCapas();
