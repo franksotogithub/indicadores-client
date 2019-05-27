@@ -360,19 +360,33 @@
                         </div>
                     </div>
                     <p>ó Selecciona por Departamento, Provincia o Distrito</p>
-                    <div class="selectLista mb-1">
-                        <select id="select_dpto" class="selectUbigeo" data-level=0></select>
+                    <div class="selectLista mb-1 row">
+                        <div class="col-sm-4">
+                            <label>Departamento:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <select id="select_dpto" class="selectUbigeo" data-level=0></select>
+                        </div>
                     </div>
-                    <div class="selectLista mb-1">
-                        <select id="select_prov" class="selectUbigeo" data-level=1>
-                            <option value="" selected="">Provincia : Seleccione</option>
-                        </select>
-
+                    <div class="selectLista mb-1 row">
+                        <div class="col-sm-4">
+                            <label>Provincia:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <select id="select_prov" class="selectUbigeo" data-level=1>
+                                <option value="" selected="">TODOS</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="selectLista mb-1">
-                        <select id="select_dist" class="selectUbigeo" data-level=2>
-                            <option value="" selected="">Distrito : Seleccione</option>
-                        </select>
+                    <div class="selectLista mb-1 row">
+                        <div class="col-sm-4">
+                            <label>Distrito:</label>
+                        </div>
+                        <div class="col-sm-8">
+                            <select id="select_dist" class="selectUbigeo" data-level=2>
+                                <option value="" selected="">TODOS</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -385,12 +399,11 @@
                             DEPARTAMENTO, ÁREA URBANA Y RURAL, NIVEL EDUCATIVO ALCANZADO Y GRUPOS DE EDAD</h2>
                     </div>
                     <div class="col toolsHeadertitulo">
-
-                        <button class="bg-orange"> <i class="material-icons"> cloud_download </i> Descargar</button>
-                        <button class="bg-lblue"> <i class="material-icons"> share </i> Compartir</button>
+                        <button class="bg-orange" onclick="export_excel('cuadro_estadistico','Reporte')"> <i class="material-icons"> cloud_download </i> Descargar</button>
+                        <button class="bg-lblue d-none"><i class="material-icons"> share </i> Compartir</button>
                     </div>
                 </div>
-                <div class="row datTabla">
+                <div id="cuadro_estadistico" class="row datTabla">
                 </div>
                 <div class="row">
                     <div class="col piedetabla">
@@ -506,7 +519,6 @@
                 let block = $(".selectLista .bloqueLista");
                 block.empty();
                 data[0].cuadros.forEach(function(i){
-                    //block.append('<div data-ind="'+i.cod+'">'+i.titulo.replace(/(CUADRO N[º|°] [0-9]+:)/,'<b>$1</b>')+'</div>');
                     block.append(
                         $("<div/>", {
                             'data-indicador': i.cod,
@@ -550,14 +562,14 @@
             if( index < selects.length ){
                 cleanSelect(index);
                 content.forEach( x => {
-                    $('#' + selects[index].id).append('<option value="' + x[value] + '">' + selects[index].name + ' : ' + x.name + '</option>');
+                    $('#' + selects[index].id).append('<option value="' + x[value] + '">' + x.name + '</option>');
                 });
             }
         }
 
         let cleanSelect = function(index){
             $('#' + selects[index].id).empty();
-            $('#' + selects[index].id).append('<option value="">' + selects[index].name + ' : Seleccione</option>');
+            $('#' + selects[index].id).append('<option value="">TODOS</option>');
         }
 
         init();
@@ -635,7 +647,12 @@
             }).done(function(response) {
                 var altoVentana = ($(window).height() - 263);
                 if( response.length > 0 ){
-                    data = response[0].data.map( x => [x.fila,x.nivel].concat(Object.values(x.celdas)));
+                    data = response[0].data.map( x =>{
+                        console.log(x.celdas);
+                        console.log(Object.values(x.celdas));
+                        return [x.fila,x.nivel].concat(Object.values(x.celdas).map(y => numberFormat(y)));
+                    });
+                    console.log("data", data);
                 }else{
                     data = [];
                 }
@@ -671,5 +688,26 @@
 
         });
     }
+
+    var numberFormat = function (num) {
+        if(!isNaN(num) && num != null){
+            num = num.toString().split("").reverse().join("").replace(/(?=\d*\.?)(\d{3})/g,"$1 ");
+            num = num.split("").reverse().join("").replace(/^[\.]/,"");
+            return num;
+        }
+        return num;
+    }
+
+    var export_excel = (function() {
+        var uri = 'data:application/vnd.ms-excel;charset=ISO-8859-1;base64,'
+        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+        , base64 = function(s) { console.log(window.btoa(unescape(encodeURIComponent(s)))); return window.btoa(unescape(encodeURIComponent(s))) }
+        , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+        return function(table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
 </script>
 </html>
