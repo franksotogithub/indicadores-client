@@ -1,8 +1,28 @@
-{% extends "../base.html" %}
-{% block menutitulo %} Mapa de pobreza 2017 {% endblock %}
+{% extends "../base_frecuencias.html" %}
+{% block menutitulo %} Frecuencias {% endblock %}
 {% block wrapper %}
 
+
 <header class="widget-NavegacionBar navResponsiveIndicadores " style="display: none">
+    <div class="col-3-10" style="vertical-align: top">
+        <div role="wraper" class="contentComboTitulos">
+            <h5 class="mayusculas">Población</h5>
+            <button class="botonDesplegarTitulos">
+                <i class="material-icons">
+                    keyboard_arrow_down </i>
+            </button>
+
+            <div id="comboCategoria" class="wraper contentListaTitulos">
+                <ul>
+                    <li data-selected="selected" data-vista="vista0">Población</li>
+                    <li data-vista="vista1">Educación</li>
+                    <li data-vista="vista2">Salud</li>
+                    <li data-vista="vista3">Vivienda</li>
+                    <li data-vista="vista4">Hogar</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 
     <div class="botonSim"><i class="material-icons">search</i>
@@ -17,12 +37,11 @@
 
     <div class="blockNavegacion floatRight">
         <button data-codevent="mapas" class="active botonNavegar "><span class="mapapequeBnR" ></span></button>
-
+        <button data-codevent="graficos" data-disc="graph" class="botonNavegar "><i class="material-icons">equalizer</i></button>
         <button data-codevent="cuadros" class="botonNavegar "><i class="material-icons">assignment</i></button>
         <!--<button data-codevent="graficos" data-disc="metadata"  class="botonNavegar "><i class="material-icons">info</i></button>-->
     </div>
 </header>
-
 <nav class="nav-vertical col-1-10" style="display: none">
     <button class="cbutt1">
         <a href="index.html">
@@ -31,13 +50,13 @@
         </a>
     </button>
 
-    <button class="cbutt1">
+    <button class="cbutt1 activeItemMenu">
         <a href="/indicadores.html">
             <img src="img/icoPrincipales.png" height="49" width="50"/>
-            <h4 class="marginTop-10">Principales Indicadores</h4>
+            <h4 class="marginTop-10">Frecuencias</h4>
         </a>
     </button>
-    <button class="cbutt2 activeItemMenu">
+    <button class="cbutt2">
         <a href="/pobreza.html">
             <img src="/img/icoPobre.png" height="49" width="50"/>
             <h4 class="marginTop-10">Mapa de pobreza</h4>
@@ -58,23 +77,22 @@
 
 </nav>
 
-<div class="col-1-2 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1" >
+<div class="col-1-2 ventanaMapa contenedorVentana" data-codevent="mapas" data-cod="1"  >
     <section >
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
-                <h2> <span data-icon="&#xe012;"></span>
+                <h2> <span class="mapapequeBn" ></span>
                     Mapa temático</h2>
             </div><!--
                      --><div class="col-4-10 contenedorBotonesVentana ">
             <button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>
-
-            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
-            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
-
+            <!--<button data-icon=":" data-title="Descargar" class="tooltip descargarMapa"></button>-->
+            <!--<button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>-->
+            <!--<button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar"></button>-->
         </div>
         </header>
         <div class="contenidoMapa" >
-            {% include 'indicadores/mapa.html' %}
+            {% include 'frecuencias/mapa.html' %}
         </div>
     </section>
 </div><!--
@@ -83,32 +101,50 @@
         <header class="b_grissuave">
             <div class="col-6-10 contennedorTituloVentana">
                 <h2> <span data-icon="&#xe051;"></span>
-                    Indicadores</h2>
+                    Frecuencias</h2>
             </div><!--
-                     --><div class="col-4-10 contenedorBotonesVentana dataalgo" >
-
+                     --><div class="col-4-10 contenedorBotonesVentana dataalgo"  >
+            <!--<button data-icon="&#xe038;" data-title="Imprimir" class="tooltip imprimir"></button>-->
             <button data-icon=":" data-title="Descargar" class="tooltip descargarCuadro"></button>
             <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
             <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
-
         </div>
         </header>
-        <div class="contenidoCuadro cuadroPobreza">
-            {% include 'indicadores/cuadro.html'  with {'vista': 'pobreza'} %}
-        </div>
-        <div class="notasPobreza">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta congue nibh, quis pellentesque est tincidunt nec. Maecenas ullamcorper, enim id imperdiet congue, justo lectus auctor purus, non ultricies justo tortor eu magna. Mauris malesuada id augue sed blandit. Nullam sodales sapien quis libero gravida tempus. Quisque sagittis dui in mi aliquam, et lacinia magna tempus. Morbi ut tincidunt tellus. Duis non sem quis mi sodales condimentum vel ac massa. Vestibulum dictum ipsum id orci convallis, in ornare mi fermentum. Duis eget diam sed nunc blandit pellentesque vitae et felis. Maecenas pulvinar nisi ut orci finibus lacinia. Cras a pharetra dui. Pellentesque id rutrum elit, eu venenatis lorem. Aenean vitae porttitor ligula. Vivamus eget venenatis sem.</p>
+        <div class="contenidoCuadro">
+            {% include 'frecuencias/cuadro.html'  with {'vista': 'principales'} %}
         </div>
     </section>
+</div><!--
+         -->
+
+<!--
+
+<div class="col-1-4 ventanaGrafico contenedorVentana" data-codevent="graficos" data-cod="7" style="display: none">
+    <section>
+        <header class="b_grissuave">
+            <div class="col-6-10 contennedorTituloVentana">
+                <h2> <span data-icon="&#xe000;"></span> Gráficos y metadatos</h2>
+            </div>
+
+
+            <div class="col-4-10 contenedorBotonesVentana">
+
+            <button data-icon=":" data-title="Descargar" class="tooltip descargarGrafico "></button>
+            <button data-icon="&#xe024;" data-title="Minimizar" class="tooltip minimizar"></button>
+            <button data-icon=">" data-title="Maximizar ventana" class="tooltip maximizar" ></button>
+            </div>
+        </header>
+
+    </section>
 </div>
+-->
 {% endblock %}
+
 
 {% block endscript %}
 <script type="text/javascript">
-    var aplicacionIni = "pobreza"
-
     $(document).ready(function (e) {
-        App.init('pobreza', ['mapas', 'cuadros']);
+        App.init('frecuencias', ['mapasFrecuencias', 'cuadros']);
     });
 </script>
 {% endblock %}

@@ -2334,7 +2334,12 @@ App.utils.mapas = (function (parent, config,service) {
                 if (service.getLocal('intro') === null) {
                     if(anchoWIndowT > 1279){
 
-                        startIntro();
+                        if(aplicacionIni == "pobreza"){
+                            startIntroP();
+                        }else{
+                            startIntro();
+                        }
+
 
                     }else {
                         startIntroMovil();
@@ -2382,59 +2387,45 @@ App.utils.mapas = (function (parent, config,service) {
                 });
             }
 
-    var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
-        var results= new Object();
-        results["results"]='';
-        service.mapas.getTerritorioSelect2(ubigeos,function(data){
+            var actualizarComboUbigeo=function(ubigeos,flagAbrir){ //
+                var results= new Object();
+                results["results"]='';
+                service.mapas.getTerritorioSelect2(ubigeos,function(data){
 
-            ubigeosHijos=[];
-            if(ubigeos.length==0)
-            {
-                actualizarDatosComboUbigeo(data.results,0);
-                data.results.forEach(function (hijo) {
-                ubigeosHijos.push(hijo.id.trim());
-                });
-            }
-
-
-            else {
-                actualizarDatosComboUbigeo(data.results,_this.indexSubLayer+1);
-                data.results.forEach(function (padres) {
-                    padres.children.forEach(function (hijo) {
-                        if(hijo.id.trim().length>6){
-                            ubigeosHijos.push({ubigeo:hijo.id.trim(),grupo:hijo.cod_grupo.trim()});
-                        }
-
-                        else{
-                            ubigeosHijos.push(hijo.id.trim());
-                        }
+                ubigeosHijos=[];
+                if(ubigeos.length==0)
+                {
+                    actualizarDatosComboUbigeo(data.results,0);
+                    data.results.forEach(function (hijo) {
+                    ubigeosHijos.push(hijo.id.trim());
                     });
-                });
-                if(flagAbrir) openFeature();
-            }
+                }
 
 
+                else {
+                    actualizarDatosComboUbigeo(data.results,_this.indexSubLayer+1);
+                    data.results.forEach(function (padres) {
+                        padres.children.forEach(function (hijo) {
+                            if(hijo.id.trim().length>6){
+                                ubigeosHijos.push({ubigeo:hijo.id.trim(),grupo:hijo.cod_grupo.trim()});
+                            }
 
-
-
-            //console.log('ubigeosHijos>>>',ubigeosHijos);
-
+                            else{
+                                ubigeosHijos.push(hijo.id.trim());
+                            }
+                        });
+                    });
+                    if(flagAbrir) openFeature();
+                }
             });
         }
-
-
 
             setInterval(ocultarCargando,1000);
             changeLayer(0);
             actualizarComboUbigeo(_this.select_ubigeos);
-
             actualizarBuscador('#buscador-ubigeo');
             actualizarBuscador('#buscador-ubigeo2');
             desplegarWidgetsNavegacion(0);
-
-
-
-
         });
 
     };
@@ -2514,14 +2505,12 @@ App.utils.mapas = (function (parent, config,service) {
         service.mapas.getMapa(cod_mapa,function (data) {
             var _this=parent.mapas;
             _this.datosMap.codMap=cod_mapa;
-            _this.datosMap.urlMap=data.url;
+            _this.datosMap.urlMap=service.getUrlGis(data.url);
             _this.datosMap.codTematico=data.cod_tematico_default;
             _this.datosMap.tituloLegend=data.descripcion;
             cambiarMapa();
         });
     }
-
-
 
     var init = function (options) {
         var _this=parent.mapas;
@@ -2542,7 +2531,7 @@ App.utils.mapas = (function (parent, config,service) {
                 service.mapas.getMapa(el.cod_mapa,function (data) {
                     _this.datosMap.codMap=el.cod_mapa;
                     _this.datosMap.urlMap=data.url;
-                    _this.datosMap.urlMapBaseNacional="https://devindica.inei.gob.pe/mapa/arcgis/rest/services/CARTOGRAFIA_BASE_INEI/BASE_NACIONAL/MapServer";
+                    _this.datosMap.urlMapBaseNacional= service.getUrlGis("CARTOGRAFIA_BASE_INEI/BASE_NACIONAL/MapServer", 'server');
                     _this.datosMap.codTematico=data.cod_tematico_default;
                     _this.datosMap.tituloLegend=data.descripcion;
                     _this.datosMap.div=el.div;
@@ -2552,6 +2541,11 @@ App.utils.mapas = (function (parent, config,service) {
             }
         );
 
+        _initEvents();
+    };
+
+    var _initEvents = function () {
+        App.events.mapas(parent, service);
     };
 
     return {

@@ -116,6 +116,18 @@ App.service = (function (parent, config) {
         return url;
     };
 
+    var getUrlGis = function (slug, server) {
+        if (server===undefined) {
+            server = config.urlArcGis.default
+        }
+        if (config.urlArcGis.hasOwnProperty(server)) {
+            return parent.utils.format('{0}{1}', [config.urlArcGis[server], slug])
+        }else {
+            alert("No existe el servidor arcgis solicitado");
+        }
+
+    };
+
     var url = function (slug, urlargs) {
         return App.utils.format(slug, urlargs)
     };
@@ -139,7 +151,8 @@ App.service = (function (parent, config) {
         save: save,
         getLocal: getLocal,
         responseError: callback.responseError,
-        getUrlServer: getUrlServer
+        getUrlServer: getUrlServer,
+        getUrlGis: getUrlGis
     }
 
 })(App, AppConfig());

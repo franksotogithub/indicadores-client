@@ -158,6 +158,21 @@ function startIntroMovil(){
 
 
 
+function guiaAyuda() {
+    var anchoWIndowT = $(window).width();
+    if(anchoWIndowT > 1279){
+
+        if(App.utils.cuadros.vista == "pobreza"){
+            startIntroP();
+        }else{
+            startIntro();
+        }
+
+
+    }else {
+        startIntroMovil();
+    }
+}
 
 /* Exportar graficos */
 
@@ -418,8 +433,14 @@ function reabrirVentanas(e) {
         var ventanaReconocidaUl =  $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").attr("data-codevent");
 
         e.removeClass("animacionbtn").closest("[data-codi]").hide();
-        $(".contenedorVentana[data-cod="+ventanaMini+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
-        $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
+        if(aplicacionIni =="pobreza"){
+            $(".contenedorVentana[data-cod="+ventanaMini+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
+            $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
+        }else{
+            $(".contenedorVentana[data-cod="+ventanaMini+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
+            $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").addClass("col-1-2").css("display","inline-block").removeClass("col-4-10 col-35 col-1-4");
+        }
+
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").attr("data-icon", ">").attr("data-title", "Maximizar ventana");
         $(".contenedorVentana[data-cod="+contadorVentanas[1]+"]").find(".restaurar").addClass("maximizar").removeClass("restaurar");
 
@@ -566,6 +587,7 @@ function maximizarVentana(e, callback){
             $(".barHerramientasHeader [data-codi=5]").css("display","inline-block").find("button").addClass("animacionbtn");
         }
 
+
     }
     var ventanas = e.closest(".contenedorVentana").siblings(".contenedorVentana").length;
     var v = 0;
@@ -581,7 +603,7 @@ function maximizarVentana(e, callback){
     e.attr("data-icon","4");
     e.attr("data-title","Restaurar ventana");
     e.addClass("restaurar").removeClass("maximizar");
-
+    console.log("he Maximizado");
     /* Reiniciar tooltip  */
     //Tipped.init();
     //Tipped.create('.tooltip', {size: 'large'});
@@ -699,6 +721,12 @@ $(document).ready(function() {
     
     altosAutomaticos();
     //sliderGraph ();
+    if(App.utils.cuadros.vista =="pobreza"){
+        $("#manualdeusuario").attr("href","http://quality.inei.gob.pe/media/manualdeusuariopobreza.pdf");
+    }else{
+        $("#manualdeusuario").attr("href","http://quality.inei.gob.pe/media/manualdeusuariocpv.pdf");
+    }
+
 
 
 
@@ -929,10 +957,10 @@ $(document).ready(function() {
 
     });
     $(document).on('click','button.botonVistaMapa', function() {
-        $(".mostrarListaMapa").toggle("slow");
+        $(".ambitosMapa").toggle("slow");
     });
 
-    $(document).on('click','.mostrarListaMapa', function() {
+    $(document).on('click','.ambitosMapa', function() {
         $(this).toggle("slow");
     });
 

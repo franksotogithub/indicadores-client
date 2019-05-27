@@ -24,7 +24,7 @@
 
     <!-- custom -->
     <link rel="stylesheet" href="./{{ output.folders.css ~ output.concat.css }}">
-    <link rel="stylesheet" href="{{ cdn.inei ~ 'arcgis/4.7/esri/css/main.css' }}">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.25/esri/css/esri.css" >
     <link rel="stylesheet" href="{{ cdn.inei ~ 'select2/4.0/css/select2.min.css' }}">
     <link rel="stylesheet" href="{{ cdn.inei ~ 'autocompleter/1.4/css/autocomplete.css' }}">
     <link rel="stylesheet" href="{{ cdn.inei ~ 'introjs/2.9/introjs.min.css' }}">
@@ -153,13 +153,15 @@
 <!-- libs -->
 
 <script src="{{ cdn.inei ~ 'select2/4.0/js/select2.min.js' }}"></script>
+<script src="{{ cdn.inei ~ 'palette/palette.js' }}"></script>
+
 <script src="{{ cdn.inei ~ 'datatable/1.10/js/jquery.dataTables.js' }}"></script>
 <script src="{{ cdn.inei ~ 'datatable/1.10/js/dataTables.fixedColumns.js' }}"></script>
 <script src="{{ cdn.inei ~ 'highcharts/6.1/highcharts.js' }}"></script>
 <script src="{{ cdn.inei ~ 'autocompleter/1.4/js/jquery.autocomplete.min.js' }}"></script>
 <script src="{{ cdn.inei ~ 'highcharts/6.1/modules/exporting.js' }}"></script>
 <script src="{{ cdn.inei ~ 'introjs/2.9/intro.min.js' }}"></script>
-<script src="{{ cdn.inei ~ 'arcgis/4.7/dojo/dojo.js' }}"></script>
+<script src="https://js.arcgis.com/3.25/"></script>
 <script src="/{{ output.folders.js ~ output.concat.js }}"></script>
 <script src="/{{ output.folders.js }}ui_onlineCuadros.js"></script>
 <script src="/{{ output.folders.js }}ui_responsive.js"></script>

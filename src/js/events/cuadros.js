@@ -1,4 +1,4 @@
-(function (service, utils) {
+App.events.cuadros = function (service, utils) {
     var selector = {
         ponderador: "html #comboPonderador",
     };
@@ -40,9 +40,11 @@
     var popoverShow = function (callback) {
         $("#tblindicadores").on('click', '.popover', function (e) {
             var indicador = $(this).attr('data-indicador');
+            var es_cabecera = $(this).attr('es_cabecera');
             $(".messageContentEmpty").hide();
             $(".cDatosTotal").show();
-            callback(indicador);
+
+            callback(indicador,es_cabecera);
         });
     };
 
@@ -97,11 +99,11 @@
         });
 
 
-        popoverShow(function (indicador) {
-            utils.cuadros.changeMetadata(indicador);
+        popoverShow(function (indicador,es_cabecera) {
+            utils.cuadros.changeMetadata(indicador,es_cabecera);
         });
 
-        indicadoresSearchAutocomplete(function () {
+        indicadoresSearchAutocomplete(function (response) {
             App.utils.cuadros.buscadorIndicadores(response);
         });
 
@@ -112,6 +114,6 @@
         //utils.cuadros.reiniciarTabla();
         utils.cuadros.fixedColumnsRelayout();
     });
-})(App.service, App.utils);
+};
 
 

@@ -74,6 +74,7 @@
 
 .subirMiniMap {
     bottom:-30px !important;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 #list-maps {
@@ -82,7 +83,7 @@
     margin: 0px;
     padding: 15px 0px;
     padding-top: 18px;
-    background: #FFF;
+    background: transparent;
 
 
 }
@@ -220,18 +221,18 @@ div.esri-search__submit-button:focus {
 .botonVistaMapa > i {
     font-size: 19px;
 }
-.mostrarListaMapa{
+.ambitosMapa{
     font-family: 'Alegreya-Sans';
     position: absolute;
     width: 150px;
     background: white;
     cursor: pointer;
 }
-.mostrarListaMapa > div {
+.ambitosMapa > div {
     padding: 10px;
     text-align: left;
 }
-.mostrarListaMapa > div:hover {
+.ambitosMapa > div:hover {
     background-color: #009ae0;
     color: white;
 }

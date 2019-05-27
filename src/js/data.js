@@ -10,6 +10,12 @@ var Appdata = function (vista, callback, es_local) {
             {"codigo": "P06", "titulo": "Hogar", "sistema": "principales", "style": {}},
             {"codigo": "P08", "titulo": "Población Total", "sistema": "principales", "style": {'display': 'none'}}, //poblacion total
             {"codigo": "P07", "titulo": "Pobreza", "esActivo": true, "sistema": "pobreza", "style": {}},
+
+            {"codigo": "P01", "titulo": "Población", "esActivo": true, "sistema": "frecuencias", "style": {}},
+            {"codigo": "P05", "titulo": "Vivienda",  "sistema": "frecuencias", "style": {}},
+            {"codigo": "P06", "titulo": "Hogar",  "sistema": "frecuencias", "style": {}},
+
+
         ],
         "ponderadores": [
             {"codigo": "P01", "titulo": "Población Censada", "attrs":{"selected": "selected", "data-tipo": "P08"}},

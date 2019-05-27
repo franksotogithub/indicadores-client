@@ -137,7 +137,101 @@ App.utils = {
         };
 
         return renderer
+    },
+    crearRangos: function(arrayData,cantNiveles){
+        arrayData=arrayData.sort(function (a,b) {return a-b;  });
+        var rangos=[];
+        var i=0;
+        var el= {};
+        var index_acu=0;
+        var index_min=0;
+        var index_max=0;
+        var cant=arrayData.length;
+        var coeficiente=parseInt(Math.trunc(parseInt(cant)/parseInt(cantNiveles)));
+        var modulo=parseInt(cant)%parseInt(cantNiveles);
+        var max= arrayData[cant-1];
+
+        for (i=0;i<cantNiveles;i++){
+            el= {};
+            index_min=index_acu;
+            if(modulo>0) {
+                index_acu=index_acu+(coeficiente+1);
+                modulo--;
+            }
+            else{
+                index_acu=index_acu+coeficiente;
+            }
+            index_max=index_acu;
+            el.min_valor=arrayData[index_min];
+
+            if(!(i==(cantNiveles-1)))
+                el.max_valor=arrayData[index_max];
+            else
+                el.max_valor=max;
+            el.label='De '+ String(el.min_valor) +' a '+ String(el.max_valor);
+            rangos.push(el);
+        }
+        return rangos;
+    },
+
+    getRandomInt : function (min,max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+
+    esPadre : function(ubigeoPadre,ubigeoHijo){
+        var tamPadre=ubigeoPadre.length;
+        var tamHijo=ubigeoHijo.length;
+        var esPadre=false;
+        if(ubigeoPadre=='00' && (ubigeoHijo!='00' && tamHijo==2) ) esPadre =true;
+        if(tamPadre==2 && tamHijo==4 && ubigeoHijo.substring(0,2)== ubigeoPadre) esPadre=true;
+        if(tamPadre==4 && tamHijo==6 && ubigeoHijo.substring(0,4)== ubigeoPadre) esPadre=true;
+        if(tamPadre==6 && tamHijo>6 && ubigeoHijo.substring(0,6)== ubigeoPadre) esPadre=true;
+        return esPadre;
+    },
+
+
+    getDefExpByCod:function(arrayCodigos){
+        var definitionExpression="";
+        var num_features=arrayCodigos.length;
+        definitionExpression=" CODIGO IN (";
+        arrayCodigos.forEach(function(select_feature) {
+            num_features--;
+            if (num_features>0) definitionExpression= definitionExpression + select_feature+","
+            else definitionExpression= definitionExpression + select_feature+")"
+        });
+        return definitionExpression;
+    },
+
+
+    getDefExpr: function(arrayUbigeos){
+        var definitionExpression="";
+        var num_features=arrayUbigeos.length;
+
+        if (num_features>0){
+            var tamUbigeo=arrayUbigeos[0].length;
+            if (tamUbigeo==2){definitionExpression="CCDD IN (";}
+            else if (tamUbigeo==4){ definitionExpression=" CCDD+CCPP IN (";}
+            else if (tamUbigeo==6) {definitionExpression=" CCDD+CCPP+CCDI IN (";}
+
+
+            arrayUbigeos.forEach(function(ubigeo) {
+                num_features--;
+                if (num_features>0) definitionExpression= definitionExpression + ubigeo+","
+                else definitionExpression= definitionExpression + ubigeo+")"
+            });
+        }
+
+        return definitionExpression;
+    },
+
+
+
+    addRow : function(label, field){
+        return field ? ( (''+field).trim() != '' ? '<b>' + label + ': </b>'+ (''+field).toUpperCase() + '<br>' : '' ) : '';
     }
+
 
 
 };

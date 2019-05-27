@@ -1499,11 +1499,130 @@ a.LinkModalCE{
     padding: 15px;
 }
 
-
 /*
     Final
 */
 
+
+
+
+
+
+/* Frecuencias */
+
+.legendTituloTematico {
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+.legendTituloAmbito{
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+.text-item-grafico{
+    font-size: 12px;
+    font-family: open_sansregular;
+}
+
+.separador {
+
+    margin-bottom: 5px;
+    height: 5px;
+    display: block !important;
+}
+        /* Frecuencia Mapa */
+
+.widget-navegar-mapa-frecuencia {
+    padding: 15px;
+    background: transparent;
+    position: absolute;
+    z-index: 9;
+}
+
+.widget-navegar-mapa-frecuencia > div {
+    display: inline-block;
+}
+
+#list-widgets-ubigeo > div:first-child{
+
+    border-radius: 0 8px 8px 0;
+    margin-left: -3px;
+    margin-top: 0px;
+
+}
+
+
+
+
+
+/* Frecuencia Cuadros  */
+
+.contenedorBusquedaFrecuencia {
+    margin-top:10px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.contenedorBusquedaFrecuencia > div, .contenedorBusquedaFrecuencia > select {
+    width: 32%;
+    font-family: signikaregular;
+}
+.contenedorBusquedaFrecuencia > select {
+    border:none;
+    background-color: #1B3C71;
+    color: white;
+    padding:0 10px;
+    border-right: #1B3C71 solid 3px;
+}
+
+.buscadorContene {
+    position: relative;
+}
+
+.buscadorContene input {
+    background-color: #f3f3f3;
+    font-family: signikaregular;
+    padding: 0 10px;
+    width: calc(100% - 40px);
+}
+
+.buscadorContene .buttonFlotanteBusqueda{
+    background-color: #1B3C71;
+}
+
+.botondebusquedaFrecuencia{
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0px 12px;
+    height: 36px;
+    color: #FFF;
+    background-color: #1B3C71 ;
+    transition:all 300ms;
+}
+
+
+
+.leyendaFrecuencias select {
+
+    border: none;
+    background-color: #1B3C71;
+    color: white;
+    border-right: solid 3px #1B3C71;
+    width: 100%;
+    padding: 4px 6px;
+}
+
+.leyendaFrecuencias #legendaTematico > div:first-child{
+    color: #1B3C71;
+}
+
+
+.leyendaFrecuencias #legendaTematico > div:nth-child(2){
+    color: #333333;
+}
+
+/* FIn frecuencias */
 
 @media screen and (min-width: 1740px) and (max-width: 1900px) {
 
