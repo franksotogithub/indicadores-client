@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cuadros Estadisticos</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- libs -->
+    <link rel="stylesheet" href="http://cdn.inei.gob.pe/datatable/1.10/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="http://cdn.inei.gob.pe/datatable/1.10/css/fixedColumns.dataTables.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <style>
+        /* Globales */
+        html, body, .contenedorPrincipal {
+            height: 100%;
+        }
+        .contenedorPrincipalBloques{
+            height: calc(100% - 60px);
+            max-height:calc(100% - 60px);
+        }
+
+
+        /* Colores Background */
+
+        .bg-orange{
+            background-color: #ff931e;
+        }
+        .bg-lblue{
+            background-color: #29abe2;
+        }
+
+
+
+        /* Header Principal */
+        .ce-headerprincipal {
+            height: 60px;
+            background-color: #1b3c71;
+        }
+        .ce-headerprincipal > nav{
+            display: flex;
+            color:white;
+            height: 100%;
+        }
+        .ce-headerprincipal > nav button, .ce-headerprincipal > nav button:hover{
+            color:white;
+        }
+        .ce-headerprincipal > nav h1{
+            font-size:20px;
+        }
+
+
+        /* Componente Menu */
+
+        .ce-componenteMenu{
+            max-width: 440px;
+            background-color: #f2f2f2;
+            padding: 0;
+        }
+
+        .ce-componenteMenu-bloque {
+            background-color: white;
+            padding: 10px;
+            margin: 12px ;
+            display: flex;
+
+        }
+        .ce-componenteMenu-bloque h3 {
+            color:#1b3c71;
+            font-size: 16px;
+            text-align: center;
+            width:100%;
+        }
+
+        .ce-componenteMenu-bloque p {
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+
+        /* Buscador Blue */
+
+        .buscadorResponsiveBlue{
+            width: 100%;
+            background-color: #f2f2f2;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+        .buscadorResponsiveBlue input{
+            border: none;
+            background-color: transparent;
+            height: 34px;
+            width: calc(100% - 34px);
+            padding: 5px 10px;
+        }
+        .buscadorResponsiveBlue input:focus{
+            outline:none;
+            background-color: #d6eafb;
+        }
+        .buscadorResponsiveBlue .iconBuscar{
+            background-color: #1b3c71;
+            color: white;
+            display: inline-flex;
+            padding: 5px;
+            position: absolute;
+            right: 0;
+            width: 34px;
+            height: 34px;
+            z-index: 1;
+        }
+
+        .selectLista{
+            width: 100%;
+        }
+
+        .selectLista select{
+            background-color: #1b3c71;
+            color: white;
+            width: 100%;
+            padding: 7px 11px;
+            font-size:14px;
+        }
+
+        .selectLista select:focus{
+            outline: none;
+        }
+        .bloqueLista {
+            background-color: #d4e7ff;
+            padding: 10px;
+            font-size: 11px;
+            margin-top: 5px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .bloqueLista div {
+            line-height: 130%;
+            color: #1b3c71;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+
+        .bloqueLista div:hover{
+            color: #985500;
+            font-weight: bold;
+        }
+
+        .bloqueLista .active{
+            color: #985500;
+            font-weight: bold;
+        }
+
+        .contenedorTablaTotal .headertituloTabla h2 {
+            font-size: 16px;
+            text-align: center;
+            padding-top:15px;
+
+        }
+
+        .toolsHeadertitulo{
+            max-width:299px;
+            margin-top:10px;
+        }
+
+        .toolsHeadertitulo button{
+            border:none;
+            border-radius:5px;
+            padding:5px 12px;
+            font-size: 16px;
+            outline:none;
+            color:white;
+        }
+
+
+        .toolsHeadertitulo button i{
+            vertical-align: middle;
+            padding-right: 7px;
+        }
+
+
+        .piedetabla p {
+            font-size: 10px;
+            margin:0;
+            padding:0;
+            margin-top:10px;
+        }
+
+        .piedetabla p:first-child {
+            border-top:1px solid #333;
+            padding-top:10px;
+        }
+
+
+
+        .datTabla{ min-height: auto;}
+
+        .datTabla > div{ margin: auto; margin-top:20px; width: 100% }
+
+
+        .dataTables_scrollHeadInner {
+            margin: auto;
+        }
+
+        .dataTables_wrapper.no-footer .dataTables_scrollBody {
+            border-bottom: none !important;
+        }
+
+
+        .dataTables_scrollHead th, #tblindicadores th{
+            border: 1px solid #fff !important;
+            color: #FFFFFF;
+            background-color: #1b3c71;
+            font-family: "Segoe UI";
+            font-size: 13px;
+            font-weight: normal !important;
+            padding: 10px 18px;
+        }
+
+        .dataTables_scrollHead th{
+            text-align: center;
+        }
+        .datTabla {
+            margin:0px;
+        }
+
+        .datTabla td {
+            font-family: "Segoe UI";
+            font-size: 13px;
+            border: 1px solid #fff !important;
+        }
+
+        .datTabla tr td:first-child{
+            padding-right: 14px;
+            background-color: #b7dee8;
+
+        }
+
+        .datTabla tr:nth-child(2n+2) {background: #e6e6e6}
+
+        .datTabla tbody tr:hover, .datTabla tbody tr:hover td:first-child {
+            background-color: #ffe5ac;
+        }
+        .datTabla .hoverColumna{
+            background-color: #ffe5ac;
+        }
+
+        .datTabla .hoverTD {
+            background-color: #fbb03b;
+        }
+
+
+
+        /* NIveles  */
+
+        .datTabla tbody tr td {
+            text-align: right;
+        }
+        .datTabla tbody tr td:first-child {
+            text-align: left;
+        }
+
+        .datTabla tr.nivel1 td:first-child {
+            font-weight: bold;
+        }
+
+        .datTabla tr.nivel2 td:first-child {
+            font-weight: bold;
+            padding-left:20px;
+        }
+
+        .datTabla tr.nivel3 td:first-child {
+            padding-left:40px;
+        }
+
+        .datTabla tr.nivel4 td:first-child {
+            padding-left:60px;
+        }
+
+        table.dataTable thead th{
+            padding: 10px 0;
+        }
+
+        .DTFC_LeftWrapper th {
+            border: 1px solid #fff !important;
+            color: #FFFFFF;
+            background-color: #4A6289;
+            font-family: 'signikaregular';
+            font-size: 13px;
+            font-weight: normal !important;
+        }
+        .DTFC_LeftWrapper td {
+            border: 1px solid #fff !important;
+            color: #445775;
+            background-color: #cad3e0;
+            font-family: 'open_sansregular';
+            font-size: 13px;
+            font-weight: normal !important;
+            text-align: left;
+            text-indent: 15px;
+        }
+
+        .DTFC_LeftWrapper td.tituloIndicador {
+            font-weight: bold !important;
+            text-indent: 0px;
+            /*white-space: nowrap;*/
+            min-width: 280px;
+            max-width: 415px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0 contenedorPrincipal">
+        <header class="ce-headerprincipal">
+            <nav class="align-items-center justify-content-between">
+                <div class="btn-group">
+                    <button type="button" class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Indicadores</a>
+                        <a class="dropdown-item" href="#">Pobreza</a>
+                        <a class="dropdown-item" href="#">Redatam</a>
+                    </div>
+                </div>
+                <div class="d-inline-flex"><h1> CUADROS ESTADISTICOS</h1> </div>
+
+                <button type="button" class="btn" >
+                    <i class="material-icons">help_outline</i>
+                </button>
+
+            </nav>
+        </header>
+        <div class="row m-0 contenedorPrincipalBloques">
+            <div class="col ce-componenteMenu">
+                <div class="row ce-componenteMenu-bloque">
+                    <h3>Indice Tematico</h3>
+                    <div class="buscadorResponsiveBlue">
+                        <input id="search_cuadro" type="search" placeholder="Buscar un tema">
+                        <div class="iconBuscar">
+                            <i class="material-icons">search</i>
+                        </div>
+                    </div>
+                    <p>ó Selecciona por Categoria</p>
+                    <div id="select_categoria" class="selectLista">
+                        <select></select>
+                        <div class="bloqueLista">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ce-componenteMenu-bloque">
+                    <h3>Ubigeo</h3>
+                    <div class="buscadorResponsiveBlue">
+                        <input id="search_ubigeo" type="search" placeholder="Buscar por ubigeo">
+                        <div class="iconBuscar">
+                            <i class="material-icons">search</i>
+                        </div>
+                    </div>
+                    <p>ó Selecciona por Departamento, Provincia o Distrito</p>
+                    <div class="selectLista mb-1">
+                        <select id="select_dpto" class="selectUbigeo" data-level=0></select>
+                    </div>
+                    <div class="selectLista mb-1">
+                        <select id="select_prov" class="selectUbigeo" data-level=1>
+                            <option value="" selected="">Provincia : Seleccione</option>
+                        </select>
+
+                    </div>
+                    <div class="selectLista mb-1">
+                        <select id="select_dist" class="selectUbigeo" data-level=2>
+                            <option value="" selected="">Distrito : Seleccione</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col contenedorTablaTotal">
+                <div class="row">
+                    <div class="col headertituloTabla">
+                        <h2>CUADRO Nº 1: POBLACIÓN FEMENINA CENSADA DE 12 Y MÁS AÑOS AÑOS DE EDAD, POR NÚMERO DE HIJOS E HIJAS NACIDOS VIVOS, SEGÚN
+                            DEPARTAMENTO, ÁREA URBANA Y RURAL, NIVEL EDUCATIVO ALCANZADO Y GRUPOS DE EDAD</h2>
+                    </div>
+                    <div class="col toolsHeadertitulo">
+
+                        <button class="bg-orange"> <i class="material-icons"> cloud_download </i> Descargar</button>
+                        <button class="bg-lblue"> <i class="material-icons"> share </i> Compartir</button>
+                    </div>
+                </div>
+                <div class="row datTabla">
+                </div>
+                <div class="row">
+                    <div class="col piedetabla">
+                        <p>1/ Comprende los 43 distritos de la provincia de Lima</p>
+                        <p>2/  Comprende las provincias de Barranca, Cajatambo, Canta, Cañete, Huaral, Huarochirí, Huaura, Oyón y Yauyos.</p>
+                        <p>Fuente: INEI - Censos Nacionales 2017: XII de Población, VII de Vivienda y III de Comunidades Indígenas</p>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!--script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script-->
+
+<script src="http://cdn.inei.gob.pe/datatable/1.10/js/jquery.dataTables.js"></script>
+<script src="http://cdn.inei.gob.pe/datatable/1.10/js/dataTables.fixedColumns.js"></script>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        init();
+    });
+
+    var initDMK = function(){
+        var altoVentana = $(window).height();
+        var anchoVentana = $(window).width();
+        /* Alto automatico de lista de Select */
+        $(".bloqueLista").css("max-height",(altoVentana - 540) + "px");
+        /* Menu tematico eventos CLic */
+        $(".selectLista").on("click", ".bloqueLista > div" , function(e){
+            var _this = $(this);
+            _this.siblings("div").removeClass("active");
+                _this.addClass("active");
+        });
+        /* Tabla , Hover de columna */
+        $("html").on('mouseenter', '.datTabla  tbody > tr > td', function() {
+            var indice = $(this).index();
+            $(this).addClass("hoverTD");
+            $(' tbody > tr > td:nth-child('+(indice+1)+')').addClass("hoverColumna");
+        });
+        $("html").on('mouseleave', '.datTabla  tbody > tr > td', function() {
+            $(".datTabla  tbody > tr > td").removeClass("hoverColumna hoverTD");
+        });
+        $(window).resize(function () {
+            var altoVentana = $(window).height();
+            var anchoVentana = $(window).width();
+            $(".bloqueLista").css("max-height",(altoVentana - 540) + "px");
+        });
+    }
+
+    var init = function(){
+        initDMK();
+        init_categorias(function(){
+             $("#select_categoria select").change();
+        });
+
+        $.ajax({
+            url: "http://192.168.34.16:8877/estadisticos/ubigeo/",
+            method: "GET",
+            type: "json",
+            data: {},
+            error: function(xhr, status, er) {},
+            beforeSend: function(){}
+        }).done(function(data) {
+            $("#search_ubigeo").autocomplete({
+                autoFocus: true,
+                source: data.sort((a, b) => a.level < b.level ? -1 : 0 ).map(x => { return { id: x.ubigeo, label: x.full_name, value: x.full_name } } ),
+                minLength: 2,
+                select: function( event, ui ) {
+                    loadTable(getCurretIndicador(), ui.item.id);
+                }
+            });
+            init_ubigeos(data, {
+                commonClass: 'selectUbigeo',
+                selects: [
+                    { id: 'select_dpto', name: 'Departamento' },
+                    { id: 'select_prov', name: 'Provincia' },
+                    { id: 'select_dist', name: 'Distrito' },
+                ],
+                value: 'ubigeo'
+            });
+        });
+
+        init_events();
+
+    }
+
+    var init_events = function(){
+        $("#select_categoria select").change(function(evt){
+            let categoria = $(this).val();
+            $.ajax({
+                url: "http://192.168.34.16:8877/estadisticos/categoria/",
+                method: "GET",
+                type: "json",
+                data: {
+                    cod: categoria
+                },
+                error: function(xhr, status, er) {
+                },
+                beforeSend: function(){
+                }
+            }).done(function(data) {
+                console.log(data[0].cuadros);
+                let block = $(".selectLista .bloqueLista");
+                block.empty();
+                data[0].cuadros.forEach(function(i){
+                    //block.append('<div data-ind="'+i.cod+'">'+i.titulo.replace(/(CUADRO N[º|°] [0-9]+:)/,'<b>$1</b>')+'</div>');
+                    block.append(
+                        $("<div/>", {
+                            'data-indicador': i.cod,
+                            'html': i.titulo.replace(/(CUADRO N[º|°] [0-9]+:)/,'<b>$1</b>')
+                        }).bind('click', function(){
+                            let indicador = $(this).data('indicador');
+                            let ubigeo = getCurrentUbigeo();
+                            loadTable(indicador, ubigeo);
+                        })
+                    );
+                });
+                $("#select_categoria .bloqueLista div").first().click();
+            });
+        });
+        $(".selectUbigeo").change(function(evt){
+            let indicador = getCurretIndicador();
+            let ubigeo = getCurrentUbigeo();
+            loadTable(indicador, ubigeo);
+        });
+    }
+
+    var init_ubigeos = function(data, options){
+
+        let commonClass = options.commonClass;
+        let selects = options.selects;
+        let value = options.value;
+
+        let init = function(){
+            populateSelect(0, data.filter(x=>x.level==0));
+            $("." + commonClass).change(function(evt){
+                let level = $(this).data('level');
+                let value = $(this).val();
+                populateSelect(level+1, data.filter(x=>x.level==level+1 && x.parent_ubigeo==value));
+                for(let i = level+2; i<selects.length; i++){
+                    cleanSelect(i);
+                }
+            });
+        }
+
+        let populateSelect = function(index, content){
+            if( index < selects.length ){
+                cleanSelect(index);
+                content.forEach( x => {
+                    $('#' + selects[index].id).append('<option value="' + x[value] + '">' + selects[index].name + ' : ' + x.name + '</option>');
+                });
+            }
+        }
+
+        let cleanSelect = function(index){
+            $('#' + selects[index].id).empty();
+            $('#' + selects[index].id).append('<option value="">' + selects[index].name + ' : Seleccione</option>');
+        }
+
+        init();
+
+    }
+
+    var getCurrentUbigeo = function(){
+        return $("#select_dist").val() ? $("#select_dist").val() : ( $("#select_prov").val() ? $("#select_prov").val() : $("#select_dpto").val());
+    }
+
+    var getCurretIndicador = function(){
+        return $("#select_categoria .bloqueLista div.active").first().data('indicador');
+    }
+
+    var init_categorias = function(callback){
+        $.ajax({
+            url: "http://192.168.34.16:8877/estadisticos/categoria/",
+            method: "GET",
+            type: "json",
+            data: {},
+            error: function(xhr, status, er) {},
+            beforeSend: function(){}
+        }).done(function(data) {
+            let select = $("#select_categoria select");
+            select.empty();
+            data.forEach(function(i){
+                select.append('<option value='+i.cod+'>'+i.titulo+'</option>');
+            });
+            if(callback){ callback(); }
+        });
+    }
+
+    var loadTable = function(ind, ubigeo){
+        $.ajax({
+            url: "http://192.168.34.16:8877/estadisticos/cuadro/",
+            method: "GET",
+            type: "json",
+            data: {
+                cod: ind,
+                u: ubigeo
+            },
+            error: function(xhr, status, er) {},
+            beforeSend: function(){}
+        }).done(function(data) {
+            data = data[0];
+
+            $(".headertituloTabla").empty();
+            $(".headertituloTabla").append('<h2>'+data.titulo+'</h2>');
+
+            $(".piedetabla").empty();
+            $(".piedetabla").append('<p>'+data.pie_pagina+'</p>');
+
+            let container = $(".datTabla");
+            container.empty();
+
+            let header = '<thead>'
+            data.cabecera.forEach(function(i){
+                header += '<tr>' + '<th>orden</th><th>caida</th>';
+                i.celdas.forEach(function(e){
+                    header += '<th colspan='+ e.colspan +' rowspan='+ e.rowspan +'>' + e.titulo + '</th>';
+                });
+                header += '</tr>'
+            });
+
+            container.html('<table>' + header + '</table>');
+
+            $.ajax({
+                url: "http://192.168.34.16:8877/estadisticos/cuadro_data/",
+                method: "GET",
+                type: "json",
+                data: {
+                    cod: ind,
+                    u: ubigeo
+                },
+            }).done(function(response) {
+                var altoVentana = ($(window).height() - 263);
+                if( response.length > 0 ){
+                    data = response[0].data.map( x => [x.fila,x.nivel].concat(Object.values(x.celdas)));
+                }else{
+                    data = [];
+                }
+                $('.datTabla table').DataTable( {
+                    data: data,
+                    rowId: 'tablaCuadros',
+                    "columnDefs": [
+                        {
+                            "targets": [ 0,1 ],
+                            "visible": false,
+                            "searchable": false
+                        },
+                    ],
+                    createdRow: function( row, data, dataIndex ) {
+                        $( row ).addClass('nivel'+data[1]);
+                    },
+                    paging: false,
+                    info: false,
+                    ordering: false,
+                    searching: false,
+                    scrollX:   true,
+                    scrollCollapse: true,
+                    fixedColumns: {
+                        leftColumns: 2
+                    },
+                    scrollY: altoVentana+'px',
+                    //processing: true,
+                    serverSide: false
+                } );
+
+            });
+
+
+        });
+    }
+</script>
+</html>
