@@ -40,7 +40,7 @@ App.utils.mapasFrecuencias = (function (config, appData, utils, service) {
         urlServiceDatos:'http://192.168.34.14:8001/mapa/tematico',
         proyecto: 'frecuencias',
         mapaPeriodo : 'P01',
-        variable: 'P010100',
+        variable: 'P010101',
         colorGris :'#9c9c9c',
         buscadorTerritorio:'buscador_territorio',
         graphicMarker:{grafico:'',options:{backgroundColor:[210, 105, 30, 0.5],size:20,borderColor:[210, 105, 30, 0.9],widthBorder:8},datos:{}},
