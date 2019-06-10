@@ -2530,8 +2530,9 @@ App.utils.mapas = (function (parent, config,service) {
             function (el,index) {
                 service.mapas.getMapa(el.cod_mapa,function (data) {
                     _this.datosMap.codMap=el.cod_mapa;
-                    _this.datosMap.urlMap=data.url;
+                    _this.datosMap.urlMap=service.getUrlGis(data.url);
                     _this.datosMap.urlMapBaseNacional= service.getUrlGis("CARTOGRAFIA_BASE_INEI/BASE_NACIONAL/MapServer", 'server');
+                    //console.log('_this.datosMap.urlMapBaseNacional>>>',_this.datosMap.urlMapBaseNacional);
                     _this.datosMap.codTematico=data.cod_tematico_default;
                     _this.datosMap.tituloLegend=data.descripcion;
                     _this.datosMap.div=el.div;
